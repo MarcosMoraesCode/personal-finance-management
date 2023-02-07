@@ -1,14 +1,22 @@
 import React from "react";
+import styled from "styled-components";
 
 import NavigationItem from "./NavigationItem/NavigationItem";
 
+const NavigationDiv = styled.div`
+  width: 100%;
+  background-color: white;
+  height: 6vh;
+`;
+
 const NavigationItems = () => {
   return (
-    <ul>
-      <NavigationItem>Option 1</NavigationItem>
-      <NavigationItem>Option 2</NavigationItem>
-      <NavigationItem>Option 3</NavigationItem>
-    </ul>
+    <NavigationDiv>
+      <ul>
+        <NavigationItem link="/">Home</NavigationItem>
+        <NavigationItem link="/login">Login</NavigationItem>
+      </ul>
+    </NavigationDiv>
   );
 };
 
