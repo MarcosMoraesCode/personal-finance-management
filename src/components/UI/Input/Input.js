@@ -7,14 +7,25 @@ const StyledInput = styled.input`
   height: 29px;
   border: solid 1px black;
   align-self: center;
+
   //background-color: #d8d8dd;
 `;
 const StyledLabel = styled.label`
   display: flex;
   align-self: flex-start;
 `;
+const StyledAlertMessage = styled.p`
+  text-align: end;
+  padding-right: 10px;
+  margin: 2px;
+  opacity: 0.8;
+  font-size: 10px;
+  font-weight: 900;
+  color: #fc2469;
+`;
+
 const WrappComponent = styled.div`
-  width: 70%;
+  width: 230px;
   margin: 10px;
   display: flex;
   flex-direction: column;
@@ -25,6 +36,7 @@ const Input = (props) => {
     <WrappComponent>
       <StyledLabel>{props.children}</StyledLabel>
       <StyledInput value={""} />
+      <StyledAlertMessage>Something didn't work</StyledAlertMessage>
     </WrappComponent>
   );
 };

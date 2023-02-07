@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Input from "../../components/UI/Input/Input";
 import img from "../../images/sign-in.jpg";
+import Button from "../../components/UI/Button/Button";
 import { StyledForm } from "../../styles/CommomStyles";
 
 const LoginDiv = styled.div`
@@ -25,7 +26,9 @@ const StyledTitle = styled.h1`
 `;
 
 const WrappComponent = styled.div`
-  background-color: green;
+  // background-color: green;
+  display: flex;
+  flex-direction: column;
   width: 550px;
   height: 90%;
   margin: auto;
@@ -38,12 +41,14 @@ const Login = () => {
         <div>
           <StyledTitle>Login</StyledTitle>
         </div>
-
         <StyledForm>
           <Input>Email</Input>
           <Input>Password</Input>
         </StyledForm>
       </WrappComponent>
+      <div>
+        <Button>Login</Button>
+      </div>
     </LoginDiv>
   );
 };
