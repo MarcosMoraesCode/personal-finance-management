@@ -5,10 +5,10 @@ const StyledButton = styled.button`
   background-color: #fc2469;
   border-radius: 5px;
   color: white;
-  width: 100%;
+  width: 200px;
   height: 29px;
   border: none;
-  box-shadow: 1px 2px 3px white;
+  box-shadow: 1px 2px 3px black;
   align-self: center;
 `;
 
