@@ -21,9 +21,10 @@ export const StyledTitle = styled.h1`
   color: white;
   text-align: center;
   padding: 8px;
+  padding-bottom: 120px;
 `;
 
-export const WrappComponent = styled.div`
+export const WrappLoginComponent = styled.div`
   background-color: black;
   opacity: 0.85;
   border-radius: 10px;
@@ -34,5 +35,31 @@ export const WrappComponent = styled.div`
   width: 550px;
   height: 90%;
   margin: auto;
-  padding: 150px 0px;
+  padding: 10px 0px;
+  @media (max-width: 1000px) {
+    background-color: transparent;
+    opacity: 1;
+  }
+`;
+
+export const StyledLine = styled.p`
+  display: flex;
+  flex-direction: row;
+  font-size: 12px;
+  margin: 15px;
+  width: 250px;
+  ::before {
+    content: "";
+    flex: 1 1;
+    border-bottom: 1px solid;
+    margin: auto;
+    margin-right: 10px;
+  }
+  ::after {
+    content: "";
+    flex: 1 1;
+    border-bottom: 1px solid;
+    margin: auto;
+    margin-left: 10px;
+  }
 `;

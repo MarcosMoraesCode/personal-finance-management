@@ -5,9 +5,10 @@ import {
   StyledCheckboxLabel,
   StyledInput,
   StyledLabel,
-  StyledMessage,
   WrappComponent,
 } from "./InputStyle";
+
+import { StyledMessage } from "../../../styles/CommomStyles";
 
 const Input = (props) => {
   let inputElement;
