@@ -14,11 +14,15 @@ const Input = (props) => {
   let inputElement;
 
   switch (props.ElementType) {
-    case "default":
+    case "email":
       inputElement = (
         <WrappComponent>
           <StyledLabel>{props.children}</StyledLabel>
-          <StyledInput value={""} />
+          <StyledInput
+            value={props.value}
+            onChange={props.changed}
+            placeholder={props.placeholder}
+          />
           <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
             Something didn't work
           </StyledMessage>
@@ -26,12 +30,15 @@ const Input = (props) => {
       );
       break;
 
-    case "remember":
-      console.log("passou aqui");
+    case "password":
       inputElement = (
         <WrappComponent>
           <StyledLabel>{props.children}</StyledLabel>
-          <StyledInput value={""} />
+          <StyledInput
+            value={props.value}
+            onChange={props.changed}
+            placeholder={props.placeholder}
+          />
           <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
             Something didn't work
           </StyledMessage>

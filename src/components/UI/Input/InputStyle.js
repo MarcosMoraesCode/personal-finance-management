@@ -7,6 +7,10 @@ export const StyledInput = styled.input`
   height: 29px;
   border: solid 1px black;
   align-self: center;
+  padding-left: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 2px;
 `;
 export const StyledLabel = styled.label`
   display: flex;
