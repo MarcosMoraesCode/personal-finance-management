@@ -63,6 +63,36 @@ const Input = (props) => {
         </WrappComponent>
       );
       break;
+    case "nickname":
+      inputElement = (
+        <WrappComponent>
+          <StyledLabel>{props.children}</StyledLabel>
+          <StyledInput
+            value={props.value}
+            onChange={props.changed}
+            placeholder={props.placeholder}
+          />
+          <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
+            Something didn't work
+          </StyledMessage>
+        </WrappComponent>
+      );
+      break;
+    default:
+      inputElement = (
+        <WrappComponent>
+          <StyledLabel>{props.children}</StyledLabel>
+          <StyledInput
+            value={props.value}
+            onChange={props.changed}
+            placeholder={props.placeholder}
+          />
+          <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
+            Something didn't work
+          </StyledMessage>
+        </WrappComponent>
+      );
+      break;
   }
 
   return inputElement;

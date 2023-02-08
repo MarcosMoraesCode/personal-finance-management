@@ -81,6 +81,7 @@ export const CheckBoxWrapper = styled.div`
 export const WrappComponent = styled.div`
   width: 230px;
   margin: 10px;
+  margin-top: 0px;
   display: flex;
   flex-direction: column;
   font-family: "Roboto";

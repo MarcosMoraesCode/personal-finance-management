@@ -79,7 +79,68 @@ const Login = () => {
 
   switch (screen) {
     case "singUp":
-      loginElement = <div>Sign Up Element</div>;
+      loginElement = (
+        <>
+          <div>
+            <StyledTitle>SignUp</StyledTitle>
+          </div>
+          <StyledForm>
+            <Input
+              ElementType={newUserNickname.id}
+              changed={(event) =>
+                inputChangedHandler(event, newUserNickname.id)
+              }
+              placeholder={newUserNickname.placeholder}
+            >
+              User
+            </Input>
+            <Input
+              ElementType={newUserEmail.id}
+              changed={(event) => inputChangedHandler(event, newUserEmail.id)}
+              placeholder={newUserEmail.placeholder}
+            >
+              Email
+            </Input>
+            <Input
+              changed={(event) =>
+                inputChangedHandler(event, newUserPassword.id)
+              }
+              placeholder={newUserPassword.placeholder}
+            >
+              Password
+            </Input>
+            <Input
+              changed={(event) =>
+                inputChangedHandler(event, newUserPasswordConfirmation.id)
+              }
+              placeholder={newUserPasswordConfirmation.placeholder}
+            >
+              Confirm Password
+            </Input>
+          </StyledForm>
+          <div>
+            <Button width={230} color={"#fc2469"}>
+              Signup
+            </Button>
+          </div>
+          <div>
+            <StyledLine>Or singup with</StyledLine>
+          </div>
+          <div>
+            <Button width={60} color={"#484848"}></Button>
+            <Button width={60} color={"#484848"}></Button>
+            <Button width={60} color={"#484848"}></Button>
+          </div>
+          <div>
+            <StyledMessage paddingTop={55}>
+              Already have an account?{"          "}
+              <StyledSpan color={"#fc2469"} fontWeight={900}>
+                Login
+              </StyledSpan>
+            </StyledMessage>
+          </div>
+        </>
+      );
       break;
     default:
       loginElement = (
