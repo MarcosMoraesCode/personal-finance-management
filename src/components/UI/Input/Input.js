@@ -24,7 +24,7 @@ const Input = (props) => {
             placeholder={props.placeholder}
           />
           <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
-            Something didn't work
+            {props.invalidMessage}
           </StyledMessage>
         </WrappComponent>
       );
@@ -40,7 +40,7 @@ const Input = (props) => {
             placeholder={props.placeholder}
           />
           <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
-            Something didn't work
+            {props.invalidMessage}
           </StyledMessage>
           <CheckBoxWrapper>
             <StyledCheckBoxInput id="checkbox" type="checkbox" />
@@ -73,7 +73,7 @@ const Input = (props) => {
             placeholder={props.placeholder}
           />
           <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
-            Something didn't work
+            {props.invalidMessage}
           </StyledMessage>
         </WrappComponent>
       );
@@ -88,7 +88,7 @@ const Input = (props) => {
             placeholder={props.placeholder}
           />
           <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
-            Something didn't work
+            {props.invalidMessage}
           </StyledMessage>
         </WrappComponent>
       );

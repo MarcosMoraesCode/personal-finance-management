@@ -18,6 +18,7 @@ const Login = () => {
     id: "email",
     email: null,
     emailIsValid: false,
+    invalidMessage: "Invalid email",
     isTouched: false,
     placeholder: "Email Address",
   });
@@ -25,6 +26,7 @@ const Login = () => {
     id: "password",
     password: null,
     passwordIsValid: false,
+    invalidMessage: "Invalid password",
     isTouched: false,
     placeholder: "Password",
   });
@@ -32,6 +34,7 @@ const Login = () => {
     id: "nickname",
     nickname: null,
     nicknameIsValid: false,
+    invalidMessage: "Invalid nickname",
     isTouched: false,
     placeholder: "Nickname",
   });
@@ -39,6 +42,7 @@ const Login = () => {
     id: "email",
     email: null,
     emailIsValid: false,
+    invalidMessage: "Invalid email",
     isTouched: false,
     placeholder: "Email Address",
   });
@@ -46,6 +50,7 @@ const Login = () => {
     id: "password",
     password: null,
     passwordIsValid: false,
+    invalidMessage: "Invalid password",
     isTouched: false,
     placeholder: "Password",
   });
@@ -54,6 +59,7 @@ const Login = () => {
       id: "password",
       password: null,
       passwordIsValid: false,
+      invalidMessage: "Password doesn't match",
       isTouched: false,
       placeholder: "Confirm Password",
     });
@@ -91,6 +97,7 @@ const Login = () => {
                 inputChangedHandler(event, newUserNickname.id)
               }
               placeholder={newUserNickname.placeholder}
+              invalidMessage={newUserNickname.invalidMessage}
             >
               User
             </Input>
@@ -98,6 +105,7 @@ const Login = () => {
               ElementType={newUserEmail.id}
               changed={(event) => inputChangedHandler(event, newUserEmail.id)}
               placeholder={newUserEmail.placeholder}
+              invalidMessage={newUserEmail.invalidMessage}
             >
               Email
             </Input>
@@ -106,6 +114,7 @@ const Login = () => {
                 inputChangedHandler(event, newUserPassword.id)
               }
               placeholder={newUserPassword.placeholder}
+              invalidMessage={newUserPassword.invalidMessage}
             >
               Password
             </Input>
@@ -114,6 +123,7 @@ const Login = () => {
                 inputChangedHandler(event, newUserPasswordConfirmation.id)
               }
               placeholder={newUserPasswordConfirmation.placeholder}
+              invalidMessage={newUserPasswordConfirmation.invalidMessage}
             >
               Confirm Password
             </Input>
