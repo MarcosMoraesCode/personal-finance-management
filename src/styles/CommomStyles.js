@@ -28,4 +28,5 @@ export const StyledMessage = styled.p`
 export const StyledSpan = styled.span`
   color: ${(props) => props.color};
   font-weight: ${(props) => `${props.fontWeight}`};
+  cursor: pointer;
 `;

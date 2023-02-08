@@ -39,7 +39,7 @@ const Login = () => {
     placeholder: "Nickname",
   });
   const [newUserEmail, setNewUserEmail] = useState({
-    id: "email",
+    id: "new-email",
     email: null,
     emailIsValid: false,
     invalidMessage: "Invalid email",
@@ -47,7 +47,7 @@ const Login = () => {
     placeholder: "Email Address",
   });
   const [newUserPassword, setNewUserPassword] = useState({
-    id: "password",
+    id: "new-password",
     password: null,
     passwordIsValid: false,
     invalidMessage: "Invalid password",
@@ -56,7 +56,7 @@ const Login = () => {
   });
   const [newUserPasswordConfirmation, setNewUserPasswordConfirmation] =
     useState({
-      id: "password",
+      id: "new-password-confirmation",
       password: null,
       passwordIsValid: false,
       invalidMessage: "Password doesn't match",
@@ -68,18 +68,70 @@ const Login = () => {
 
   let loginElement;
 
+  const screenSwitchHandler = () => {
+    if (screen === "") {
+      setScreen("singUp");
+      //TEM A VER COM O ID
+      // setUserPassword({ ...userPassword, password: null });
+      //setUserEmail({ ...userEmail, email: null });
+    } else {
+      setScreen("");
+      // setNewUserPassword({ ...userPassword, password: null });
+      // setNewUserEmail({ ...userEmail, email: null });
+    }
+  };
+
   const inputChangedHandler = (event, inputElement) => {
-    switch (inputElement) {
-      case "email":
-        setUserEmail({ ...userEmail, email: event.currentTarget.value });
-        console.log(userEmail);
+    switch (screen) {
+      case "singUp":
+        switch (inputElement) {
+          case "new-email":
+            setNewUserEmail({
+              ...newUserEmail,
+              email: event.currentTarget.value,
+            });
+            console.log(newUserEmail);
+            break;
+          case "new-password":
+            setNewUserPassword({
+              ...newUserPassword,
+              password: event.currentTarget.value,
+            });
+            console.log(newUserPassword);
+            break;
+          case "new-password-confirmation":
+            setNewUserPasswordConfirmation({
+              ...newUserPasswordConfirmation,
+              password: event.currentTarget.value,
+            });
+            console.log(newUserPasswordConfirmation);
+            break;
+          default:
+            setNewUserNickname({
+              ...newUserNickname,
+              nickname: event.currentTarget.value,
+            });
+            console.log(newUserNickname);
+            break;
+        }
         break;
-      case "password":
-        setUserPassword({
-          ...userPassword,
-          password: event.currentTarget.value,
-        });
-        console.log(userPassword);
+
+      default:
+        switch (inputElement) {
+          case "email":
+            setUserEmail({ ...userEmail, email: event.currentTarget.value });
+            console.log(userEmail);
+            break;
+          case "password":
+            setUserPassword({
+              ...userPassword,
+              password: event.currentTarget.value,
+            });
+            console.log(userPassword);
+          default:
+            break;
+        }
+        break;
     }
   };
 
@@ -144,7 +196,11 @@ const Login = () => {
           <div>
             <StyledMessage paddingTop={55}>
               Already have an account?{"          "}
-              <StyledSpan color={"#fc2469"} fontWeight={900}>
+              <StyledSpan
+                color={"#fc2469"}
+                fontWeight={900}
+                onClick={screenSwitchHandler}
+              >
                 Login
               </StyledSpan>
             </StyledMessage>
@@ -163,6 +219,7 @@ const Login = () => {
               ElementType={userEmail.id}
               changed={(event) => inputChangedHandler(event, userEmail.id)}
               placeholder={userEmail.placeholder}
+              invalidMessage={userEmail.invalidMessage}
             >
               Email
             </Input>
@@ -170,6 +227,7 @@ const Login = () => {
               ElementType={userPassword.id}
               changed={(event) => inputChangedHandler(event, userPassword.id)}
               placeholder={userPassword.placeholder}
+              invalidMessage={userPassword.invalidMessage}
             >
               Password
             </Input>
@@ -190,7 +248,11 @@ const Login = () => {
           <div>
             <StyledMessage paddingTop={55}>
               Don't have an account?{"          "}
-              <StyledSpan color={"#fc2469"} fontWeight={900}>
+              <StyledSpan
+                color={"#fc2469"}
+                fontWeight={900}
+                onClick={screenSwitchHandler}
+              >
                 SignUp
               </StyledSpan>
             </StyledMessage>
