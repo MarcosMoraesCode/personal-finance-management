@@ -12,8 +12,8 @@ const Login = () => {
           <StyledTitle>Login</StyledTitle>
         </div>
         <StyledForm>
-          <Input>Email</Input>
-          <Input>Password</Input>
+          <Input ElementType={"default"}>Email</Input>
+          <Input ElementType={"remember"}>Password</Input>
         </StyledForm>
         <div>
           <Button>Login</Button>
