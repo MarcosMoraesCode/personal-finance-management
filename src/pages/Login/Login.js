@@ -211,42 +211,48 @@ const Login = () => {
     return result;
   };
 
-  const checkButtonValidation = () => {
-    const validation1 = userEmail.isValid === true;
-    const validation2 = userPassword.isValid === true;
-    const validation3 = newUserNickname.isValid === true;
-    const validation4 = newUserEmail.isValid === true;
-    const validation5 = newUserPassword.isValid === true;
-    const validation6 = newUserPasswordConfirmation.isValid === true;
+  const checkButtonValidation = (id, value) => {
+    let validation1 = userEmail.isValid === true;
+    let validation2 = userPassword.isValid === true;
+    let validation3 = newUserNickname.isValid === true;
+    let validation4 = newUserEmail.isValid === true;
+    let validation5 = newUserPassword.isValid === true;
+    let validation6 = newUserPasswordConfirmation.isValid === true;
 
-    let result = false;
-
-    if (validation1 && validation2) {
-      console.log("é valido");
-    } else {
-      console.log("não é valido");
-    }
-
-    /*switch (screen) {
-      case "signUp":
-        validation3 && validation4 && validation5 && validation6
-          ? (result = true) //setSubmitSignUp(true)
-          : (result = false); //setSubmitSignUp(false);
-        if (result !== submitSingUp) {
-          setSubmitSignUp(result);
-        }
-        //console.log("singup", submitSingUp);
+    switch (id) {
+      case "email":
+        validation1 = value;
+        break;
+      case "password":
+        validation2 = value;
+        break;
+      case "nickname":
+        validation3 = value;
+        break;
+      case "new-email":
+        validation4 = value;
+        break;
+      case "new-password":
+        validation5 = value;
+        break;
+      case "new-password-confirmation":
+        validation6 = value;
         break;
       default:
-        
-          ? (result = true) //setSubmitSignUp(true)
-          : (result = false);
-        if (result !== submitLogin) {
-          setSubmitLogin(result);
-        }
-        //console.log("login", submitLogin);
         break;
-    }*/
+    }
+
+    if (validation1 && validation2) {
+      setSubmitLogin(true);
+    } else {
+      setSubmitLogin(false);
+    }
+
+    if (validation3 && validation4 && validation5 && validation6) {
+      setSubmitSignUp(true);
+    } else {
+      setSubmitSignUp(false);
+    }
   };
 
   const inputChangedHandler = (event, inputElement) => {
@@ -263,6 +269,10 @@ const Login = () => {
                 event.currentTarget.value
               ),
             });
+            checkButtonValidation(
+              newUserEmail.id,
+              checkInputValidation(newUserEmail.id, event.currentTarget.value)
+            );
 
             break;
           case "new-password":
@@ -275,6 +285,13 @@ const Login = () => {
                 event.currentTarget.value
               ),
             });
+            checkButtonValidation(
+              newUserPassword.id,
+              checkInputValidation(
+                newUserPassword.id,
+                event.currentTarget.value
+              )
+            );
 
             break;
           case "new-password-confirmation":
@@ -287,6 +304,13 @@ const Login = () => {
                 event.currentTarget.value
               ),
             });
+            checkButtonValidation(
+              newUserPasswordConfirmation.id,
+              checkInputValidation(
+                newUserPasswordConfirmation.id,
+                event.currentTarget.value
+              )
+            );
 
             break;
           default:
@@ -299,6 +323,13 @@ const Login = () => {
                 event.currentTarget.value
               ),
             });
+            checkButtonValidation(
+              newUserNickname.id,
+              checkInputValidation(
+                newUserNickname.id,
+                event.currentTarget.value
+              )
+            );
 
             break;
         }
@@ -317,6 +348,10 @@ const Login = () => {
                 event.currentTarget.value
               ),
             });
+            checkButtonValidation(
+              userEmail.id,
+              checkInputValidation(userEmail.id, event.currentTarget.value)
+            );
 
             break;
           case "password":
@@ -329,6 +364,10 @@ const Login = () => {
                 event.currentTarget.value
               ),
             });
+            checkButtonValidation(
+              userPassword.id,
+              checkInputValidation(userPassword.id, event.currentTarget.value)
+            );
 
             break;
           default:
@@ -337,7 +376,6 @@ const Login = () => {
 
         break;
     }
-    // checkButtonValidation();
   };
 
   switch (screen) {
