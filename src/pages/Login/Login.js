@@ -17,40 +17,40 @@ const Login = () => {
   const [userEmail, setUserEmail] = useState({
     id: "email",
     value: "",
-    emailIsValid: false,
-    invalidMessage: "Invalid email",
+    isValid: false,
+    invalidMessage: "",
     isTouched: false,
     placeholder: "Email Address",
   });
   const [userPassword, setUserPassword] = useState({
     id: "password",
     value: "",
-    passwordIsValid: false,
-    invalidMessage: "Invalid password",
+    isValid: false,
+    invalidMessage: "",
     isTouched: false,
     placeholder: "Password",
   });
   const [newUserNickname, setNewUserNickname] = useState({
     id: "nickname",
     value: "",
-    nicknameIsValid: false,
-    invalidMessage: "Invalid nickname",
+    isValid: false,
+    invalidMessage: "",
     isTouched: false,
     placeholder: "Nickname",
   });
   const [newUserEmail, setNewUserEmail] = useState({
     id: "new-email",
     value: "",
-    emailIsValid: false,
-    invalidMessage: "Invalid email",
+    isValid: false,
+    invalidMessage: "",
     isTouched: false,
     placeholder: "Email Address",
   });
   const [newUserPassword, setNewUserPassword] = useState({
     id: "new-password",
     value: "",
-    passwordIsValid: false,
-    invalidMessage: "Invalid password",
+    isValid: false,
+    invalidMessage: "",
     isTouched: false,
     placeholder: "Password",
   });
@@ -58,8 +58,8 @@ const Login = () => {
     useState({
       id: "new-password-confirmation",
       value: "",
-      passwordIsValid: false,
-      invalidMessage: "Password doesn't match",
+      isValid: false,
+      invalidMessage: "",
       isTouched: false,
       placeholder: "Confirm Password",
     });
@@ -67,6 +67,85 @@ const Login = () => {
   const [screen, setScreen] = useState("singUp");
 
   let loginElement;
+
+  const verifyFocus = (elementId, elementIsValid) => {
+    console.log(elementId, elementIsValid);
+    if (!elementIsValid) {
+      switch (elementId) {
+        case "email":
+          setUserEmail({ ...userEmail, invalidMessage: "Invalid email" });
+          break;
+        case "new-email":
+          setNewUserEmail({ ...newUserEmail, invalidMessage: "Invalid email" });
+          break;
+        case "password":
+          setUserPassword({
+            ...userPassword,
+            invalidMessage: "Invalid password",
+          });
+          break;
+        case "new-password":
+          setNewUserPassword({
+            ...newUserPassword,
+            invalidMessage: "Invalid password",
+          });
+          break;
+        case "new-password-confirmation":
+          setNewUserPasswordConfirmation({
+            ...newUserPasswordConfirmation,
+            invalidMessage: "Password doesn't match",
+          });
+          break;
+        case "nickname":
+          setNewUserNickname({
+            ...newUserNickname,
+            invalidMessage: "Invalid nickname",
+          });
+
+          break;
+        default:
+          break;
+      }
+      return true;
+    } else {
+      switch (elementId) {
+        case "email":
+          setUserEmail({ ...userEmail, invalidMessage: "" });
+          break;
+        case "new-email":
+          setNewUserEmail({ ...newUserEmail, invalidMessage: "" });
+          break;
+        case "password":
+          setUserPassword({
+            ...userPassword,
+            invalidMessage: "",
+          });
+          break;
+        case "new-password":
+          setNewUserPassword({
+            ...newUserPassword,
+            invalidMessage: "",
+          });
+          break;
+        case "new-password-confirmation":
+          setNewUserPasswordConfirmation({
+            ...newUserPasswordConfirmation,
+            invalidMessage: "",
+          });
+          break;
+        case "nickname":
+          setNewUserNickname({
+            ...newUserNickname,
+            invalidMessage: "",
+          });
+
+          break;
+        default:
+          break;
+      }
+      return false;
+    }
+  };
 
   const screenSwitchHandler = () => {
     if (screen === "") {
@@ -99,7 +178,7 @@ const Login = () => {
           : (result = false);
         break;
       case "new-email":
-        validation2 && validation3 && validation4 && validation7 && validation8
+        validation2 && validation3 && validation4 && validation7 //&& validation8
           ? (result = true)
           : (result = false);
         break;
@@ -117,11 +196,12 @@ const Login = () => {
         validation9 ? (result = true) : (result = false);
         break;
       case "nickname":
-        validation1 && validation5 && validation6 && validation7
-          ? (result = true)
-          : (result = false);
+        validation1 && validation7 ? (result = true) : (result = false);
+        break;
+      default:
         break;
     }
+    console.log(result);
     return result;
   };
 
@@ -134,7 +214,7 @@ const Login = () => {
               ...newUserEmail,
               isTouched: true,
               value: event.currentTarget.value,
-              emailIsValid: checkValidation(
+              isValid: checkValidation(
                 newUserEmail.id,
                 event.currentTarget.value
               ),
@@ -146,7 +226,7 @@ const Login = () => {
               ...newUserPassword,
               isTouched: true,
               value: event.currentTarget.value,
-              passwordIsValid: checkValidation(
+              isValid: checkValidation(
                 newUserPassword.id,
                 event.currentTarget.value
               ),
@@ -158,7 +238,7 @@ const Login = () => {
               ...newUserPasswordConfirmation,
               isTouched: true,
               value: event.currentTarget.value,
-              passwordIsValid: checkValidation(
+              isValid: checkValidation(
                 newUserPasswordConfirmation.id,
                 event.currentTarget.value
               ),
@@ -170,7 +250,7 @@ const Login = () => {
               ...newUserNickname,
               isTouched: true,
               value: event.currentTarget.value,
-              nicknameIsValid: checkValidation(
+              isValid: checkValidation(
                 newUserNickname.id,
                 event.currentTarget.value
               ),
@@ -187,10 +267,7 @@ const Login = () => {
               ...userEmail,
               isTouched: true,
               value: event.currentTarget.value,
-              emailIsValid: checkValidation(
-                userEmail.id,
-                event.currentTarget.value
-              ),
+              isValid: checkValidation(userEmail.id, event.currentTarget.value),
             });
             console.log(userEmail);
             break;
@@ -199,7 +276,7 @@ const Login = () => {
               ...userPassword,
               isTouched: true,
               value: event.currentTarget.value,
-              passwordIsValid: checkValidation(
+              isValid: checkValidation(
                 userPassword.id,
                 event.currentTarget.value
               ),
@@ -229,6 +306,9 @@ const Login = () => {
               placeholder={newUserNickname.placeholder}
               invalidMessage={newUserNickname.invalidMessage}
               value={newUserNickname.value}
+              blur={() =>
+                verifyFocus(newUserNickname.id, newUserNickname.isValid)
+              }
             >
               User
             </Input>
@@ -238,6 +318,7 @@ const Login = () => {
               placeholder={newUserEmail.placeholder}
               invalidMessage={newUserEmail.invalidMessage}
               value={newUserEmail.value}
+              blur={() => verifyFocus(newUserEmail.id, newUserEmail.isValid)}
             >
               Email
             </Input>
@@ -248,6 +329,9 @@ const Login = () => {
               placeholder={newUserPassword.placeholder}
               invalidMessage={newUserPassword.invalidMessage}
               value={newUserPassword.value}
+              blur={() =>
+                verifyFocus(newUserPassword.id, newUserPassword.isValid)
+              }
             >
               Password
             </Input>
@@ -258,6 +342,12 @@ const Login = () => {
               placeholder={newUserPasswordConfirmation.placeholder}
               invalidMessage={newUserPasswordConfirmation.invalidMessage}
               value={newUserPasswordConfirmation.value}
+              blur={() =>
+                verifyFocus(
+                  newUserPasswordConfirmation.id,
+                  newUserPasswordConfirmation.isValid
+                )
+              }
             >
               Confirm Password
             </Input>
@@ -303,6 +393,7 @@ const Login = () => {
               placeholder={userEmail.placeholder}
               invalidMessage={userEmail.invalidMessage}
               value={userEmail.value}
+              blur={() => verifyFocus(userEmail.id, userEmail.isValid)}
             >
               Email
             </Input>
@@ -312,6 +403,7 @@ const Login = () => {
               placeholder={userPassword.placeholder}
               invalidMessage={userPassword.invalidMessage}
               value={userPassword.value}
+              blur={() => verifyFocus(userPassword.id, userPassword.isValid)}
             >
               Password
             </Input>

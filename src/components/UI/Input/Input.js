@@ -12,6 +12,7 @@ import { StyledMessage } from "../../../styles/CommomStyles";
 
 const Input = (props) => {
   let inputElement;
+  let message = "";
 
   switch (props.ElementType) {
     case "email":
@@ -22,6 +23,9 @@ const Input = (props) => {
             value={props.value}
             onChange={props.changed}
             placeholder={props.placeholder}
+            onBlur={
+              props.blur // ? (message = null) : (message = props.invalidMessage)
+            }
           />
           <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
             {props.invalidMessage}
@@ -39,9 +43,12 @@ const Input = (props) => {
             value={props.value}
             onChange={props.changed}
             placeholder={props.placeholder}
+            onBlur={
+              props.blur //? (message = null) : (message = props.invalidMessage)
+            }
           />
           <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
-            {props.invalidMessage}
+            {props.invalidMessage /*props.invalidMessage*/}
           </StyledMessage>
           <CheckBoxWrapper>
             <StyledCheckBoxInput id="checkbox" type="checkbox" />
@@ -79,6 +86,9 @@ const Input = (props) => {
             value={props.value}
             onChange={props.changed}
             placeholder={props.placeholder}
+            onBlur={
+              props.blur //? (message = null) : (message = props.invalidMessage)
+            }
           />
           <StyledMessage
             key={`message-${props.id}`}
@@ -100,6 +110,9 @@ const Input = (props) => {
             value={props.value}
             onChange={props.changed}
             placeholder={props.placeholder}
+            onBlur={
+              props.blur //? (message = null) : (message = props.invalidMessage)
+            }
           />
           <StyledMessage
             key={`message-1-${props.id}`}
