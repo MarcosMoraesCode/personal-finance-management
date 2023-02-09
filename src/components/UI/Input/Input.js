@@ -32,9 +32,10 @@ const Input = (props) => {
 
     case "password":
       inputElement = (
-        <WrappComponent>
-          <StyledLabel>{props.children}</StyledLabel>
+        <WrappComponent key={props.id}>
+          <StyledLabel key={props.id}>{props.children}</StyledLabel>
           <StyledInput
+            key={props.id}
             value={props.value}
             onChange={props.changed}
             placeholder={props.placeholder}
@@ -45,16 +46,22 @@ const Input = (props) => {
           <CheckBoxWrapper>
             <StyledCheckBoxInput id="checkbox" type="checkbox" />
             <StyledCheckboxLabel htmlFor="checkbox" />
-            <StyledMessage margin={1} paddingLeft={4} fontWeight={100}>
+            <StyledMessage
+              key={`message-1-${props.id}`}
+              margin={1}
+              paddingLeft={4}
+              fontWeight={100}
+            >
               Remember me
             </StyledMessage>
             <StyledMessage
+              key={`message-2-${props.id}`}
               color={"white"}
               margin={1}
               fontWeight={100}
               paddingLeft={25}
               onClick={props.navigate}
-              cursor={true}
+              cursor={"pointer"}
               underline={true}
             >
               Forgot Password?
@@ -65,14 +72,20 @@ const Input = (props) => {
       break;
     case "nickname":
       inputElement = (
-        <WrappComponent>
-          <StyledLabel>{props.children}</StyledLabel>
+        <WrappComponent key={props.id}>
+          <StyledLabel key={props.id}>{props.children}</StyledLabel>
           <StyledInput
+            key={props.id}
             value={props.value}
             onChange={props.changed}
             placeholder={props.placeholder}
           />
-          <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
+          <StyledMessage
+            key={`message-${props.id}`}
+            color={"#fc2469"}
+            margin={2}
+            fontWeight={900}
+          >
             {props.invalidMessage}
           </StyledMessage>
         </WrappComponent>
@@ -80,14 +93,20 @@ const Input = (props) => {
       break;
     default:
       inputElement = (
-        <WrappComponent>
-          <StyledLabel>{props.children}</StyledLabel>
+        <WrappComponent key={props.id}>
+          <StyledLabel key={props.id}>{props.children}</StyledLabel>
           <StyledInput
+            key={props.id}
             value={props.value}
             onChange={props.changed}
             placeholder={props.placeholder}
           />
-          <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
+          <StyledMessage
+            key={`message-1-${props.id}`}
+            color={"#fc2469"}
+            margin={2}
+            fontWeight={900}
+          >
             {props.invalidMessage}
           </StyledMessage>
         </WrappComponent>

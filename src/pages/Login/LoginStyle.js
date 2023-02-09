@@ -10,7 +10,7 @@ export const LoginDiv = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   font-family: "Roboto";
-  opacity: 0.9;
+  //opacity: 0.9;
   @media (max-width: 1000px) {
     background-image: url(${img});
   }
@@ -36,6 +36,7 @@ export const WrappLoginComponent = styled.div`
   height: 90%;
   margin: auto;
   padding: 10px 0px;
+  overflow: auto;
   @media (max-width: 1000px) {
     background-color: transparent;
     opacity: 1;
