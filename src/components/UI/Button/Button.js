@@ -1,8 +1,18 @@
 import React from "react";
-import { StyledButton } from "./ButtonStyle";
+import { StyledButton, StyledDisabledButton } from "./ButtonStyle";
 
 const Button = (props) => {
-  return <StyledButton {...props}>{props.children}</StyledButton>;
+  let button = <StyledButton {...props}>{props.children}</StyledButton>;
+
+  if (props?.isValidated === false) {
+    button = (
+      <StyledDisabledButton disabled {...props}>
+        {props.children}
+      </StyledDisabledButton>
+    );
+  }
+
+  return button;
 };
 
 export default Button;

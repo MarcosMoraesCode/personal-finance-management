@@ -12,7 +12,6 @@ import { StyledMessage } from "../../../styles/CommomStyles";
 
 const Input = (props) => {
   let inputElement;
-  let message = "";
 
   switch (props.ElementType) {
     case "email":

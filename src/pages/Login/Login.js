@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import {
@@ -64,12 +64,14 @@ const Login = () => {
       placeholder: "Confirm Password",
     });
 
-  const [screen, setScreen] = useState("singUp");
+  const [submitLogin, setSubmitLogin] = useState(false);
+  const [submitSingUp, setSubmitSignUp] = useState(false);
+
+  const [screen, setScreen] = useState("");
 
   let loginElement;
 
   const verifyFocus = (elementId, elementIsValid) => {
-    console.log(elementId, elementIsValid);
     if (!elementIsValid) {
       switch (elementId) {
         case "email":
@@ -155,15 +157,15 @@ const Login = () => {
     }
   };
 
-  const checkValidation = (elementId, elementValue) => {
+  const checkInputValidation = (elementId, elementValue) => {
     const arr1 = [...elementValue];
     const arr2 = arr1.map((char) => isNaN(char));
 
-    const validation1 = elementValue.length > 5;
-    const validation2 = elementValue.length > 8;
+    const validation1 = elementValue.length > 5 ? true : false;
+    const validation2 = elementValue.length > 8 ? true : false;
     const validation3 = elementValue.includes(".com");
     const validation4 = elementValue.includes("@");
-    const validation5 = arr1.some((char) => typeof char === "string");
+    const validation5 = arr2.some((char) => char === true);
     const validation6 = arr2.some((char) => char === false); //PODE DAR ERRADO
     const validation7 = elementValue.trim() !== "";
     const validation8 = "hello"; //CHECAR NO BANCO DE DADOS SE JÁ HÁ UM EMAIL IGUAL.
@@ -176,16 +178,20 @@ const Login = () => {
         validation2 && validation3 && validation4 && validation7
           ? (result = true)
           : (result = false);
+        //console.log("email", result);
         break;
       case "new-email":
         validation2 && validation3 && validation4 && validation7 //&& validation8
           ? (result = true)
           : (result = false);
+
         break;
       case "password":
         validation1 && validation5 && validation6 && validation7
           ? (result = true)
           : (result = false);
+        //console.log("senha", result);
+
         break;
       case "new-password":
         validation1 && validation5 && validation6 && validation7
@@ -201,8 +207,46 @@ const Login = () => {
       default:
         break;
     }
-    console.log(result);
+
     return result;
+  };
+
+  const checkButtonValidation = () => {
+    const validation1 = userEmail.isValid === true;
+    const validation2 = userPassword.isValid === true;
+    const validation3 = newUserNickname.isValid === true;
+    const validation4 = newUserEmail.isValid === true;
+    const validation5 = newUserPassword.isValid === true;
+    const validation6 = newUserPasswordConfirmation.isValid === true;
+
+    let result = false;
+
+    if (validation1 && validation2) {
+      console.log("é valido");
+    } else {
+      console.log("não é valido");
+    }
+
+    /*switch (screen) {
+      case "signUp":
+        validation3 && validation4 && validation5 && validation6
+          ? (result = true) //setSubmitSignUp(true)
+          : (result = false); //setSubmitSignUp(false);
+        if (result !== submitSingUp) {
+          setSubmitSignUp(result);
+        }
+        //console.log("singup", submitSingUp);
+        break;
+      default:
+        
+          ? (result = true) //setSubmitSignUp(true)
+          : (result = false);
+        if (result !== submitLogin) {
+          setSubmitLogin(result);
+        }
+        //console.log("login", submitLogin);
+        break;
+    }*/
   };
 
   const inputChangedHandler = (event, inputElement) => {
@@ -214,50 +258,51 @@ const Login = () => {
               ...newUserEmail,
               isTouched: true,
               value: event.currentTarget.value,
-              isValid: checkValidation(
+              isValid: checkInputValidation(
                 newUserEmail.id,
                 event.currentTarget.value
               ),
             });
-            console.log(newUserEmail);
+
             break;
           case "new-password":
             setNewUserPassword({
               ...newUserPassword,
               isTouched: true,
               value: event.currentTarget.value,
-              isValid: checkValidation(
+              isValid: checkInputValidation(
                 newUserPassword.id,
                 event.currentTarget.value
               ),
             });
-            console.log(newUserPassword);
+
             break;
           case "new-password-confirmation":
             setNewUserPasswordConfirmation({
               ...newUserPasswordConfirmation,
               isTouched: true,
               value: event.currentTarget.value,
-              isValid: checkValidation(
+              isValid: checkInputValidation(
                 newUserPasswordConfirmation.id,
                 event.currentTarget.value
               ),
             });
-            console.log(newUserPasswordConfirmation);
+
             break;
           default:
             setNewUserNickname({
               ...newUserNickname,
               isTouched: true,
               value: event.currentTarget.value,
-              isValid: checkValidation(
+              isValid: checkInputValidation(
                 newUserNickname.id,
                 event.currentTarget.value
               ),
             });
-            console.log(newUserNickname);
+
             break;
         }
+
         break;
 
       default:
@@ -267,27 +312,32 @@ const Login = () => {
               ...userEmail,
               isTouched: true,
               value: event.currentTarget.value,
-              isValid: checkValidation(userEmail.id, event.currentTarget.value),
+              isValid: checkInputValidation(
+                userEmail.id,
+                event.currentTarget.value
+              ),
             });
-            console.log(userEmail);
+
             break;
           case "password":
             setUserPassword({
               ...userPassword,
               isTouched: true,
               value: event.currentTarget.value,
-              isValid: checkValidation(
+              isValid: checkInputValidation(
                 userPassword.id,
                 event.currentTarget.value
               ),
             });
-            console.log(userPassword);
+
             break;
           default:
             break;
         }
+
         break;
     }
+    // checkButtonValidation();
   };
 
   switch (screen) {
@@ -353,7 +403,7 @@ const Login = () => {
             </Input>
           </StyledForm>
           <div>
-            <Button width={230} color={"#fc2469"}>
+            <Button width={230} color={"#fc2469"} isValidated={submitSingUp}>
               Signup
             </Button>
           </div>
@@ -409,7 +459,7 @@ const Login = () => {
             </Input>
           </StyledForm>
           <div>
-            <Button width={230} color={"#fc2469"}>
+            <Button width={230} color={"#fc2469"} isValidated={submitLogin}>
               Login
             </Button>
           </div>
