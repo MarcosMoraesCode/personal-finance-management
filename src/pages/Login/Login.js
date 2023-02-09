@@ -14,6 +14,8 @@ import {
 } from "./LoginStyle";
 
 const Login = () => {
+  const [submitLogin, setSubmitLogin] = useState(false);
+  const [submitSingUp, setSubmitSignUp] = useState(false);
   const [userEmail, setUserEmail] = useState({
     id: "email",
     value: "",
@@ -63,9 +65,6 @@ const Login = () => {
       isTouched: false,
       placeholder: "Confirm Password",
     });
-
-  const [submitLogin, setSubmitLogin] = useState(false);
-  const [submitSingUp, setSubmitSignUp] = useState(false);
 
   const [screen, setScreen] = useState("");
 
@@ -168,6 +167,7 @@ const Login = () => {
     const validation5 = arr2.some((char) => char === true);
     const validation6 = arr2.some((char) => char === false); //PODE DAR ERRADO
     const validation7 = elementValue.trim() !== "";
+    //VERIFICAR SE HÁ ESPAÇOS VAZIOS
     const validation8 = "hello"; //CHECAR NO BANCO DE DADOS SE JÁ HÁ UM EMAIL IGUAL.
     const validation9 = elementValue === newUserPassword.value;
 
@@ -211,6 +211,42 @@ const Login = () => {
     return result;
   };
 
+  const test = (id, value) => {
+    let validation1 = userEmail.isValid === true;
+    let validation2 = userPassword.isValid === true;
+    let validation3 = newUserNickname.isValid === true;
+    let validation4 = newUserEmail.isValid === true;
+    let validation5 = newUserPassword.isValid === true;
+    let validation6 = newUserPasswordConfirmation.isValid === true;
+
+    switch (id) {
+      case "email":
+        validation1 = value;
+        if (validation1) {
+          setUserEmail({ ...userEmail, invalidMessage: "Invalid email" });
+        } else {
+          setUserEmail({ ...userEmail, invalidMessage: "" });
+        }
+        break;
+      case "password":
+        validation2 = value;
+        break;
+      case "nickname":
+        validation3 = value;
+        break;
+      case "new-email":
+        validation4 = value;
+        break;
+      case "new-password":
+        validation5 = value;
+        break;
+      case "new-password-confirmation":
+        validation6 = value;
+        break;
+      default:
+        break;
+    }
+  };
   const checkButtonValidation = (id, value) => {
     let validation1 = userEmail.isValid === true;
     let validation2 = userPassword.isValid === true;
@@ -256,6 +292,10 @@ const Login = () => {
   };
 
   const inputChangedHandler = (event, inputElement) => {
+    test(
+      inputElement,
+      checkInputValidation(userEmail.id, event.currentTarget.value)
+    );
     switch (screen) {
       case "singUp":
         switch (inputElement) {
@@ -388,11 +428,13 @@ const Login = () => {
           <StyledForm>
             <Input
               ElementType={newUserNickname.id}
-              changed={(event) =>
-                inputChangedHandler(event, newUserNickname.id)
-              }
+              changed={(event) => {
+                inputChangedHandler(event, newUserNickname.id);
+              }}
               placeholder={newUserNickname.placeholder}
-              invalidMessage={newUserNickname.invalidMessage}
+              invalidMessage={
+                newUserNickname.isValid ? "" : newUserNickname.invalidMessage
+              }
               value={newUserNickname.value}
               blur={() =>
                 verifyFocus(newUserNickname.id, newUserNickname.isValid)
@@ -404,7 +446,9 @@ const Login = () => {
               ElementType={newUserEmail.id}
               changed={(event) => inputChangedHandler(event, newUserEmail.id)}
               placeholder={newUserEmail.placeholder}
-              invalidMessage={newUserEmail.invalidMessage}
+              invalidMessage={
+                newUserEmail.isValid ? "" : newUserEmail.invalidMessage
+              }
               value={newUserEmail.value}
               blur={() => verifyFocus(newUserEmail.id, newUserEmail.isValid)}
             >
@@ -415,7 +459,9 @@ const Login = () => {
                 inputChangedHandler(event, newUserPassword.id)
               }
               placeholder={newUserPassword.placeholder}
-              invalidMessage={newUserPassword.invalidMessage}
+              invalidMessage={
+                newUserPassword.isValid ? "" : newUserPassword.invalidMessage
+              }
               value={newUserPassword.value}
               blur={() =>
                 verifyFocus(newUserPassword.id, newUserPassword.isValid)
@@ -428,7 +474,11 @@ const Login = () => {
                 inputChangedHandler(event, newUserPasswordConfirmation.id)
               }
               placeholder={newUserPasswordConfirmation.placeholder}
-              invalidMessage={newUserPasswordConfirmation.invalidMessage}
+              invalidMessage={
+                newUserPasswordConfirmation.isValid
+                  ? ""
+                  : newUserPasswordConfirmation.invalidMessage
+              }
               value={newUserPasswordConfirmation.value}
               blur={() =>
                 verifyFocus(
@@ -479,7 +529,7 @@ const Login = () => {
               ElementType={userEmail.id}
               changed={(event) => inputChangedHandler(event, userEmail.id)}
               placeholder={userEmail.placeholder}
-              invalidMessage={userEmail.invalidMessage}
+              invalidMessage={userEmail.isValid ? "" : userEmail.invalidMessage}
               value={userEmail.value}
               blur={() => verifyFocus(userEmail.id, userEmail.isValid)}
             >
@@ -489,7 +539,9 @@ const Login = () => {
               ElementType={userPassword.id}
               changed={(event) => inputChangedHandler(event, userPassword.id)}
               placeholder={userPassword.placeholder}
-              invalidMessage={userPassword.invalidMessage}
+              invalidMessage={
+                userPassword.isValid ? "" : userPassword.invalidMessage
+              }
               value={userPassword.value}
               blur={() => verifyFocus(userPassword.id, userPassword.isValid)}
             >
