@@ -155,54 +155,43 @@ const Login = () => {
       setScreen("");
     }
   };
-
   const checkInputValidation = (elementId, elementValue) => {
-    const arr1 = [...elementValue];
-    const arr2 = arr1.map((char) => isNaN(char));
+    const isEmail = (email) =>
+      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{3,4}$/i.test(email);
 
-    const validation1 = elementValue.length > 5 ? true : false;
-    const validation2 = elementValue.length > 8 ? true : false;
-    const validation3 = elementValue.includes(".com");
-    const validation4 = elementValue.includes("@");
-    const validation5 = arr2.some((char) => char === true);
-    const validation6 = arr2.some((char) => char === false); //PODE DAR ERRADO
-    const validation7 = elementValue.trim() !== "";
-    //VERIFICAR SE HÁ ESPAÇOS VAZIOS
-    const validation8 = "hello"; //CHECAR NO BANCO DE DADOS SE JÁ HÁ UM EMAIL IGUAL.
-    const validation9 = elementValue === newUserPassword.value;
+    const isStrongPassword = (password) =>
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/.test(
+        password
+      );
+    const validNickname = (nickname) =>
+      /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{5,}$/.test(nickname);
+
+    const validation1 = isEmail(elementValue);
+    const validation2 = isStrongPassword(elementValue);
+    const validation3 = validNickname(elementValue);
+    const validation4 = elementValue === newUserPassword.value;
 
     let result = false;
 
     switch (elementId) {
       case "email":
-        validation2 && validation3 && validation4 && validation7
-          ? (result = true)
-          : (result = false);
-        //console.log("email", result);
+        validation1 ? (result = true) : (result = false);
+        console.log("email", validation1);
         break;
       case "new-email":
-        validation2 && validation3 && validation4 && validation7 //&& validation8
-          ? (result = true)
-          : (result = false);
-
+        validation1 ? (result = true) : (result = false);
         break;
       case "password":
-        validation1 && validation5 && validation6 && validation7
-          ? (result = true)
-          : (result = false);
-        //console.log("senha", result);
-
+        validation2 ? (result = true) : (result = false);
         break;
       case "new-password":
-        validation1 && validation5 && validation6 && validation7
-          ? (result = true)
-          : (result = false);
+        validation1 ? (result = true) : (result = false);
         break;
       case "new-password-confirmation":
-        validation9 ? (result = true) : (result = false);
+        validation4 ? (result = true) : (result = false);
         break;
       case "nickname":
-        validation1 && validation7 ? (result = true) : (result = false);
+        validation3 ? (result = true) : (result = false);
         break;
       default:
         break;

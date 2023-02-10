@@ -22,9 +22,7 @@ const Input = (props) => {
             value={props.value}
             onChange={props.changed}
             placeholder={props.placeholder}
-            onBlur={
-              props.blur // ? (message = null) : (message = props.invalidMessage)
-            }
+            onBlur={props.blur}
           />
           <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
             {props.invalidMessage}
@@ -43,12 +41,10 @@ const Input = (props) => {
             value={props.value}
             onChange={props.changed}
             placeholder={props.placeholder}
-            onBlur={
-              props.blur //? (message = null) : (message = props.invalidMessage)
-            }
+            onBlur={props.blur}
           />
           <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
-            {props.invalidMessage /*props.invalidMessage*/}
+            {props.invalidMessage}
           </StyledMessage>
           <CheckBoxWrapper>
             <StyledCheckBoxInput id="checkbox" type="checkbox" />
