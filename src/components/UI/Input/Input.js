@@ -38,6 +38,7 @@ const Input = (props) => {
         <WrappComponent key={props.id}>
           <StyledLabel key={props.id}>{props.children}</StyledLabel>
           <StyledInput
+            type={props.type}
             key={props.id}
             value={props.value}
             onChange={props.changed}
@@ -105,6 +106,7 @@ const Input = (props) => {
         <WrappComponent key={props.id}>
           <StyledLabel key={props.id}>{props.children}</StyledLabel>
           <StyledInput
+            type={props.type}
             key={props.id}
             value={props.value}
             onChange={props.changed}

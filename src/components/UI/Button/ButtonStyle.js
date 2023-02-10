@@ -12,9 +12,24 @@ export const StyledButton = styled.button`
   border: none;
   box-shadow: 1px 2px 3px black;
   align-self: center;
-  cursor: ${(props) => (props.isValidated ? "pointer" : "not-allowed")};
+  cursor: ${(props) =>
+    props.isValidated === undefined
+      ? "pointer"
+      : props.isValidated === true
+      ? "pointer"
+      : "not-allowed"};
   :hover {
-    background-color: #d9074a;
-    transition: 0.2s;
+    background-color: ${(props) =>
+      props.isValidated === undefined
+        ? "#d9074a"
+        : props.isValidated === true
+        ? "#d9074a"
+        : "none"};
+    transition: ${(props) =>
+      props.isValidated === undefined
+        ? "1.0s"
+        : props.isValidated === true
+        ? "0.2s"
+        : "none"};
   }
 `;

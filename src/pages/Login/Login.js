@@ -211,42 +211,6 @@ const Login = () => {
     return result;
   };
 
-  const test = (id, value) => {
-    let validation1 = userEmail.isValid === true;
-    let validation2 = userPassword.isValid === true;
-    let validation3 = newUserNickname.isValid === true;
-    let validation4 = newUserEmail.isValid === true;
-    let validation5 = newUserPassword.isValid === true;
-    let validation6 = newUserPasswordConfirmation.isValid === true;
-
-    switch (id) {
-      case "email":
-        validation1 = value;
-        if (validation1) {
-          setUserEmail({ ...userEmail, invalidMessage: "Invalid email" });
-        } else {
-          setUserEmail({ ...userEmail, invalidMessage: "" });
-        }
-        break;
-      case "password":
-        validation2 = value;
-        break;
-      case "nickname":
-        validation3 = value;
-        break;
-      case "new-email":
-        validation4 = value;
-        break;
-      case "new-password":
-        validation5 = value;
-        break;
-      case "new-password-confirmation":
-        validation6 = value;
-        break;
-      default:
-        break;
-    }
-  };
   const checkButtonValidation = (id, value) => {
     let validation1 = userEmail.isValid === true;
     let validation2 = userPassword.isValid === true;
@@ -292,10 +256,6 @@ const Login = () => {
   };
 
   const inputChangedHandler = (event, inputElement) => {
-    test(
-      inputElement,
-      checkInputValidation(userEmail.id, event.currentTarget.value)
-    );
     switch (screen) {
       case "singUp":
         switch (inputElement) {
@@ -325,6 +285,7 @@ const Login = () => {
                 event.currentTarget.value
               ),
             });
+
             checkButtonValidation(
               newUserPassword.id,
               checkInputValidation(
@@ -455,6 +416,7 @@ const Login = () => {
               Email
             </Input>
             <Input
+              type="password"
               changed={(event) =>
                 inputChangedHandler(event, newUserPassword.id)
               }
@@ -470,6 +432,7 @@ const Login = () => {
               Password
             </Input>
             <Input
+              type="password"
               changed={(event) =>
                 inputChangedHandler(event, newUserPasswordConfirmation.id)
               }
@@ -536,6 +499,7 @@ const Login = () => {
               Email
             </Input>
             <Input
+              type={"password"}
               ElementType={userPassword.id}
               changed={(event) => inputChangedHandler(event, userPassword.id)}
               placeholder={userPassword.placeholder}
