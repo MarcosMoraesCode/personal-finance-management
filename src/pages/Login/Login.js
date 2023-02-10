@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Input from "../../components/UI/Input/Input";
+import InputContainer from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import {
   StyledForm,
@@ -23,6 +23,7 @@ const Login = () => {
     invalidMessage: "",
     isTouched: false,
     placeholder: "Email Address",
+    type: "email",
   });
   const [userPassword, setUserPassword] = useState({
     id: "password",
@@ -31,6 +32,7 @@ const Login = () => {
     invalidMessage: "",
     isTouched: false,
     placeholder: "Password",
+    type: "password",
   });
   const [newUserNickname, setNewUserNickname] = useState({
     id: "nickname",
@@ -39,6 +41,7 @@ const Login = () => {
     invalidMessage: "",
     isTouched: false,
     placeholder: "Nickname",
+    type: "nickname",
   });
   const [newUserEmail, setNewUserEmail] = useState({
     id: "new-email",
@@ -47,6 +50,7 @@ const Login = () => {
     invalidMessage: "",
     isTouched: false,
     placeholder: "Email Address",
+    type: "email",
   });
   const [newUserPassword, setNewUserPassword] = useState({
     id: "new-password",
@@ -55,6 +59,7 @@ const Login = () => {
     invalidMessage: "",
     isTouched: false,
     placeholder: "Password",
+    type: "password",
   });
   const [newUserPasswordConfirmation, setNewUserPasswordConfirmation] =
     useState({
@@ -64,7 +69,13 @@ const Login = () => {
       invalidMessage: "",
       isTouched: false,
       placeholder: "Confirm Password",
+      type: "password",
     });
+
+  const [hidePassword, setHidePassword] = useState({
+    loginPassword: true,
+    singUpPassword: true,
+  });
 
   const [screen, setScreen] = useState("");
 
@@ -145,6 +156,22 @@ const Login = () => {
           break;
       }
       return false;
+    }
+  };
+  const switchHidePasswordHandler = () => {
+    console.log(hidePassword);
+    switch (screen) {
+      case "singUp":
+        setHidePassword({
+          ...hidePassword,
+          singUpPassword: !hidePassword.singUpPassword,
+        });
+        break;
+      default:
+        setHidePassword({
+          ...hidePassword,
+          loginPassword: !hidePassword.loginPassword,
+        });
     }
   };
 
@@ -376,8 +403,8 @@ const Login = () => {
             <StyledTitle>SignUp</StyledTitle>
           </div>
           <StyledForm>
-            <Input
-              ElementType={newUserNickname.id}
+            <InputContainer
+              elementType={newUserNickname.type}
               changed={(event) => {
                 inputChangedHandler(event, newUserNickname.id);
               }}
@@ -391,9 +418,9 @@ const Login = () => {
               }
             >
               User
-            </Input>
-            <Input
-              ElementType={newUserEmail.id}
+            </InputContainer>
+            <InputContainer
+              elementType={newUserEmail.type}
               changed={(event) => inputChangedHandler(event, newUserEmail.id)}
               placeholder={newUserEmail.placeholder}
               invalidMessage={
@@ -403,9 +430,10 @@ const Login = () => {
               blur={() => verifyFocus(newUserEmail.id, newUserEmail.isValid)}
             >
               Email
-            </Input>
-            <Input
-              type="password"
+            </InputContainer>
+            <InputContainer
+              elementType={newUserPassword.id}
+              type={hidePassword.singUpPassword === true ? "password" : "text"}
               changed={(event) =>
                 inputChangedHandler(event, newUserPassword.id)
               }
@@ -417,10 +445,12 @@ const Login = () => {
               blur={() =>
                 verifyFocus(newUserPassword.id, newUserPassword.isValid)
               }
+              switchHide={switchHidePasswordHandler}
+              hideImg={hidePassword.singUpPassword}
             >
               Password
-            </Input>
-            <Input
+            </InputContainer>
+            <InputContainer
               type="password"
               changed={(event) =>
                 inputChangedHandler(event, newUserPasswordConfirmation.id)
@@ -440,7 +470,7 @@ const Login = () => {
               }
             >
               Confirm Password
-            </Input>
+            </InputContainer>
           </StyledForm>
           <div>
             <Button width={230} color={"#fc2469"} isValidated={submitSingUp}>
@@ -477,8 +507,8 @@ const Login = () => {
             <StyledTitle>Login</StyledTitle>
           </div>
           <StyledForm>
-            <Input
-              ElementType={userEmail.id}
+            <InputContainer
+              elementType={userEmail.id}
               changed={(event) => inputChangedHandler(event, userEmail.id)}
               placeholder={userEmail.placeholder}
               invalidMessage={userEmail.isValid ? "" : userEmail.invalidMessage}
@@ -486,10 +516,10 @@ const Login = () => {
               blur={() => verifyFocus(userEmail.id, userEmail.isValid)}
             >
               Email
-            </Input>
-            <Input
-              type={"password"}
-              ElementType={userPassword.id}
+            </InputContainer>
+            <InputContainer
+              type={hidePassword.loginPassword === true ? "password" : "text"}
+              elementType={userPassword.id}
               changed={(event) => inputChangedHandler(event, userPassword.id)}
               placeholder={userPassword.placeholder}
               invalidMessage={
@@ -497,9 +527,11 @@ const Login = () => {
               }
               value={userPassword.value}
               blur={() => verifyFocus(userPassword.id, userPassword.isValid)}
+              switchHide={switchHidePasswordHandler}
+              hideImg={hidePassword.loginPassword}
             >
               Password
-            </Input>
+            </InputContainer>
           </StyledForm>
           <div>
             <Button width={230} color={"#fc2469"} isValidated={submitLogin}>

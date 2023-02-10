@@ -6,14 +6,16 @@ import {
   StyledInput,
   StyledLabel,
   WrappComponent,
+  WrappPasswordComponent,
 } from "./InputStyle";
 
 import { StyledMessage } from "../../../styles/CommomStyles";
+import { HideButton, StyledButton } from "../Button/ButtonStyle";
 
-const Input = (props) => {
+const InputContainer = (props) => {
   let inputElement;
 
-  switch (props.ElementType) {
+  switch (props.elementType) {
     case "email":
       inputElement = (
         <WrappComponent>
@@ -35,14 +37,21 @@ const Input = (props) => {
       inputElement = (
         <WrappComponent key={props.id}>
           <StyledLabel key={props.id}>{props.children}</StyledLabel>
-          <StyledInput
-            type={props.type}
-            key={props.id}
-            value={props.value}
-            onChange={props.changed}
-            placeholder={props.placeholder}
-            onBlur={props.blur}
-          />
+          <WrappPasswordComponent>
+            <StyledInput
+              type={props.type}
+              key={props.id}
+              value={props.value}
+              onChange={props.changed}
+              placeholder={props.placeholder}
+              onBlur={props.blur}
+            />{" "}
+            <HideButton
+              type="button"
+              onClick={props.switchHide}
+              hideImg={props.hideImg}
+            />
+          </WrappPasswordComponent>
           <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
             {props.invalidMessage}
           </StyledMessage>
@@ -70,6 +79,31 @@ const Input = (props) => {
               Forgot Password?
             </StyledMessage>
           </CheckBoxWrapper>
+        </WrappComponent>
+      );
+      break;
+    case "new-password":
+      inputElement = (
+        <WrappComponent key={props.id}>
+          <StyledLabel key={props.id}>{props.children}</StyledLabel>
+          <WrappPasswordComponent>
+            <StyledInput
+              type={props.type}
+              key={props.id}
+              value={props.value}
+              onChange={props.changed}
+              placeholder={props.placeholder}
+              onBlur={props.blur}
+            />{" "}
+            <HideButton
+              type="button"
+              onClick={props.switchHide}
+              hideImg={props.hideImg}
+            />
+          </WrappPasswordComponent>
+          <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
+            {props.invalidMessage}
+          </StyledMessage>
         </WrappComponent>
       );
       break;
@@ -101,6 +135,7 @@ const Input = (props) => {
       inputElement = (
         <WrappComponent key={props.id}>
           <StyledLabel key={props.id}>{props.children}</StyledLabel>
+
           <StyledInput
             type={props.type}
             key={props.id}
@@ -127,4 +162,4 @@ const Input = (props) => {
   return inputElement;
 };
 
-export default Input;
+export default InputContainer;

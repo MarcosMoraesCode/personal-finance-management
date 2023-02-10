@@ -86,3 +86,9 @@ export const WrappComponent = styled.div`
   flex-direction: column;
   font-family: "Roboto";
 `;
+
+export const WrappPasswordComponent = styled.div`
+  display: flex;
+  width: 230px;
+  height: 29px;
+`;

@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import hideImg from "../../../images/hideIcon.png";
+import showImg from "../../../images/showIcon.png";
 
 export const StyledButton = styled.button`
   position: relative;
@@ -31,5 +33,22 @@ export const StyledButton = styled.button`
         : props.isValidated === true
         ? "0.2s"
         : "none"};
+  }
+`;
+
+export const HideButton = styled.button`
+  margin-left: 205px;
+  margin-top: 7px;
+  width: 17px;
+  height: 17px;
+  background-color: transparent;
+  position: absolute;
+  border: none;
+  background-image: ${(props) =>
+    props.hideImg === true ? `url(${hideImg})` : `url(${showImg})`};
+
+  background-size: cover;
+  :hover {
+    cursor: pointer;
   }
 `;
