@@ -1,13 +1,12 @@
 import React from "react";
 import NavigationItems from "../NavigationItems/NavigationItems";
+import { StyledToolbar } from "./ToolbarStyle";
 
 const Toolbar = () => {
   return (
-    <header>
-      <nav>
-        <NavigationItems />
-      </nav>
-    </header>
+    <StyledToolbar>
+      <NavigationItems />
+    </StyledToolbar>
   );
 };
 

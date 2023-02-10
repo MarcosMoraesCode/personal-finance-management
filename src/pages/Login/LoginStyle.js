@@ -33,8 +33,9 @@ export const WrappLoginComponent = styled.div`
   align-items: center;
   justify-content: center;
   width: 550px;
-  height: 90%;
+  height: 75%;
   margin: auto;
+  margin-top: 70px;
   padding: 10px 0px;
   overflow: auto;
   @media (max-width: 1000px) {

@@ -37,17 +37,21 @@ export const StyledButton = styled.button`
 `;
 
 export const HideButton = styled.button`
-  margin-left: 205px;
-  margin-top: 7px;
-  width: 17px;
-  height: 17px;
-  background-color: transparent;
-  position: absolute;
-  border: none;
+  width: 29px;
+  height: 29px;
+  background-color: white;
+  margin-top: 1px;
+  border-radius: 0px 5px 5px 0px;
+  border: 1px solid black;
+  border-left: none;
+  background-size: 18px 18px;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-right: 30px;
+
   background-image: ${(props) =>
     props.hideImg === true ? `url(${hideImg})` : `url(${showImg})`};
 
-  background-size: cover;
   :hover {
     cursor: pointer;
   }

@@ -16,6 +16,7 @@ import {
 const Login = () => {
   const [submitLogin, setSubmitLogin] = useState(false);
   const [submitSingUp, setSubmitSignUp] = useState(false);
+  const [screen, setScreen] = useState("");
   const [userEmail, setUserEmail] = useState({
     id: "email",
     value: "",
@@ -71,13 +72,10 @@ const Login = () => {
       placeholder: "Confirm Password",
       type: "password",
     });
-
   const [hidePassword, setHidePassword] = useState({
     loginPassword: true,
     singUpPassword: true,
   });
-
-  const [screen, setScreen] = useState("");
 
   let loginElement;
 
@@ -212,7 +210,7 @@ const Login = () => {
         validation2 ? (result = true) : (result = false);
         break;
       case "new-password":
-        validation1 ? (result = true) : (result = false);
+        validation2 ? (result = true) : (result = false);
         break;
       case "new-password-confirmation":
         validation4 ? (result = true) : (result = false);
@@ -447,6 +445,7 @@ const Login = () => {
               }
               switchHide={switchHidePasswordHandler}
               hideImg={hidePassword.singUpPassword}
+              border={"password"}
             >
               Password
             </InputContainer>
@@ -529,6 +528,7 @@ const Login = () => {
               blur={() => verifyFocus(userPassword.id, userPassword.isValid)}
               switchHide={switchHidePasswordHandler}
               hideImg={hidePassword.loginPassword}
+              border={"password"}
             >
               Password
             </InputContainer>

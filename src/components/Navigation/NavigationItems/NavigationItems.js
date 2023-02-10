@@ -3,9 +3,9 @@ import styled from "styled-components";
 
 import NavigationItem from "./NavigationItem/NavigationItem";
 
-const NavigationDiv = styled.div`
+const NavigationDiv = styled.nav`
   width: 100%;
-  background-color: white;
+  background-color: transparent;
   height: 6vh;
 `;
 

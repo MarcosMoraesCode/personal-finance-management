@@ -10,7 +10,7 @@ import {
 } from "./InputStyle";
 
 import { StyledMessage } from "../../../styles/CommomStyles";
-import { HideButton, StyledButton } from "../Button/ButtonStyle";
+import { HideButton } from "../Button/ButtonStyle";
 
 const InputContainer = (props) => {
   let inputElement;
@@ -45,6 +45,7 @@ const InputContainer = (props) => {
               onChange={props.changed}
               placeholder={props.placeholder}
               onBlur={props.blur}
+              border={props.border}
             />{" "}
             <HideButton
               type="button"
@@ -94,6 +95,7 @@ const InputContainer = (props) => {
               onChange={props.changed}
               placeholder={props.placeholder}
               onBlur={props.blur}
+              border={props.border}
             />{" "}
             <HideButton
               type="button"

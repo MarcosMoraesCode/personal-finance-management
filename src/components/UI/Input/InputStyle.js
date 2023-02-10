@@ -3,9 +3,12 @@ import "@fontsource/roboto";
 
 export const StyledInput = styled.input`
   width: 100%;
-  border-radius: 5px;
+  border-radius: ${(props) =>
+    `${props.border === "password" ? "5px 0px 0px 5px" : "5px"}`};
   height: 29px;
   border: solid 1px black;
+  border-right: ${(props) =>
+    `${props.border === "password" ? "0px" : "1px solid black"}`};
   align-self: center;
   padding-left: 5px;
   font-size: 12px;
@@ -88,7 +91,9 @@ export const WrappComponent = styled.div`
 `;
 
 export const WrappPasswordComponent = styled.div`
+  background-color: transparent;
   display: flex;
+  flex-direction: row;
   width: 230px;
   height: 29px;
 `;
