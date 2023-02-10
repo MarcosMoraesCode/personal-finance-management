@@ -32,10 +32,10 @@ export const WrappLoginComponent = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 550px;
-  height: 75%;
+  width: 500px;
+  height: 70%;
   margin: auto;
-  margin-top: 70px;
+  margin-top: 120px;
   padding: 10px 0px;
   overflow: auto;
   @media (max-width: 1000px) {

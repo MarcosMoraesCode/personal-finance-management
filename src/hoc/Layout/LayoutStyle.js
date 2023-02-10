@@ -8,5 +8,5 @@ export const MainDiv = styled.div`
 
 export const MainContent = styled.main`
   background-color: #121111;
-  height: 90vh;
+  height: 94vh;
 `;

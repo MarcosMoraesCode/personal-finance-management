@@ -3,20 +3,25 @@ import styled from "styled-components";
 
 import NavigationItem from "./NavigationItem/NavigationItem";
 
-const NavigationDiv = styled.nav`
+const NavigationUl = styled.ul`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: black;
+  opacity: 0.85;
+  justify-content: space-between;
+  list-style: none;
   width: 100%;
-  background-color: transparent;
   height: 6vh;
 `;
 
 const NavigationItems = () => {
   return (
-    <NavigationDiv>
-      <ul>
-        <NavigationItem link="/">Home</NavigationItem>
-        <NavigationItem link="/login">Login</NavigationItem>
-      </ul>
-    </NavigationDiv>
+    <NavigationUl>
+      <NavigationItem link="/">HOME</NavigationItem>
+
+      <NavigationItem link="/login">LOGIN</NavigationItem>
+    </NavigationUl>
   );
 };
 
