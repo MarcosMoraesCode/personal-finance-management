@@ -14,27 +14,24 @@ import {
 } from "./IncomeTrackingStyle";
 
 const IncomeTracking = (props) => {
-  const incomes = {
-    sources: {
-      salary: 0,
-      rentalIncome: 0,
-      investmentReturns: 0,
-      others: 0,
-    },
-  };
+  const incomes = [
+    { source: "Salary", value: 1550 },
+    { source: "Rental", value: 10 },
+    { source: "Investiment Returns", value: 0 },
+  ];
 
   const incomeSourcers = (
     <>
-      <IncomeSource
-        sourceName={"Salary"}
-        sourceValue={incomes.sources.salary}
-        percentage={"50%"}
-      />
-      <IncomeSource
-        sourceName={"Salary"}
-        sourceValue={incomes.sources.salary}
-        percentage={"50%"}
-      />
+      {incomes.map((income) => {
+        if (income.value > 0) {
+          return (
+            <IncomeSource
+              sourceName={income.source}
+              sourceValue={income.value}
+            />
+          );
+        }
+      })}
     </>
   );
 

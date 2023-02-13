@@ -5,7 +5,7 @@ export const IncomeTrackingContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #fafafa;
   width: 400px;
   border-radius: 3px;
   margin: auto;
@@ -63,6 +63,7 @@ export const IncomePercentageDiv = styled.div`
   margin: 10px;
   border-radius: 5px black solid;
   border: 1px solid black;
+  background-color: #ccc;
 `;
 
 export const IncomeButton = styled.button`
@@ -71,6 +72,6 @@ export const IncomeButton = styled.button`
   width: 100%;
   height: 35px;
   background-color: transparent;
-  border: 1px solid gold;
-  color: gold;
+  border: 1px solid black;
+  color: black;
 `;
