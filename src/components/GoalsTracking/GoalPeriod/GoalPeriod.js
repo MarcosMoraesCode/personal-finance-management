@@ -14,6 +14,8 @@ const GoalPeriod = (props) => {
         <Goal />
         <Goal />
         <Goal />
+        <Goal />
+        <Goal />
       </GoalsContainer>
     </GoalPeriodDiv>
   );

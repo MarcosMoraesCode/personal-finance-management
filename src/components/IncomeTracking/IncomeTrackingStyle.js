@@ -6,7 +6,7 @@ export const IncomeTrackingContainer = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: #fafafa;
-  width: 400px;
+  width: 20%;
   border-radius: 3px;
   margin: auto;
 `;

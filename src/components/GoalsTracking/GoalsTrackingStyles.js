@@ -5,7 +5,7 @@ export const GoalsTrackingContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin: auto;
-  width: 600px;
+  width: 30%;
   height: 90%;
   border-radius: 3px;
   background-color: gray;
