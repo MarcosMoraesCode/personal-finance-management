@@ -6,6 +6,6 @@ export const BudgetTrackingDiv = styled.div`
   display: flex;
   text-align: center;
   color: green;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid gold;
   font-family: "Roboto";
 `;
