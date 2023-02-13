@@ -8,4 +8,7 @@ export const BudgetTrackingDiv = styled.div`
   border-bottom: 1px solid gold;
   font-family: "Roboto";
   background-color: #1f1f1f;
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 `;

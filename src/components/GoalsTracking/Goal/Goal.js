@@ -1,10 +1,20 @@
 import React from "react";
-import { GoalDiv, GoalPercentageDiv } from "./GoalStyle";
+import {
+  GoalDiv,
+  GoalInformationDiv,
+  GoalPercentageDiv,
+  InformationButton,
+  StatusInformation,
+} from "./GoalStyle";
 const Goal = (props) => {
   return (
     <GoalDiv>
-      <h4>Goal Name</h4>
-      <GoalPercentageDiv></GoalPercentageDiv>
+      <h6>Goal Name</h6>
+      <GoalPercentageDiv>PIZZA GRAPHIC</GoalPercentageDiv>
+      <GoalInformationDiv>
+        <StatusInformation>Status: 100%</StatusInformation>
+        <InformationButton>Info</InformationButton>
+      </GoalInformationDiv>
     </GoalDiv>
   );
 };
