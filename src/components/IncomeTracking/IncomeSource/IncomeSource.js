@@ -1,11 +1,19 @@
 import React from "react";
-import { IncomeSourceDiv, IncomeSourceLi } from "./IncomeSouceStyle";
+import {
+  IncomePercentageSpan,
+  IncomeSourceDiv,
+  IncomeSourceLi,
+} from "./IncomeSouceStyle";
 
 const IncomeSource = (props) => {
   return (
     <IncomeSourceDiv>
       <IncomeSourceLi>
-        {props.sourceName} $ {props.sourceValue}
+        <div>
+          {props.sourceName} $ {props.sourceValue}
+        </div>
+
+        <IncomePercentageSpan>{props.percentage}</IncomePercentageSpan>
       </IncomeSourceLi>
     </IncomeSourceDiv>
   );

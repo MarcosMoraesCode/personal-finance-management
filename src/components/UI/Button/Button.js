@@ -5,7 +5,6 @@ const Button = (props) => {
   return (
     <StyledButton
       disabled={props.isValidated === undefined ? false : !props.isValidated}
-      onClick={() => console.log("clicou")}
       {...props}
     >
       {props.children}
