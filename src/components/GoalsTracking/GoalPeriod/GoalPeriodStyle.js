@@ -14,12 +14,20 @@ export const GoalPeriodDiv = styled.div`
 export const GoalPeriodTitle = styled.h3`
   display: flex;
   width: fit-content;
+  height: 10%;
   justify-content: flex-start;
-  padding: 5px 20px 1px 2px;
+  padding-right: 15px;
+  padding-left: 2px;
+  //padding: 5px 20px 1px 2px;
   margin: 2px;
   color: black;
   border: solid black 1px;
   border-radius: 0px 0px 10px 1px;
+  font-size: smaller;
+  @media (max-height: 665px) {
+    border: none;
+    border-radius: none;
+  }
 `;
 
 export const GoalsContainer = styled.div`

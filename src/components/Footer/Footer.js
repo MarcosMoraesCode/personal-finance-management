@@ -16,8 +16,8 @@ const Footer = () => {
         <FooterContent>FinPlannerLogo</FooterContent>
         <FooterContent> © 2023 - Marcos Moraes </FooterContent>
         <FooterContent>
-          <SocialLinkedin src={linkedinIcon} width={"45px"} />
-          <SocialGit src={gitIcon} width={"45px"} />
+          <SocialLinkedin src={linkedinIcon} />
+          <SocialGit src={gitIcon} />
         </FooterContent>
       </FooterContentWrapper>
     </StyledFooter>

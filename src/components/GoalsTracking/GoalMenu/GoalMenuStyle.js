@@ -5,7 +5,7 @@ export const GoalMenuDiv = styled.div`
   align-items: center;
   justify-content: space-around;
   width: 100%;
-  height: 150px;
+  height: 15%;
   background-color: white;
   border-bottom: 1px solid gold;
 `;

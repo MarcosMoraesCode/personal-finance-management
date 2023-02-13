@@ -11,7 +11,7 @@ export const StyledFooter = styled.footer`
 `;
 
 export const FooterContent = styled.div`
-  margin: auto;
+  display: flex;
 `;
 
 export const FooterContentWrapper = styled.div`
@@ -20,25 +20,30 @@ export const FooterContentWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  margin: auto;
-
-  @media (max-width: 550px) {
-    flex-direction: column;
-  }
+  justify-content: space-around;
+  //margin: auto;
 `;
 
 export const SocialGit = styled.img`
-  margin-top: 5px;
+  width: 35px;
   margin-left: 25px;
   :hover {
     cursor: pointer;
   }
+  @media (max-height: 600px) {
+    width: 25px;
+    height: 25px;
+  }
 `;
 
 export const SocialLinkedin = styled.img`
-  margin-top: 5px;
+  width: 35px;
+
   :hover {
     cursor: pointer;
+  }
+  @media (max-height: 600px) {
+    width: 25px;
+    height: 25px;
   }
 `;

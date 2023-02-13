@@ -6,7 +6,14 @@ import { BudgetTrackingDiv } from "./BudgetTrackingStyle";
 const BudgetTracking = () => {
   return (
     <BudgetTrackingDiv>
-      <GoalsTracking />
+      <div
+        style={{
+          width: "30%",
+          height: "90%",
+          backgroundColor: "white",
+          margin: "auto",
+        }}
+      />
       <IncomeTracking />
       <GoalsTracking />
     </BudgetTrackingDiv>

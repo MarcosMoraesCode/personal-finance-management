@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const BudgetTrackingDiv = styled.div`
   padding-top: 6vh;
-  height: 100%;
+  height: 94vh;
   display: flex;
   text-align: center;
   border-bottom: 1px solid gold;

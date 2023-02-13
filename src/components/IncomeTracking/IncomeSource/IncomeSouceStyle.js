@@ -10,6 +10,7 @@ export const IncomeSourceLi = styled.li`
   align-items: center;
   padding-left: 10px;
   margin: 2px;
+  color: green;
 `;
 
 export const IncomeSourceDiv = styled.div`
