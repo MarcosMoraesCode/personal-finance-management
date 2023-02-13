@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export const NavigationUl = styled.ul`
   display: flex;
+  font-family: "Roboto";
   flex-direction: row;
   align-items: center;
   background-color: black;
