@@ -3,13 +3,14 @@ import {
   GoalDiv,
   GoalInformationDiv,
   GoalPercentageDiv,
+  GoalTitle,
   InformationButton,
   StatusInformation,
 } from "./GoalStyle";
 const Goal = (props) => {
   return (
     <GoalDiv>
-      <h6>Goal Name</h6>
+      <GoalTitle>Goal Name</GoalTitle>
       <GoalPercentageDiv>PIZZA GRAPHIC</GoalPercentageDiv>
       <GoalInformationDiv>
         <StatusInformation>Status: 100%</StatusInformation>

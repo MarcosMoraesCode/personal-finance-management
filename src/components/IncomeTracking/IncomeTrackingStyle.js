@@ -11,6 +11,7 @@ export const IncomeTrackingContainer = styled.div`
   width: 20%;
   border-radius: 3px;
   margin: auto;
+  border: 2px solid gold;
 `;
 
 export const IncomeTrackingTitle = styled.h1`

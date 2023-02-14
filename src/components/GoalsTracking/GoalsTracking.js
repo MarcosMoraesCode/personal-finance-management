@@ -7,9 +7,9 @@ const GoalsTracking = (props) => {
   return (
     <GoalsTrackingContainer>
       <GoalMenu />
-      <GoalPeriod goalPeriodTitle={"Long-term goals"} />
-      <GoalPeriod goalPeriodTitle={"Medium-term goals"} />
-      <GoalPeriod goalPeriodTitle={"Short-term goals"} />
+      <GoalPeriod color={"red"} goalPeriodTitle={"Long-term goals"} />
+      <GoalPeriod color={"orange"} goalPeriodTitle={"Medium-term goals"} />
+      <GoalPeriod color={"#51d289"} goalPeriodTitle={"Short-term goals"} />
     </GoalsTrackingContainer>
   );
 };

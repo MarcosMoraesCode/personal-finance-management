@@ -4,7 +4,7 @@ import { GoalMenuDiv, GoalMenuTitle } from "./GoalMenuStyle";
 const GoalMenu = (props) => {
   return (
     <GoalMenuDiv>
-      <GoalMenuTitle>Goals Menu</GoalMenuTitle>
+      <GoalMenuTitle>My Goals</GoalMenuTitle>
     </GoalMenuDiv>
   );
 };

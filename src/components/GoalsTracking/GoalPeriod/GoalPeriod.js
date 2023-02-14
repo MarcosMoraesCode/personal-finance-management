@@ -1,5 +1,5 @@
 import React from "react";
-import Goal from "../Goal/Goal";
+import Goal from "./Goal/Goal";
 import {
   GoalPeriodDiv,
   GoalPeriodTitle,
@@ -9,8 +9,12 @@ import {
 const GoalPeriod = (props) => {
   return (
     <GoalPeriodDiv>
-      <GoalPeriodTitle>{props.goalPeriodTitle}</GoalPeriodTitle>
+      <GoalPeriodTitle color={props.color}>
+        {props.goalPeriodTitle}
+      </GoalPeriodTitle>
       <GoalsContainer>
+        <Goal />
+        <Goal />
         <Goal />
         <Goal />
         <Goal />

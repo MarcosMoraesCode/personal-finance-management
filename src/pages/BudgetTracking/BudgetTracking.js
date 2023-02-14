@@ -15,6 +15,7 @@ const BudgetTracking = () => {
         }}
       />
       <IncomeTracking />
+
       <GoalsTracking />
     </BudgetTrackingDiv>
   );
