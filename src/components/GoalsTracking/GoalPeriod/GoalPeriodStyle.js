@@ -48,4 +48,25 @@ export const GoalsContainer = styled.div`
   margin: auto;
   margin-top: 5px;
   color: black;
+  /* width */
+  ::-webkit-scrollbar {
+    height: 7px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: gold;
+  }
 `;

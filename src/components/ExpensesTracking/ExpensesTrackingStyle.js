@@ -12,7 +12,11 @@ export const ExpensesTrackingContainer = styled.div`
 export const ExpensesMenu = styled.div`
   width: 100%;
   height: 5%;
-  background-color: bisque;
+  border-bottom: 1px solid gold;
+  margin-bottom: 5px;
+`;
+export const ExpensesMenuTitle = styled.h2`
+  color: #51d289;
 `;
 
 export const ExpensesListDiv = styled.div`
