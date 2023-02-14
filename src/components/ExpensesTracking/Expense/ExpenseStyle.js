@@ -41,7 +41,6 @@ export const ExpenseSubtitlesDiv = styled.div`
 export const ExpenseDefaultContent = styled.div`
   display: flex;
   justify-content: space-between;
-  //background-color: red;
 `;
 export const DefaultContentBlock = styled.div`
   display: flex;
@@ -49,13 +48,20 @@ export const DefaultContentBlock = styled.div`
   width: 30%;
   margin-top: 5px;
   margin-bottom: 5px;
-  // background-color: white;
 `;
 export const ExtraContentBlock = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 30%;
   font-weight: 400;
+  padding-left: 3px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  //margin-right: ${(props) => props.marginRight};
+  //margin-right: 11%;
+  // background-color: red;
+  padding-right: ${(props) => props.paddingRight};
 `;
 
 export const SubtitleBlock = styled.div`
@@ -69,7 +75,6 @@ export const ExpenseExtraContent = styled.div`
   display: flex; //APPEARS CONDITIONALY WITH PROPS props.isNeeded
   flex-direction: column;
   height: 40%;
-  background-color: blue;
 `;
 
 export const ExpenseDefaultButton = styled.button`
@@ -89,6 +94,11 @@ export const ExpenseDefaultButton = styled.button`
 
 export const ExtraContentWrapper = styled.div`
   display: flex;
+  justify-content: space-between;
   overflow-y: auto;
   max-height: 200px;
+`;
+
+export const ExtraText = styled.p`
+  font-size: 12px;
 `;

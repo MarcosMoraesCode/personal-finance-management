@@ -11,13 +11,29 @@ import {
   ExpenseDefaultButton,
   ExtraContentBlock,
   ExtraContentWrapper,
+  ExtraText,
 } from "./ExpenseStyle";
 
 const Expense = (props) => {
-  const expenses = [
-    { expenseName: "Anything", expenseValue: 200.0 },
-    { expenseName: "Anything", expenseValue: 200.0 },
-  ];
+  const extraContentList = props.expenseDataList.map((subTopic, index) => {
+    return (
+      <ExtraContentWrapper key={`${props.expenseTopic}-sub-${index}`}>
+        {" "}
+        <ExtraContentBlock paddingRight={"30px"}>
+          <ExtraText>{subTopic.name}</ExtraText>
+          <ExtraText>{`$ ${subTopic.value}`}</ExtraText>
+        </ExtraContentBlock>
+        <ExtraContentBlock>
+          <ExtraText>1,2%</ExtraText>
+          <ExtraText>{subTopic.date}</ExtraText>
+        </ExtraContentBlock>
+        <ExtraContentBlock>
+          <div />
+          <div />
+        </ExtraContentBlock>
+      </ExtraContentWrapper>
+    );
+  });
 
   return (
     <WrapExpenseLi>
@@ -40,8 +56,8 @@ const Expense = (props) => {
           </ExpenseSubtitlesDiv>
           <ExpenseDefaultContent>
             <DefaultContentBlock>
-              <p>Food</p>
-              <p>$ 21.500</p>
+              <p>{props.expenseTopic}</p>
+              <p> {`$ ${props.expenseTotal}`}</p>
             </DefaultContentBlock>
             <DefaultContentBlock>
               <p>45%</p>
@@ -52,6 +68,7 @@ const Expense = (props) => {
               <ExpenseDefaultButton>Show More </ExpenseDefaultButton>
             </DefaultContentBlock>
           </ExpenseDefaultContent>
+
           <ExpenseExtraContent>
             <ExpenseSubtitlesDiv>
               <SubtitleBlock>
@@ -68,12 +85,7 @@ const Expense = (props) => {
                 <div />
               </SubtitleBlock>
             </ExpenseSubtitlesDiv>
-            <ExtraContentWrapper>
-              {" "}
-              <ExtraContentBlock>a</ExtraContentBlock>
-              <ExtraContentBlock>a</ExtraContentBlock>
-              <ExtraContentBlock>a</ExtraContentBlock>
-            </ExtraContentWrapper>
+            {extraContentList}
           </ExpenseExtraContent>
         </ExpenseLiContent>
       </ExpenseLi>
