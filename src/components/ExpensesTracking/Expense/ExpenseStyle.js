@@ -14,7 +14,7 @@ export const WrapExpenseLi = styled.div`
 `;
 
 export const ExpenseLi = styled.li`
-  font-size: 20px;
+  font-size: 16px;
   width: 100%;
   height: 100%;
   // background-color: green;
@@ -32,7 +32,6 @@ export const ExpenseSubtitlesDiv = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 10%;
-
   font-size: xx-small;
   font-weight: 600;
   color: #51d289;
@@ -48,6 +47,7 @@ export const DefaultContentBlock = styled.div`
   width: 30%;
   margin-top: 5px;
   margin-bottom: 5px;
+  padding-right: ${(props) => props.paddingRight};
 `;
 export const ExtraContentBlock = styled.div`
   display: flex;
@@ -58,9 +58,6 @@ export const ExtraContentBlock = styled.div`
   padding-left: 3px;
   margin-top: 5px;
   margin-bottom: 5px;
-  //margin-right: ${(props) => props.marginRight};
-  //margin-right: 11%;
-  // background-color: red;
   padding-right: ${(props) => props.paddingRight};
 `;
 
@@ -69,6 +66,7 @@ export const SubtitleBlock = styled.div`
   justify-content: space-between;
   width: 30%;
   font-weight: 400;
+  color: ${(props) => props.color};
   //border: 1px solid white;
 `;
 export const ExpenseExtraContent = styled.div`

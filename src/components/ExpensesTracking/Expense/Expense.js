@@ -55,7 +55,7 @@ const Expense = (props) => {
             </SubtitleBlock>
           </ExpenseSubtitlesDiv>
           <ExpenseDefaultContent>
-            <DefaultContentBlock>
+            <DefaultContentBlock paddingRight={"30px"}>
               <p>{props.expenseTopic}</p>
               <p> {`$ ${props.expenseTotal}`}</p>
             </DefaultContentBlock>
@@ -71,13 +71,13 @@ const Expense = (props) => {
 
           <ExpenseExtraContent>
             <ExpenseSubtitlesDiv>
-              <SubtitleBlock>
+              <SubtitleBlock color={"gold"}>
                 <p>Expense</p>
                 <div />
                 <p>Value</p>
                 <div />
               </SubtitleBlock>
-              <SubtitleBlock>
+              <SubtitleBlock color={"gold"}>
                 <p>Percentage</p>
                 <p>Date</p>
               </SubtitleBlock>
