@@ -1,4 +1,5 @@
 import React from "react";
+import ExpensesTracking from "../../components/ExpensesTracking/ExpensesTracking";
 import GoalsTracking from "../../components/GoalsTracking/GoalsTracking";
 import IncomeTracking from "../../components/IncomeTracking/IncomeTracking";
 import { BudgetTrackingDiv } from "./BudgetTrackingStyle";
@@ -6,16 +7,8 @@ import { BudgetTrackingDiv } from "./BudgetTrackingStyle";
 const BudgetTracking = () => {
   return (
     <BudgetTrackingDiv>
-      <div
-        style={{
-          width: "30%",
-          height: "90%",
-          backgroundColor: "white",
-          margin: "auto",
-        }}
-      />
+      <ExpensesTracking />
       <IncomeTracking />
-
       <GoalsTracking />
     </BudgetTrackingDiv>
   );

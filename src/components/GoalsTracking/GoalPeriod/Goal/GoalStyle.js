@@ -9,7 +9,7 @@ export const GoalDiv = styled.div`
   min-width: 150px;
   height: 80%;
   margin: 5px;
-  border: 1px solid black;
+  //border: 2px solid gold;
   border-radius: 5px;
   background-color: white;
 `;
@@ -59,7 +59,7 @@ export const InformationButton = styled.button`
   width: fit-content;
   background-color: black;
   border-radius: 2px solid gold;
-  border: 2px solid gold;
+  border: 1px solid gold;
   box-shadow: 1px 1px gray;
   color: gold;
   :hover {
