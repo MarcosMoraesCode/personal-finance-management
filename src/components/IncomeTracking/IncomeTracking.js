@@ -9,8 +9,12 @@ import {
   IncomeSourcersDiv,
   IncomeTrackingContainer,
   IncomeTrackingSecondaryTitle,
+  IncomeTrackingInfoTitle,
   IncomeTrackingTitle,
   WrapIncomeInfos,
+  IncomeTrackingInfoValue,
+  WrapIncomeButtons,
+  IncomeTrackingBalance,
 } from "./IncomeTrackingStyle";
 
 const IncomeTracking = (props) => {
@@ -38,23 +42,30 @@ const IncomeTracking = (props) => {
   return (
     <IncomeTrackingContainer>
       <IncomeTrackingTitle>My Balance</IncomeTrackingTitle>
-      <IncomeTrackingSecondaryTitle>
+      <IncomeTrackingBalance>
         {" "}
         $ 5.000 {props.incomeTotal}
-      </IncomeTrackingSecondaryTitle>
+      </IncomeTrackingBalance>
       <IncomePercentageDiv>Percentage Image</IncomePercentageDiv>
       <WrapIncomeInfos>
-        <IncomeAvaiableInfo>Avaiable</IncomeAvaiableInfo>
-        <IncomeExpensesInfo>Expenses</IncomeExpensesInfo>
+        <IncomeAvaiableInfo>
+          <IncomeTrackingInfoTitle>Available</IncomeTrackingInfoTitle>
+          <IncomeTrackingInfoValue>$ 1.600,00</IncomeTrackingInfoValue>
+        </IncomeAvaiableInfo>
+        <IncomeExpensesInfo>
+          {" "}
+          <IncomeTrackingInfoTitle>Expenses</IncomeTrackingInfoTitle>
+          <IncomeTrackingInfoValue>$ 3.400,00</IncomeTrackingInfoValue>
+        </IncomeExpensesInfo>
       </WrapIncomeInfos>
       <IncomeTrackingSecondaryTitle>My Incomes</IncomeTrackingSecondaryTitle>
       <IncomeSourcersDiv>
         <ul>{incomeSourcers}</ul>
       </IncomeSourcersDiv>
-      <div>
+      <WrapIncomeButtons>
         <IncomeButton>Edit Incomes</IncomeButton>{" "}
         <IncomeButton>Edit Expenses</IncomeButton>
-      </div>
+      </WrapIncomeButtons>
     </IncomeTrackingContainer>
   );
 };

@@ -11,7 +11,7 @@ export const GoalMenuDiv = styled.div`
 `;
 
 export const GoalMenuTitle = styled.h2`
-  color: black;
+  color: #51d289;
 `;
 
 export const FilterMenu = styled.div``;

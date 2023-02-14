@@ -6,23 +6,24 @@ export const IncomeSourceLi = styled.li`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  height: 35px;
+  height: 100%;
   align-items: center;
   padding-left: 10px;
+  color: #51d289;
   margin: 2px;
-  color: green;
+  font-weight: 500;
 `;
 
 export const IncomeSourceDiv = styled.div`
   display: flex;
   flex-direction: column;
   width: 95%;
-  height: 35px;
+  height: 100%;
 `;
 
 export const IncomePercentageSpan = styled.span`
   display: flex;
   text-align: end;
   justify-content: flex-end;
-  color: green;
+  color: #51d289;
 `;
