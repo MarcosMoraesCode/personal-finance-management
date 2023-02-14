@@ -6,6 +6,7 @@ export const GoalMenuDiv = styled.div`
   justify-content: space-around;
   width: 100%;
   height: 15%;
+
   margin-bottom: 2px;
   //  background-color: white;
   border-bottom: 1px solid gold;

@@ -44,30 +44,26 @@ export const ExpenseDefaultContent = styled.div`
 export const DefaultContentBlock = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 30%;
+  width: ${(props) => (props.reduceWidth ? "15%" : "35%")};
   margin-top: 5px;
   margin-bottom: 5px;
-  padding-right: ${(props) => props.paddingRight};
 `;
 export const ExtraContentBlock = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 30%;
+  width: ${(props) => (props.reduceWidth ? "15%" : "35%")};
   font-weight: 400;
-  padding-left: 3px;
   margin-top: 5px;
   margin-bottom: 5px;
-  padding-right: ${(props) => props.paddingRight};
 `;
 
 export const SubtitleBlock = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 30%;
+  width: ${(props) => (props.reduceWidth ? "15%" : "35%")};
   font-weight: 400;
   color: ${(props) => props.color};
-  //border: 1px solid white;
 `;
 export const ExpenseExtraContent = styled.div`
   display: flex; //APPEARS CONDITIONALY WITH PROPS props.isNeeded

@@ -19,15 +19,15 @@ const Expense = (props) => {
     return (
       <ExtraContentWrapper key={`${props.expenseTopic}-sub-${index}`}>
         {" "}
-        <ExtraContentBlock paddingRight={"30px"}>
+        <ExtraContentBlock>
           <ExtraText>{subTopic.name}</ExtraText>
           <ExtraText>{`$ ${subTopic.value}`}</ExtraText>
         </ExtraContentBlock>
         <ExtraContentBlock>
-          <ExtraText>1,2%</ExtraText>
+          <ExtraText>x%</ExtraText>
           <ExtraText>{subTopic.date}</ExtraText>
         </ExtraContentBlock>
-        <ExtraContentBlock>
+        <ExtraContentBlock reduceWidth>
           <div />
           <div />
         </ExtraContentBlock>
@@ -44,26 +44,25 @@ const Expense = (props) => {
               <p>Expense</p>
               <div />
               <p>Value</p>
-              <div />
             </SubtitleBlock>
             <SubtitleBlock>
               <p>Real Percentage</p>
               <p>Expected</p>
             </SubtitleBlock>
-            <SubtitleBlock>
+            <SubtitleBlock reduceWidth>
               <div />
             </SubtitleBlock>
           </ExpenseSubtitlesDiv>
           <ExpenseDefaultContent>
-            <DefaultContentBlock paddingRight={"30px"}>
+            <DefaultContentBlock>
               <p>{props.expenseTopic}</p>
               <p> {`$ ${props.expenseTotal}`}</p>
             </DefaultContentBlock>
             <DefaultContentBlock>
-              <p>45%</p>
-              <p>60%</p>
+              <p>x%</p>
+              <p>x%</p>
             </DefaultContentBlock>
-            <DefaultContentBlock>
+            <DefaultContentBlock reduceWidth>
               <div />
               <ExpenseDefaultButton>Show More </ExpenseDefaultButton>
             </DefaultContentBlock>
@@ -75,13 +74,12 @@ const Expense = (props) => {
                 <p>Expense</p>
                 <div />
                 <p>Value</p>
-                <div />
               </SubtitleBlock>
               <SubtitleBlock color={"gold"}>
                 <p>Percentage</p>
                 <p>Date</p>
               </SubtitleBlock>
-              <SubtitleBlock>
+              <SubtitleBlock reduceWidth>
                 <div />
               </SubtitleBlock>
             </ExpenseSubtitlesDiv>
