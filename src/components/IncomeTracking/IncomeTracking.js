@@ -1,6 +1,6 @@
 import React from "react";
 import IncomeSource from "./IncomeSource/IncomeSource";
-
+import DonutChart from "../UI/Charts/DonutChart";
 import {
   IncomeAvaiableInfo,
   IncomeButton,
@@ -47,7 +47,9 @@ const IncomeTracking = (props) => {
         {" "}
         $ 5.000 {props.incomeTotal}
       </IncomeTrackingBalance>
-      <IncomePercentageDiv>Percentage Image</IncomePercentageDiv>
+      <IncomePercentageDiv>
+        {<DonutChart divHeight={"fit-content"} />}
+      </IncomePercentageDiv>
       <WrapIncomeInfos>
         <IncomeAvaiableInfo>
           <IncomeTrackingInfoTitle>Available</IncomeTrackingInfoTitle>

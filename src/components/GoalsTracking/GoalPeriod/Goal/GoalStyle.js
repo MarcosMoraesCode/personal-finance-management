@@ -20,9 +20,9 @@ export const GoalTitle = styled.h6`
 `;
 
 export const GoalPercentageDiv = styled.div`
-  width: 120px;
+  width: 60%;
   margin: 2px;
-  height: 50%;
+  height: 60%;
   border: 1px solid gray;
   @media (max-height: 580px) {
     display: none;

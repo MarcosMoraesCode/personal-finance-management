@@ -88,8 +88,8 @@ export const IncomeSourcersDiv = styled.div`
 `;
 
 export const IncomePercentageDiv = styled.div`
-  width: 80%;
-  height: 45%;
+  width: 60%;
+  height: 30%;
   margin: 10px;
   border-radius: 5px black solid;
   border: 1px solid black;

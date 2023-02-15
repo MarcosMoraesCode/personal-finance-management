@@ -7,13 +7,16 @@ import {
   InformationButton,
   StatusInformation,
 } from "./GoalStyle";
+import DonutChart from "../../../UI/Charts/DonutChart";
+
 const Goal = (props) => {
   return (
     <GoalDiv>
       <GoalTitle>{props.goalName}</GoalTitle>
       <GoalPercentageDiv>
-        PIZZA GRAPHIC Goal value: {props.goalValue} Allocated percentage:{" "}
-        {props.allocatedPercentage}
+        {/*PIZZA GRAPHIC Goal value: {props.goalValue} Allocated percentage:{" "}*/}
+        <DonutChart />
+        {/*props.allocatedPercentage*/}
       </GoalPercentageDiv>
       <GoalInformationDiv>
         <StatusInformation>Status: 100%</StatusInformation>

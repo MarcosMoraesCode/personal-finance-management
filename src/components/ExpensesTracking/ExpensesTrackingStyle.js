@@ -4,7 +4,7 @@ export const ExpensesTrackingContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 90%;
-
+  overflow-y: auto;
   width: 30%;
   margin: auto;
   min-width: 250px;
