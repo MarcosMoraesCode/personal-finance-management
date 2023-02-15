@@ -102,7 +102,7 @@ export const PercentageTitle = styled.h1`
   align-items: center;
   width: 100%;
   height: 100%;
-  z-index: 0;
+  z-index: 2;
   color: #51d289;
 `;
 

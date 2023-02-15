@@ -50,7 +50,7 @@ const IncomeTracking = (props) => {
       </IncomeTrackingBalance>
       <IncomePercentageDiv>
         <PercentageTitle>10%</PercentageTitle>
-        {<DonutChart income={0.63} expense={0.37} />}
+        {<DonutChart main income={0.63} expense={0.37} />}
       </IncomePercentageDiv>
       <WrapIncomeInfos>
         <IncomeAvaiableInfo>

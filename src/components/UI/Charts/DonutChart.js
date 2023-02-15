@@ -12,13 +12,17 @@ const DonutChart = (props) => {
     legend: "none",
     pieSliceText: "none",
     pieStartAngle: 180,
+    selectionMode: "none",
     pieHole: 0.7,
-    tooltip: { trigger: "none" },
+    tooltip: {
+      trigger: "none",
+    },
     slices: {
       0: { color: "#51d289" },
       1: { color: "b2b2b2" },
     },
     backgroundColor: "transparent",
+    chartArea: { width: "80%", height: "80%" },
   };
 
   return (
