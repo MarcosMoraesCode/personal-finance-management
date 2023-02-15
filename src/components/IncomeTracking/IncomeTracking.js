@@ -26,10 +26,11 @@ const IncomeTracking = (props) => {
 
   const incomeSourcers = (
     <>
-      {incomes.map((income) => {
+      {incomes.map((income, index) => {
         if (income.value > 0) {
           return (
             <IncomeSource
+              key={`income-${index}`}
               sourceName={income.source}
               sourceValue={income.value}
             />

@@ -12,15 +12,7 @@ const GoalPeriod = (props) => {
       <GoalPeriodTitle color={props.color}>
         {props.goalPeriodTitle}
       </GoalPeriodTitle>
-      <GoalsContainer>
-        <Goal />
-        <Goal />
-        <Goal />
-        <Goal />
-        <Goal />
-        <Goal />
-        <Goal />
-      </GoalsContainer>
+      <GoalsContainer>{props.children}</GoalsContainer>
     </GoalPeriodDiv>
   );
 };

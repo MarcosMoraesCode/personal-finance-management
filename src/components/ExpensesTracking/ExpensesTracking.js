@@ -35,9 +35,10 @@ const ExpensesTracking = (props) => {
     },
   ];
 
-  const expenseList = expenses.map((expense) => {
+  const expenseList = expenses.map((expense, index) => {
     return (
       <Expense
+        key={`expense-${index}`}
         expenseTopic={expense.expenseTopic}
         expenseTotal={expense.expenseTotal}
         expenseDataList={expense.expenseDataList}

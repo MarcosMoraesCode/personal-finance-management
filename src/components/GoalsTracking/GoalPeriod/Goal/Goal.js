@@ -10,8 +10,11 @@ import {
 const Goal = (props) => {
   return (
     <GoalDiv>
-      <GoalTitle>Goal Name</GoalTitle>
-      <GoalPercentageDiv>PIZZA GRAPHIC</GoalPercentageDiv>
+      <GoalTitle>{props.goalName}</GoalTitle>
+      <GoalPercentageDiv>
+        PIZZA GRAPHIC Goal value: {props.goalValue} Allocated percentage:{" "}
+        {props.allocatedPercentage}
+      </GoalPercentageDiv>
       <GoalInformationDiv>
         <StatusInformation>Status: 100%</StatusInformation>
         <InformationButton>Info</InformationButton>
