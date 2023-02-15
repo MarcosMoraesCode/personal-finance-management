@@ -7,10 +7,11 @@ export const GoalsTrackingContainer = styled.div`
   margin: auto;
   padding-top: 3px;
   padding-bottom: 3px;
-  width: 30%;
+  width: 80%;
   min-width: 300px;
   height: 90%;
   border-radius: 3px;
+  background-color: wheat;
 
   //background-color: #fafafa;
 `;

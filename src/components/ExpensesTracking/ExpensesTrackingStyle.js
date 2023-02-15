@@ -5,9 +5,9 @@ export const ExpensesTrackingContainer = styled.div`
   flex-direction: column;
   height: 90%;
   overflow-y: auto;
-  width: 30%;
+  width: 50%;
   margin: auto;
-  min-width: 250px;
+  min-width: 320px;
 `;
 
 export const ExpensesMenu = styled.div`

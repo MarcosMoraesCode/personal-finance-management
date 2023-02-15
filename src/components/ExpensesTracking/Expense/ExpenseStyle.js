@@ -43,10 +43,14 @@ export const ExpenseDefaultContent = styled.div`
 `;
 export const DefaultContentBlock = styled.div`
   display: flex;
+  font-size: 15px;
   justify-content: space-between;
   width: ${(props) => (props.reduceWidth ? "15%" : "35%")};
   margin-top: 5px;
   margin-bottom: 5px;
+  @media (max-width: 1300px) {
+    font-size: 12px;
+  }
 `;
 export const ExtraContentBlock = styled.div`
   display: flex;
@@ -95,4 +99,7 @@ export const ExtraContentWrapper = styled.div`
 
 export const ExtraText = styled.p`
   font-size: 12px;
+  @media (max-width: 1300px) {
+    font-size: 10px;
+  }
 `;

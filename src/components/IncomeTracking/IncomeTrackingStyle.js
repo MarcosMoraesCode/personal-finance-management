@@ -8,7 +8,7 @@ export const IncomeTrackingContainer = styled.div`
   justify-content: space-evenly;
   align-items: center;
   background-color: #fafafa;
-  width: 20%;
+  width: 35%;
   border-radius: 3px;
   margin: auto;
   border: 2px solid gold;
