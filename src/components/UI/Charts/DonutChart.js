@@ -4,20 +4,21 @@ import { Chart } from "react-google-charts";
 const DonutChart = (props) => {
   const data = [
     ["Balance", "Percentage"],
-    ["", 85],
-    ["", 15],
+    ["", props.income],
+    ["", props.expense],
   ];
 
   const options = {
     legend: "none",
     pieSliceText: "none",
-    pieStartAngle: 135,
-    pieHole: 0.6,
+    pieStartAngle: 180,
+    pieHole: 0.7,
     tooltip: { trigger: "none" },
     slices: {
       0: { color: "#51d289" },
-      1: { color: "red" },
+      1: { color: "b2b2b2" },
     },
+    backgroundColor: "transparent",
   };
 
   return (

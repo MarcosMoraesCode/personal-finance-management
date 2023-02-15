@@ -20,6 +20,7 @@ export const GoalTitle = styled.h6`
 `;
 
 export const GoalPercentageDiv = styled.div`
+  position: relative;
   width: 60%;
   margin: 2px;
   height: 60%;
@@ -27,6 +28,18 @@ export const GoalPercentageDiv = styled.div`
   @media (max-height: 580px) {
     display: none;
   } ;
+`;
+
+export const PercentageTitle = styled.h1`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  color: #51d289;
+  font-size: 11px;
 `;
 
 export const GoalInformationDiv = styled.div`

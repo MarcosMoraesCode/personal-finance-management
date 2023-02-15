@@ -15,6 +15,7 @@ import {
   IncomeTrackingInfoValue,
   WrapIncomeButtons,
   IncomeTrackingBalance,
+  PercentageTitle,
 } from "./IncomeTrackingStyle";
 
 const IncomeTracking = (props) => {
@@ -48,7 +49,8 @@ const IncomeTracking = (props) => {
         $ 5.000 {props.incomeTotal}
       </IncomeTrackingBalance>
       <IncomePercentageDiv>
-        {<DonutChart divHeight={"fit-content"} />}
+        <PercentageTitle>10%</PercentageTitle>
+        {<DonutChart income={0.63} expense={0.37} />}
       </IncomePercentageDiv>
       <WrapIncomeInfos>
         <IncomeAvaiableInfo>

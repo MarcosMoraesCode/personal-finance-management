@@ -88,12 +88,22 @@ export const IncomeSourcersDiv = styled.div`
 `;
 
 export const IncomePercentageDiv = styled.div`
+  position: relative;
   width: 60%;
   height: 30%;
   margin: 10px;
   border-radius: 5px black solid;
   border: 1px solid black;
-  background-color: #ccc;
+`;
+export const PercentageTitle = styled.h1`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  color: #51d289;
 `;
 
 export const IncomeButton = styled.button`

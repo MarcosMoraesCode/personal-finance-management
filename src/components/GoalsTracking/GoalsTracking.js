@@ -55,6 +55,8 @@ const GoalsTracking = (props) => {
         goalName={goal.goalName}
         goalValue={goal.goalValue}
         allocatedPercentage={goal.allocatedPercentage}
+        income={0.2}
+        expense={0.8} //TEM QUE SER EM PORCENTAGEM
       />
     );
   });
@@ -65,6 +67,8 @@ const GoalsTracking = (props) => {
         goalName={goal.goalName}
         goalValue={goal.goalValue}
         allocatedPercentage={goal.allocatedPercentage}
+        income={0.8}
+        expense={0.2}
       />
     );
   });
@@ -75,6 +79,8 @@ const GoalsTracking = (props) => {
         goalName={goal.goalName}
         goalValue={goal.goalValue}
         allocatedPercentage={goal.allocatedPercentage}
+        income={0.5}
+        expense={0.5}
       />
     );
   });
