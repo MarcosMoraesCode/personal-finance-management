@@ -14,6 +14,9 @@ export const LoginDiv = styled.div`
   @media (max-width: 1000px) {
     background-image: url(${img});
   }
+  @media (max-width: 700px) {
+    height: 85vh;
+  }
 `;
 export const StyledTitle = styled.h1`
   height: 100%;
