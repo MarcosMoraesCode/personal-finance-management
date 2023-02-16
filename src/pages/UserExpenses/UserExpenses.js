@@ -28,7 +28,12 @@ const UserExpenses = () => {
     expenseValuePlaceholder: "Ex: 150,00",
 
     expenseNewCategoryPlaceholder: "Category Name",
-    options: [{ name: "Medicine" }, { name: "Study" }, { name: "Rent" }],
+    options: [
+      { name: "New Category" },
+      { name: "Medicine" },
+      { name: "Study" },
+      { name: "Rent" },
+    ],
   });
 
   const checkInputValidation = (expenseId, value) => {
@@ -160,6 +165,35 @@ const UserExpenses = () => {
     console.log(userExpense);
   };
 
+  let newCategory = null;
+
+  if (
+    userExpense.categoryIsTouched &&
+    userExpense.expenseCategory === "New Category"
+  ) {
+    newCategory = (
+      <InputContainer
+        placeholder={userExpense.expenseNewCategoryPlaceholder}
+        changed={(event) =>
+          InputChangeHandler(event, userExpense.expenseNewCategoryId)
+        }
+        invalidMessage={
+          userExpense.newCategoryIsValid
+            ? ""
+            : userExpense.newCategoryInvalidMessage
+        }
+        blur={() =>
+          verifyFocus(
+            userExpense.expenseNewCategoryId,
+            userExpense.newCategoryIsValid
+          )
+        }
+      >
+        New Category Name
+      </InputContainer>
+    );
+  }
+
   return (
     <UserExpensesDiv>
       <UserExpensesContainer>
@@ -199,29 +233,17 @@ const UserExpenses = () => {
           }
         />
 
-        <InputContainer
-          placeholder={userExpense.expenseNewCategoryPlaceholder}
-          changed={(event) =>
-            InputChangeHandler(event, userExpense.expenseNewCategoryId)
-          }
-          invalidMessage={
-            userExpense.newCategoryIsValid
-              ? ""
-              : userExpense.newCategoryInvalidMessage
-          }
-          blur={() =>
-            verifyFocus(
-              userExpense.expenseNewCategoryId,
-              userExpense.newCategoryIsValid
-            )
-          }
-        >
-          New Category Name
-        </InputContainer>
+        {newCategory}
 
         <div>{userExpense.expenseName}</div>
         <div>{userExpense.expenseValue}</div>
         <div>{userExpense.expenseCategory}</div>
+        <div>
+          {userExpense.categoryIsTouched === true &&
+          userExpense.expenseCategory === ""
+            ? "true"
+            : "false"}
+        </div>
       </UserExpensesContainer>
     </UserExpensesDiv>
   );
