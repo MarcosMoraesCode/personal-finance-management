@@ -3,11 +3,12 @@ import styled from "styled-components";
 export const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  //margin: auto;
   padding: auto;
   max-width: 600px;
   justify-content: center;
   align-items: center;
+  margin-top: 15px;
+
   /*justify-content: center;
   align-items: center;*/
 `;

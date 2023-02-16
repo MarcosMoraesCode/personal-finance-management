@@ -11,15 +11,25 @@ export const BudgetTrackingDiv = styled.div`
   font-family: "Roboto";
   background-color: #1f1f1f;
   //background-image: url(${pig});
-  @media (max-width: 600px) {
-    //flex-direction: column;
+  @media (max-width: 1100px) {
+    flex-direction: column;
+    height: 172vh;
+  }
+  @media (max-width: 700px) {
+    height: 285vh;
   }
 `;
 
 export const AuxDiv = styled.div`
   display: flex;
   width: ${(props) => props.width};
-  //height: 100%;
-  background-color: blue;
-  border: solid white 1px;
+  height: 88vh;
+  @media (max-width: 1100px) {
+    width: ${(props) => (props.width ? "100%" : "auto")};
+    height: ${(props) => (props.defaultHeight ? "94vh" : "106vh")};
+  }
+  @media (max-width: 700px) {
+    flex-direction: column-reverse;
+    height: ${(props) => (props.defaultHeight ? "88vh" : "200vh")};
+  }
 `;

@@ -5,7 +5,7 @@ import img from "../../images/sign-in.jpg";
 export const LoginDiv = styled.div`
   background-image: url(${fullImg});
   display: flex;
-  height: 100%;
+  height: 94vh;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -16,12 +16,20 @@ export const LoginDiv = styled.div`
   }
 `;
 export const StyledTitle = styled.h1`
-  height: 100px;
+  height: 100%;
   font-size: 50px;
   color: white;
   text-align: center;
   padding: 8px;
-  padding-bottom: 120px;
+  margin-bottom: 10px;
+  padding-bottom: 35px;
+  //background-color: red;
+  @media (max-height: 700px) {
+    padding-bottom: 10px;
+  }
+  @media (max-height: 600px) {
+    display: none;
+  }
 `;
 
 export const WrappLoginComponent = styled.div`
@@ -34,10 +42,14 @@ export const WrappLoginComponent = styled.div`
   justify-content: center;
   width: 500px;
   height: 70%;
+
   margin: auto;
   margin-top: 120px;
-  padding: 10px 0px;
+  //padding: 100px 100px;
   overflow: auto;
+  @media (max-height: 500px) {
+    padding-top: 100px;
+  }
   @media (max-width: 1000px) {
     background-color: transparent;
     opacity: 1;

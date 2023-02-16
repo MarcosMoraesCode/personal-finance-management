@@ -1,17 +1,30 @@
 import styled from "styled-components";
+import pig from "../../images/pig.png";
 
 export const IncomeTrackingContainer = styled.div`
   height: 90%;
   min-width: 300px;
+  background-image: url(${pig});
+  background-size: cover;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   background-color: #fafafa;
   width: 35%;
-  border-radius: 3px;
+  border-radius: 30px;
   margin: auto;
-  border: 2px solid gold;
+  border: 1px solid white;
+  @media (max-width: 700px) {
+    border: none;
+    height: 100%;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    width: 75%;
+  }
+  @media (max-width: 500px) {
+    width: 95%;
+  }
 `;
 
 export const IncomeTrackingTitle = styled.h1`
@@ -26,7 +39,8 @@ export const IncomeTrackingSecondaryTitle = styled.h2`
 `;
 
 export const IncomeTrackingBalance = styled.h3`
-  color: green;
+  color: #51d289;
+  font-size: 22px;
 `;
 
 export const IncomeTrackingInfoValue = styled.h4`
@@ -82,9 +96,10 @@ export const IncomeSourcersDiv = styled.div`
   min-height: 40px;
   padding: 5px;
   overflow-y: auto;
-  border: 1px solid black;
+  border: 3px solid black;
   border-radius: 1px solid black;
   margin: 10px;
+  background-color: white;
 `;
 
 export const IncomePercentageDiv = styled.div`
@@ -92,8 +107,11 @@ export const IncomePercentageDiv = styled.div`
   width: 60%;
   height: 30%;
   margin: 10px;
-  border-radius: 5px black solid;
-  border: 1px solid black;
+
+  @media (max-height: 520px) {
+    width: 40%;
+    height: 25%;
+  }
 `;
 export const PercentageTitle = styled.h1`
   position: absolute;
@@ -104,6 +122,9 @@ export const PercentageTitle = styled.h1`
   height: 100%;
   z-index: 2;
   color: #51d289;
+  @media (max-height: 520px) {
+    font-size: 19px;
+  }
 `;
 
 export const IncomeButton = styled.button`

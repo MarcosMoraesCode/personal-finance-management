@@ -11,7 +11,7 @@ const BudgetTracking = () => {
         <ExpensesTracking />
         <IncomeTracking />
       </AuxDiv>
-      <AuxDiv width={"40%"}>
+      <AuxDiv width={"40%"} defaultHeight>
         <GoalsTracking />
       </AuxDiv>
     </BudgetTrackingDiv>

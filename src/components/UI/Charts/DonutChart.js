@@ -13,6 +13,7 @@ const DonutChart = (props) => {
     pieSliceText: "none",
     pieStartAngle: 180,
     selectionMode: "none",
+    pieSliceBorderColor: "transparent",
     pieHole: 0.7,
     tooltip: {
       trigger: "none",

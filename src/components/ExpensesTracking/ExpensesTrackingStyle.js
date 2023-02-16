@@ -4,10 +4,15 @@ export const ExpensesTrackingContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 90%;
-  overflow-y: auto;
+
   width: 50%;
   margin: auto;
   min-width: 320px;
+  @media (max-width: 700px) {
+    height: 100%;
+    margin-top: 35px;
+    width: 80%;
+  }
 `;
 
 export const ExpensesMenu = styled.div`
@@ -26,6 +31,7 @@ export const ExpensesMenuTitle = styled.h2`
 `;
 
 export const ExpensesListDiv = styled.div`
+  overflow-y: auto;
   width: 100%;
   height: 85%;
 `;

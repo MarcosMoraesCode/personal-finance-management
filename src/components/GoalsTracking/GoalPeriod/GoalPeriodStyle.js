@@ -6,7 +6,7 @@ export const GoalPeriodDiv = styled.div`
   width: 100%;
   background-color: white;
   height: 100%;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid white;
   margin: auto;
   color: black;
   background-color: transparent;

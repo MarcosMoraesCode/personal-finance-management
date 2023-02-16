@@ -5,7 +5,7 @@ import img from "../../images/sign-in.jpg";
 export const HomeDiv = styled.div`
   background-image: url(${fullImg});
   display: flex;
-  height: 100%;
+  height: 94vh;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
