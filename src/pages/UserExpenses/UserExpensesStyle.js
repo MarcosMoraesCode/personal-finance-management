@@ -25,3 +25,8 @@ export const UserExpensesContainer = styled.div`
   background-color: wheat;
   margin: auto;
 `;
+
+export const AddExpenseButton = styled.button`
+  width: 120px;
+  height: 29px;
+`;

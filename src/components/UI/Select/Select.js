@@ -25,7 +25,7 @@ const SelectContainer = (props) => {
         name={props.categoryName}
         onChange={props.changed}
       >
-        <DefaultOption key={`default-option`} value={null}></DefaultOption>
+        <DefaultOption key={`default-option`} value={""}></DefaultOption>
         {optionsList}
       </StyledSelect>
     </WrappComponent>

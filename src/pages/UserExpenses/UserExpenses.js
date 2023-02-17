@@ -1,5 +1,9 @@
-import React, { useState } from "react";
-import { UserExpensesContainer, UserExpensesDiv } from "./UserExpensesStyle";
+import React, { useEffect, useState } from "react";
+import {
+  AddExpenseButton,
+  UserExpensesContainer,
+  UserExpensesDiv,
+} from "./UserExpensesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import SelectContainer from "../../components/UI/Select/Select";
 
@@ -12,6 +16,7 @@ const UserExpenses = () => {
     newCategoryName: "",
     nameIsValid: false,
     valueIsValid: false,
+    categoryIsValid: false,
     newCategoryIsValid: false,
     nameInvalidMessage: "",
     valueInvalidMessage: "",
@@ -35,6 +40,18 @@ const UserExpenses = () => {
       { name: "Rent" },
     ],
   });
+  const [expenseList, setExpenseList] = useState([]);
+
+  const [test, setTest] = useState(false);
+
+  const categoryAlreadyExists = (expenseCategoryName) => {
+    let exists = userExpense.options.find(
+      (option) => option.name === expenseCategoryName
+    );
+    console.log("Categoria exites?", exists);
+
+    return exists;
+  };
 
   const checkInputValidation = (expenseId, value) => {
     const isValidName = (expenseName) =>
@@ -47,6 +64,8 @@ const UserExpenses = () => {
 
     const validation1 = isValidName(value);
     const validation2 = isValidValue(value);
+    const validation3 = value !== "" && value !== "New Category";
+    const validation4 = categoryAlreadyExists(value);
 
     let result = false;
 
@@ -57,12 +76,20 @@ const UserExpenses = () => {
       case "Expense Value":
         validation2 ? (result = true) : (result = false);
         break;
+      case "Expense Category":
+        validation3 ? (result = true) : (result = false);
+        break;
       case "New Expense Category":
-        validation1 ? (result = true) : (result = false);
+        validation1
+          ? !validation4
+            ? (result = true)
+            : (result = false)
+          : (result = false);
+        break; //FILTRAR TAMBÉM SE JÁ EXISTE A CATEGORIA
       default:
         break;
     }
-
+    console.log(expenseId, ` é valido? `, result);
     return result;
   };
 
@@ -82,9 +109,14 @@ const UserExpenses = () => {
           });
           break;
         case "New Expense Category":
+          let exists = categoryAlreadyExists(userExpense.newCategoryName);
+          let message = "";
+          exists
+            ? (message = "Category Already exists!")
+            : (message = "Invalid name!");
           setUserExpense({
             ...userExpense,
-            newCategoryInvalidMessage: "Invalid name!",
+            newCategoryInvalidMessage: message,
           });
           break;
 
@@ -129,6 +161,7 @@ const UserExpenses = () => {
             event.currentTarget.value
           ),
         });
+        checkButtonValidation(expenseId, event.currentTarget.value);
         break;
       case "Expense Value":
         setUserExpense({
@@ -140,13 +173,21 @@ const UserExpenses = () => {
             event.currentTarget.value
           ),
         });
+        checkButtonValidation(expenseId, event.currentTarget.value);
         break;
       case "Expense Category":
+        console.log(event.currentTarget.value);
         setUserExpense({
           ...userExpense,
           expenseCategory: event.currentTarget.value,
           categoryIsTouched: true,
+          categoryIsValid: checkInputValidation(
+            expenseId,
+            event.currentTarget.value
+          ),
         });
+        checkButtonValidation(expenseId, event.currentTarget.value);
+
         break;
       case "New Expense Category":
         setUserExpense({
@@ -158,11 +199,50 @@ const UserExpenses = () => {
             event.currentTarget.value
           ),
         });
+        checkButtonValidation(expenseId, event.currentTarget.value);
         break;
       default:
         break;
     }
-    console.log(userExpense);
+  };
+
+  const checkButtonValidation = (expenseId, value) => {
+    //falta adicionar o disable
+    let validation1 = userExpense.nameIsValid === true;
+    let validation2 = userExpense.valueIsValid === true;
+    let validation3 = userExpense.categoryIsValid === true;
+    let validation4 = userExpense.newCategoryIsValid === true;
+
+    switch (expenseId) {
+      case "Expense Name":
+        validation1 = checkInputValidation(expenseId, value);
+        break;
+      case "Expense Value":
+        validation1 = checkInputValidation(expenseId, value);
+        break;
+      case "Expense Category":
+        validation3 = checkInputValidation(expenseId, value);
+        break;
+      case "New Expense Category":
+        validation4 = checkInputValidation(expenseId, value);
+        break;
+      default:
+        break;
+    }
+
+    if (validation1 && validation2 && validation3) {
+      setTest(true);
+    } else {
+      if (validation1 && validation2 && validation4) {
+        setTest(true);
+      } else {
+        setTest(false);
+      }
+    }
+
+    /*let categoryName = userExpense.newCategoryIsValid
+        ? userExpense.newCategoryName
+        : userExpense.expenseCategory;*/
   };
 
   let newCategory = null;
@@ -232,18 +312,13 @@ const UserExpenses = () => {
             InputChangeHandler(event, userExpense.expenseCategoryId)
           }
         />
-
         {newCategory}
 
-        <div>{userExpense.expenseName}</div>
-        <div>{userExpense.expenseValue}</div>
-        <div>{userExpense.expenseCategory}</div>
-        <div>
-          {userExpense.categoryIsTouched === true &&
-          userExpense.expenseCategory === ""
-            ? "true"
-            : "false"}
-        </div>
+        <AddExpenseButton disabled={test ? "" : "disabled"}>
+          Add Expense
+        </AddExpenseButton>
+
+        <div>{/*expenseList*/}</div>
       </UserExpensesContainer>
     </UserExpensesDiv>
   );
