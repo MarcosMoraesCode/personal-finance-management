@@ -20,6 +20,7 @@ export const UserExpensesDiv = styled.div`
 `;
 
 export const UserExpensesContainer = styled.div`
+  display: flex;
   height: 90%;
   width: 80%;
   background-color: wheat;
@@ -29,4 +30,14 @@ export const UserExpensesContainer = styled.div`
 export const AddExpenseButton = styled.button`
   width: 120px;
   height: 29px;
+`;
+
+export const AuxDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 100%;
+  border: 1px solid black;
 `;

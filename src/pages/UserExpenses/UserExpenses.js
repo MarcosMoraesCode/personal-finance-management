@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   AddExpenseButton,
+  AuxDiv,
   UserExpensesContainer,
   UserExpensesDiv,
 } from "./UserExpensesStyle";
@@ -11,22 +12,27 @@ const UserExpenses = () => {
   const [userExpense, setUserExpense] = useState({
     id: "expense",
     expenseName: "",
-    expenseValue: "", //SOMA EXPENSES
+    expenseValue: "",
+    expenseDate: "",
     expenseCategory: "",
     newCategoryName: "",
     nameIsValid: false,
     valueIsValid: false,
+    dateIsValid: false,
     categoryIsValid: false,
     newCategoryIsValid: false,
     nameInvalidMessage: "",
     valueInvalidMessage: "",
+    dateInvalidMessage: "",
     newCategoryInvalidMessage: "",
     nameIsTouched: false,
     valueIsTouched: false,
+    dateIsTouched: false,
     categoryIsTouched: false,
     newCategoryIsTouched: false,
     expenseNameId: "Expense Name",
     expenseValueId: "Expense Value",
+    expenseDateId: "Expense Date",
     expenseCategoryId: "Expense Category",
     expenseNewCategoryId: "New Expense Category",
     expenseNamePlaceholder: "Expense Name",
@@ -42,13 +48,12 @@ const UserExpenses = () => {
   });
   const [expenseList, setExpenseList] = useState([]);
 
-  const [test, setTest] = useState(false);
+  const [submitPermission, setSubmitPermission] = useState(false);
 
   const categoryAlreadyExists = (expenseCategoryName) => {
     let exists = userExpense.options.find(
       (option) => option.name === expenseCategoryName
     );
-    console.log("Categoria exites?", exists);
 
     return exists;
   };
@@ -62,10 +67,16 @@ const UserExpenses = () => {
     const isValidValue = (expenseValue) =>
       /^[0-9]+\,[0-9]{2,}$/i.test(expenseValue);
 
+    const isValidDate = (expenseDate) =>
+      /^([0-9]{4})\-(0[1-9]|1[0-2])\-(0[1-9]|[1-2][0-9]|3[0-1])$/.test(
+        expenseDate
+      );
+
     const validation1 = isValidName(value);
     const validation2 = isValidValue(value);
     const validation3 = value !== "" && value !== "New Category";
     const validation4 = categoryAlreadyExists(value);
+    const validation5 = isValidDate(value);
 
     let result = false;
 
@@ -85,11 +96,14 @@ const UserExpenses = () => {
             ? (result = true)
             : (result = false)
           : (result = false);
-        break; //FILTRAR TAMBÉM SE JÁ EXISTE A CATEGORIA
+        break;
+      case "Expense Date":
+        console.log(value);
+        validation5 ? (result = true) : (result = false);
       default:
         break;
     }
-    console.log(expenseId, ` é valido? `, result);
+
     return result;
   };
 
@@ -119,7 +133,12 @@ const UserExpenses = () => {
             newCategoryInvalidMessage: message,
           });
           break;
-
+        case "Expense Date":
+          setUserExpense({
+            ...userExpense,
+            dateInvalidMessage: "Invalid date!",
+          });
+          break;
         default:
           break;
       }
@@ -139,6 +158,12 @@ const UserExpenses = () => {
           setUserExpense({
             ...userExpense,
             newCategoryInvalidMessage: "",
+          });
+          break;
+        case "Expense Date":
+          setUserExpense({
+            ...userExpense,
+            dateInvalidMessage: "",
           });
           break;
 
@@ -175,8 +200,19 @@ const UserExpenses = () => {
         });
         checkButtonValidation(expenseId, event.currentTarget.value);
         break;
+      case "Expense Date":
+        setUserExpense({
+          ...userExpense,
+          expenseDate: event.currentTarget.value,
+          dateIsTouched: true,
+          dateIsValid: checkInputValidation(
+            expenseId,
+            event.currentTarget.value
+          ),
+        });
+        checkButtonValidation(expenseId, event.currentTarget.value);
+        break;
       case "Expense Category":
-        console.log(event.currentTarget.value);
         setUserExpense({
           ...userExpense,
           expenseCategory: event.currentTarget.value,
@@ -212,6 +248,7 @@ const UserExpenses = () => {
     let validation2 = userExpense.valueIsValid === true;
     let validation3 = userExpense.categoryIsValid === true;
     let validation4 = userExpense.newCategoryIsValid === true;
+    let validation5 = userExpense.dateIsValid === true;
 
     switch (expenseId) {
       case "Expense Name":
@@ -226,23 +263,39 @@ const UserExpenses = () => {
       case "New Expense Category":
         validation4 = checkInputValidation(expenseId, value);
         break;
+      case "Expense Date":
+        validation5 = checkInputValidation(expenseId, value);
+        break;
       default:
         break;
     }
 
-    if (validation1 && validation2 && validation3) {
-      setTest(true);
+    if (validation1 && validation2 && validation3 && validation5) {
+      setSubmitPermission(true);
     } else {
-      if (validation1 && validation2 && validation4) {
-        setTest(true);
+      if (validation1 && validation2 && validation4 && validation5) {
+        setSubmitPermission(true);
       } else {
-        setTest(false);
+        setSubmitPermission(false);
       }
     }
+  };
 
-    /*let categoryName = userExpense.newCategoryIsValid
-        ? userExpense.newCategoryName
-        : userExpense.expenseCategory;*/
+  const submitExpense = () => {
+    setExpenseList([
+      ...expenseList,
+      {
+        name: userExpense.expenseName,
+        value: userExpense.expenseValue,
+        category:
+          userExpense.expenseCategory !== "" &&
+          userExpense.expenseCategory !== "New Category"
+            ? userExpense.expenseCategory
+            : userExpense.newCategoryName,
+        date: userExpense.expenseDate,
+      },
+    ]);
+    console.log(expenseList);
   };
 
   let newCategory = null;
@@ -274,51 +327,81 @@ const UserExpenses = () => {
     );
   }
 
+  const expenseListContainer = expenseList.map((expense, index) => {
+    return (
+      <div key={index}>
+        <div>Expense name: {expense.name}</div>
+        <div>Expense value: {expense.value}</div>
+        <div>Expense category: {expense.category}</div>
+        <div>Expense date: {expense.date}</div>
+      </div>
+    );
+  });
+
   return (
     <UserExpensesDiv>
       <UserExpensesContainer>
-        <InputContainer
-          placeholder={userExpense.expenseNamePlaceholder}
-          changed={(event) =>
-            InputChangeHandler(event, userExpense.expenseNameId)
-          }
-          invalidMessage={
-            userExpense.nameIsValid ? "" : userExpense.nameInvalidMessage
-          }
-          blur={() =>
-            verifyFocus(userExpense.expenseNameId, userExpense.nameIsValid)
-          }
-        >
-          Expense Name
-        </InputContainer>
-        <InputContainer
-          placeholder={userExpense.expenseValuePlaceholder}
-          changed={(event) =>
-            InputChangeHandler(event, userExpense.expenseValueId)
-          }
-          invalidMessage={
-            userExpense.valueIsValid ? "" : userExpense.valueInvalidMessage
-          }
-          blur={() =>
-            verifyFocus(userExpense.expenseValueId, userExpense.valueIsValid)
-          }
-        >
-          Expense Value
-        </InputContainer>
-        <SelectContainer
-          label={"Categories"}
-          options={userExpense.options}
-          changed={(event) =>
-            InputChangeHandler(event, userExpense.expenseCategoryId)
-          }
-        />
-        {newCategory}
-
-        <AddExpenseButton disabled={test ? "" : "disabled"}>
-          Add Expense
-        </AddExpenseButton>
-
-        <div>{/*expenseList*/}</div>
+        <AuxDiv>
+          <InputContainer
+            placeholder={userExpense.expenseNamePlaceholder}
+            changed={(event) =>
+              InputChangeHandler(event, userExpense.expenseNameId)
+            }
+            invalidMessage={
+              userExpense.nameIsValid ? "" : userExpense.nameInvalidMessage
+            }
+            blur={() =>
+              verifyFocus(userExpense.expenseNameId, userExpense.nameIsValid)
+            }
+          >
+            Expense Name
+          </InputContainer>
+          <InputContainer
+            placeholder={userExpense.expenseValuePlaceholder}
+            changed={(event) =>
+              InputChangeHandler(event, userExpense.expenseValueId)
+            }
+            invalidMessage={
+              userExpense.valueIsValid ? "" : userExpense.valueInvalidMessage
+            }
+            blur={() =>
+              verifyFocus(userExpense.expenseValueId, userExpense.valueIsValid)
+            }
+          >
+            Expense Value
+          </InputContainer>
+          <SelectContainer
+            label={"Categories"}
+            options={userExpense.options}
+            changed={(event) =>
+              InputChangeHandler(event, userExpense.expenseCategoryId)
+            }
+          />
+          {newCategory}
+          <InputContainer
+            type={"date"}
+            changed={(event) =>
+              InputChangeHandler(event, userExpense.expenseDateId)
+            }
+            invalidMessage={
+              userExpense.dateIsValid ? "" : userExpense.dateInvalidMessage
+            }
+            blur={() =>
+              verifyFocus(userExpense.expenseDateId, userExpense.dateIsValid)
+            }
+          >
+            Date
+          </InputContainer>
+          <AddExpenseButton
+            disabled={submitPermission ? "" : "disabled"}
+            onClick={() => submitExpense()}
+          >
+            Add Expense
+          </AddExpenseButton>
+        </AuxDiv>
+        <AuxDiv>
+          <div>{expenseListContainer}</div>
+        </AuxDiv>
       </UserExpensesContainer>
     </UserExpensesDiv>
   );
