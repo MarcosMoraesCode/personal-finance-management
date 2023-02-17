@@ -43,7 +43,7 @@ export const WrappLoginComponent = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 500px;
+  width: 360px;
   height: 70%;
 
   margin: auto;

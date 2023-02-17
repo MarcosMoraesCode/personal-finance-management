@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const IncomeSourceLi = styled.li`
+  font-size: 10px;
   list-style: none;
   display: flex;
   flex-direction: row;
@@ -12,12 +13,15 @@ export const IncomeSourceLi = styled.li`
   color: #51d289;
   margin: 2px;
   font-weight: 500;
+  background-color: #2b2b2b;
+  border-radius: 5px;
+  border-bottom: 1px solid white;
 `;
 
 export const IncomeSourceDiv = styled.div`
   display: flex;
   flex-direction: column;
-  width: 95%;
+  width: 100%;
   height: 100%;
 `;
 
@@ -26,4 +30,5 @@ export const IncomePercentageSpan = styled.span`
   text-align: end;
   justify-content: flex-end;
   color: #51d289;
+  padding-right: 5px;
 `;

@@ -20,9 +20,9 @@ import {
 
 const IncomeTracking = (props) => {
   const incomes = [
-    { source: "Salary", value: 1550 },
-    { source: "Rental", value: 10 },
-    { source: "Investiment Returns", value: 0 },
+    { source: "Salary", value: 1550, percentage: 73.9 },
+    { source: "Rental", value: 150, percentage: 7.3 },
+    { source: "Investiment Returns", value: 400, percentage: 18.8 },
   ];
 
   const incomeSourcers = (
@@ -34,6 +34,7 @@ const IncomeTracking = (props) => {
               key={`income-${index}`}
               sourceName={income.source}
               sourceValue={income.value}
+              percentage={income.percentage}
             />
           );
         }
@@ -49,8 +50,8 @@ const IncomeTracking = (props) => {
         $ 5.000 {props.incomeTotal}
       </IncomeTrackingBalance>
       <IncomePercentageDiv>
-        <PercentageTitle>10%</PercentageTitle>
-        {<DonutChart main income={0.63} expense={0.37} />}
+        <PercentageTitle>32%</PercentageTitle>
+        {<DonutChart main income={0.32} expense={0.68} />}
       </IncomePercentageDiv>
       <WrapIncomeInfos>
         <IncomeAvaiableInfo>

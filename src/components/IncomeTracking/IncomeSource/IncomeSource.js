@@ -10,10 +10,10 @@ const IncomeSource = (props) => {
     <IncomeSourceDiv>
       <IncomeSourceLi>
         <div>
-          {props.sourceName} : $ {props.sourceValue}
+          {props.sourceName} $ {props.sourceValue}
         </div>
 
-        <IncomePercentageSpan>{props.percentage}</IncomePercentageSpan>
+        <IncomePercentageSpan>{props.percentage}%</IncomePercentageSpan>
       </IncomeSourceLi>
     </IncomeSourceDiv>
   );

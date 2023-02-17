@@ -96,10 +96,31 @@ export const IncomeSourcersDiv = styled.div`
   min-height: 40px;
   padding: 5px;
   overflow-y: auto;
-  border: 3px solid black;
-  border-radius: 1px solid black;
+  border: 1px solid white;
+  border-radius: 3px;
   margin: 10px;
-  background-color: white;
+  background-color: #1b1b1b;
+  /* width */
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: white;
+  }
 `;
 
 export const IncomePercentageDiv = styled.div`
