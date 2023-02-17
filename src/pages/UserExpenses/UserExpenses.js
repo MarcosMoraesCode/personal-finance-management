@@ -7,6 +7,8 @@ import {
 } from "./UserExpensesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import SelectContainer from "../../components/UI/Select/Select";
+import axiosInstance from "../../axiosInstance";
+import { SpinnerCircular } from "spinners-react";
 
 const UserExpenses = () => {
   const [userExpense, setUserExpense] = useState({
@@ -295,6 +297,21 @@ const UserExpenses = () => {
         date: userExpense.expenseDate,
       },
     ]);
+
+    //APENAS TESTE DE REQUEST
+    axiosInstance
+      .post("/expense.json", {
+        name: userExpense.expenseName,
+        value: userExpense.expenseValue,
+        category:
+          userExpense.expenseCategory !== "" &&
+          userExpense.expenseCategory !== "New Category"
+            ? userExpense.expenseCategory
+            : userExpense.newCategoryName,
+        date: userExpense.expenseDate,
+      })
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
     console.log(expenseList);
   };
 
@@ -337,6 +354,35 @@ const UserExpenses = () => {
       </div>
     );
   });
+  let fetchedExpensesList = null;
+  const fetchedExpenses = [];
+  const getExpenses = () => {
+    axiosInstance.get("/expense.json").then((response) => {
+      let test = Object.values(response.data);
+      console.log("test", test);
+
+      test.forEach((expense) => {
+        fetchedExpenses.push({
+          name: expense.name,
+          value: expense.value,
+          category: expense.category,
+          date: expense.date,
+        });
+      });
+      fetchedExpensesList = fetchedExpenses.map((expense) => {
+        console.log("expense", expense);
+        return (
+          <div style={{ backgroundColor: "black" }}>
+            <div>Expense Category: {expense.category}</div>
+            <div>Expense Name: {expense.name}</div>
+            <div>Expense Value: {expense.value}</div>
+            <div>Expense Date: {expense.date}</div>
+          </div>
+        );
+      });
+    });
+  };
+  getExpenses();
 
   return (
     <UserExpensesDiv>
@@ -401,6 +447,10 @@ const UserExpenses = () => {
         </AuxDiv>
         <AuxDiv>
           <div>{expenseListContainer}</div>
+        </AuxDiv>
+        <AuxDiv>
+          <p>oi</p>
+          {fetchedExpensesList}
         </AuxDiv>
       </UserExpensesContainer>
     </UserExpensesDiv>
