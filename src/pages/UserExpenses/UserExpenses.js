@@ -34,6 +34,49 @@ const UserExpenses = () => {
     //COLOCAR OS DADOS MAIS COMPACTOS EM States diferente ou inputs?
 
     id: "expense",
+    inputName: {
+      value: "",
+      isValid: false,
+      isTouched: false,
+      id: "Expense Name",
+      placeholder: "Expense Name",
+      invalidMessage: "",
+    },
+    inputValue: {
+      value: "",
+      isValid: false,
+      isTouched: false,
+      id: "Expense Value",
+      placeholder: "Ex 150,00",
+      invalidMessage: "",
+    },
+    inputCategory: {
+      value: "",
+      categoryIsValid: false,
+      categoryIsTouched: false,
+      id: "Expense Category",
+      options: [
+        { name: "New Category" },
+        { name: "Medicine" },
+        { name: "Study" },
+        { name: "Rent" },
+      ],
+    },
+    inputNewCategory: {
+      value: "",
+      isValid: false,
+      isTouched: false,
+      id: "New Expense Category",
+      placeholder: "New Expense Category",
+      invalidMessage: "",
+    },
+    inputDate: {
+      value: "",
+      isValid: false,
+      isTouched: false,
+      id: "Expense Date",
+      invalidMessage: "",
+    },
     expenseName: "",
     expenseValue: "",
     expenseDate: "",
@@ -167,13 +210,19 @@ const UserExpenses = () => {
         case "Expense Name":
           setUserExpense({
             ...userExpense,
-            nameInvalidMessage: "Invalid name!",
+            inputName: {
+              ...userExpense.inputName,
+              invalidMessage: "Invalid name!",
+            },
           });
           break;
         case "Expense Value":
           setUserExpense({
             ...userExpense,
-            valueInvalidMessage: "Invalid value!",
+            inputValue: {
+              ...userExpense.inputValue,
+              invalidMessage: "Invalid value!",
+            },
           });
           break;
         case "Category Spending Limit":
@@ -183,20 +232,26 @@ const UserExpenses = () => {
           });
           break;
         case "New Expense Category":
-          exists = categoryAlreadyExists(userExpense.newCategoryName);
+          exists = categoryAlreadyExists(userExpense.inputNewCategory.value);
           message = "";
           exists
             ? (message = "Category Already exists!")
             : (message = "Invalid name!");
           setUserExpense({
             ...userExpense,
-            newCategoryInvalidMessage: message,
+            inputNewCategory: {
+              ...userExpense.inputNewCategory,
+              invalidMessage: message,
+            },
           });
           break;
         case "Expense Date":
           setUserExpense({
             ...userExpense,
-            dateInvalidMessage: "Invalid date!",
+            inputDate: {
+              ...userExpense.inputDate,
+              invalidMessage: "Invalid date!",
+            },
           });
           break;
         case "Category Name":
@@ -205,10 +260,14 @@ const UserExpenses = () => {
           exists
             ? (message = "Category Already exists!")
             : (message = "Invalid name!");
-          setUserCategory({
-            ...userCategory,
-            categoryInvalidMessage: message,
-          });
+          /* setUserExpense({
+            ...userExpense,
+            inputCategory: {
+              ...userExpense.inputCategory,
+              invalidMessage: message,
+            },
+          });*/
+
           break;
         default:
           break;
@@ -217,24 +276,38 @@ const UserExpenses = () => {
     } else {
       switch (expenseId) {
         case "Expense Name":
-          setUserExpense({ ...userExpense, nameInvalidMessage: "" });
+          setUserExpense({
+            ...userExpense,
+            inputName: {
+              ...userExpense.inputName,
+              invalidMessage: "",
+            },
+          });
           break;
         case "Expense Value":
           setUserExpense({
             ...userExpense,
-            valueInvalidMessage: "",
+            inputValue: {
+              ...userExpense.inputValue,
+              invalidMessage: "",
+            },
           });
           break;
         case "New Expense Category":
           setUserExpense({
             ...userExpense,
-            newCategoryInvalidMessage: "",
+            inputNewCategory: {
+              ...userExpense.inputNewCategory,
+              invalidMessage: "",
+            },
           });
-          break;
         case "Expense Date":
           setUserExpense({
             ...userExpense,
-            dateInvalidMessage: "",
+            inputDate: {
+              ...userExpense.inputDate,
+              invalidMessage: "",
+            },
           });
           break;
         case "Category Name":
@@ -284,48 +357,54 @@ const UserExpenses = () => {
       case "Expense Name":
         setUserExpense({
           ...userExpense,
-          expenseName: event.currentTarget.value,
+          inputName: {
+            ...userExpense.inputName,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: checkInputValidation(expenseId, event.currentTarget.value),
+          },
+          /*expenseName: event.currentTarget.value,
           nameIsTouched: true,
           nameIsValid: checkInputValidation(
             expenseId,
             event.currentTarget.value
-          ),
+          ),*/
         });
         checkExpenseButtonValidation(expenseId, event.currentTarget.value);
         break;
       case "Expense Value":
         setUserExpense({
           ...userExpense,
-          expenseValue: event.currentTarget.value,
-          valueIsTouched: true,
-          valueIsValid: checkInputValidation(
-            expenseId,
-            event.currentTarget.value
-          ),
+          inputValue: {
+            ...userExpense.inputValue,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: checkInputValidation(expenseId, event.currentTarget.value),
+          },
         });
         checkExpenseButtonValidation(expenseId, event.currentTarget.value);
         break;
       case "Expense Date":
         setUserExpense({
           ...userExpense,
-          expenseDate: event.currentTarget.value,
-          dateIsTouched: true,
-          dateIsValid: checkInputValidation(
-            expenseId,
-            event.currentTarget.value
-          ),
+          inputDate: {
+            ...userExpense.inputDate,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: checkInputValidation(expenseId, event.currentTarget.value),
+          },
         });
         checkExpenseButtonValidation(expenseId, event.currentTarget.value);
         break;
       case "Expense Category":
         setUserExpense({
           ...userExpense,
-          expenseCategory: event.currentTarget.value,
-          categoryIsTouched: true,
-          categoryIsValid: checkInputValidation(
-            expenseId,
-            event.currentTarget.value
-          ),
+          inputCategory: {
+            ...userExpense.inputCategory,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: checkInputValidation(expenseId, event.currentTarget.value),
+          },
         });
         checkExpenseButtonValidation(expenseId, event.currentTarget.value);
 
@@ -333,12 +412,12 @@ const UserExpenses = () => {
       case "New Expense Category":
         setUserExpense({
           ...userExpense,
-          newCategoryName: event.currentTarget.value,
-          newCategoryIsTouched: true,
-          newCategoryIsValid: checkInputValidation(
-            expenseId,
-            event.currentTarget.value
-          ),
+          inputNewCategory: {
+            ...userExpense.inputNewCategory,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: checkInputValidation(expenseId, event.currentTarget.value),
+          },
         });
         checkExpenseButtonValidation(expenseId, event.currentTarget.value);
         break;
@@ -428,24 +507,24 @@ const UserExpenses = () => {
   let newCategory = null;
 
   if (
-    userExpense.categoryIsTouched &&
-    userExpense.expenseCategory === "New Category"
+    userExpense.inputCategory.isTouched &&
+    userExpense.inputCategory.value === "New Category"
   ) {
     newCategory = (
       <InputContainer
-        placeholder={userExpense.expenseNewCategoryPlaceholder}
+        placeholder={userExpense.inputNewCategory.placeholder}
         changed={(event) =>
-          InputChangeHandler(event, userExpense.expenseNewCategoryId)
+          InputChangeHandler(event, userExpense.inputNewCategory.id)
         }
         invalidMessage={
-          userExpense.newCategoryIsValid
+          userExpense.inputNewCategory.isValid
             ? ""
-            : userExpense.newCategoryInvalidMessage
+            : userExpense.inputNewCategory.invalidMessage
         }
         blur={() =>
           verifyFocus(
-            userExpense.expenseNewCategoryId,
-            userExpense.newCategoryIsValid
+            userExpense.inputNewCategory.id,
+            userExpense.inputNewCategory.isValid
           )
         }
       >
@@ -538,36 +617,38 @@ const UserExpenses = () => {
             </NewExpenseTitleDiv>
             <NewExpenseFormDiv>
               <InputContainer
-                placeholder={userExpense.expenseNamePlaceholder}
+                placeholder={userExpense.inputName.placeholder}
                 changed={(event) =>
-                  InputChangeHandler(event, userExpense.expenseNameId)
+                  InputChangeHandler(event, userExpense.inputName.id)
                 }
                 invalidMessage={
-                  userExpense.nameIsValid ? "" : userExpense.nameInvalidMessage
+                  userExpense.inputName.isValid
+                    ? ""
+                    : userExpense.inputName.invalidMessage
                 }
                 blur={() =>
                   verifyFocus(
-                    userExpense.expenseNameId,
-                    userExpense.nameIsValid
+                    userExpense.inputName.id,
+                    userExpense.inputName.isValid
                   )
                 }
               >
                 Expense Name
               </InputContainer>
               <InputContainer
-                placeholder={userExpense.expenseValuePlaceholder}
+                placeholder={userExpense.inputValue.placeholder}
                 changed={(event) =>
-                  InputChangeHandler(event, userExpense.expenseValueId)
+                  InputChangeHandler(event, userExpense.inputValue.id)
                 }
                 invalidMessage={
-                  userExpense.valueIsValid
+                  userExpense.inputValue.isValid
                     ? ""
-                    : userExpense.valueInvalidMessage
+                    : userExpense.inputValue.invalidMessage
                 }
                 blur={() =>
                   verifyFocus(
-                    userExpense.expenseValueId,
-                    userExpense.valueIsValid
+                    userExpense.inputValue.id,
+                    userExpense.inputValue.isValid
                   )
                 }
               >
@@ -575,24 +656,26 @@ const UserExpenses = () => {
               </InputContainer>
               <SelectContainer
                 label={"Categories"}
-                options={userExpense.options}
+                options={userExpense.inputCategory.options}
                 changed={(event) =>
-                  InputChangeHandler(event, userExpense.expenseCategoryId)
+                  InputChangeHandler(event, userExpense.inputCategory.id)
                 }
               />
-              {newCategory}
+              {newCategory} //OLHAR
               <InputContainer
                 type={"date"}
                 changed={(event) =>
-                  InputChangeHandler(event, userExpense.expenseDateId)
+                  InputChangeHandler(event, userExpense.inputDate.id)
                 }
                 invalidMessage={
-                  userExpense.dateIsValid ? "" : userExpense.dateInvalidMessage
+                  userExpense.inputDate.isValid
+                    ? ""
+                    : userExpense.inputDate.invalidMessage
                 }
                 blur={() =>
                   verifyFocus(
-                    userExpense.expenseDateId,
-                    userExpense.dateIsValid
+                    userExpense.inputDate.id,
+                    userExpense.inputDate.isValid
                   )
                 }
               >
