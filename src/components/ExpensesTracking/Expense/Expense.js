@@ -41,7 +41,7 @@ const Expense = (props) => {
         <ExpenseLiContent>
           <ExpenseSubtitlesDiv>
             <SubtitleBlock>
-              <p>Expense</p>
+              <p>Category</p>
               <div />
               <p>Value</p>
             </SubtitleBlock>

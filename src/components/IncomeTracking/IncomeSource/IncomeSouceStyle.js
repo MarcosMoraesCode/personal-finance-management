@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const IncomeSourceLi = styled.li`
-  font-size: 10px;
+  font-size: 12px;
   list-style: none;
   display: flex;
   flex-direction: row;
@@ -22,7 +22,7 @@ export const IncomeSourceDiv = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: 25px;
 `;
 
 export const IncomePercentageSpan = styled.span`

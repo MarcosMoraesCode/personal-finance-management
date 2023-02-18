@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from "react";
 import {
   AddExpenseButton,
+  AnalysisContainer,
+  AnalysisTitleDiv,
   AuxDiv,
+  ExpenseAnalysisDiv,
+  ExpenseHistoryDiv,
+  HistoryContainer,
+  HistoryTitleDiv,
+  ListFilterDiv,
+  ListTitle,
+  ListTitleDiv,
   NewCategoryDiv,
   NewCategoryFormDiv,
-  NewCategoryTitle,
+  DefaultTitle,
   NewCategoryTitleDiv,
   NewExpenseDiv,
   NewExpenseFormDiv,
@@ -22,6 +31,8 @@ import { SpinnerCircular } from "spinners-react";
 
 const UserExpenses = () => {
   const [userExpense, setUserExpense] = useState({
+    //COLOCAR OS DADOS MAIS COMPACTOS EM States diferente ou inputs?
+
     id: "expense",
     expenseName: "",
     expenseValue: "",
@@ -60,12 +71,18 @@ const UserExpenses = () => {
   });
 
   const [userCategory, setUserCategory] = useState({
-    isValid: false,
+    categoryIsValid: false,
     categoryId: "Category Name",
     categoryPlaceholder: "Category Name",
     categoryName: "",
     categoryInvalidMessage: "",
     categoryIsTouched: false,
+    categorySpendIsValid: false,
+    categorySpendId: "Category Spending Limit",
+    categorySpendPlaceholder: "Ex: 1800,00",
+    categorySpend: "",
+    categorySpendInvalidMessage: "",
+    categorySpendIsTouched: false,
   });
   const [expenseList, setExpenseList] = useState([]);
 
@@ -132,6 +149,9 @@ const UserExpenses = () => {
           : (result = false);
         console.log("é valido?", result);
         break;
+      case "Category Spending Limit":
+        validation2 ? (result = true) : (result = false);
+        break;
       default:
         break;
     }
@@ -154,6 +174,12 @@ const UserExpenses = () => {
           setUserExpense({
             ...userExpense,
             valueInvalidMessage: "Invalid value!",
+          });
+          break;
+        case "Category Spending Limit":
+          setUserCategory({
+            ...userCategory,
+            categorySpendInvalidMessage: "Invalid value!",
           });
           break;
         case "New Expense Category":
@@ -216,7 +242,12 @@ const UserExpenses = () => {
             ...userCategory,
             categoryInvalidMessage: "",
           });
-
+        case "Category Spending Limit":
+          setUserCategory({
+            ...userCategory,
+            categorySpendInvalidMessage: "",
+          });
+          break;
         default:
           break;
       }
@@ -231,10 +262,24 @@ const UserExpenses = () => {
           ...userCategory,
           categoryName: event.currentTarget.value,
           categoryIsTouched: true,
-          isValid: checkInputValidation(expenseId, event.currentTarget.value),
+          categoryIsValid: checkInputValidation(
+            expenseId,
+            event.currentTarget.value
+          ),
         });
-        checkExpenseButtonValidation(expenseId, event.currentTarget.value);
+        //checkCategoryButtonValidation(expenseId, event.currentTarget.value);
         break;
+      case "Category Spending Limit":
+        setUserCategory({
+          ...userCategory,
+          categorySpend: event.currentTarget.value,
+          categoryIsTouched: true,
+          categorySpendIsValid: checkInputValidation(
+            expenseId,
+            event.currentTarget.value
+          ),
+        });
+      // checkCategoryButtonValidation(expenseId, event.currentTarget.value);
 
       case "Expense Name":
         setUserExpense({
@@ -444,7 +489,7 @@ const UserExpenses = () => {
         <AuxDiv>
           <NewCategoryDiv>
             <NewCategoryTitleDiv>
-              <NewCategoryTitle>New Category</NewCategoryTitle>
+              <DefaultTitle>New Category</DefaultTitle>
             </NewCategoryTitleDiv>
             <NewCategoryFormDiv>
               <InputContainer
@@ -453,21 +498,43 @@ const UserExpenses = () => {
                   InputChangeHandler(event, userCategory.categoryId)
                 }
                 invalidMessage={
-                  userCategory.isValid
+                  userCategory.categoryIsValid
                     ? ""
                     : userCategory.categoryInvalidMessage
                 }
                 blur={() =>
-                  verifyFocus(userCategory.categoryId, userCategory.isValid)
+                  verifyFocus(
+                    userCategory.categoryId,
+                    userCategory.categoryIsValid
+                  )
                 }
               >
                 New Category Name
+              </InputContainer>
+              <InputContainer
+                placeholder={userCategory.categorySpendPlaceholder}
+                changed={(event) =>
+                  InputChangeHandler(event, userCategory.categorySpendId)
+                }
+                invalidMessage={
+                  userCategory.categorySpendIsValid
+                    ? ""
+                    : userCategory.categorySpendInvalidMessage
+                }
+                blur={() =>
+                  verifyFocus(
+                    userCategory.categorySpendId,
+                    userCategory.categorySpendIsValid
+                  )
+                }
+              >
+                Category Spending Limit
               </InputContainer>
             </NewCategoryFormDiv>
           </NewCategoryDiv>
           <NewExpenseDiv>
             <NewExpenseTitleDiv>
-              <NewExpenseTitle>New Expense</NewExpenseTitle>
+              <DefaultTitle>New Expense</DefaultTitle>
             </NewExpenseTitleDiv>
             <NewExpenseFormDiv>
               <InputContainer
@@ -541,12 +608,27 @@ const UserExpenses = () => {
           </NewExpenseDiv>
         </AuxDiv>
         <AuxDiv>
-          <div>{expenseListContainer}</div>
+          <ListTitleDiv>
+            <DefaultTitle>Category List</DefaultTitle>
+          </ListTitleDiv>
+          <UserExpensesListContainer>
+            <ListFilterDiv>Filter</ListFilterDiv>
+            <UserExpensesList>Expense List</UserExpensesList>
+          </UserExpensesListContainer>
         </AuxDiv>
         <AuxDiv>
-          <UserExpensesListContainer>
-            <UserExpensesList></UserExpensesList>
-          </UserExpensesListContainer>
+          <ExpenseHistoryDiv>
+            <HistoryTitleDiv>
+              <DefaultTitle>History</DefaultTitle>
+            </HistoryTitleDiv>
+            <HistoryContainer></HistoryContainer>
+          </ExpenseHistoryDiv>
+          <ExpenseAnalysisDiv>
+            <AnalysisTitleDiv>
+              <DefaultTitle>Analysis</DefaultTitle>
+            </AnalysisTitleDiv>
+            <AnalysisContainer></AnalysisContainer>
+          </ExpenseAnalysisDiv>
         </AuxDiv>
       </UserExpensesContainer>
     </UserExpensesDiv>
