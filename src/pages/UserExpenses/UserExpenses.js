@@ -77,64 +77,44 @@ const UserExpenses = () => {
       id: "Expense Date",
       invalidMessage: "",
     },
-    expenseName: "",
-    expenseValue: "",
-    expenseDate: "",
-    expenseCategory: "",
-    newCategoryName: "",
-    nameIsValid: false,
-    valueIsValid: false,
-    dateIsValid: false,
-    categoryIsValid: false,
-    newCategoryIsValid: false,
-    nameInvalidMessage: "",
-    valueInvalidMessage: "",
-    dateInvalidMessage: "",
-    newCategoryInvalidMessage: "",
-    nameIsTouched: false,
-    valueIsTouched: false,
-    dateIsTouched: false,
-    categoryIsTouched: false,
-    newCategoryIsTouched: false,
-    expenseNameId: "Expense Name",
-    expenseValueId: "Expense Value",
-    expenseDateId: "Expense Date",
-    expenseCategoryId: "Expense Category",
-    expenseNewCategoryId: "New Expense Category",
-    expenseNamePlaceholder: "Expense Name",
-    expenseValuePlaceholder: "Ex: 150,00",
-
-    expenseNewCategoryPlaceholder: "Category Name",
-    options: [
-      { name: "New Category" },
-      { name: "Medicine" },
-      { name: "Study" },
-      { name: "Rent" },
-    ],
+    inputSpend: {
+      id: "New Category Spending Limit",
+      value: "",
+      isValid: false,
+      isTouched: false,
+      placeholder: "Ex: 1800,00",
+      invalidMessage: "",
+    },
   });
 
   const [userCategory, setUserCategory] = useState({
-    categoryIsValid: false,
-    categoryId: "Category Name",
-    categoryPlaceholder: "Category Name",
-    categoryName: "",
-    categoryInvalidMessage: "",
-    categoryIsTouched: false,
-    categorySpendIsValid: false,
-    categorySpendId: "Category Spending Limit",
-    categorySpendPlaceholder: "Ex: 1800,00",
-    categorySpend: "",
-    categorySpendInvalidMessage: "",
-    categorySpendIsTouched: false,
+    // id: "category",
+
+    inputNewCategory: {
+      id: "Category Name",
+      value: "",
+      isValid: false,
+      isTouched: false,
+      placeholder: "Category Name",
+      invalidMessage: "",
+    },
+    inputSpend: {
+      id: "Category Spending Limit",
+      value: "",
+      isValid: false,
+      isTouched: false,
+      placeholder: "Ex: 1800,00",
+      invalidMessage: "",
+    },
   });
   const [expenseList, setExpenseList] = useState([]);
 
-  const [submitPermission, setSubmitPermission] = useState(false);
+  const [expenseSubmitPermission, setExpenseSubmitPermission] = useState(false);
   const [categorySubmitPermission, setCategorySubmitPermission] =
     useState(false);
 
   const categoryAlreadyExists = (expenseCategoryName) => {
-    let exists = userExpense.options.find(
+    let exists = userExpense.inputCategory.options.find(
       (option) => option.name === expenseCategoryName
     );
 
@@ -143,12 +123,12 @@ const UserExpenses = () => {
 
   const checkInputValidation = (expenseId, value) => {
     const isValidName = (expenseName) =>
-      /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{4,12}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,15})?$/.test(
+      /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,15}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?$/.test(
         expenseName
       );
 
     const isValidValue = (expenseValue) =>
-      /^[0-9]+\,[0-9]{2,}$/i.test(expenseValue);
+      /^[0-9]+\,[0-9]{2,2}$/i.test(expenseValue);
 
     const isValidDate = (expenseDate) =>
       /^([0-9]{4})\-(0[1-9]|1[0-2])\-(0[1-9]|[1-2][0-9]|3[0-1])$/.test(
@@ -195,6 +175,9 @@ const UserExpenses = () => {
       case "Category Spending Limit":
         validation2 ? (result = true) : (result = false);
         break;
+      case "New Category Spending Limit":
+        validation2 ? (result = true) : (result = false);
+        break;
       default:
         break;
     }
@@ -228,7 +211,19 @@ const UserExpenses = () => {
         case "Category Spending Limit":
           setUserCategory({
             ...userCategory,
-            categorySpendInvalidMessage: "Invalid value!",
+            inputSpend: {
+              ...userCategory.inputSpend,
+              invalidMessage: "Invalid value!",
+            },
+          });
+          break;
+        case "New Category Spending Limit":
+          setUserExpense({
+            ...userExpense,
+            inputSpend: {
+              ...userExpense.inputSpend,
+              invalidMessage: "Invalid value!",
+            },
           });
           break;
         case "New Expense Category":
@@ -255,18 +250,18 @@ const UserExpenses = () => {
           });
           break;
         case "Category Name":
-          exists = categoryAlreadyExists(userCategory.categoryName);
+          exists = categoryAlreadyExists(userCategory.inputNewCategory.value);
           message = "";
           exists
             ? (message = "Category Already exists!")
             : (message = "Invalid name!");
-          /* setUserExpense({
-            ...userExpense,
-            inputCategory: {
-              ...userExpense.inputCategory,
+          setUserCategory({
+            ...userCategory,
+            inputNewCategory: {
+              ...userCategory.inputNewCategory,
               invalidMessage: message,
             },
-          });*/
+          });
 
           break;
         default:
@@ -301,6 +296,7 @@ const UserExpenses = () => {
               invalidMessage: "",
             },
           });
+          break;
         case "Expense Date":
           setUserExpense({
             ...userExpense,
@@ -313,17 +309,35 @@ const UserExpenses = () => {
         case "Category Name":
           setUserCategory({
             ...userCategory,
-            categoryInvalidMessage: "",
+            inputNewCategory: {
+              ...userCategory.inputNewCategory,
+              invalidMessage: "",
+            },
           });
+          break;
         case "Category Spending Limit":
           setUserCategory({
             ...userCategory,
-            categorySpendInvalidMessage: "",
+            inputSpend: {
+              ...userCategory.inputSpend,
+              invalidMessage: "",
+            },
           });
           break;
+        case "New Category Spending Limit":
+          setUserExpense({
+            ...userExpense,
+            inputSpend: {
+              ...userExpense.inputSpend,
+              invalidMessage: "",
+            },
+          });
+          break;
+
         default:
           break;
       }
+
       return false;
     }
   };
@@ -333,27 +347,39 @@ const UserExpenses = () => {
       case "Category Name":
         setUserCategory({
           ...userCategory,
-          categoryName: event.currentTarget.value,
-          categoryIsTouched: true,
-          categoryIsValid: checkInputValidation(
-            expenseId,
-            event.currentTarget.value
-          ),
+          inputNewCategory: {
+            ...userCategory.inputNewCategory,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: checkInputValidation(expenseId, event.currentTarget.value),
+          },
         });
-        //checkCategoryButtonValidation(expenseId, event.currentTarget.value);
+        checkCategoryButtonValidation(expenseId, event.currentTarget.value);
         break;
       case "Category Spending Limit":
         setUserCategory({
           ...userCategory,
-          categorySpend: event.currentTarget.value,
-          categoryIsTouched: true,
-          categorySpendIsValid: checkInputValidation(
-            expenseId,
-            event.currentTarget.value
-          ),
+          inputSpend: {
+            ...userCategory.inputSpend,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: checkInputValidation(expenseId, event.currentTarget.value),
+          },
         });
-      // checkCategoryButtonValidation(expenseId, event.currentTarget.value);
-
+        checkCategoryButtonValidation(expenseId, event.currentTarget.value);
+        break;
+      case "New Category Spending Limit":
+        setUserExpense({
+          ...userExpense,
+          inputSpend: {
+            ...userExpense.inputSpend,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: checkInputValidation(expenseId, event.currentTarget.value),
+          },
+        });
+        // checkCategoryButtonValidation(expenseId, event.currentTarget.value);
+        break;
       case "Expense Name":
         setUserExpense({
           ...userExpense,
@@ -428,11 +454,12 @@ const UserExpenses = () => {
 
   const checkExpenseButtonValidation = (expenseId, value) => {
     //falta adicionar o disable
-    let validation1 = userExpense.nameIsValid === true;
-    let validation2 = userExpense.valueIsValid === true;
-    let validation3 = userExpense.categoryIsValid === true;
-    let validation4 = userExpense.newCategoryIsValid === true;
-    let validation5 = userExpense.dateIsValid === true;
+    let validation1 = userExpense.inputName.isValid === true;
+    let validation2 = userExpense.inputValue.isValid === true;
+    let validation3 = userExpense.inputCategory.isValid === true;
+    let validation4 = userExpense.inputNewCategory.isValid === true;
+    let validation5 = userExpense.inputDate.isValid === true;
+    let validation6 = userExpense.inputSpend.isValid === true;
 
     switch (expenseId) {
       case "Expense Name":
@@ -450,54 +477,80 @@ const UserExpenses = () => {
       case "Expense Date":
         validation5 = checkInputValidation(expenseId, value);
         break;
+      case "New Category Spending Limit":
+        validation6 = checkInputValidation(expenseId, value);
+        break;
       default:
         break;
     }
-
     if (validation1 && validation2 && validation3 && validation5) {
-      setSubmitPermission(true);
+      setExpenseSubmitPermission(true);
     } else {
-      if (validation1 && validation2 && validation4 && validation5) {
-        setSubmitPermission(true);
+      if (
+        validation1 &&
+        validation2 &&
+        validation4 &&
+        validation5 &&
+        validation6
+      ) {
+        setExpenseSubmitPermission(true);
       } else {
-        setSubmitPermission(false);
+        setExpenseSubmitPermission(false);
       }
     }
   };
   const checkCategoryButtonValidation = (expenseId, value) => {
-    if (userCategory.isValid) {
+    let validation1 = userCategory.inputNewCategory.isValid === true;
+    let validation2 = userCategory.inputSpend.isValid === true;
+
+    switch (expenseId) {
+      case "Category Name":
+        validation1 = checkInputValidation(expenseId, value);
+        break;
+      case "Category Spending Limit":
+        validation2 = checkInputValidation(expenseId, value);
+        break;
+      default:
+        break;
+    }
+
+    if (validation1 && validation2) {
       setCategorySubmitPermission(true);
     } else {
       setCategorySubmitPermission(false);
     }
   };
 
+  const submitCategory = () => {
+    alert("categoria adicionada com sucesso");
+  };
+
   const submitExpense = () => {
     setExpenseList([
       ...expenseList,
       {
-        name: userExpense.expenseName,
-        value: userExpense.expenseValue,
+        name: userExpense.inputName.value,
+        value: userExpense.inputValue.value,
         category:
-          userExpense.expenseCategory !== "" &&
-          userExpense.expenseCategory !== "New Category"
-            ? userExpense.expenseCategory
-            : userExpense.newCategoryName,
-        date: userExpense.expenseDate,
+          userExpense.inputCategory.value !== "" &&
+          userExpense.inputCategory.value !== "New Category"
+            ? userExpense.inputCategory.value
+            : userExpense.inputNewCategory.value,
+        date: userExpense.inputDate.value,
       },
     ]);
 
     //APENAS TESTE DE REQUEST
     axiosInstance
       .post("/expense.json", {
-        name: userExpense.expenseName,
-        value: userExpense.expenseValue,
+        name: userExpense.inputName.value,
+        value: userExpense.inputValue.value,
         category:
-          userExpense.expenseCategory !== "" &&
-          userExpense.expenseCategory !== "New Category"
-            ? userExpense.expenseCategory
-            : userExpense.newCategoryName,
-        date: userExpense.expenseDate,
+          userExpense.inputCategory.value !== "" &&
+          userExpense.inputCategory.value !== "New Category"
+            ? userExpense.inputCategory.value
+            : userExpense.inputNewCategory.value,
+        date: userExpense.inputDate.value,
       })
       .then((response) => response)
       .catch((err) => console.log(err));
@@ -511,25 +564,46 @@ const UserExpenses = () => {
     userExpense.inputCategory.value === "New Category"
   ) {
     newCategory = (
-      <InputContainer
-        placeholder={userExpense.inputNewCategory.placeholder}
-        changed={(event) =>
-          InputChangeHandler(event, userExpense.inputNewCategory.id)
-        }
-        invalidMessage={
-          userExpense.inputNewCategory.isValid
-            ? ""
-            : userExpense.inputNewCategory.invalidMessage
-        }
-        blur={() =>
-          verifyFocus(
-            userExpense.inputNewCategory.id,
+      <>
+        <InputContainer
+          placeholder={userExpense.inputNewCategory.placeholder}
+          changed={(event) =>
+            InputChangeHandler(event, userExpense.inputNewCategory.id)
+          }
+          invalidMessage={
             userExpense.inputNewCategory.isValid
-          )
-        }
-      >
-        New Category Name
-      </InputContainer>
+              ? ""
+              : userExpense.inputNewCategory.invalidMessage
+          }
+          blur={() =>
+            verifyFocus(
+              userExpense.inputNewCategory.id,
+              userExpense.inputNewCategory.isValid
+            )
+          }
+        >
+          New Category Name
+        </InputContainer>
+        <InputContainer
+          placeholder={userExpense.inputSpend.placeholder}
+          changed={(event) =>
+            InputChangeHandler(event, userExpense.inputSpend.id)
+          }
+          invalidMessage={
+            userExpense.inputSpend.isValid
+              ? ""
+              : userExpense.inputSpend.invalidMessage
+          }
+          blur={() =>
+            verifyFocus(
+              userExpense.inputSpend.id,
+              userExpense.inputSpend.isValid
+            )
+          }
+        >
+          Category Spending Limit
+        </InputContainer>
+      </>
     );
   }
 
@@ -572,43 +646,49 @@ const UserExpenses = () => {
             </NewCategoryTitleDiv>
             <NewCategoryFormDiv>
               <InputContainer
-                placeholder={userCategory.categoryPlaceholder}
+                placeholder={userCategory.inputNewCategory.placeholder}
                 changed={(event) =>
-                  InputChangeHandler(event, userCategory.categoryId)
+                  InputChangeHandler(event, userCategory.inputNewCategory.id)
                 }
                 invalidMessage={
-                  userCategory.categoryIsValid
+                  userCategory.inputNewCategory.isValid
                     ? ""
-                    : userCategory.categoryInvalidMessage
+                    : userCategory.inputNewCategory.invalidMessage
                 }
                 blur={() =>
                   verifyFocus(
-                    userCategory.categoryId,
-                    userCategory.categoryIsValid
+                    userCategory.inputNewCategory.id,
+                    userCategory.inputNewCategory.isValid
                   )
                 }
               >
                 New Category Name
               </InputContainer>
               <InputContainer
-                placeholder={userCategory.categorySpendPlaceholder}
+                placeholder={userCategory.inputSpend.placeholder}
                 changed={(event) =>
-                  InputChangeHandler(event, userCategory.categorySpendId)
+                  InputChangeHandler(event, userCategory.inputSpend.id)
                 }
                 invalidMessage={
-                  userCategory.categorySpendIsValid
+                  userCategory.inputSpend.isValid
                     ? ""
-                    : userCategory.categorySpendInvalidMessage
+                    : userCategory.inputSpend.invalidMessage
                 }
                 blur={() =>
                   verifyFocus(
-                    userCategory.categorySpendId,
-                    userCategory.categorySpendIsValid
+                    userCategory.inputSpend.id,
+                    userCategory.inputSpend.isValid
                   )
                 }
               >
                 Category Spending Limit
               </InputContainer>
+              <AddExpenseButton
+                disabled={categorySubmitPermission ? "" : "disabled"}
+                onClick={() => submitCategory()}
+              >
+                Add Expense
+              </AddExpenseButton>
             </NewCategoryFormDiv>
           </NewCategoryDiv>
           <NewExpenseDiv>
@@ -661,7 +741,7 @@ const UserExpenses = () => {
                   InputChangeHandler(event, userExpense.inputCategory.id)
                 }
               />
-              {newCategory} //OLHAR
+              {newCategory}
               <InputContainer
                 type={"date"}
                 changed={(event) =>
@@ -682,7 +762,7 @@ const UserExpenses = () => {
                 Date
               </InputContainer>
               <AddExpenseButton
-                disabled={submitPermission ? "" : "disabled"}
+                disabled={expenseSubmitPermission ? "" : "disabled"}
                 onClick={() => submitExpense()}
               >
                 Add Expense
