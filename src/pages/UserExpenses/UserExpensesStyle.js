@@ -112,7 +112,7 @@ export const UserExpensesListContainer = styled.div`
   justify-content: center;
   border: 1px solid white;
   width: 100%;
-  height: 80%;
+  height: 90%;
 `;
 
 export const ListFilterDiv = styled.div`
@@ -122,8 +122,32 @@ export const ListFilterDiv = styled.div`
 `;
 export const UserExpensesList = styled.div`
   border: 1px solid gold;
-  width: 90%;
+  width: 100%;
   height: 90%;
+  overflow-y: auto;
+  padding: 5px;
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: black;
+  }
 `;
 
 export const ListTitleDiv = styled.div`
@@ -131,7 +155,7 @@ export const ListTitleDiv = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 20%;
+  height: 10%;
   border: 1px solid green;
 `;
 

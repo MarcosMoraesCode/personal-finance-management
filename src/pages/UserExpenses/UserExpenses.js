@@ -28,8 +28,59 @@ import InputContainer from "../../components/UI/Input/Input";
 import SelectContainer from "../../components/UI/Select/Select";
 import axiosInstance from "../../axiosInstance";
 import { SpinnerCircular } from "spinners-react";
+import Expense from "../../components/ExpensesTracking/Expense/Expense";
 
 const UserExpenses = () => {
+  const expenses = [
+    {
+      expenseTopic: "Food",
+      expenseDataList: [
+        { name: "Supermarket", value: 200.0, date: "01/02/2022" },
+        { name: "Bakery S.A", value: 34.0, date: "01/02/2022" },
+      ],
+      expenseTotal: 234.0,
+    },
+    {
+      expenseTopic: "Medicine",
+      expenseDataList: [
+        { name: "H7 Store", value: 100.0, date: "03/02/2022" },
+        { name: "Surgery", value: 7000.0, date: "17/22/2022" },
+      ],
+      expenseTotal: 7100.0,
+    },
+    {
+      expenseTopic: "Study",
+      expenseDataList: [
+        { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+      ],
+      expenseTotal: 270.0,
+    },
+    {
+      expenseTopic: "Study",
+      expenseDataList: [
+        { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+      ],
+      expenseTotal: 270.0,
+    },
+  ];
+  const [infoBtn, setInfoBtn] = useState(false);
+  const expenseList = expenses.map((expense, index) => {
+    return (
+      <Expense
+        key={`expense-${index}`}
+        expenseTopic={expense.expenseTopic}
+        expenseTotal={expense.expenseTotal}
+        expenseDataList={expense.expenseDataList}
+        clicked={() => setInfoBtn(!infoBtn)}
+        details={infoBtn === true ? "Less Info" : "More Info"}
+      />
+    );
+  });
+
   const [userExpense, setUserExpense] = useState({
     //COLOCAR OS DADOS MAIS COMPACTOS EM States diferente ou inputs?
 
@@ -87,61 +138,6 @@ const UserExpenses = () => {
     },
   });
 
-  const userExpenseInitialState = {
-    id: "expense",
-    inputName: {
-      value: "",
-      isValid: false,
-      isTouched: false,
-      id: "Expense Name",
-      placeholder: "Expense Name",
-      invalidMessage: "",
-    },
-    inputValue: {
-      value: "",
-      isValid: false,
-      isTouched: false,
-      id: "Expense Value",
-      placeholder: "Ex 150,00",
-      invalidMessage: "",
-    },
-    inputCategory: {
-      value: "",
-      categoryIsValid: false,
-      categoryIsTouched: false,
-      id: "Expense Category",
-      options: [
-        { name: "New Category" },
-        { name: "Medicine" },
-        { name: "Study" },
-        { name: "Rent" },
-      ],
-    },
-    inputNewCategory: {
-      value: "",
-      isValid: false,
-      isTouched: false,
-      id: "New Expense Category",
-      placeholder: "New Expense Category",
-      invalidMessage: "",
-    },
-    inputDate: {
-      value: "",
-      isValid: false,
-      isTouched: false,
-      id: "Expense Date",
-      invalidMessage: "",
-    },
-    inputSpend: {
-      id: "New Category Spending Limit",
-      value: "",
-      isValid: false,
-      isTouched: false,
-      placeholder: "Ex: 1800,00",
-      invalidMessage: "",
-    },
-  };
-
   const [userCategory, setUserCategory] = useState({
     // id: "category",
 
@@ -162,7 +158,6 @@ const UserExpenses = () => {
       invalidMessage: "",
     },
   });
-  const [expenseList, setExpenseList] = useState([]);
 
   const [expenseSubmitPermission, setExpenseSubmitPermission] = useState(false);
   const [categorySubmitPermission, setCategorySubmitPermission] =
@@ -578,27 +573,31 @@ const UserExpenses = () => {
 
   const submitCategory = () => {
     alert("categoria adicionada com sucesso");
+
+    setUserCategory({
+      ...userCategory,
+      inputNewCategory: {
+        ...userCategory.inputNewCategory,
+        isTouched: false,
+        isValid: "false",
+        value: "",
+      },
+      inputSpend: {
+        ...userCategory.inputSpend,
+        isTouched: false,
+        isValid: "false",
+        value: "",
+      },
+    });
+    setCategorySubmitPermission(false);
   };
 
-  const submitExpense = async (event) => {
+  const submitExpense = (event) => {
     event.preventDefault();
-    setExpenseList([
-      ...expenseList,
-      {
-        name: userExpense.inputName.value,
-        value: userExpense.inputValue.value,
-        category:
-          userExpense.inputCategory.value !== "" &&
-          userExpense.inputCategory.value !== "New Category"
-            ? userExpense.inputCategory.value
-            : userExpense.inputNewCategory.value,
-        date: userExpense.inputDate.value,
-      },
-    ]);
 
     //APENAS TESTE DE REQUEST
 
-    await axiosInstance
+    axiosInstance
       .post("/expense.json", {
         name: userExpense.inputName.value,
         value: userExpense.inputValue.value,
@@ -710,32 +709,10 @@ const UserExpenses = () => {
     );
   }
 
-  const expenseListContainer = expenseList.map((expense, index) => {
-    return (
-      <div key={index}>
-        <div>Expense name: {expense.name}</div>
-        <div>Expense value: {expense.value}</div>
-        <div>Expense category: {expense.category}</div>
-        <div>Expense date: {expense.date}</div>
-      </div>
-    );
-  });
-  let fetchedExpensesList = null;
-  const fetchedExpenses = [];
-
   const getExpenses = () => {
     axiosInstance.get("/expense.json").then((response) => {
       let test = Object.values(response.data);
       //console.log("test", test);
-
-      test.forEach((expense) => {
-        fetchedExpenses.push({
-          name: expense.name,
-          value: expense.value,
-          category: expense.category,
-          date: expense.date,
-        });
-      });
     });
   };
   getExpenses();
@@ -765,6 +742,7 @@ const UserExpenses = () => {
                     userCategory.inputNewCategory.isValid
                   )
                 }
+                value={userCategory.inputNewCategory.value}
               >
                 New Category Name
               </InputContainer>
@@ -784,6 +762,7 @@ const UserExpenses = () => {
                     userCategory.inputSpend.isValid
                   )
                 }
+                value={userCategory.inputSpend.value}
               >
                 Category Spending Limit
               </InputContainer>
@@ -885,7 +864,7 @@ const UserExpenses = () => {
           </ListTitleDiv>
           <UserExpensesListContainer>
             <ListFilterDiv>Filter</ListFilterDiv>
-            <UserExpensesList>Expense List</UserExpensesList>
+            <UserExpensesList>{expenseList}</UserExpensesList>
           </UserExpensesListContainer>
         </AuxDiv>
         <AuxDiv>
@@ -893,13 +872,13 @@ const UserExpenses = () => {
             <HistoryTitleDiv>
               <DefaultTitle>History</DefaultTitle>
             </HistoryTitleDiv>
-            <HistoryContainer></HistoryContainer>
+            <HistoryContainer>Container</HistoryContainer>
           </ExpenseHistoryDiv>
           <ExpenseAnalysisDiv>
             <AnalysisTitleDiv>
               <DefaultTitle>Analysis</DefaultTitle>
             </AnalysisTitleDiv>
-            <AnalysisContainer></AnalysisContainer>
+            <AnalysisContainer>Container</AnalysisContainer>
           </ExpenseAnalysisDiv>
         </AuxDiv>
       </UserExpensesContainer>

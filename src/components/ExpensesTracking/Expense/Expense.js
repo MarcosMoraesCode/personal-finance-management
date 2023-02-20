@@ -4,6 +4,7 @@ import {
   ExpenseLi,
   ExpenseLiContent,
   ExpenseDefaultContent,
+  ExpenseListDiv,
   ExpenseExtraContent,
   ExpenseSubtitlesDiv,
   DefaultContentBlock,
@@ -64,11 +65,13 @@ const Expense = (props) => {
             </DefaultContentBlock>
             <DefaultContentBlock reduceWidth>
               <div />
-              <ExpenseDefaultButton>Show More </ExpenseDefaultButton>
+              <ExpenseDefaultButton onClick={props.clicked}>
+                {props.details}
+              </ExpenseDefaultButton>
             </DefaultContentBlock>
           </ExpenseDefaultContent>
 
-          <ExpenseExtraContent>
+          <ExpenseExtraContent {...props}>
             <ExpenseSubtitlesDiv>
               <SubtitleBlock color={"gold"}>
                 <p>Expense</p>
@@ -83,7 +86,7 @@ const Expense = (props) => {
                 <div />
               </SubtitleBlock>
             </ExpenseSubtitlesDiv>
-            {extraContentList}
+            <ExpenseListDiv>{extraContentList}</ExpenseListDiv>
           </ExpenseExtraContent>
         </ExpenseLiContent>
       </ExpenseLi>

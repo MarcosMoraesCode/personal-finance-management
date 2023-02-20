@@ -8,6 +8,7 @@ export const WrapExpenseLi = styled.div`
   border-bottom: white 1px solid;
   width: 100%;
   height: 100%;
+  max-height: 150px;
   min-height: 45px;
   margin-top: 15px;
   padding: 2px;
@@ -28,7 +29,7 @@ export const ExpenseLiContent = styled.div`
 `;
 
 export const ExpenseSubtitlesDiv = styled.div`
-  display: flex;
+  display: fixed;
   justify-content: space-between;
   width: 100%;
   height: 10%;
@@ -58,19 +59,23 @@ export const ExtraContentBlock = styled.div`
   align-items: center;
   width: ${(props) => (props.reduceWidth ? "15%" : "35%")};
   font-weight: 400;
-  margin-top: 5px;
+  margin-top: 10px;
   margin-bottom: 5px;
 `;
 
 export const SubtitleBlock = styled.div`
   display: flex;
   justify-content: space-between;
+  height: fit-content;
   width: ${(props) => (props.reduceWidth ? "15%" : "35%")};
   font-weight: 400;
   color: ${(props) => props.color};
 `;
 export const ExpenseExtraContent = styled.div`
-  display: flex; //APPEARS CONDITIONALY WITH PROPS props.isNeeded
+  display: ${(props) =>
+    props.details === "Less Info"
+      ? "flex"
+      : "none"}; //APPEARS CONDITIONALY WITH PROPS props.isNeeded
   flex-direction: column;
   height: 40%;
 `;
@@ -94,12 +99,39 @@ export const ExtraContentWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   overflow-y: auto;
-  max-height: 200px;
+  max-height: fit-content;
 `;
 
 export const ExtraText = styled.p`
   font-size: 12px;
   @media (max-width: 1300px) {
     font-size: 10px;
+  }
+`;
+
+export const ExpenseListDiv = styled.div`
+  overflow-y: auto;
+  width: 100%;
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: black;
   }
 `;
