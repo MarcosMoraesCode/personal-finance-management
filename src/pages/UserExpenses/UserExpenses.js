@@ -66,6 +66,16 @@ const UserExpenses = () => {
       ],
       expenseTotal: 270.0,
     },
+    {
+      expenseTopic: "Study",
+      expenseDataList: [
+        { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+      ],
+      expenseTotal: 270.0,
+    },
   ];
   const [infoBtn, setInfoBtn] = useState(false);
   const expenseList = expenses.map((expense, index) => {
@@ -75,7 +85,9 @@ const UserExpenses = () => {
         expenseTopic={expense.expenseTopic}
         expenseTotal={expense.expenseTotal}
         expenseDataList={expense.expenseDataList}
-        clicked={() => setInfoBtn(!infoBtn)}
+        clicked={() => {
+          setInfoBtn(!infoBtn);
+        }}
         details={infoBtn === true ? "Less Info" : "More Info"}
       />
     );

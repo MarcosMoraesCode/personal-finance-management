@@ -6,12 +6,19 @@ export const WrapExpenseLi = styled.div`
   justify-content: center;
   align-items: center;
   border-bottom: white 1px solid;
+  margin: auto;
   width: 100%;
-  height: 100%;
-  max-height: 150px;
+  height: 25%;
+  max-height: ${(props) =>
+    props.details === "Less Info" ? "130px" : "40px"}; //50 ou 150
   min-height: 45px;
   margin-top: 15px;
   padding: 2px;
+
+  ::after {
+    background-color: red;
+  }
+  // padding-bottom: 10px;
 `;
 
 export const ExpenseLi = styled.li`
@@ -25,14 +32,14 @@ export const ExpenseLi = styled.li`
 export const ExpenseLiContent = styled.div`
   width: 100%;
   height: 100%;
-  //background-color: red;
 `;
 
 export const ExpenseSubtitlesDiv = styled.div`
-  display: fixed;
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  height: 10%;
+  height: fit-content;
   font-size: xx-small;
   font-weight: 600;
   color: #51d289;
@@ -40,10 +47,20 @@ export const ExpenseSubtitlesDiv = styled.div`
 
 export const ExpenseDefaultContent = styled.div`
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  height: 40%;
+`;
+
+export const ExpenseTextDiv = styled.div`
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
 `;
 export const DefaultContentBlock = styled.div`
   display: flex;
+  flex-direction: row;
   font-size: 15px;
   justify-content: space-between;
   width: ${(props) => (props.reduceWidth ? "15%" : "35%")};
@@ -77,7 +94,7 @@ export const ExpenseExtraContent = styled.div`
       ? "flex"
       : "none"}; //APPEARS CONDITIONALY WITH PROPS props.isNeeded
   flex-direction: column;
-  height: 40%;
+  height: 60%;
 `;
 
 export const ExpenseDefaultButton = styled.button`

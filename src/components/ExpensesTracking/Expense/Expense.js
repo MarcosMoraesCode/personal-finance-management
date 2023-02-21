@@ -9,6 +9,7 @@ import {
   ExpenseSubtitlesDiv,
   DefaultContentBlock,
   SubtitleBlock,
+  ExpenseTextDiv,
   ExpenseDefaultButton,
   ExtraContentBlock,
   ExtraContentWrapper,
@@ -37,38 +38,40 @@ const Expense = (props) => {
   });
 
   return (
-    <WrapExpenseLi>
+    <WrapExpenseLi {...props}>
       <ExpenseLi>
         <ExpenseLiContent>
-          <ExpenseSubtitlesDiv>
-            <SubtitleBlock>
-              <p>Category</p>
-              <div />
-              <p>Value</p>
-            </SubtitleBlock>
-            <SubtitleBlock>
-              <p>Real Percentage</p>
-              <p>Expected</p>
-            </SubtitleBlock>
-            <SubtitleBlock reduceWidth>
-              <div />
-            </SubtitleBlock>
-          </ExpenseSubtitlesDiv>
           <ExpenseDefaultContent>
-            <DefaultContentBlock>
-              <p>{props.expenseTopic}</p>
-              <p> {`$ ${props.expenseTotal}`}</p>
-            </DefaultContentBlock>
-            <DefaultContentBlock>
-              <p>x%</p>
-              <p>x%</p>
-            </DefaultContentBlock>
-            <DefaultContentBlock reduceWidth>
-              <div />
-              <ExpenseDefaultButton onClick={props.clicked}>
-                {props.details}
-              </ExpenseDefaultButton>
-            </DefaultContentBlock>
+            <ExpenseSubtitlesDiv>
+              <SubtitleBlock>
+                <p>Category</p>
+                <div />
+                <p>Value</p>
+              </SubtitleBlock>
+              <SubtitleBlock>
+                <p>Real Percentage</p>
+                <p>Expected</p>
+              </SubtitleBlock>
+              <SubtitleBlock reduceWidth>
+                <div />
+              </SubtitleBlock>
+            </ExpenseSubtitlesDiv>
+            <ExpenseTextDiv>
+              <DefaultContentBlock>
+                <p>{props.expenseTopic}</p>
+                <p> {`$ ${props.expenseTotal}`}</p>
+              </DefaultContentBlock>
+              <DefaultContentBlock>
+                <p>x%</p>
+                <p>x%</p>
+              </DefaultContentBlock>
+              <DefaultContentBlock reduceWidth>
+                <div />
+                <ExpenseDefaultButton onClick={props.clicked}>
+                  {props.details}
+                </ExpenseDefaultButton>
+              </DefaultContentBlock>
+            </ExpenseTextDiv>
           </ExpenseDefaultContent>
 
           <ExpenseExtraContent {...props}>
