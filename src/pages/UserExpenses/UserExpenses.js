@@ -78,20 +78,45 @@ const UserExpenses = () => {
     },
   ];
   const [infoBtn, setInfoBtn] = useState(false);
+
+  const [infoBtnList, setInfoBtnList] = useState([]);
+
+  const infoBtnArray = [];
+
+  const expandBtnHandler = (expenseId) => {
+    setInfoBtnList([
+      ...infoBtnList,
+      (infoBtnList[expenseId].isOpen = !infoBtnList[expenseId].isOpen),
+    ]);
+    console.log(infoBtnList);
+
+    //console.log(infoBtnList);
+  };
+
   const expenseList = expenses.map((expense, index) => {
+    //console.log(infoBtnList);
+    infoBtnArray.push({ isOpen: false });
     return (
       <Expense
-        key={`expense-${index}`}
+        key={index}
         expenseTopic={expense.expenseTopic}
         expenseTotal={expense.expenseTotal}
         expenseDataList={expense.expenseDataList}
         clicked={() => {
-          setInfoBtn(!infoBtn);
+          expandBtnHandler(index);
         }}
-        details={infoBtn === true ? "Less Info" : "More Info"}
+        details={
+          infoBtnList.length > 0
+            ? infoBtnList[index].isOpen === true
+              ? "Less Info"
+              : "More Info"
+            : null
+        }
       />
     );
   });
+
+  useEffect(() => setInfoBtnList(infoBtnArray), []);
 
   const [userExpense, setUserExpense] = useState({
     //COLOCAR OS DADOS MAIS COMPACTOS EM States diferente ou inputs?
