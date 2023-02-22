@@ -33,30 +33,6 @@ import Expense from "../../components/ExpensesTracking/Expense/Expense";
 const UserExpenses = () => {
   const expenses = [
     {
-      expenseTopic: "Food",
-      expenseDataList: [
-        { name: "Supermarket", value: 200.0, date: "01/02/2022" },
-        { name: "Bakery S.A", value: 34.0, date: "01/02/2022" },
-      ],
-      expenseTotal: 234.0,
-    },
-    {
-      expenseTopic: "Medicine",
-      expenseDataList: [
-        { name: "H7 Store", value: 100.0, date: "03/02/2022" },
-        { name: "Surgery", value: 7000.0, date: "17/22/2022" },
-      ],
-      expenseTotal: 7100.0,
-    },
-    {
-      expenseTopic: "Study",
-      expenseDataList: [
-        { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-      ],
-      expenseTotal: 270.0,
-    },
-    {
       expenseTopic: "Study",
       expenseDataList: [
         { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
@@ -70,29 +46,17 @@ const UserExpenses = () => {
       expenseTopic: "Study",
       expenseDataList: [
         { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
         { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
         { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
       ],
       expenseTotal: 270.0,
     },
   ];
+
+  let expenseItems = [];
+
+  let categoryArray = [];
+
   const [infoBtn, setInfoBtn] = useState(false);
 
   const [infoBtnList, setInfoBtnList] = useState({});
@@ -113,29 +77,31 @@ const UserExpenses = () => {
     });
   };
 
-  const expenseList = expenses.map((expense, index) => {
+  /*onst expenseList = expenses.map((expense, index) => {
     //console.log(infoBtnList);
-    infoBtnArray.push({ isOpen: false });
-    return (
-      <Expense
-        expensesPage
-        key={index}
-        expenseTopic={expense.expenseTopic}
-        expenseTotal={expense.expenseTotal}
-        expenseDataList={expense.expenseDataList}
-        clicked={() => {
-          expandBtnHandler(index);
-        }}
-        details={
-          infoBtnList.buttons !== undefined
-            ? infoBtnList.buttons[index].isOpen === true
-              ? "Less Info"
-              : "More Info"
-            : null
-        }
-      />
-    );
-  });
+    if (expenseItems.length > 0) {
+      infoBtnArray.push({ isOpen: false });
+      return (
+        <Expense
+          expensesPage
+          key={index}
+          expenseTopic={expense.expenseTopic}
+          expenseTotal={expense.expenseTotal}
+          expenseDataList={expense.expenseDataList}
+          clicked={() => {
+            expandBtnHandler(index);
+          }}
+          details={
+            infoBtnList.buttons !== undefined
+              ? infoBtnList.buttons[index].isOpen === true
+                ? "Less Info"
+                : "More Info"
+              : null
+          }
+        />
+      );
+    }
+  });*/
 
   useEffect(() => {
     setInfoBtnList({ buttons: infoBtnArray });
@@ -572,14 +538,14 @@ const UserExpenses = () => {
     let filteredList = [];
     switch (filterType) {
       case "sort by name":
-        filteredList = expenseList.filter((expense) => {
+        filteredList = fetchedExpensesList.filter((expense) => {
           if (expense.props.expenseTopic.includes(filterValue)) {
             return expense;
           }
         });
         break;
       case "sort by value":
-        filteredList = expenseList.filter((expense) => {
+        filteredList = fetchedExpensesList.filter((expense) => {
           if (expense.props.expenseTotal >= filterValue) {
             return expense;
           }
@@ -661,7 +627,13 @@ const UserExpenses = () => {
   };
 
   const submitCategory = () => {
-    alert("categoria adicionada com sucesso");
+    axiosInstance
+      .post("/category.json", {
+        category: userCategory.inputNewCategory.value,
+        spendLimit: userCategory.inputSpend.value,
+      })
+      .then((response) => {})
+      .catch((err) => console.log(err));
 
     setUserCategory({
       ...userCategory,
@@ -685,12 +657,21 @@ const UserExpenses = () => {
     event.preventDefault();
 
     //APENAS TESTE DE REQUEST
+    if (userExpense.inputCategory.value === "New Category") {
+      axiosInstance
+        .post("/category.json", {
+          category: userExpense.inputNewCategory.value,
+          spendLimit: userExpense.inputSpend.value,
+        })
+        .then((response) => {})
+        .catch((err) => console.log(err));
+    }
 
     axiosInstance
       .post("/expense.json", {
         name: userExpense.inputName.value,
         value: userExpense.inputValue.value,
-        category:
+        categoryId:
           userExpense.inputCategory.value !== "" &&
           userExpense.inputCategory.value !== "New Category"
             ? userExpense.inputCategory.value
@@ -700,7 +681,6 @@ const UserExpenses = () => {
       .then((response) => {
         //console.log("passou aqui");
       })
-
       .catch((err) => console.log(err));
     setUserExpense({
       ...userExpense,
@@ -801,12 +781,77 @@ const UserExpenses = () => {
   }
 
   const getExpenses = () => {
-    axiosInstance.get("/expense.json").then((response) => {
-      let test = Object.values(response.data);
-      console.log("test", test);
+    axiosInstance.get("/category.json").then((response) => {
+      let fetchedCategories = Object.values(response.data);
+
+      fetchedCategories.forEach((categoryObj) => {
+        let categoryExists = fetchedCategories.some(
+          (cat) => cat.category === categoryObj.category
+        );
+        if (categoryExists) {
+          expenseItems.push({
+            category: categoryObj.category,
+            spendLimit: categoryObj.spendLimit,
+            expensesList: [],
+          });
+        }
+      });
+      console.log(expenseItems);
+
+      axiosInstance.get("/expense.json").then((response) => {
+        let fetchedExpenses = Object.values(response.data);
+
+        fetchedExpenses.forEach((expense) => {
+          let categoryIndex = expenseItems.findIndex(
+            (item) => expense.category === fetchedExpenses.categoryId
+          );
+          expenseItems[categoryIndex]?.expensesList.push({
+            name: expense.name,
+            value: expense.value,
+            date: expense.date,
+          });
+          //console.log("items", expenseItems);
+        });
+        //console.log(fetchedExpenses);
+
+        //console.log("test", test);
+      });
     });
   };
-  getExpenses();
+
+  useEffect(() => {
+    getExpenses();
+  }, []);
+
+  let fetchedExpensesList = [];
+
+  if (expenseSubmitPermission) {
+    console.log(expenseItems);
+    fetchedExpensesList = expenseItems.map((expense, index) => {
+      infoBtnArray.push({ isOpen: false });
+      return (
+        <Expense
+          expensesPage
+          key={index}
+          expenseTopic={expense.category}
+          expenseTotal={expense.spendLimit}
+          expenseDataList={expense.expensesList}
+          clicked={() => {
+            expandBtnHandler(index);
+          }}
+          details={
+            infoBtnList.buttons !== undefined
+              ? infoBtnList.buttons[index].isOpen === true
+                ? "Less Info"
+                : "More Info"
+              : null
+          }
+        />
+      );
+    });
+  } else {
+    fetchedExpensesList = <div>Sem despesas</div>;
+  }
 
   return (
     <UserExpensesDiv>
@@ -983,7 +1028,7 @@ const UserExpenses = () => {
               ></SelectContainer>
             </ListFilterDiv>
             <UserExpensesList>
-              {filterValue === "" ? expenseList : verifySelectType()}
+              {filterValue === "" ? fetchedExpensesList : verifySelectType()}
             </UserExpensesList>
           </UserExpensesListContainer>
         </AuxDiv>

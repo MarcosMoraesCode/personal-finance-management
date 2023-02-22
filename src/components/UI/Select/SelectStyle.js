@@ -13,6 +13,7 @@ export const StyledSelect = styled.select`
   border-radius: ${(props) =>
     `${props.border === "no-left-border" ? "0px 5px 5px 0px" : "5px"}`};
   font-family: "Roboto";
+  border: 1px solid black;
   margin-bottom: 2px;
 `;
 
