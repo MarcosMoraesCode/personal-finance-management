@@ -98,6 +98,7 @@ const UserExpenses = () => {
   const [infoBtnList, setInfoBtnList] = useState({});
 
   const [filterValue, setFilterValue] = useState("");
+  const [filterType, setFilterType] = useState("sort by name");
 
   const infoBtnArray = [];
 
@@ -563,6 +564,33 @@ const UserExpenses = () => {
     setFilterValue(event.currentTarget.value);
   };
 
+  const FilterChangeHandler = (event) => {
+    setFilterType(event.currentTarget.value);
+  };
+
+  const verifySelectType = () => {
+    let filteredList = [];
+    switch (filterType) {
+      case "sort by name":
+        filteredList = expenseList.filter((expense) => {
+          if (expense.props.expenseTopic.includes(filterValue)) {
+            return expense;
+          }
+        });
+        break;
+      case "sort by value":
+        filteredList = expenseList.filter((expense) => {
+          if (expense.props.expenseTotal >= filterValue) {
+            return expense;
+          }
+        });
+        break;
+      default:
+        break;
+    }
+    return filteredList;
+  };
+
   const checkExpenseButtonValidation = (expenseId, value) => {
     //falta adicionar o disable
     let validation1 = userExpense.inputName.isValid === true;
@@ -887,6 +915,7 @@ const UserExpenses = () => {
                   changed={(event) =>
                     InputChangeHandler(event, userExpense.inputCategory.id)
                   }
+                  defaultOption
                 />
                 {newCategory}
                 <InputContainer
@@ -926,21 +955,22 @@ const UserExpenses = () => {
           <UserExpensesListContainer>
             <ListFilterDiv>
               <InputContainer
+                placeholder={
+                  filterType === "sort by name"
+                    ? "Search by name"
+                    : "Minimum amount"
+                }
                 changed={(event) => FilterInputChangeHandler(event)}
                 border={"no-right-border"}
                 value={filterValue}
-              >
-                ...
-              </InputContainer>
+              ></InputContainer>{" "}
+              <SelectContainer
+                options={[{ name: "sort by name" }, { name: "sort by value" }]}
+                changed={(event) => FilterChangeHandler(event)}
+              ></SelectContainer>
             </ListFilterDiv>
             <UserExpensesList>
-              {filterValue === ""
-                ? expenseList
-                : expenseList.filter((expense) => {
-                    if (expense.props.expenseTopic.includes(filterValue)) {
-                      return expense;
-                    }
-                  })}
+              {filterValue === "" ? expenseList : verifySelectType()}
             </UserExpensesList>
           </UserExpensesListContainer>
         </AuxDiv>

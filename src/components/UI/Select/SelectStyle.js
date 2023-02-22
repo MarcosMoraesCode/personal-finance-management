@@ -9,6 +9,8 @@ export const StyledLabel = styled.label`
 export const StyledSelect = styled.select`
   height: 29px;
   border-radius: 5px;
+
+  font-family: "Roboto";
 `;
 
 export const WrappComponent = styled.div`

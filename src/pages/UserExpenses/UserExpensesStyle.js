@@ -116,6 +116,9 @@ export const UserExpensesListContainer = styled.div`
 `;
 
 export const ListFilterDiv = styled.div`
+  display: flex;
+  align-items: center;
+
   border: red solid 1px;
   width: 90%;
   height: 10%;

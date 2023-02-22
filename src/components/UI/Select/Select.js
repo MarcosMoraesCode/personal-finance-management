@@ -17,6 +17,13 @@ const SelectContainer = (props) => {
     );
   });
 
+  let defaultOption = null;
+  if (props.defaultOption) {
+    defaultOption = (
+      <DefaultOption key={`default-option`} value={""}></DefaultOption>
+    );
+  }
+
   return (
     <WrappComponent>
       <StyledLabel htmlFor={props.categoryName}>{props.label}</StyledLabel>
@@ -25,7 +32,7 @@ const SelectContainer = (props) => {
         name={props.categoryName}
         onChange={props.changed}
       >
-        <DefaultOption key={`default-option`} value={""}></DefaultOption>
+        {defaultOption}
         {optionsList}
       </StyledSelect>
     </WrappComponent>
