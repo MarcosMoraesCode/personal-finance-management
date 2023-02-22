@@ -73,6 +73,22 @@ const UserExpenses = () => {
         { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
         { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
         { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
+        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
       ],
       expenseTotal: 270.0,
     },
@@ -102,6 +118,7 @@ const UserExpenses = () => {
     infoBtnArray.push({ isOpen: false });
     return (
       <Expense
+        expensesPage
         key={index}
         expenseTopic={expense.expenseTopic}
         expenseTotal={expense.expenseTotal}

@@ -14,10 +14,29 @@ import {
   ExtraContentBlock,
   ExtraContentWrapper,
   ExtraText,
+  EditButton,
+  RemoveButton,
+  ButtonsDiv,
 } from "./ExpenseStyle";
 
 const Expense = (props) => {
   const extraContentList = props.expenseDataList.map((subTopic, index) => {
+    let lastContent = (
+      <>
+        <div></div>
+        <div></div>
+      </>
+    );
+
+    if (props.expensesPage) {
+      lastContent = (
+        <ButtonsDiv>
+          <EditButton> </EditButton>
+          <RemoveButton></RemoveButton>
+        </ButtonsDiv>
+      );
+    }
+
     return (
       <ExtraContentWrapper key={`${props.expenseTopic}-sub-${index}`}>
         {" "}
@@ -29,10 +48,7 @@ const Expense = (props) => {
           <ExtraText>x%</ExtraText>
           <ExtraText>{subTopic.date}</ExtraText>
         </ExtraContentBlock>
-        <ExtraContentBlock reduceWidth>
-          <div />
-          <div />
-        </ExtraContentBlock>
+        <ExtraContentBlock reduceWidth>{lastContent}</ExtraContentBlock>
       </ExtraContentWrapper>
     );
   });

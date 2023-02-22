@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import removeIcon from "../../../images/removeIcon.png";
+import editIcon from "../../../images/editIcon.png";
 
 export const WrapExpenseLi = styled.div`
   display: flex;
@@ -8,17 +10,49 @@ export const WrapExpenseLi = styled.div`
   border-bottom: white 1px solid;
   margin: auto;
   width: 100%;
-  height: 25%;
+  height: ${(props) =>
+    //console.log(props.expenseDataList.length);
+    props.expenseDataList.length > 4 ? "60%" : "fit-content"};
   max-height: ${(props) =>
-    props.details === "Less Info" ? "130px" : "40px"}; //50 ou 150
+    props.details === "Less Info" ? "400px" : "10%"}; //50 ou 150
   min-height: 45px;
   margin-top: 15px;
   padding: 2px;
 
-  ::after {
-    background-color: red;
-  }
+  //overflow-y: auto;
+
   // padding-bottom: 10px;
+`;
+
+export const ButtonsDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  width: 100%;
+
+  // background-color: red;
+`;
+
+export const EditButton = styled.button`
+  width: 15px;
+  height: 15px;
+  background-image: url(${editIcon});
+  background-size: contain;
+  border: none;
+  :hover {
+    cursor: pointer;
+  }
+`;
+export const RemoveButton = styled.button`
+  width: 15px;
+  height: 15px;
+  background-image: url(${removeIcon});
+  background-size: contain;
+  border: none;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 export const ExpenseLi = styled.li`
@@ -50,13 +84,14 @@ export const ExpenseDefaultContent = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  height: 40%;
+  height: fit-content;
 `;
 
 export const ExpenseTextDiv = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  //background-color: red;
 `;
 export const DefaultContentBlock = styled.div`
   display: flex;
@@ -115,8 +150,9 @@ export const ExpenseDefaultButton = styled.button`
 export const ExtraContentWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  overflow-y: auto;
-  max-height: fit-content;
+
+  height: fit-content;
+  margin-bottom: 3px;
 `;
 
 export const ExtraText = styled.p`
@@ -129,6 +165,7 @@ export const ExtraText = styled.p`
 export const ExpenseListDiv = styled.div`
   overflow-y: auto;
   width: 100%;
+  height: 100%;
 
   /* width */
   ::-webkit-scrollbar {
