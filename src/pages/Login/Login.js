@@ -445,7 +445,7 @@ const Login = () => {
               }
               switchHide={switchHidePasswordHandler}
               hideImg={hidePassword.singUpPassword}
-              border={"password"}
+              border={"no-right-border"}
             >
               Password
             </InputContainer>
@@ -528,7 +528,7 @@ const Login = () => {
               blur={() => verifyFocus(userPassword.id, userPassword.isValid)}
               switchHide={switchHidePasswordHandler}
               hideImg={hidePassword.loginPassword}
-              border={"password"}
+              border={"no-right-border"}
             >
               Password
             </InputContainer>

@@ -147,6 +147,7 @@ const InputContainer = (props) => {
             onBlur={
               props.blur //? (message = null) : (message = props.invalidMessage)
             }
+            border={props.border}
           />
           <StyledMessage
             key={`message-1-${props.id}`}

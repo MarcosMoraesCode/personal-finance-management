@@ -97,10 +97,11 @@ const UserExpenses = () => {
 
   const [infoBtnList, setInfoBtnList] = useState({});
 
+  const [filterValue, setFilterValue] = useState("");
+
   const infoBtnArray = [];
 
   const expandBtnHandler = (expenseId) => {
-    console.log(infoBtnList);
     let currentValue = infoBtnList.buttons[expenseId].isOpen;
     setInfoBtnList({
       ...infoBtnList,
@@ -109,8 +110,6 @@ const UserExpenses = () => {
         [expenseId]: { isOpen: !currentValue },
       },
     });
-
-    console.log(infoBtnList);
   };
 
   const expenseList = expenses.map((expense, index) => {
@@ -560,6 +559,10 @@ const UserExpenses = () => {
     }
   };
 
+  const FilterInputChangeHandler = (event) => {
+    setFilterValue(event.currentTarget.value);
+  };
+
   const checkExpenseButtonValidation = (expenseId, value) => {
     //falta adicionar o disable
     let validation1 = userExpense.inputName.isValid === true;
@@ -667,7 +670,7 @@ const UserExpenses = () => {
         date: userExpense.inputDate.value,
       })
       .then((response) => {
-        console.log("passou aqui");
+        //console.log("passou aqui");
       })
 
       .catch((err) => console.log(err));
@@ -712,7 +715,7 @@ const UserExpenses = () => {
       },
     });
     setExpenseSubmitPermission(false);
-    console.log(userExpense);
+    // console.log(userExpense);
   };
 
   let newCategory = null;
@@ -921,8 +924,24 @@ const UserExpenses = () => {
             <DefaultTitle>Category List</DefaultTitle>
           </ListTitleDiv>
           <UserExpensesListContainer>
-            <ListFilterDiv>Filter</ListFilterDiv>
-            <UserExpensesList>{expenseList}</UserExpensesList>
+            <ListFilterDiv>
+              <InputContainer
+                changed={(event) => FilterInputChangeHandler(event)}
+                border={"no-right-border"}
+                value={filterValue}
+              >
+                ...
+              </InputContainer>
+            </ListFilterDiv>
+            <UserExpensesList>
+              {filterValue === ""
+                ? expenseList
+                : expenseList.filter((expense) => {
+                    if (expense.props.expenseTopic.includes(filterValue)) {
+                      return expense;
+                    }
+                  })}
+            </UserExpensesList>
           </UserExpensesListContainer>
         </AuxDiv>
         <AuxDiv>
