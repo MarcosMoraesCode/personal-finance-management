@@ -771,6 +771,7 @@ const UserExpenses = () => {
             )
           }
           value={userExpense.inputNewCategory.value}
+          width={"200px"}
         >
           New Category Name
         </InputContainer>
@@ -791,6 +792,7 @@ const UserExpenses = () => {
             )
           }
           value={userExpense.inputSpend.value}
+          width={"200px"}
         >
           Category Spending Limit
         </InputContainer>
@@ -801,7 +803,7 @@ const UserExpenses = () => {
   const getExpenses = () => {
     axiosInstance.get("/expense.json").then((response) => {
       let test = Object.values(response.data);
-      //console.log("test", test);
+      console.log("test", test);
     });
   };
   getExpenses();
@@ -832,6 +834,7 @@ const UserExpenses = () => {
                   )
                 }
                 value={userCategory.inputNewCategory.value}
+                width={"200px"}
               >
                 New Category Name
               </InputContainer>
@@ -852,6 +855,7 @@ const UserExpenses = () => {
                   )
                 }
                 value={userCategory.inputSpend.value}
+                width={"200px"}
               >
                 Category Spending Limit
               </InputContainer>
@@ -886,6 +890,7 @@ const UserExpenses = () => {
                     )
                   }
                   value={userExpense.inputName.value}
+                  width={"200px"}
                 >
                   Expense Name
                 </InputContainer>
@@ -906,6 +911,7 @@ const UserExpenses = () => {
                     )
                   }
                   value={userExpense.inputValue.value}
+                  width={"200px"}
                 >
                   Expense Value
                 </InputContainer>
@@ -915,6 +921,7 @@ const UserExpenses = () => {
                   changed={(event) =>
                     InputChangeHandler(event, userExpense.inputCategory.id)
                   }
+                  width={"200px"}
                   defaultOption
                 />
                 {newCategory}
@@ -935,6 +942,7 @@ const UserExpenses = () => {
                     )
                   }
                   value={userExpense.inputDate.value}
+                  width={"200px"}
                 >
                   Date
                 </InputContainer>
@@ -960,13 +968,18 @@ const UserExpenses = () => {
                     ? "Search by name"
                     : "Minimum amount"
                 }
+                noMargin
                 changed={(event) => FilterInputChangeHandler(event)}
                 border={"no-right-border"}
                 value={filterValue}
+                width={"160px"}
               ></InputContainer>{" "}
               <SelectContainer
                 options={[{ name: "sort by name" }, { name: "sort by value" }]}
                 changed={(event) => FilterChangeHandler(event)}
+                border={"no-left-border"}
+                width={"110px"}
+                noMargin
               ></SelectContainer>
             </ListFilterDiv>
             <UserExpensesList>

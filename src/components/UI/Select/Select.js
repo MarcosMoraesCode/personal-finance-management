@@ -25,12 +25,13 @@ const SelectContainer = (props) => {
   }
 
   return (
-    <WrappComponent>
+    <WrappComponent noMargin={props.noMargin} width={props.width}>
       <StyledLabel htmlFor={props.categoryName}>{props.label}</StyledLabel>
       <StyledSelect
         id={props.categoryName}
         name={props.categoryName}
         onChange={props.changed}
+        border={props.border}
       >
         {defaultOption}
         {optionsList}

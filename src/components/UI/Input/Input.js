@@ -25,6 +25,7 @@ const InputContainer = (props) => {
             onChange={props.changed}
             placeholder={props.placeholder}
             onBlur={props.blur}
+            height={props.height}
           />
           <StyledMessage color={"#fc2469"} margin={2} fontWeight={900}>
             {props.invalidMessage}
@@ -46,6 +47,7 @@ const InputContainer = (props) => {
               placeholder={props.placeholder}
               onBlur={props.blur}
               border={props.border}
+              height={props.height}
             />{" "}
             <HideButton
               type="button"
@@ -96,6 +98,7 @@ const InputContainer = (props) => {
               placeholder={props.placeholder}
               onBlur={props.blur}
               border={props.border}
+              height={props.height}
             />{" "}
             <HideButton
               type="button"
@@ -121,6 +124,7 @@ const InputContainer = (props) => {
             onBlur={
               props.blur //? (message = null) : (message = props.invalidMessage)
             }
+            height={props.height}
           />
           <StyledMessage
             key={`message-${props.id}`}
@@ -135,7 +139,11 @@ const InputContainer = (props) => {
       break;
     default:
       inputElement = (
-        <WrappComponent key={props.id}>
+        <WrappComponent
+          key={props.id}
+          noMargin={props.noMargin}
+          width={props.width}
+        >
           <StyledLabel key={props.id}>{props.children}</StyledLabel>
 
           <StyledInput
@@ -148,6 +156,7 @@ const InputContainer = (props) => {
               props.blur //? (message = null) : (message = props.invalidMessage)
             }
             border={props.border}
+            height={props.height}
           />
           <StyledMessage
             key={`message-1-${props.id}`}

@@ -5,7 +5,7 @@ export const StyledInput = styled.input`
   width: 100%;
   border-radius: ${(props) =>
     `${props.border === "no-right-border" ? "5px 0px 0px 5px" : "5px"}`};
-  height: 29px;
+  height: ${(props) => (props.height ? props.height : "25px")};
   border: solid 1px black;
   border-right: ${(props) =>
     `${props.border === "no-right-border" ? "0px" : "1px solid black"}`};
@@ -19,6 +19,7 @@ export const StyledLabel = styled.label`
   display: flex;
   align-self: flex-start;
   padding-left: 4px;
+  font-size: 12px;
 `;
 export const StyledMessage = styled.p`
   text-align: end;
@@ -82,8 +83,8 @@ export const CheckBoxWrapper = styled.div`
 `;
 
 export const WrappComponent = styled.div`
-  width: 230px;
-  margin: 10px;
+  width: ${(props) => (props.width ? props.width : "230px")};
+  margin: ${(props) => (props.noMargin ? "0px" : "10px")};
   margin-top: 0px;
   display: flex;
   flex-direction: column;

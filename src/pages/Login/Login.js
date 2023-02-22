@@ -414,6 +414,7 @@ const Login = () => {
               blur={() =>
                 verifyFocus(newUserNickname.id, newUserNickname.isValid)
               }
+              height={"29px"}
             >
               User
             </InputContainer>
@@ -426,6 +427,7 @@ const Login = () => {
               }
               value={newUserEmail.value}
               blur={() => verifyFocus(newUserEmail.id, newUserEmail.isValid)}
+              height={"29px"}
             >
               Email
             </InputContainer>
@@ -446,6 +448,7 @@ const Login = () => {
               switchHide={switchHidePasswordHandler}
               hideImg={hidePassword.singUpPassword}
               border={"no-right-border"}
+              height={"29px"}
             >
               Password
             </InputContainer>
@@ -467,6 +470,7 @@ const Login = () => {
                   newUserPasswordConfirmation.isValid
                 )
               }
+              height={"29px"}
             >
               Confirm Password
             </InputContainer>
@@ -513,6 +517,7 @@ const Login = () => {
               invalidMessage={userEmail.isValid ? "" : userEmail.invalidMessage}
               value={userEmail.value}
               blur={() => verifyFocus(userEmail.id, userEmail.isValid)}
+              height={"29px"}
             >
               Email
             </InputContainer>
@@ -529,6 +534,7 @@ const Login = () => {
               switchHide={switchHidePasswordHandler}
               hideImg={hidePassword.loginPassword}
               border={"no-right-border"}
+              height={"29px"}
             >
               Password
             </InputContainer>
