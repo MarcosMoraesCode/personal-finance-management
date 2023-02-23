@@ -57,9 +57,7 @@ const UserExpenses = () => {
 
   const [fetchedExpensesList, setFetchedExpensesList] = useState(null);
 
-  const [infoBtn, setInfoBtn] = useState(false);
-
-  const [infoBtnList, setInfoBtnList] = useState({});
+  const [infoBtnList, setInfoBtnList] = useState(null);
 
   const [filterValue, setFilterValue] = useState("");
   const [filterType, setFilterType] = useState("sort by name");
@@ -68,15 +66,19 @@ const UserExpenses = () => {
 
   const expandBtnHandler = (expenseId) => {
     let currentValue = infoBtnList.buttons[expenseId].isOpen;
+
+    console.log("dentro da f", infoBtnList);
     setInfoBtnList({
-      ...infoBtnList,
       buttons: {
         ...infoBtnList.buttons,
         [expenseId]: { isOpen: !currentValue },
       },
     });
+    console.log("dps do set", infoBtnList);
   };
 
+  useEffect(() => {}, [infoBtnList]);
+  /*
   const expenseList = expenses.map((expense, index) => {
     //console.log(infoBtnList);
 
@@ -101,14 +103,13 @@ const UserExpenses = () => {
       />
     );
   });
-
-  useEffect(() => {
-    setInfoBtnList({ buttons: infoBtnArray });
-  }, []);
+  */
 
   const [categoryOptions, setCategoryOptions] = useState([
     { name: "New Category" },
   ]);
+
+  const buttons = [];
 
   const [userExpense, setUserExpense] = useState({
     id: "expense",
@@ -535,14 +536,14 @@ const UserExpenses = () => {
     let filteredList = [];
     switch (filterType) {
       case "sort by name":
-        filteredList = expenseList.filter((expense) => {
+        filteredList = fullList.filter((expense) => {
           if (expense.props.expenseTopic.includes(filterValue)) {
             return expense;
           }
         });
         break;
       case "sort by value":
-        filteredList = expenseList.filter((expense) => {
+        filteredList = fullList.filter((expense) => {
           if (expense.props.expenseTotal >= filterValue) {
             return expense;
           }
@@ -782,6 +783,7 @@ const UserExpenses = () => {
   }
 
   const getExpenses = () => {
+    let uniqueCategories = [];
     axiosInstance.get("/category.json").then((response) => {
       if (response.data !== null) {
         let fetchedCategories = Object.values(response.data);
@@ -805,7 +807,6 @@ const UserExpenses = () => {
         let newCategoryArray = categoryOptions.concat(categoryArray);
         let transformArray = newCategoryArray.map((arr) => arr.name);
         let uniqueNames = [...new Set(transformArray)];
-        let uniqueCategories = [];
 
         uniqueNames.forEach((value) => {
           uniqueCategories.push({ name: value });
@@ -833,6 +834,16 @@ const UserExpenses = () => {
 
           console.log(expenseItems);
 
+          expenseItems
+            .filter((expense) => expense.expensesList.length > 0)
+            .forEach((expense) => {
+              buttons.push({ isOpen: false });
+            });
+
+          let filteredBtns = buttons.slice(0, uniqueCategories.length - 1);
+
+          setInfoBtnList({ buttons: filteredBtns });
+
           setFetchedExpensesList(expenseItems);
           //console.log("test", test);
         }
@@ -844,8 +855,40 @@ const UserExpenses = () => {
     getExpenses();
   }, []);
 
-  let testone = "oi";
-  if (fetchedExpensesList) {
+  let fullList = null;
+  if (fetchedExpensesList !== null) {
+    fullList = fetchedExpensesList.map((expense, index) => {
+      if (expense.expensesList.length > 0) {
+        infoBtnArray.push({ isOpen: false });
+        console.log("estado", infoBtnList);
+        console.log(fetchedExpensesList);
+        return (
+          <Expense
+            expensesPage
+            key={index}
+            expenseTopic={expense.category}
+            expenseTotal={expense.spendLimit}
+            expenseDataList={expense.expensesList}
+            clicked={() => {
+              expandBtnHandler(index);
+            }}
+            details={
+              infoBtnList !== null
+                ? infoBtnList.buttons[index].isOpen === true
+                  ? "Less Info"
+                  : "More Info"
+                : "ta aq"
+            }
+          />
+        );
+      }
+    });
+    /*const fa = () => {
+      setInfoBtnList({
+        ...infoBtnList,
+        buttons: [...infoBtnList.buttons, { isOpen: false }],
+      });
+    };*/
   }
 
   return (
@@ -1025,8 +1068,15 @@ const UserExpenses = () => {
               ></SelectContainer>
             </ListFilterDiv>
             <UserExpensesList>
-              {filterValue === "" ? expenseList : verifySelectType()}
-              {fetchedExpensesList ? testone : <div>Nada</div>}
+              {fetchedExpensesList ? (
+                filterValue === "" ? (
+                  fullList
+                ) : (
+                  verifySelectType()
+                )
+              ) : (
+                <div>Nada</div>
+              )}
             </UserExpensesList>
           </UserExpensesListContainer>
         </AuxDiv>
