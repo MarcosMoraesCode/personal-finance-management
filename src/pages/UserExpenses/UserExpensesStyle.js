@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+export const LoadingDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+`;
+
 export const UserExpensesDiv = styled.div`
   padding-top: 6vh;
   height: 94vh;

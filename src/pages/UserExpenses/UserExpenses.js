@@ -9,7 +9,6 @@ import {
   HistoryContainer,
   HistoryTitleDiv,
   ListFilterDiv,
-  ListTitle,
   ListTitleDiv,
   NewCategoryDiv,
   NewCategoryFormDiv,
@@ -17,100 +16,22 @@ import {
   NewCategoryTitleDiv,
   NewExpenseDiv,
   NewExpenseFormDiv,
-  NewExpenseTitle,
   NewExpenseTitleDiv,
   UserExpensesContainer,
   UserExpensesDiv,
   UserExpensesList,
   UserExpensesListContainer,
+  LoadingDiv,
 } from "./UserExpensesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import SelectContainer from "../../components/UI/Select/Select";
 import axiosInstance from "../../axiosInstance";
-import { SpinnerCircular } from "spinners-react";
+import { BarLoader } from "react-spinners";
 import Expense from "../../components/ExpensesTracking/Expense/Expense";
+import Modal from "../../components/UI/Modal/Modal";
 
 const UserExpenses = () => {
-  const expenses = [
-    {
-      expenseTopic: "Study",
-      expenseDataList: [
-        { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-      ],
-      expenseTotal: 270.0,
-    },
-    {
-      expenseTopic: "Study",
-      expenseDataList: [
-        { name: "BookStationR1", value: 20.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-        { name: "Monthly Payment", value: 250.0, date: "01/02/2022" },
-      ],
-      expenseTotal: 270.0,
-    },
-  ];
-
-  let expenseItems = [];
-
-  const [fetchedExpensesList, setFetchedExpensesList] = useState(null);
-
-  const [infoBtnList, setInfoBtnList] = useState(null);
-
-  const [filterValue, setFilterValue] = useState("");
-  const [filterType, setFilterType] = useState("sort by name");
-
-  const infoBtnArray = [];
-
-  const expandBtnHandler = (expenseId) => {
-    let currentValue = infoBtnList.buttons[expenseId].isOpen;
-
-    console.log("dentro da f", infoBtnList);
-    setInfoBtnList({
-      buttons: {
-        ...infoBtnList.buttons,
-        [expenseId]: { isOpen: !currentValue },
-      },
-    });
-    console.log("dps do set", infoBtnList);
-  };
-
-  useEffect(() => {}, [infoBtnList]);
-  /*
-  const expenseList = expenses.map((expense, index) => {
-    //console.log(infoBtnList);
-
-    infoBtnArray.push({ isOpen: false });
-    return (
-      <Expense
-        expensesPage
-        key={index}
-        expenseTopic={expense.expenseTopic}
-        expenseTotal={expense.expenseTotal}
-        expenseDataList={expense.expenseDataList}
-        clicked={() => {
-          expandBtnHandler(index);
-        }}
-        details={
-          infoBtnList.buttons !== undefined
-            ? infoBtnList.buttons[index].isOpen === true
-              ? "Less Info"
-              : "More Info"
-            : null
-        }
-      />
-    );
-  });
-  */
-
-  const [categoryOptions, setCategoryOptions] = useState([
-    { name: "New Category" },
-  ]);
-
-  const buttons = [];
-
+  //States
   const [userExpense, setUserExpense] = useState({
     id: "expense",
     inputName: {
@@ -181,9 +102,87 @@ const UserExpenses = () => {
     },
   });
 
+  const [modalInformation, setModalInformation] = useState({
+    statusName: "",
+    message: "",
+    newExpenseName: "",
+    newExpenseValue: "",
+    newExpenseDate: "",
+    newCategoryName: "",
+    newCategorySpendLimit: "",
+  });
+  const [filterValue, setFilterValue] = useState("");
+  const [filterType, setFilterType] = useState("sort by name");
+  const [loading, setLoading] = useState(false);
+  const [fetchedExpensesList, setFetchedExpensesList] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [infoBtnList, setInfoBtnList] = useState(null);
   const [expenseSubmitPermission, setExpenseSubmitPermission] = useState(false);
   const [categorySubmitPermission, setCategorySubmitPermission] =
     useState(false);
+  const [categoryOptions, setCategoryOptions] = useState([
+    { name: "New Category" },
+  ]);
+
+  //Support Arrays
+
+  let expenseItems = [];
+  const buttons = [];
+
+  //Effects
+
+  useEffect(() => {}, [infoBtnList]);
+  useEffect(() => {
+    console.log("state", categoryOptions);
+  }, [categoryOptions]);
+  useEffect(() => {
+    getExpenses();
+  }, []);
+
+  /*
+  const expenseList = expenses.map((expense, index) => {
+    //console.log(infoBtnList);
+
+    infoBtnArray.push({ isOpen: false });
+    return (
+      <Expense
+        expensesPage
+        key={index}
+        expenseTopic={expense.expenseTopic}
+        expenseTotal={expense.expenseTotal}
+        expenseDataList={expense.expenseDataList}
+        clicked={() => {
+          expandBtnHandler(index);
+        }}
+        details={
+          infoBtnList.buttons !== undefined
+            ? infoBtnList.buttons[index].isOpen === true
+              ? "Less Info"
+              : "More Info"
+            : null
+        }
+      />
+    );
+  });
+  */
+
+  //Functions
+  const expandBtnHandler = (expenseId) => {
+    let currentValue = infoBtnList.buttons[expenseId].isOpen;
+
+    console.log("dentro da f", infoBtnList);
+    setInfoBtnList({
+      buttons: {
+        ...infoBtnList.buttons,
+        [expenseId]: { isOpen: !currentValue },
+      },
+    });
+    console.log("dps do set", infoBtnList);
+  };
+
+  const BackdropHandler = () => {
+    setShowModal(false);
+  };
 
   const categoryAlreadyExists = (expenseCategoryName) => {
     let exists = categoryOptions.find(
@@ -726,9 +725,6 @@ const UserExpenses = () => {
   };
 
   let newCategory = null;
-  useEffect(() => {
-    console.log("state", categoryOptions);
-  }, [categoryOptions]);
 
   if (
     userExpense.inputCategory.isTouched &&
@@ -784,82 +780,103 @@ const UserExpenses = () => {
 
   const getExpenses = () => {
     let uniqueCategories = [];
-    axiosInstance.get("/category.json").then((response) => {
-      if (response.data !== null) {
-        let fetchedCategories = Object.values(response.data);
-
-        let categoryArray = [];
-        fetchedCategories.forEach((categoryObj) => {
-          categoryArray.push({ name: categoryObj.category });
-
-          let categoryExists = fetchedCategories.some(
-            (cat) => cat.category === categoryObj.category
-          );
-          if (categoryExists) {
-            expenseItems.push({
-              category: categoryObj.category,
-              spendLimit: categoryObj.spendLimit,
-              expensesList: [],
-            });
-          }
-        });
-
-        let newCategoryArray = categoryOptions.concat(categoryArray);
-        let transformArray = newCategoryArray.map((arr) => arr.name);
-        let uniqueNames = [...new Set(transformArray)];
-
-        uniqueNames.forEach((value) => {
-          uniqueCategories.push({ name: value });
-        });
-
-        setCategoryOptions(uniqueCategories);
-      }
-
-      axiosInstance.get("/expense.json").then((response) => {
+    setLoading(true);
+    axiosInstance
+      .get("/category.json")
+      .then((response) => {
         if (response.data !== null) {
-          let fetchedExpenses = Object.values(response.data);
+          let fetchedCategories = Object.values(response.data);
 
-          fetchedExpenses.forEach((expense) => {
-            let categoryIndex = expenseItems.findIndex(
-              (item) => expense.categoryId === item.category
+          let categoryArray = [];
+          fetchedCategories.forEach((categoryObj) => {
+            categoryArray.push({ name: categoryObj.category });
+
+            let categoryExists = fetchedCategories.some(
+              (cat) => cat.category === categoryObj.category
             );
-            console.log("index", categoryIndex);
-            expenseItems[categoryIndex]?.expensesList.push({
-              name: expense.name,
-              value: expense.value,
-              date: expense.date,
-            });
-            //console.log("items", expenseItems);
+            if (categoryExists) {
+              expenseItems.push({
+                category: categoryObj.category,
+                spendLimit: categoryObj.spendLimit,
+                expensesList: [],
+              });
+            }
           });
 
-          console.log(expenseItems);
+          let newCategoryArray = categoryOptions.concat(categoryArray);
+          let transformArray = newCategoryArray.map((arr) => arr.name);
+          let uniqueNames = [...new Set(transformArray)];
 
-          expenseItems
-            .filter((expense) => expense.expensesList.length > 0)
-            .forEach((expense) => {
-              buttons.push({ isOpen: false });
-            });
+          uniqueNames.forEach((value) => {
+            uniqueCategories.push({ name: value });
+          });
 
-          let filteredBtns = buttons.slice(0, uniqueCategories.length - 1);
-
-          setInfoBtnList({ buttons: filteredBtns });
-
-          setFetchedExpensesList(expenseItems);
-          //console.log("test", test);
+          setCategoryOptions(uniqueCategories);
         }
+
+        axiosInstance
+          .get("/expense.json")
+          .then((response) => {
+            if (response.data !== null) {
+              let fetchedExpenses = Object.values(response.data);
+
+              fetchedExpenses.forEach((expense) => {
+                let categoryIndex = expenseItems.findIndex(
+                  (item) => expense.categoryId === item.category
+                );
+                console.log("index", categoryIndex);
+                expenseItems[categoryIndex]?.expensesList.push({
+                  name: expense.name,
+                  value: expense.value,
+                  date: expense.date,
+                });
+                //console.log("items", expenseItems);
+              });
+
+              console.log(expenseItems);
+
+              expenseItems
+                .filter((expense) => expense.expensesList.length > 0)
+                .forEach((expense) => {
+                  buttons.push({ isOpen: false });
+                });
+
+              let filteredBtns = buttons.slice(0, uniqueCategories.length - 1);
+
+              setInfoBtnList({ buttons: filteredBtns });
+
+              setFetchedExpensesList(expenseItems);
+              //console.log("test", test);
+            }
+          })
+          .catch((err) => {
+            setShowModal(true);
+            console.log(err);
+            setModalInformation({
+              ...modalInformation,
+              statusName: err.name,
+              message: err.message,
+            });
+          });
+        // setLoading(false);
+      })
+      .catch((err) => {
+        setShowModal(true);
+        console.log(err);
+        setModalInformation({
+          ...modalInformation,
+          statusName: err.name,
+          message: err.message,
+        });
       });
-    });
   };
 
-  useEffect(() => {
-    getExpenses();
-  }, []);
-
   let fullList = null;
+
   if (fetchedExpensesList !== null) {
     fullList = fetchedExpensesList.map((expense, index) => {
       if (expense.expensesList.length > 0) {
-        infoBtnArray.push({ isOpen: false });
+        // infoBtnArray.push({ isOpen: false });
         console.log("estado", infoBtnList);
         console.log(fetchedExpensesList);
         return (
@@ -877,18 +894,22 @@ const UserExpenses = () => {
                 ? infoBtnList.buttons[index].isOpen === true
                   ? "Less Info"
                   : "More Info"
-                : "ta aq"
+                : null
             }
           />
         );
       }
     });
-    /*const fa = () => {
-      setInfoBtnList({
-        ...infoBtnList,
-        buttons: [...infoBtnList.buttons, { isOpen: false }],
-      });
-    };*/
+  }
+
+  let listContent = null;
+
+  if (loading) {
+    listContent = (
+      <LoadingDiv>
+        <BarLoader color="#51d289"></BarLoader>
+      </LoadingDiv>
+    );
   }
 
   return (
@@ -1068,15 +1089,11 @@ const UserExpenses = () => {
               ></SelectContainer>
             </ListFilterDiv>
             <UserExpensesList>
-              {fetchedExpensesList ? (
-                filterValue === "" ? (
-                  fullList
-                ) : (
-                  verifySelectType()
-                )
-              ) : (
-                <div>Nada</div>
-              )}
+              {fetchedExpensesList
+                ? filterValue === ""
+                  ? fullList
+                  : verifySelectType()
+                : listContent}
             </UserExpensesList>
           </UserExpensesListContainer>
         </AuxDiv>
@@ -1085,15 +1102,22 @@ const UserExpenses = () => {
             <HistoryTitleDiv>
               <DefaultTitle>History</DefaultTitle>
             </HistoryTitleDiv>
-            <HistoryContainer>Container</HistoryContainer>
+            <HistoryContainer>{listContent}</HistoryContainer>
           </ExpenseHistoryDiv>
           <ExpenseAnalysisDiv>
             <AnalysisTitleDiv>
               <DefaultTitle>Analysis</DefaultTitle>
             </AnalysisTitleDiv>
-            <AnalysisContainer>Container</AnalysisContainer>
+            <AnalysisContainer>Conteudo</AnalysisContainer>
           </ExpenseAnalysisDiv>
         </AuxDiv>
+        {showModal ? (
+          <Modal
+            clicked={BackdropHandler}
+            status={modalInformation.statusName}
+            message={modalInformation.message}
+          />
+        ) : null}
       </UserExpensesContainer>
     </UserExpensesDiv>
   );
