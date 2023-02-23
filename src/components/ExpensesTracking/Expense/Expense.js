@@ -78,7 +78,7 @@ const Expense = (props) => {
                 <p> {`$ ${props.expenseTotal}`}</p>
               </DefaultContentBlock>
               <DefaultContentBlock>
-                <p>x%</p>
+                <p>{props.realPercentage}%</p>
                 <p>x%</p>
               </DefaultContentBlock>
               <DefaultContentBlock reduceWidth>

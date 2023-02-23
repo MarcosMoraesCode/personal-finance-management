@@ -625,12 +625,20 @@ const UserExpenses = () => {
 
   const submitCategory = () => {
     axiosInstance
-      .post("/category.json", {
+      .post("/category.jsn", {
         category: userCategory.inputNewCategory.value,
         spendLimit: userCategory.inputSpend.value,
       })
       .then((response) => {})
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setShowModal(true);
+        console.log(err);
+        setModalInformation({
+          ...modalInformation,
+          statusName: err.name,
+          message: err.message,
+        });
+      });
 
     setCategoryOptions([
       ...categoryOptions,
@@ -668,7 +676,15 @@ const UserExpenses = () => {
         .then((response) => {
           setCategoryOptions([...categoryOptions, { name: categoryValue }]);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          setShowModal(true);
+          console.log(err);
+          setModalInformation({
+            ...modalInformation,
+            statusName: err.name,
+            message: err.message,
+          });
+        });
     }
 
     axiosInstance
@@ -685,7 +701,16 @@ const UserExpenses = () => {
       .then((response) => {
         //console.log("passou aqui");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setShowModal(true);
+        console.log(err);
+        setModalInformation({
+          ...modalInformation,
+          statusName: err.name,
+          message: err.message,
+        });
+      });
+
     setUserExpense({
       ...userExpense,
       inputName: {
@@ -786,14 +811,15 @@ const UserExpenses = () => {
       .then((response) => {
         if (response.data !== null) {
           let fetchedCategories = Object.values(response.data);
-
           let categoryArray = [];
+
           fetchedCategories.forEach((categoryObj) => {
             categoryArray.push({ name: categoryObj.category });
 
             let categoryExists = fetchedCategories.some(
               (cat) => cat.category === categoryObj.category
             );
+
             if (categoryExists) {
               expenseItems.push({
                 category: categoryObj.category,
@@ -846,6 +872,7 @@ const UserExpenses = () => {
               setInfoBtnList({ buttons: filteredBtns });
 
               setFetchedExpensesList(expenseItems);
+              console.log(expenseItems);
               //console.log("test", test);
             }
           })
@@ -858,6 +885,7 @@ const UserExpenses = () => {
               message: err.message,
             });
           });
+
         // setLoading(false);
       })
       .catch((err) => {
@@ -873,6 +901,26 @@ const UserExpenses = () => {
 
   let fullList = null;
 
+  const calculateExpenses = (list) => {
+    let valuesList = [];
+    list.forEach((item) => {
+      let stringValue = [...item.value];
+      let commaIndex = stringValue.findIndex((element) => element === ",");
+      stringValue.splice(commaIndex, 1, ".");
+      let replacedValue = stringValue.join("");
+
+      valuesList.push(Number(replacedValue));
+    });
+    let totalValue = valuesList.reduce(
+      (acc, currentValue) => acc + currentValue,
+      0
+    );
+    console.log(totalValue);
+    return totalValue.toFixed(2);
+  };
+
+  const calculateRealPercentage = (list) => {};
+
   if (fetchedExpensesList !== null) {
     fullList = fetchedExpensesList.map((expense, index) => {
       if (expense.expensesList.length > 0) {
@@ -884,8 +932,9 @@ const UserExpenses = () => {
             expensesPage
             key={index}
             expenseTopic={expense.category}
-            expenseTotal={expense.spendLimit}
+            expenseTotal={calculateExpenses(expense.expensesList)}
             expenseDataList={expense.expensesList}
+            realPercentage={"20"}
             clicked={() => {
               expandBtnHandler(index);
             }}
