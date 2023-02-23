@@ -655,7 +655,7 @@ const UserExpenses = () => {
     setCategorySubmitPermission(false);
   };
 
-  const submitExpense = (event) => {
+  const submitExpense = (event, categoryValue) => {
     event.preventDefault();
 
     //APENAS TESTE DE REQUEST
@@ -665,7 +665,9 @@ const UserExpenses = () => {
           category: userExpense.inputNewCategory.value,
           spendLimit: userExpense.inputSpend.value,
         })
-        .then((response) => {})
+        .then((response) => {
+          setCategoryOptions([...categoryOptions, { name: categoryValue }]);
+        })
         .catch((err) => console.log(err));
     }
 
@@ -692,13 +694,7 @@ const UserExpenses = () => {
         isValid: "false",
         value: "",
       },
-      /* Talvez seja interessante manter o valor para o select
-      inputCategory: {
-        ...userExpense.inputCategory,
-        isTouched: false,
-        isValid: "false",
-        value: "",
-      }*/
+
       inputDate: {
         ...userExpense.inputDate,
         isTouched: false,
@@ -835,7 +831,7 @@ const UserExpenses = () => {
             //console.log("items", expenseItems);
           });
 
-          //console.log(fetchedExpenses);
+          console.log(expenseItems);
 
           setFetchedExpensesList(expenseItems);
           //console.log("test", test);
@@ -992,7 +988,9 @@ const UserExpenses = () => {
                 </InputContainer>
                 <AddExpenseButton
                   disabled={expenseSubmitPermission ? "" : "disabled"}
-                  onClick={(event) => submitExpense(event)}
+                  onClick={(event) =>
+                    submitExpense(event, userExpense.inputNewCategory.value)
+                  }
                 >
                   Add Expense
                 </AddExpenseButton>
