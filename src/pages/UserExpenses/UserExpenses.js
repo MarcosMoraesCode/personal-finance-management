@@ -55,7 +55,7 @@ const UserExpenses = () => {
 
   let expenseItems = [];
 
-  let categoryArray = [];
+  const [fetchedExpensesList, setFetchedExpensesList] = useState(null);
 
   const [infoBtn, setInfoBtn] = useState(false);
 
@@ -77,35 +77,38 @@ const UserExpenses = () => {
     });
   };
 
-  /*onst expenseList = expenses.map((expense, index) => {
+  const expenseList = expenses.map((expense, index) => {
     //console.log(infoBtnList);
-    if (expenseItems.length > 0) {
-      infoBtnArray.push({ isOpen: false });
-      return (
-        <Expense
-          expensesPage
-          key={index}
-          expenseTopic={expense.expenseTopic}
-          expenseTotal={expense.expenseTotal}
-          expenseDataList={expense.expenseDataList}
-          clicked={() => {
-            expandBtnHandler(index);
-          }}
-          details={
-            infoBtnList.buttons !== undefined
-              ? infoBtnList.buttons[index].isOpen === true
-                ? "Less Info"
-                : "More Info"
-              : null
-          }
-        />
-      );
-    }
-  });*/
+
+    infoBtnArray.push({ isOpen: false });
+    return (
+      <Expense
+        expensesPage
+        key={index}
+        expenseTopic={expense.expenseTopic}
+        expenseTotal={expense.expenseTotal}
+        expenseDataList={expense.expenseDataList}
+        clicked={() => {
+          expandBtnHandler(index);
+        }}
+        details={
+          infoBtnList.buttons !== undefined
+            ? infoBtnList.buttons[index].isOpen === true
+              ? "Less Info"
+              : "More Info"
+            : null
+        }
+      />
+    );
+  });
 
   useEffect(() => {
     setInfoBtnList({ buttons: infoBtnArray });
   }, []);
+
+  const [categoryOptions, setCategoryOptions] = useState([
+    { name: "New Category" },
+  ]);
 
   const [userExpense, setUserExpense] = useState({
     id: "expense",
@@ -130,12 +133,6 @@ const UserExpenses = () => {
       categoryIsValid: false,
       categoryIsTouched: false,
       id: "Expense Category",
-      options: [
-        { name: "New Category" },
-        { name: "Medicine" },
-        { name: "Study" },
-        { name: "Rent" },
-      ],
     },
     inputNewCategory: {
       value: "",
@@ -188,7 +185,7 @@ const UserExpenses = () => {
     useState(false);
 
   const categoryAlreadyExists = (expenseCategoryName) => {
-    let exists = userExpense.inputCategory.options.find(
+    let exists = categoryOptions.find(
       (option) => option.name === expenseCategoryName
     );
 
@@ -538,14 +535,14 @@ const UserExpenses = () => {
     let filteredList = [];
     switch (filterType) {
       case "sort by name":
-        filteredList = fetchedExpensesList.filter((expense) => {
+        filteredList = expenseList.filter((expense) => {
           if (expense.props.expenseTopic.includes(filterValue)) {
             return expense;
           }
         });
         break;
       case "sort by value":
-        filteredList = fetchedExpensesList.filter((expense) => {
+        filteredList = expenseList.filter((expense) => {
           if (expense.props.expenseTotal >= filterValue) {
             return expense;
           }
@@ -634,6 +631,11 @@ const UserExpenses = () => {
       })
       .then((response) => {})
       .catch((err) => console.log(err));
+
+    setCategoryOptions([
+      ...categoryOptions,
+      { name: userCategory.inputNewCategory.value },
+    ]);
 
     setUserCategory({
       ...userCategory,
@@ -727,6 +729,9 @@ const UserExpenses = () => {
   };
 
   let newCategory = null;
+  useEffect(() => {
+    console.log("state", categoryOptions);
+  }, [categoryOptions]);
 
   if (
     userExpense.inputCategory.isTouched &&
@@ -782,39 +787,59 @@ const UserExpenses = () => {
 
   const getExpenses = () => {
     axiosInstance.get("/category.json").then((response) => {
-      let fetchedCategories = Object.values(response.data);
+      if (response.data !== null) {
+        let fetchedCategories = Object.values(response.data);
 
-      fetchedCategories.forEach((categoryObj) => {
-        let categoryExists = fetchedCategories.some(
-          (cat) => cat.category === categoryObj.category
-        );
-        if (categoryExists) {
-          expenseItems.push({
-            category: categoryObj.category,
-            spendLimit: categoryObj.spendLimit,
-            expensesList: [],
-          });
-        }
-      });
-      console.log(expenseItems);
+        let categoryArray = [];
+        fetchedCategories.forEach((categoryObj) => {
+          categoryArray.push({ name: categoryObj.category });
+
+          let categoryExists = fetchedCategories.some(
+            (cat) => cat.category === categoryObj.category
+          );
+          if (categoryExists) {
+            expenseItems.push({
+              category: categoryObj.category,
+              spendLimit: categoryObj.spendLimit,
+              expensesList: [],
+            });
+          }
+        });
+
+        let newCategoryArray = categoryOptions.concat(categoryArray);
+        let transformArray = newCategoryArray.map((arr) => arr.name);
+        let uniqueNames = [...new Set(transformArray)];
+        let uniqueCategories = [];
+
+        uniqueNames.forEach((value) => {
+          uniqueCategories.push({ name: value });
+        });
+
+        setCategoryOptions(uniqueCategories);
+      }
 
       axiosInstance.get("/expense.json").then((response) => {
-        let fetchedExpenses = Object.values(response.data);
+        if (response.data !== null) {
+          let fetchedExpenses = Object.values(response.data);
 
-        fetchedExpenses.forEach((expense) => {
-          let categoryIndex = expenseItems.findIndex(
-            (item) => expense.category === fetchedExpenses.categoryId
-          );
-          expenseItems[categoryIndex]?.expensesList.push({
-            name: expense.name,
-            value: expense.value,
-            date: expense.date,
+          fetchedExpenses.forEach((expense) => {
+            let categoryIndex = expenseItems.findIndex(
+              (item) => expense.categoryId === item.category
+            );
+            console.log("index", categoryIndex);
+            expenseItems[categoryIndex]?.expensesList.push({
+              name: expense.name,
+              value: expense.value,
+              date: expense.date,
+            });
+            //console.log("items", expenseItems);
           });
-          //console.log("items", expenseItems);
-        });
-        //console.log(fetchedExpenses);
 
-        //console.log("test", test);
+          //console.log(fetchedExpenses);
+
+          setFetchedExpensesList(expenseItems);
+          //console.log("test", test);
+        }
       });
     });
   };
@@ -823,34 +848,8 @@ const UserExpenses = () => {
     getExpenses();
   }, []);
 
-  let fetchedExpensesList = [];
-
-  if (expenseSubmitPermission) {
-    console.log(expenseItems);
-    fetchedExpensesList = expenseItems.map((expense, index) => {
-      infoBtnArray.push({ isOpen: false });
-      return (
-        <Expense
-          expensesPage
-          key={index}
-          expenseTopic={expense.category}
-          expenseTotal={expense.spendLimit}
-          expenseDataList={expense.expensesList}
-          clicked={() => {
-            expandBtnHandler(index);
-          }}
-          details={
-            infoBtnList.buttons !== undefined
-              ? infoBtnList.buttons[index].isOpen === true
-                ? "Less Info"
-                : "More Info"
-              : null
-          }
-        />
-      );
-    });
-  } else {
-    fetchedExpensesList = <div>Sem despesas</div>;
+  let testone = "oi";
+  if (fetchedExpensesList) {
   }
 
   return (
@@ -962,7 +961,7 @@ const UserExpenses = () => {
                 </InputContainer>
                 <SelectContainer
                   label={"Categories"}
-                  options={userExpense.inputCategory.options}
+                  options={categoryOptions}
                   changed={(event) =>
                     InputChangeHandler(event, userExpense.inputCategory.id)
                   }
@@ -1028,7 +1027,8 @@ const UserExpenses = () => {
               ></SelectContainer>
             </ListFilterDiv>
             <UserExpensesList>
-              {filterValue === "" ? fetchedExpensesList : verifySelectType()}
+              {filterValue === "" ? expenseList : verifySelectType()}
+              {fetchedExpensesList ? testone : <div>Nada</div>}
             </UserExpensesList>
           </UserExpensesListContainer>
         </AuxDiv>
