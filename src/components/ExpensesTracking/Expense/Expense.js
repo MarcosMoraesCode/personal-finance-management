@@ -36,6 +36,7 @@ const Expense = (props) => {
         </ButtonsDiv>
       );
     }
+    // console.log(subTopic.value);
 
     return (
       <ExtraContentWrapper key={`${props.expenseTopic}-sub-${index}`}>
@@ -45,7 +46,7 @@ const Expense = (props) => {
           <ExtraText>{`$ ${subTopic.value}`}</ExtraText>
         </ExtraContentBlock>
         <ExtraContentBlock>
-          <ExtraText>x%</ExtraText>
+          <ExtraText>{subTopic.percentage}%</ExtraText>
           <ExtraText>{subTopic.date}</ExtraText>
         </ExtraContentBlock>
         <ExtraContentBlock reduceWidth>{lastContent}</ExtraContentBlock>
@@ -79,7 +80,7 @@ const Expense = (props) => {
               </DefaultContentBlock>
               <DefaultContentBlock>
                 <p>{props.realPercentage}%</p>
-                <p>x%</p>
+                <p>{props.percentageExpected}%</p>
               </DefaultContentBlock>
               <DefaultContentBlock reduceWidth>
                 <div />

@@ -123,18 +123,17 @@ const UserExpenses = () => {
   const [categoryOptions, setCategoryOptions] = useState([
     { name: "New Category" },
   ]);
+  const [totalSpendLimit, setTotalSpendLimit] = useState(0);
 
   //Support Arrays
 
-  let expenseItems = [];
+  const expenseItems = [];
   const buttons = [];
 
   //Effects
 
   useEffect(() => {}, [infoBtnList]);
-  useEffect(() => {
-    console.log("state", categoryOptions);
-  }, [categoryOptions]);
+  useEffect(() => {}, [categoryOptions]);
   useEffect(() => {
     getExpenses();
   }, []);
@@ -170,14 +169,12 @@ const UserExpenses = () => {
   const expandBtnHandler = (expenseId) => {
     let currentValue = infoBtnList.buttons[expenseId].isOpen;
 
-    console.log("dentro da f", infoBtnList);
     setInfoBtnList({
       buttons: {
         ...infoBtnList.buttons,
         [expenseId]: { isOpen: !currentValue },
       },
     });
-    console.log("dps do set", infoBtnList);
   };
 
   const BackdropHandler = () => {
@@ -241,7 +238,7 @@ const UserExpenses = () => {
             ? (result = true)
             : (result = false)
           : (result = false);
-        console.log("é valido?", result);
+
         break;
       case "Category Spending Limit":
         validation2 ? (result = true) : (result = false);
@@ -539,6 +536,7 @@ const UserExpenses = () => {
           if (expense.props.expenseTopic.includes(filterValue)) {
             return expense;
           }
+          return null;
         });
         break;
       case "sort by value":
@@ -546,6 +544,7 @@ const UserExpenses = () => {
           if (expense.props.expenseTotal >= filterValue) {
             return expense;
           }
+          return null;
         });
         break;
       default:
@@ -632,7 +631,7 @@ const UserExpenses = () => {
       .then((response) => {})
       .catch((err) => {
         setShowModal(true);
-        console.log(err);
+
         setModalInformation({
           ...modalInformation,
           statusName: err.name,
@@ -678,7 +677,7 @@ const UserExpenses = () => {
         })
         .catch((err) => {
           setShowModal(true);
-          console.log(err);
+
           setModalInformation({
             ...modalInformation,
             statusName: err.name,
@@ -699,11 +698,11 @@ const UserExpenses = () => {
         date: userExpense.inputDate.value,
       })
       .then((response) => {
-        //console.log("passou aqui");
+        getExpenses();
       })
       .catch((err) => {
         setShowModal(true);
-        console.log(err);
+
         setModalInformation({
           ...modalInformation,
           statusName: err.name,
@@ -812,9 +811,11 @@ const UserExpenses = () => {
         if (response.data !== null) {
           let fetchedCategories = Object.values(response.data);
           let categoryArray = [];
+          let SpendLimitArray = [];
 
           fetchedCategories.forEach((categoryObj) => {
             categoryArray.push({ name: categoryObj.category });
+            SpendLimitArray.push({ value: categoryObj.spendLimit });
 
             let categoryExists = fetchedCategories.some(
               (cat) => cat.category === categoryObj.category
@@ -829,9 +830,11 @@ const UserExpenses = () => {
             }
           });
 
+          setTotalSpendLimit(calculateExpenses(SpendLimitArray));
+
           let newCategoryArray = categoryOptions.concat(categoryArray);
-          let transformArray = newCategoryArray.map((arr) => arr.name);
-          let uniqueNames = [...new Set(transformArray)];
+          let transformedArrayName = newCategoryArray.map((arr) => arr.name);
+          let uniqueNames = [...new Set(transformedArrayName)];
 
           uniqueNames.forEach((value) => {
             uniqueCategories.push({ name: value });
@@ -850,16 +853,22 @@ const UserExpenses = () => {
                 let categoryIndex = expenseItems.findIndex(
                   (item) => expense.categoryId === item.category
                 );
-                console.log("index", categoryIndex);
+
                 expenseItems[categoryIndex]?.expensesList.push({
                   name: expense.name,
                   value: expense.value,
                   date: expense.date,
+                  percentage: (
+                    (convertToNumber(expense.value) /
+                      convertToNumber(expenseItems[categoryIndex].spendLimit)) *
+                    100
+                  ).toFixed(2),
                 });
-                //console.log("items", expenseItems);
+                console.log(
+                  "aq",
+                  convertToNumber(expenseItems[categoryIndex].spendLimit)
+                );
               });
-
-              console.log(expenseItems);
 
               expenseItems
                 .filter((expense) => expense.expensesList.length > 0)
@@ -872,13 +881,13 @@ const UserExpenses = () => {
               setInfoBtnList({ buttons: filteredBtns });
 
               setFetchedExpensesList(expenseItems);
-              console.log(expenseItems);
+
               //console.log("test", test);
             }
           })
           .catch((err) => {
             setShowModal(true);
-            console.log(err);
+
             setModalInformation({
               ...modalInformation,
               statusName: err.name,
@@ -890,7 +899,7 @@ const UserExpenses = () => {
       })
       .catch((err) => {
         setShowModal(true);
-        console.log(err);
+
         setModalInformation({
           ...modalInformation,
           statusName: err.name,
@@ -904,29 +913,43 @@ const UserExpenses = () => {
   const calculateExpenses = (list) => {
     let valuesList = [];
     list.forEach((item) => {
-      let stringValue = [...item.value];
-      let commaIndex = stringValue.findIndex((element) => element === ",");
-      stringValue.splice(commaIndex, 1, ".");
-      let replacedValue = stringValue.join("");
-
-      valuesList.push(Number(replacedValue));
+      valuesList.push(convertToNumber(item.value));
     });
+
     let totalValue = valuesList.reduce(
-      (acc, currentValue) => acc + currentValue,
+      (acc, currentValue) => acc + Number(currentValue),
       0
     );
-    console.log(totalValue);
+
     return totalValue.toFixed(2);
   };
 
-  const calculateRealPercentage = (list) => {};
+  const convertToNumber = (stringValue) => {
+    let initialValue = [...stringValue];
+    let commaIndex = initialValue.findIndex((element) => element === ",");
+    initialValue.splice(commaIndex, 1, ".");
+    let replacedValue = initialValue.join("");
+    let convertedValue = Number(replacedValue).toFixed(2);
+
+    return convertedValue;
+  };
+
+  const calculateExpectedPercentage = (categoryLimit) => {
+    let expectedPercentage = convertToNumber(categoryLimit) / totalSpendLimit;
+    return expectedPercentage.toFixed(2) * 100;
+  };
+
+  const calculateRealPercentage = (list) => {
+    let allCategoryExpenses = calculateExpenses(list);
+    let realPercentage = allCategoryExpenses / totalSpendLimit;
+    return realPercentage.toFixed(2) * 100;
+  };
 
   if (fetchedExpensesList !== null) {
     fullList = fetchedExpensesList.map((expense, index) => {
       if (expense.expensesList.length > 0) {
         // infoBtnArray.push({ isOpen: false });
-        console.log("estado", infoBtnList);
-        console.log(fetchedExpensesList);
+        console.log(typeof convertToNumber(expense.spendLimit));
         return (
           <Expense
             expensesPage
@@ -934,7 +957,8 @@ const UserExpenses = () => {
             expenseTopic={expense.category}
             expenseTotal={calculateExpenses(expense.expensesList)}
             expenseDataList={expense.expensesList}
-            realPercentage={"20"}
+            realPercentage={calculateRealPercentage(expense.expensesList)}
+            percentageExpected={calculateExpectedPercentage(expense.spendLimit)}
             clicked={() => {
               expandBtnHandler(index);
             }}
@@ -948,6 +972,7 @@ const UserExpenses = () => {
           />
         );
       }
+      return null;
     });
   }
 
