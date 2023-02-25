@@ -18,19 +18,23 @@ const Category = (props) => {
       <CategoryInfosDiv>
         <CategorySubtitlesDiv>
           <SubtitleBlock>Name</SubtitleBlock>
-          <SubtitleBlock>Category's expenses</SubtitleBlock>
+          <SubtitleBlock paddingLeft={"25px"}>
+            Category's expenses
+          </SubtitleBlock>
         </CategorySubtitlesDiv>
         <CategoryContentDiv>
-          <ContentBlock>Name{props.categoryName}</ContentBlock>
-          <ContentBlock>Number{props.expensesNumber}</ContentBlock>
+          <ContentBlock>{props.categoryName}</ContentBlock>
+          <ContentBlock paddingLeft={"25px"}>
+            {props.expensesNumber}
+          </ContentBlock>
         </CategoryContentDiv>
         <CategorySubtitlesDiv>
           <SubtitleBlock>Real Spend</SubtitleBlock>
-          <SubtitleBlock>Spend Limit</SubtitleBlock>
+          <SubtitleBlock paddingLeft={"25px"}>Spend Limit</SubtitleBlock>
         </CategorySubtitlesDiv>
         <CategoryContentDiv>
-          <ContentBlock>RealSpend{props.realSpend}</ContentBlock>
-          <ContentBlock>Limit{props.spendLimit}</ContentBlock>
+          <ContentBlock>{props.realSpend}</ContentBlock>
+          <ContentBlock paddingLeft={"25px"}>{props.spendLimit}</ContentBlock>
         </CategoryContentDiv>
       </CategoryInfosDiv>
       <CategoryManageDiv>

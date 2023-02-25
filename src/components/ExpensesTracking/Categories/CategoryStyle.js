@@ -22,9 +22,9 @@ export const CategoryManageDiv = styled.div`
 
 export const CategorySubtitlesDiv = styled.div`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: row;
   width: 100%;
-
+  //background-color: gold;
   padding: 1px;
   color: #51d289;
   font-family: "Roboto";
@@ -43,12 +43,14 @@ export const CategoryContentDiv = styled.div`
 export const SubtitleBlock = styled.div`
   display: flex;
   justify-content: flex-start;
+  padding-left: ${(props) => props.paddingLeft};
   width: 50%;
 `;
 
 export const ContentBlock = styled.div`
   display: flex;
   justify-content: flex-start;
+  padding-left: ${(props) => props.paddingLeft};
   width: 50%;
 `;
 
@@ -56,7 +58,8 @@ export const EditButton = styled.button`
   width: 30px;
   height: 30px;
   background-image: url(${editIcon});
-  background-size: contain;
+  background-size: cover;
+  background-repeat: no-repeat;
   border: none;
   margin: 15px;
   :hover {
@@ -67,7 +70,7 @@ export const RemoveButton = styled.button`
   width: 30px;
   height: 30px;
   background-image: url(${removeIcon});
-  background-size: contain;
+  background-size: cover;
   border: none;
   margin: 15px;
   :hover {

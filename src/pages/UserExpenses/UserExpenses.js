@@ -120,6 +120,7 @@ const UserExpenses = () => {
   const [loadingOnSubmitExpense, setLoadingOnSubmitExpense] = useState(false);
   const [loadingOnSubmitCategory, setLoadingOnSubmitCategory] = useState(false);
   const [fetchedExpensesList, setFetchedExpensesList] = useState(null);
+  const [fetchedCategoriesList, setFetchedCategoriesList] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [infoBtnList, setInfoBtnList] = useState(null);
   const [expenseSubmitPermission, setExpenseSubmitPermission] = useState(false);
@@ -536,27 +537,52 @@ const UserExpenses = () => {
   const verifySelectType = () => {
     let filteredList = [];
 
-    switch (filterType) {
-      case "sort by name":
-        filteredList = fullList.filter((expense) => {
-          if (expense?.props.expenseTopic.includes(filterValue)) {
-            return expense;
-          }
-          return null;
-        });
-        break;
-      case "sort by value":
-        filteredList = fullList.filter((expense) => {
-          if (Number(expense?.props.expenseTotal) >= Number(filterValue)) {
-            return expense;
-          }
-          return null;
-        });
-        break;
-      default:
-        break;
+    if (!showEditCategories) {
+      switch (filterType) {
+        case "sort by name":
+          filteredList = fullList.filter((expense) => {
+            if (expense?.props.expenseTopic.includes(filterValue)) {
+              return expense;
+            }
+            return null;
+          });
+          break;
+        case "sort by value":
+          filteredList = fullList.filter((expense) => {
+            if (Number(expense?.props.expenseTotal) >= Number(filterValue)) {
+              return expense;
+            }
+            return null;
+          });
+          break;
+        default:
+          break;
+      }
+      return filteredList;
+    } else {
+      console.log(categoryList);
+      switch (filterType) {
+        case "sort by name":
+          filteredList = categoryList.filter((item) => {
+            if (item?.props.categoryName.includes(filterValue)) {
+              return item;
+            }
+            return null;
+          });
+          break;
+        case "sort by value":
+          filteredList = categoryList.filter((item) => {
+            if (Number(item?.props.realSpend) >= Number(filterValue)) {
+              return item;
+            }
+            return null;
+          });
+          break;
+        default:
+          break;
+      }
+      return filteredList;
     }
-    return filteredList;
   };
 
   const checkExpenseButtonValidation = (expenseId, value) => {
@@ -925,8 +951,6 @@ const UserExpenses = () => {
       });
   };
 
-  let fullList = null;
-
   const calculateExpenses = (list) => {
     let valuesList = [];
     list.forEach((item) => {
@@ -962,6 +986,8 @@ const UserExpenses = () => {
     return realPercentage.toFixed(2) * 100;
   };
 
+  let fullList = null;
+
   if (fetchedExpensesList !== null) {
     fullList = fetchedExpensesList.map((expense, index) => {
       if (expense.expensesList.length > 0) {
@@ -990,6 +1016,26 @@ const UserExpenses = () => {
         );
       }
       return null;
+    });
+  }
+
+  let categoryList = null;
+
+  if (fetchedExpensesList !== null) {
+    categoryList = fetchedExpensesList.map((item, index) => {
+      return (
+        <Category
+          key={index}
+          categoryName={item.category}
+          expensesNumber={item.expensesList.length}
+          spendLimit={convertToNumber(item.spendLimit)}
+          realSpend={
+            calculateExpenses(item.expensesList) > 0
+              ? calculateExpenses(item.expensesList)
+              : 0
+          }
+        />
+      );
     });
   }
 
@@ -1168,12 +1214,11 @@ const UserExpenses = () => {
     categoriesDiv = (
       <UserItemsList>
         <UserCategoriesListContainer>
-          <Category />
-          <Category />
-          <Category />
-          <Category />
-          <Category />
-          <Category />
+          {fetchedExpensesList
+            ? filterValue === ""
+              ? categoryList
+              : verifySelectType()
+            : listContent}
         </UserCategoriesListContainer>
       </UserItemsList>
     );
@@ -1198,9 +1243,11 @@ const UserExpenses = () => {
         </AuxDiv>
         <AuxDiv>
           <ListTitleDiv>
-            <DefaultTitle>Category List</DefaultTitle>
+            <DefaultTitle>
+              {showEditCategories ? "Categories List" : "Expenses"}
+            </DefaultTitle>
             <UserDefaultButton onClick={changeCategoryDivHandler}>
-              {showEditCategories ? "Category List" : "Edit Category"}
+              {showEditCategories ? "Expenses List" : "Edit Category"}
             </UserDefaultButton>
           </ListTitleDiv>
           <UserExpensesListContainer>
