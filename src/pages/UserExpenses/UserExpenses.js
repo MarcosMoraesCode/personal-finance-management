@@ -26,7 +26,7 @@ import {
 import InputContainer from "../../components/UI/Input/Input";
 import SelectContainer from "../../components/UI/Select/Select";
 import axiosInstance from "../../axiosInstance";
-import { BarLoader } from "react-spinners";
+import { BarLoader, FadeLoader } from "react-spinners";
 import Expense from "../../components/ExpensesTracking/Expense/Expense";
 import Modal from "../../components/UI/Modal/Modal";
 
@@ -114,6 +114,8 @@ const UserExpenses = () => {
   const [filterValue, setFilterValue] = useState("");
   const [filterType, setFilterType] = useState("sort by name");
   const [loading, setLoading] = useState(false);
+  const [loadingOnSubmitExpense, setLoadingOnSubmitExpense] = useState(false);
+  const [loadingOnSubmitCategory, setLoadingOnSubmitCategory] = useState(false);
   const [fetchedExpensesList, setFetchedExpensesList] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [infoBtnList, setInfoBtnList] = useState(null);
@@ -530,10 +532,11 @@ const UserExpenses = () => {
 
   const verifySelectType = () => {
     let filteredList = [];
+
     switch (filterType) {
       case "sort by name":
         filteredList = fullList.filter((expense) => {
-          if (expense.props.expenseTopic.includes(filterValue)) {
+          if (expense?.props.expenseTopic.includes(filterValue)) {
             return expense;
           }
           return null;
@@ -541,7 +544,7 @@ const UserExpenses = () => {
         break;
       case "sort by value":
         filteredList = fullList.filter((expense) => {
-          if (expense.props.expenseTotal >= filterValue) {
+          if (Number(expense?.props.expenseTotal) >= Number(filterValue)) {
             return expense;
           }
           return null;
@@ -623,12 +626,37 @@ const UserExpenses = () => {
   };
 
   const submitCategory = () => {
+    setLoadingOnSubmitCategory(true);
     axiosInstance
-      .post("/category.jsn", {
+      .post("/category.json", {
         category: userCategory.inputNewCategory.value,
         spendLimit: userCategory.inputSpend.value,
       })
-      .then((response) => {})
+      .then((response) => {
+        if (response.data !== null) {
+          setCategoryOptions([
+            ...categoryOptions,
+            { name: userCategory.inputNewCategory.value },
+          ]);
+
+          setUserCategory({
+            ...userCategory,
+            inputNewCategory: {
+              ...userCategory.inputNewCategory,
+              isTouched: false,
+              isValid: "false",
+              value: "",
+            },
+            inputSpend: {
+              ...userCategory.inputSpend,
+              isTouched: false,
+              isValid: "false",
+              value: "",
+            },
+          });
+        }
+        setLoadingOnSubmitCategory(false);
+      })
       .catch((err) => {
         setShowModal(true);
 
@@ -639,31 +667,12 @@ const UserExpenses = () => {
         });
       });
 
-    setCategoryOptions([
-      ...categoryOptions,
-      { name: userCategory.inputNewCategory.value },
-    ]);
-
-    setUserCategory({
-      ...userCategory,
-      inputNewCategory: {
-        ...userCategory.inputNewCategory,
-        isTouched: false,
-        isValid: "false",
-        value: "",
-      },
-      inputSpend: {
-        ...userCategory.inputSpend,
-        isTouched: false,
-        isValid: "false",
-        value: "",
-      },
-    });
     setCategorySubmitPermission(false);
   };
 
   const submitExpense = (event, categoryValue) => {
     event.preventDefault();
+    setLoadingOnSubmitExpense(true);
 
     //APENAS TESTE DE REQUEST
     if (userExpense.inputCategory.value === "New Category") {
@@ -673,7 +682,9 @@ const UserExpenses = () => {
           spendLimit: userExpense.inputSpend.value,
         })
         .then((response) => {
-          setCategoryOptions([...categoryOptions, { name: categoryValue }]);
+          if (response.data !== null) {
+            setCategoryOptions([...categoryOptions, { name: categoryValue }]);
+          }
         })
         .catch((err) => {
           setShowModal(true);
@@ -698,7 +709,44 @@ const UserExpenses = () => {
         date: userExpense.inputDate.value,
       })
       .then((response) => {
-        getExpenses();
+        if (response.data !== null) {
+          setLoadingOnSubmitExpense(false);
+          getExpenses();
+          setUserExpense({
+            ...userExpense,
+            inputName: {
+              ...userExpense.inputName,
+              isTouched: false,
+              isValid: "false",
+              value: "",
+            },
+
+            inputDate: {
+              ...userExpense.inputDate,
+              isTouched: false,
+              isValid: "false",
+              value: "",
+            },
+            inputSpend: {
+              ...userExpense.inputSpend,
+              isTouched: false,
+              isValid: "false",
+              value: "",
+            },
+            inputValue: {
+              ...userExpense.inputValue,
+              isTouched: false,
+              isValid: "false",
+              value: "",
+            },
+            inputNewCategory: {
+              ...userExpense.inputNewCategory,
+              isTouched: false,
+              isValid: "false",
+              value: "",
+            },
+          });
+        }
       })
       .catch((err) => {
         setShowModal(true);
@@ -710,40 +758,6 @@ const UserExpenses = () => {
         });
       });
 
-    setUserExpense({
-      ...userExpense,
-      inputName: {
-        ...userExpense.inputName,
-        isTouched: false,
-        isValid: "false",
-        value: "",
-      },
-
-      inputDate: {
-        ...userExpense.inputDate,
-        isTouched: false,
-        isValid: "false",
-        value: "",
-      },
-      inputSpend: {
-        ...userExpense.inputSpend,
-        isTouched: false,
-        isValid: "false",
-        value: "",
-      },
-      inputValue: {
-        ...userExpense.inputValue,
-        isTouched: false,
-        isValid: "false",
-        value: "",
-      },
-      inputNewCategory: {
-        ...userExpense.inputNewCategory,
-        isTouched: false,
-        isValid: "false",
-        value: "",
-      },
-    });
     setExpenseSubmitPermission(false);
     // console.log(userExpense);
   };
@@ -936,7 +950,7 @@ const UserExpenses = () => {
 
   const calculateExpectedPercentage = (categoryLimit) => {
     let expectedPercentage = convertToNumber(categoryLimit) / totalSpendLimit;
-    return expectedPercentage.toFixed(2) * 100;
+    return (expectedPercentage * 100).toFixed(2);
   };
 
   const calculateRealPercentage = (list) => {
@@ -986,6 +1000,155 @@ const UserExpenses = () => {
     );
   }
 
+  let expenseForm = (
+    <NewExpenseFormDiv>
+      <form>
+        <InputContainer
+          placeholder={userExpense.inputName.placeholder}
+          changed={(event) =>
+            InputChangeHandler(event, userExpense.inputName.id)
+          }
+          invalidMessage={
+            userExpense.inputName.isValid
+              ? ""
+              : userExpense.inputName.invalidMessage
+          }
+          blur={() =>
+            verifyFocus(userExpense.inputName.id, userExpense.inputName.isValid)
+          }
+          value={userExpense.inputName.value}
+          width={"200px"}
+        >
+          Expense Name
+        </InputContainer>
+        <InputContainer
+          placeholder={userExpense.inputValue.placeholder}
+          changed={(event) =>
+            InputChangeHandler(event, userExpense.inputValue.id)
+          }
+          invalidMessage={
+            userExpense.inputValue.isValid
+              ? ""
+              : userExpense.inputValue.invalidMessage
+          }
+          blur={() =>
+            verifyFocus(
+              userExpense.inputValue.id,
+              userExpense.inputValue.isValid
+            )
+          }
+          value={userExpense.inputValue.value}
+          width={"200px"}
+        >
+          Expense Value
+        </InputContainer>
+        <SelectContainer
+          label={"Categories"}
+          options={categoryOptions}
+          changed={(event) =>
+            InputChangeHandler(event, userExpense.inputCategory.id)
+          }
+          width={"200px"}
+          defaultOption
+        />
+        {newCategory}
+        <InputContainer
+          type={"date"}
+          changed={(event) =>
+            InputChangeHandler(event, userExpense.inputDate.id)
+          }
+          invalidMessage={
+            userExpense.inputDate.isValid
+              ? ""
+              : userExpense.inputDate.invalidMessage
+          }
+          blur={() =>
+            verifyFocus(userExpense.inputDate.id, userExpense.inputDate.isValid)
+          }
+          value={userExpense.inputDate.value}
+          width={"200px"}
+        >
+          Date
+        </InputContainer>
+        <AddExpenseButton
+          disabled={expenseSubmitPermission ? "" : "disabled"}
+          onClick={(event) =>
+            submitExpense(event, userExpense.inputNewCategory.value)
+          }
+        >
+          Add Expense
+        </AddExpenseButton>
+      </form>
+    </NewExpenseFormDiv>
+  );
+  if (loadingOnSubmitExpense) {
+    expenseForm = (
+      <LoadingDiv>
+        <FadeLoader color="#51d289"></FadeLoader>
+      </LoadingDiv>
+    );
+  }
+
+  let categoryForm = (
+    <NewCategoryFormDiv>
+      <InputContainer
+        placeholder={userCategory.inputNewCategory.placeholder}
+        changed={(event) =>
+          InputChangeHandler(event, userCategory.inputNewCategory.id)
+        }
+        invalidMessage={
+          userCategory.inputNewCategory.isValid
+            ? ""
+            : userCategory.inputNewCategory.invalidMessage
+        }
+        blur={() =>
+          verifyFocus(
+            userCategory.inputNewCategory.id,
+            userCategory.inputNewCategory.isValid
+          )
+        }
+        value={userCategory.inputNewCategory.value}
+        width={"200px"}
+      >
+        New Category Name
+      </InputContainer>
+      <InputContainer
+        placeholder={userCategory.inputSpend.placeholder}
+        changed={(event) =>
+          InputChangeHandler(event, userCategory.inputSpend.id)
+        }
+        invalidMessage={
+          userCategory.inputSpend.isValid
+            ? ""
+            : userCategory.inputSpend.invalidMessage
+        }
+        blur={() =>
+          verifyFocus(
+            userCategory.inputSpend.id,
+            userCategory.inputSpend.isValid
+          )
+        }
+        value={userCategory.inputSpend.value}
+        width={"200px"}
+      >
+        Category Spending Limit
+      </InputContainer>
+      <AddExpenseButton
+        disabled={categorySubmitPermission ? "" : "disabled"}
+        onClick={() => submitCategory()}
+      >
+        Add Category
+      </AddExpenseButton>
+    </NewCategoryFormDiv>
+  );
+  if (loadingOnSubmitCategory) {
+    categoryForm = (
+      <LoadingDiv>
+        <FadeLoader color="#51d289"></FadeLoader>
+      </LoadingDiv>
+    );
+  }
+
   return (
     <UserExpensesDiv>
       <UserExpensesContainer>
@@ -994,146 +1157,13 @@ const UserExpenses = () => {
             <NewCategoryTitleDiv>
               <DefaultTitle>New Category</DefaultTitle>
             </NewCategoryTitleDiv>
-            <NewCategoryFormDiv>
-              <InputContainer
-                placeholder={userCategory.inputNewCategory.placeholder}
-                changed={(event) =>
-                  InputChangeHandler(event, userCategory.inputNewCategory.id)
-                }
-                invalidMessage={
-                  userCategory.inputNewCategory.isValid
-                    ? ""
-                    : userCategory.inputNewCategory.invalidMessage
-                }
-                blur={() =>
-                  verifyFocus(
-                    userCategory.inputNewCategory.id,
-                    userCategory.inputNewCategory.isValid
-                  )
-                }
-                value={userCategory.inputNewCategory.value}
-                width={"200px"}
-              >
-                New Category Name
-              </InputContainer>
-              <InputContainer
-                placeholder={userCategory.inputSpend.placeholder}
-                changed={(event) =>
-                  InputChangeHandler(event, userCategory.inputSpend.id)
-                }
-                invalidMessage={
-                  userCategory.inputSpend.isValid
-                    ? ""
-                    : userCategory.inputSpend.invalidMessage
-                }
-                blur={() =>
-                  verifyFocus(
-                    userCategory.inputSpend.id,
-                    userCategory.inputSpend.isValid
-                  )
-                }
-                value={userCategory.inputSpend.value}
-                width={"200px"}
-              >
-                Category Spending Limit
-              </InputContainer>
-              <AddExpenseButton
-                disabled={categorySubmitPermission ? "" : "disabled"}
-                onClick={() => submitCategory()}
-              >
-                Add Category
-              </AddExpenseButton>
-            </NewCategoryFormDiv>
+            {categoryForm}
           </NewCategoryDiv>
           <NewExpenseDiv>
             <NewExpenseTitleDiv>
               <DefaultTitle>New Expense</DefaultTitle>
             </NewExpenseTitleDiv>
-            <NewExpenseFormDiv>
-              <form>
-                <InputContainer
-                  placeholder={userExpense.inputName.placeholder}
-                  changed={(event) =>
-                    InputChangeHandler(event, userExpense.inputName.id)
-                  }
-                  invalidMessage={
-                    userExpense.inputName.isValid
-                      ? ""
-                      : userExpense.inputName.invalidMessage
-                  }
-                  blur={() =>
-                    verifyFocus(
-                      userExpense.inputName.id,
-                      userExpense.inputName.isValid
-                    )
-                  }
-                  value={userExpense.inputName.value}
-                  width={"200px"}
-                >
-                  Expense Name
-                </InputContainer>
-                <InputContainer
-                  placeholder={userExpense.inputValue.placeholder}
-                  changed={(event) =>
-                    InputChangeHandler(event, userExpense.inputValue.id)
-                  }
-                  invalidMessage={
-                    userExpense.inputValue.isValid
-                      ? ""
-                      : userExpense.inputValue.invalidMessage
-                  }
-                  blur={() =>
-                    verifyFocus(
-                      userExpense.inputValue.id,
-                      userExpense.inputValue.isValid
-                    )
-                  }
-                  value={userExpense.inputValue.value}
-                  width={"200px"}
-                >
-                  Expense Value
-                </InputContainer>
-                <SelectContainer
-                  label={"Categories"}
-                  options={categoryOptions}
-                  changed={(event) =>
-                    InputChangeHandler(event, userExpense.inputCategory.id)
-                  }
-                  width={"200px"}
-                  defaultOption
-                />
-                {newCategory}
-                <InputContainer
-                  type={"date"}
-                  changed={(event) =>
-                    InputChangeHandler(event, userExpense.inputDate.id)
-                  }
-                  invalidMessage={
-                    userExpense.inputDate.isValid
-                      ? ""
-                      : userExpense.inputDate.invalidMessage
-                  }
-                  blur={() =>
-                    verifyFocus(
-                      userExpense.inputDate.id,
-                      userExpense.inputDate.isValid
-                    )
-                  }
-                  value={userExpense.inputDate.value}
-                  width={"200px"}
-                >
-                  Date
-                </InputContainer>
-                <AddExpenseButton
-                  disabled={expenseSubmitPermission ? "" : "disabled"}
-                  onClick={(event) =>
-                    submitExpense(event, userExpense.inputNewCategory.value)
-                  }
-                >
-                  Add Expense
-                </AddExpenseButton>
-              </form>
-            </NewExpenseFormDiv>
+            {expenseForm}
           </NewExpenseDiv>
         </AuxDiv>
         <AuxDiv>
