@@ -31,6 +31,7 @@ import { BarLoader, FadeLoader } from "react-spinners";
 import Expense from "../../components/ExpensesTracking/Expense/Expense";
 import Modal from "../../components/UI/Modal/Modal";
 import Category from "../../components/ExpensesTracking/Categories/Category";
+import PieChart from "../../components/UI/Charts/PieChart";
 
 const UserExpenses = () => {
   //States
@@ -1286,7 +1287,9 @@ const UserExpenses = () => {
             <AnalysisTitleDiv>
               <DefaultTitle>Analysis</DefaultTitle>
             </AnalysisTitleDiv>
-            <AnalysisContainer>Conteudo</AnalysisContainer>
+            <AnalysisContainer>
+              <PieChart />
+            </AnalysisContainer>
           </ExpenseAnalysisDiv>
         </AuxDiv>
         {showModal ? (
