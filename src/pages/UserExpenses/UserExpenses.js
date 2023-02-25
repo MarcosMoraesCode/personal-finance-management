@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  AddExpenseButton,
+  UserDefaultButton,
   AnalysisContainer,
   AnalysisTitleDiv,
   AuxDiv,
@@ -19,9 +19,10 @@ import {
   NewExpenseTitleDiv,
   UserExpensesContainer,
   UserExpensesDiv,
-  UserExpensesList,
+  UserItemsList,
   UserExpensesListContainer,
   LoadingDiv,
+  UserCategoriesListContainer,
 } from "./UserExpensesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import SelectContainer from "../../components/UI/Select/Select";
@@ -29,6 +30,7 @@ import axiosInstance from "../../axiosInstance";
 import { BarLoader, FadeLoader } from "react-spinners";
 import Expense from "../../components/ExpensesTracking/Expense/Expense";
 import Modal from "../../components/UI/Modal/Modal";
+import Category from "../../components/ExpensesTracking/Categories/Category";
 
 const UserExpenses = () => {
   //States
@@ -111,6 +113,7 @@ const UserExpenses = () => {
     newCategoryName: "",
     newCategorySpendLimit: "",
   });
+  const [showEditCategories, setShowEditCategories] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const [filterType, setFilterType] = useState("sort by name");
   const [loading, setLoading] = useState(false);
@@ -762,6 +765,10 @@ const UserExpenses = () => {
     // console.log(userExpense);
   };
 
+  const changeCategoryDivHandler = () => {
+    setShowEditCategories(!showEditCategories);
+  };
+
   let newCategory = null;
 
   if (
@@ -878,10 +885,6 @@ const UserExpenses = () => {
                     100
                   ).toFixed(2),
                 });
-                console.log(
-                  "aq",
-                  convertToNumber(expenseItems[categoryIndex].spendLimit)
-                );
               });
 
               expenseItems
@@ -963,7 +966,7 @@ const UserExpenses = () => {
     fullList = fetchedExpensesList.map((expense, index) => {
       if (expense.expensesList.length > 0) {
         // infoBtnArray.push({ isOpen: false });
-        console.log(typeof convertToNumber(expense.spendLimit));
+
         return (
           <Expense
             expensesPage
@@ -1070,14 +1073,14 @@ const UserExpenses = () => {
         >
           Date
         </InputContainer>
-        <AddExpenseButton
+        <UserDefaultButton
           disabled={expenseSubmitPermission ? "" : "disabled"}
           onClick={(event) =>
             submitExpense(event, userExpense.inputNewCategory.value)
           }
         >
           Add Expense
-        </AddExpenseButton>
+        </UserDefaultButton>
       </form>
     </NewExpenseFormDiv>
   );
@@ -1133,12 +1136,12 @@ const UserExpenses = () => {
       >
         Category Spending Limit
       </InputContainer>
-      <AddExpenseButton
+      <UserDefaultButton
         disabled={categorySubmitPermission ? "" : "disabled"}
         onClick={() => submitCategory()}
       >
         Add Category
-      </AddExpenseButton>
+      </UserDefaultButton>
     </NewCategoryFormDiv>
   );
   if (loadingOnSubmitCategory) {
@@ -1146,6 +1149,33 @@ const UserExpenses = () => {
       <LoadingDiv>
         <FadeLoader color="#51d289"></FadeLoader>
       </LoadingDiv>
+    );
+  }
+
+  let categoriesDiv = (
+    <>
+      <UserItemsList>
+        {fetchedExpensesList
+          ? filterValue === ""
+            ? fullList
+            : verifySelectType()
+          : listContent}
+      </UserItemsList>
+    </>
+  );
+
+  if (showEditCategories) {
+    categoriesDiv = (
+      <UserItemsList>
+        <UserCategoriesListContainer>
+          <Category />
+          <Category />
+          <Category />
+          <Category />
+          <Category />
+          <Category />
+        </UserCategoriesListContainer>
+      </UserItemsList>
     );
   }
 
@@ -1169,6 +1199,9 @@ const UserExpenses = () => {
         <AuxDiv>
           <ListTitleDiv>
             <DefaultTitle>Category List</DefaultTitle>
+            <UserDefaultButton onClick={changeCategoryDivHandler}>
+              {showEditCategories ? "Category List" : "Edit Category"}
+            </UserDefaultButton>
           </ListTitleDiv>
           <UserExpensesListContainer>
             <ListFilterDiv>
@@ -1192,13 +1225,7 @@ const UserExpenses = () => {
                 noMargin
               ></SelectContainer>
             </ListFilterDiv>
-            <UserExpensesList>
-              {fetchedExpensesList
-                ? filterValue === ""
-                  ? fullList
-                  : verifySelectType()
-                : listContent}
-            </UserExpensesList>
+            {categoriesDiv}
           </UserExpensesListContainer>
         </AuxDiv>
         <AuxDiv>

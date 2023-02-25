@@ -36,9 +36,19 @@ export const UserExpensesContainer = styled.div`
   margin: auto;
 `;
 
-export const AddExpenseButton = styled.button`
-  width: 120px;
-  height: 29px;
+export const UserDefaultButton = styled.button`
+  margin: 10px;
+  font-family: "Roboto";
+  width: fit-content;
+  height: 35px;
+  background-color: black;
+  padding: 4px 8px 4px 8px;
+  box-shadow: 2px 2px gray;
+  border: 2px solid gold;
+  color: gold;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 export const AuxDiv = styled.div`
@@ -56,7 +66,7 @@ export const NewCategoryDiv = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 30%;
+  height: 35%;
   width: 100%;
   border: 1px solid gold;
 `;
@@ -99,7 +109,7 @@ export const NewExpenseDiv = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 70%;
+  height: 65%;
   border: 1px solid gold;
 `;
 
@@ -120,7 +130,40 @@ export const UserExpensesListContainer = styled.div`
   justify-content: center;
   border: 1px solid white;
   width: 100%;
-  height: 90%;
+  height: 95%;
+`;
+
+export const UserCategoriesListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 100%;
+  height: 95%;
+  overflow-y: auto;
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: black;
+  }
 `;
 
 export const ListFilterDiv = styled.div`
@@ -130,7 +173,7 @@ export const ListFilterDiv = styled.div`
   width: 90%;
   height: 10%;
 `;
-export const UserExpensesList = styled.div`
+export const UserItemsList = styled.div`
   border: 1px solid gold;
   width: 100%;
   height: 90%;
@@ -163,7 +206,7 @@ export const UserExpensesList = styled.div`
 export const ListTitleDiv = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   width: 100%;
   height: 10%;
   border: 1px solid green;
