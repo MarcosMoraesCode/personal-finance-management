@@ -32,6 +32,7 @@ import Expense from "../../components/ExpensesTracking/Expense/Expense";
 import Modal from "../../components/UI/Modal/Modal";
 import Category from "../../components/ExpensesTracking/Categories/Category";
 import PieChart from "../../components/UI/Charts/PieChart";
+import { useSelector } from "react-redux";
 
 const UserExpenses = () => {
   //States
@@ -131,6 +132,10 @@ const UserExpenses = () => {
     { name: "New Category" },
   ]);
   const [totalSpendLimit, setTotalSpendLimit] = useState(0);
+
+  //Selectors
+
+  const sliceValues = useSelector((state) => state.initialSlices);
 
   //Support Arrays
 
@@ -537,7 +542,7 @@ const UserExpenses = () => {
 
   const verifySelectType = () => {
     let filteredList = [];
-
+    console.log(sliceValues);
     if (!showEditCategories) {
       switch (filterType) {
         case "sort by name":
@@ -1288,7 +1293,10 @@ const UserExpenses = () => {
               <DefaultTitle>Analysis</DefaultTitle>
             </AnalysisTitleDiv>
             <AnalysisContainer>
-              <PieChart />
+              <PieChart categoryList={fetchedExpensesList} />
+              {sliceValues.newValue === sliceValues.oldValue
+                ? sliceValues.newValue
+                : "nada"}
             </AnalysisContainer>
           </ExpenseAnalysisDiv>
         </AuxDiv>
