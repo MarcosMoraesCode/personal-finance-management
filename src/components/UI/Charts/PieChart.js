@@ -26,7 +26,7 @@ const PieChart = (props) => {
 
   const auxArr = [];
   let finalData = [];
-  console.log(props.categoryList);
+  console.log("aqui", props.categoryList);
   if (props.categoryList !== null) {
     props.categoryList.forEach((item) => {
       let initialValue = [...item.spendLimit];
@@ -60,7 +60,7 @@ const PieChart = (props) => {
       data={finalData}
       options={options}
       width={"100%"}
-      height={"80%"}
+      height={"300px"}
       chartEvents={chartEvents}
     />
   );

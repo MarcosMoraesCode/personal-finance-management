@@ -214,13 +214,13 @@ export const ListTitleDiv = styled.div`
 
 export const ExpenseHistoryDiv = styled.div`
   border: 1px solid blue;
-  height: 50%;
+  height: 10%;
   width: 100%;
 `;
 
 export const ExpenseAnalysisDiv = styled.div`
   border: 1px solid pink;
-  height: 50%;
+  height: 90%;
   width: 100%;
 `;
 
@@ -229,7 +229,7 @@ export const HistoryTitleDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 15%;
+  height: 50%;
   width: 100%;
   border: 1px solid white;
 `;
@@ -239,7 +239,7 @@ export const AnalysisTitleDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 15%;
+  height: 10%;
   width: 100%;
   border: 1px solid red;
 `;
@@ -251,5 +251,6 @@ export const HistoryContainer = styled.div`
 
 export const AnalysisContainer = styled.div`
   width: 100%;
-  height: 85%;
+  height: 90%;
+  //background-color: red;
 `;

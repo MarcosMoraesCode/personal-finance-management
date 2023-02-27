@@ -33,6 +33,7 @@ import Modal from "../../components/UI/Modal/Modal";
 import Category from "../../components/ExpensesTracking/Categories/Category";
 import PieChart from "../../components/UI/Charts/PieChart";
 import { useSelector } from "react-redux";
+import BarTableChart from "../../components/UI/Charts/BarTableChart";
 
 const UserExpenses = () => {
   //States
@@ -931,6 +932,8 @@ const UserExpenses = () => {
 
               setFetchedExpensesList(expenseItems);
 
+              setLoading(false);
+
               //console.log("test", test);
             }
           })
@@ -1294,9 +1297,16 @@ const UserExpenses = () => {
             </AnalysisTitleDiv>
             <AnalysisContainer>
               <PieChart categoryList={fetchedExpensesList} />
-              {sliceValues.newValue === sliceValues.oldValue
-                ? sliceValues.newValue
-                : "nada"}
+              {sliceValues.newValue === sliceValues.oldValue &&
+              sliceValues.newValue !== -1 ? (
+                <BarTableChart
+                  expensesList={
+                    fetchedExpensesList[sliceValues.newValue].expensesList
+                  }
+                />
+              ) : (
+                console.log(fetchedExpensesList)
+              )}
             </AnalysisContainer>
           </ExpenseAnalysisDiv>
         </AuxDiv>
