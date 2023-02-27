@@ -12,7 +12,7 @@ const PieChart = (props) => {
       callback({ chartWrapper }) {
         const chart = chartWrapper.getChart();
         const selection = chart.getSelection();
-        console.log(selection);
+
         if (selection.length > 0) {
           dispatch(changeValue(selection[0].row));
         } else {
@@ -25,21 +25,33 @@ const PieChart = (props) => {
   const data = [["Expenses", "Value per Category"]];
 
   const auxArr = [];
+
   let finalData = [];
-  console.log("aqui", props.categoryList);
+  // console.log("aqui", props.categoryList);
   if (props.categoryList !== null) {
-    props.categoryList.forEach((item) => {
-      let initialValue = [...item.spendLimit];
-      let commaIndex = initialValue.findIndex((element) => element === ",");
-      initialValue.splice(commaIndex, 1, ".");
-      let replacedValue = initialValue.join("");
-      let convertedValue = Number(replacedValue).toFixed(2);
-      auxArr.push([item.category, Number(convertedValue)]);
+    props.categoryList.forEach((item, index) => {
+      const valuesArr = [];
+      if (props.categoryList[index].expensesList.length > 0) {
+        props.categoryList[index].expensesList.forEach((expense) => {
+          let initialValue = [...expense.value];
+          let commaIndex = initialValue.findIndex((element) => element === ",");
+          initialValue.splice(commaIndex, 1, ".");
+          let replacedValue = initialValue.join("");
+          let convertedValue = Number(replacedValue).toFixed(2);
+          valuesArr.push(Number(convertedValue));
+        });
+
+        let totalValue = valuesArr.reduce(
+          (acc, value) => acc + Number(value),
+          0
+        );
+
+        auxArr.push([item.category, Number(totalValue)]);
+      }
     });
-    console.log("oi");
+
     finalData = data.concat(auxArr);
   }
-  console.log(finalData);
 
   const options = {
     title: "Monthly Expenses",

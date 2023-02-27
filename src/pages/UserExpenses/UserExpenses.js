@@ -33,7 +33,7 @@ import Modal from "../../components/UI/Modal/Modal";
 import Category from "../../components/ExpensesTracking/Categories/Category";
 import PieChart from "../../components/UI/Charts/PieChart";
 import { useSelector } from "react-redux";
-import BarTableChart from "../../components/UI/Charts/BarTableChart";
+import BarTableChart from "../../components/UI/Charts/BarTableChart/BarTableChart";
 
 const UserExpenses = () => {
   //States
@@ -543,7 +543,7 @@ const UserExpenses = () => {
 
   const verifySelectType = () => {
     let filteredList = [];
-    console.log(sliceValues);
+    //console.log(sliceValues);
     if (!showEditCategories) {
       switch (filterType) {
         case "sort by name":
@@ -567,7 +567,7 @@ const UserExpenses = () => {
       }
       return filteredList;
     } else {
-      console.log(categoryList);
+      //console.log(categoryList);
       switch (filterType) {
         case "sort by name":
           filteredList = categoryList.filter((item) => {
@@ -1300,12 +1300,12 @@ const UserExpenses = () => {
               {sliceValues.newValue === sliceValues.oldValue &&
               sliceValues.newValue !== -1 ? (
                 <BarTableChart
-                  expensesList={
+                  expenses={
                     fetchedExpensesList[sliceValues.newValue].expensesList
                   }
                 />
               ) : (
-                console.log(fetchedExpensesList)
+                "Double click a slice to see more details."
               )}
             </AnalysisContainer>
           </ExpenseAnalysisDiv>
