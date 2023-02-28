@@ -39,6 +39,8 @@ import {
   fetchCategoriesData,
   fetchExpensesData,
 } from "../../features/expenses/expensesSlice";
+import startFirebase from "../../services/firebaseConfig";
+import { ref, set, get, update, remove, child } from "firebase/database";
 
 const UserExpenses = () => {
   //Store
@@ -46,6 +48,13 @@ const UserExpenses = () => {
     (state) => state.expensesData.userExpenses
   );
   const dispatch = useDispatch();
+
+  //Firebase
+  const db = startFirebase();
+
+  /*const create = () => {
+    set(ref(db, "category"), { test: "teste validado" });
+  };*/
 
   //States
   const [userExpense, setUserExpense] = useState({
@@ -156,9 +165,30 @@ const UserExpenses = () => {
 
   //Effects
 
+  //test
+  const cria = () => {
+    set(ref(db, "users/Marcos"), { name: "Marcos Moraes", email: "testemail" });
+  };
+  const pega = () => {
+    get(child(ref(db), "users/Marcos")).then((res) => {
+      if (res.exists) {
+        console.log("valor", res.val());
+        alert("user already exists");
+      } else {
+        set(ref(db, "users/Marcos"), {
+          name: "Marcos Moraes",
+          email: "testemail",
+        });
+      }
+    });
+  };
+
   useEffect(() => {}, [infoBtnList]);
   useEffect(() => {}, [categoryOptions]);
   useEffect(() => {
+    ///create();
+    cria();
+    pega();
     getExpenses();
   }, []);
 
