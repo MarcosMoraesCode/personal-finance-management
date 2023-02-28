@@ -40,7 +40,7 @@ import {
   fetchExpensesData,
 } from "../../features/expenses/expensesSlice";
 import startFirebase from "../../services/firebaseConfig";
-import { ref, set, get, update, remove, child } from "firebase/database";
+import { ref, set, get, update, remove, child, push } from "firebase/database";
 
 const UserExpenses = () => {
   //Store
@@ -166,18 +166,46 @@ const UserExpenses = () => {
   //Effects
 
   //test
-  const cria = () => {
-    set(ref(db, "users/Marcos"), { name: "Marcos Moraes", email: "testemail" });
-  };
+
   const pega = () => {
-    get(child(ref(db), "users/Marcos")).then((res) => {
-      if (res.exists) {
-        console.log("valor", res.val());
-        alert("user already exists");
+    get(child(ref(db), "users/Marcos")).then((snapshot) => {
+      console.log("users/Marcos existe", snapshot.exists());
+      if (snapshot.exists()) {
+        console.log("usuário já existe");
+        console.log("valor", snapshot.val());
       } else {
         set(ref(db, "users/Marcos"), {
-          name: "Marcos Moraes",
-          email: "testemail",
+          userInfo: { name: "Marcos Moraes", email: "testemail" },
+        });
+        console.log("usuário nao existia");
+      }
+    });
+  };
+  const adicionaCategoria = () => {
+    //get(child(ref(db), "users/{userName}/categories"))
+    get(child(ref(db), "users/Marcos/categories")).then((snapshot) => {
+      console.log("/categories", snapshot.exists());
+      if (snapshot.exists() === true) {
+        console.log("categoria existe: ", snapshot.val());
+
+        //PEGO OS VALORES JÁ EXISTENTES NO BD E JOGO EM UM NOVO
+        let antigos = snapshot.val();
+        //DESSA FORMA CRIA UM NOVO NÓ EM CATEGORIA
+        // push(child(ref(db), "users/Marcos/categories"), {
+        //   categoryId2: { name: "Teste 2", spendLimit: "4000,00" },
+        // });
+
+        const updates = {};
+        updates["/users/Marcos/categories"] = {
+          ...antigos,
+          categoryId3: { name: "Teste 2", spendLimit: "4000,00" },
+        };
+        update(ref(db), updates);
+      } else {
+        console.log("categoria não existia: ", snapshot.val());
+        //DESSA FORMA INICIA O NÓ DE CATEGORIA E SOBRESCREVE SE TIVER OUTROS
+        set(ref(db, "users/Marcos/categories"), {
+          categoryId: { name: "Teste", spendLimit: "5000,00" },
         });
       }
     });
@@ -187,8 +215,10 @@ const UserExpenses = () => {
   useEffect(() => {}, [categoryOptions]);
   useEffect(() => {
     ///create();
-    cria();
+
     pega();
+    adicionaCategoria();
+
     getExpenses();
   }, []);
 
@@ -937,7 +967,7 @@ const UserExpenses = () => {
           });
 
           setCategoryOptions(uniqueCategories);
-          console.log("categoria");
+          //console.log("categoria");
         }
       })
       .catch((err) => {
@@ -948,11 +978,11 @@ const UserExpenses = () => {
           message: err.message,
         });
       });
-    console.log("category finalizada");
+    //console.log("category finalizada");
     await dispatch(fetchExpensesData())
       .unwrap()
       .then((res) => {
-        console.log("expenses");
+        //console.log("expenses");
         if (res !== null) {
           let fetchedExpenses = Object.values(res);
 
@@ -985,7 +1015,7 @@ const UserExpenses = () => {
 
           dispatch(addExpenses(expenseItems));
           //setFetchedExpensesList(expenseItems);
-          console.log(expenseItems);
+          //console.log(expenseItems);
           setLoading(false);
         }
       })
