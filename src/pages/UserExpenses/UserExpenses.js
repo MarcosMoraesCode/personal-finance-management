@@ -709,6 +709,7 @@ const UserExpenses = () => {
   const submitExpense = (event, categoryValue) => {
     event.preventDefault();
     setLoadingOnSubmitExpense(true);
+    setInfoBtnList(null);
 
     //APENAS TESTE DE REQUEST
     if (userExpense.inputCategory.value === "New Category") {

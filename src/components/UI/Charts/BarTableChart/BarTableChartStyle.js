@@ -12,6 +12,7 @@ export const TableHeader = styled.th`
   padding-left: 10px;
   text-align: start;
   color: #51d289;
+  font-weight: 400;
   padding-bottom: 5px;
   border-bottom: 1px solid gold;
 `;
