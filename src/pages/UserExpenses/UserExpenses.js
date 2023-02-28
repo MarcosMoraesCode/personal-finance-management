@@ -32,10 +32,21 @@ import Expense from "../../components/ExpensesTracking/Expense/Expense";
 import Modal from "../../components/UI/Modal/Modal";
 import Category from "../../components/ExpensesTracking/Categories/Category";
 import PieChart from "../../components/UI/Charts/PieChart";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BarTableChart from "../../components/UI/Charts/BarTableChart/BarTableChart";
+import {
+  addExpenses,
+  fetchCategoriesData,
+  fetchExpensesData,
+} from "../../features/expenses/expensesSlice";
 
 const UserExpenses = () => {
+  //Store
+  const fetchedExpensesList = useSelector(
+    (state) => state.expensesData.userExpenses
+  );
+  const dispatch = useDispatch();
+
   //States
   const [userExpense, setUserExpense] = useState({
     id: "expense",
@@ -122,7 +133,7 @@ const UserExpenses = () => {
   const [loading, setLoading] = useState(false);
   const [loadingOnSubmitExpense, setLoadingOnSubmitExpense] = useState(false);
   const [loadingOnSubmitCategory, setLoadingOnSubmitCategory] = useState(false);
-  const [fetchedExpensesList, setFetchedExpensesList] = useState(null);
+  //const [fetchedExpensesList, setFetchedExpensesList] = useState(null);
   const [fetchedCategoriesList, setFetchedCategoriesList] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [infoBtnList, setInfoBtnList] = useState(null);
@@ -567,7 +578,6 @@ const UserExpenses = () => {
       }
       return filteredList;
     } else {
-      //console.log(categoryList);
       switch (filterType) {
         case "sort by name":
           filteredList = categoryList.filter((item) => {
@@ -579,7 +589,7 @@ const UserExpenses = () => {
           break;
         case "sort by value":
           filteredList = categoryList.filter((item) => {
-            if (Number(item?.props.realSpend) >= Number(filterValue)) {
+            if (Number(item.props.spendLimit) >= Number(filterValue)) {
               return item;
             }
             return null;
@@ -857,14 +867,15 @@ const UserExpenses = () => {
     );
   }
 
-  const getExpenses = () => {
+  const getExpenses = async () => {
     let uniqueCategories = [];
     setLoading(true);
-    axiosInstance
-      .get("/category.json")
-      .then((response) => {
-        if (response.data !== null) {
-          let fetchedCategories = Object.values(response.data);
+
+    await dispatch(fetchCategoriesData())
+      .unwrap()
+      .then((res) => {
+        if (res !== null) {
+          let fetchedCategories = Object.values(res);
           let categoryArray = [];
           let SpendLimitArray = [];
 
@@ -896,59 +907,57 @@ const UserExpenses = () => {
           });
 
           setCategoryOptions(uniqueCategories);
+          console.log("categoria");
         }
+      })
+      .catch((err) => {
+        setShowModal(true);
+        setModalInformation({
+          ...modalInformation,
+          statusName: err.name,
+          message: err.message,
+        });
+      });
+    console.log("category finalizada");
+    await dispatch(fetchExpensesData())
+      .unwrap()
+      .then((res) => {
+        console.log("expenses");
+        if (res !== null) {
+          let fetchedExpenses = Object.values(res);
 
-        axiosInstance
-          .get("/expense.json")
-          .then((response) => {
-            if (response.data !== null) {
-              let fetchedExpenses = Object.values(response.data);
+          fetchedExpenses.forEach((expense) => {
+            let categoryIndex = expenseItems.findIndex(
+              (item) => expense.categoryId === item.category
+            );
 
-              fetchedExpenses.forEach((expense) => {
-                let categoryIndex = expenseItems.findIndex(
-                  (item) => expense.categoryId === item.category
-                );
-
-                expenseItems[categoryIndex]?.expensesList.push({
-                  name: expense.name,
-                  value: expense.value,
-                  date: expense.date,
-                  percentage: (
-                    (convertToNumber(expense.value) /
-                      convertToNumber(expenseItems[categoryIndex].spendLimit)) *
-                    100
-                  ).toFixed(2),
-                });
-              });
-
-              expenseItems
-                .filter((expense) => expense.expensesList.length > 0)
-                .forEach((expense) => {
-                  buttons.push({ isOpen: false });
-                });
-
-              let filteredBtns = buttons.slice(0, uniqueCategories.length - 1);
-
-              setInfoBtnList({ buttons: filteredBtns });
-
-              setFetchedExpensesList(expenseItems);
-
-              setLoading(false);
-
-              //console.log("test", test);
-            }
-          })
-          .catch((err) => {
-            setShowModal(true);
-
-            setModalInformation({
-              ...modalInformation,
-              statusName: err.name,
-              message: err.message,
+            expenseItems[categoryIndex]?.expensesList.push({
+              name: expense.name,
+              value: expense.value,
+              date: expense.date,
+              percentage: (
+                (convertToNumber(expense.value) /
+                  convertToNumber(expenseItems[categoryIndex].spendLimit)) *
+                100
+              ).toFixed(2),
             });
           });
 
-        // setLoading(false);
+          expenseItems
+            .filter((expense) => expense.expensesList.length > 0)
+            .forEach((expense) => {
+              buttons.push({ isOpen: false });
+            });
+
+          let filteredBtns = buttons.slice(0, uniqueCategories.length - 1);
+
+          setInfoBtnList({ buttons: filteredBtns });
+
+          dispatch(addExpenses(expenseItems));
+          //setFetchedExpensesList(expenseItems);
+          console.log(expenseItems);
+          setLoading(false);
+        }
       })
       .catch((err) => {
         setShowModal(true);
@@ -1264,8 +1273,10 @@ const UserExpenses = () => {
             <ListFilterDiv>
               <InputContainer
                 placeholder={
-                  filterType === "sort by name"
+                  filterType === "Sort by name"
                     ? "Search by name"
+                    : showEditCategories
+                    ? "Spend Limit"
                     : "Minimum amount"
                 }
                 noMargin
