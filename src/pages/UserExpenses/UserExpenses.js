@@ -37,7 +37,10 @@ import BarTableChart from "../../components/UI/Charts/BarTableChart/BarTableChar
 import {
   addExpenses,
   fetchCategoriesData,
+  fetchDynamicId,
   fetchExpensesData,
+  postNewCategory,
+  postNewExpense,
 } from "../../features/expenses/expensesSlice";
 import startFirebase from "../../services/firebaseConfig";
 import { ref, set, get, update, remove, child, push } from "firebase/database";
@@ -46,6 +49,9 @@ const UserExpenses = () => {
   //Store
   const fetchedExpensesList = useSelector(
     (state) => state.expensesData.userExpenses
+  );
+  const postRequestStatus = useSelector(
+    (state) => state.expensesData.postRequest
   );
   const dispatch = useDispatch();
 
@@ -167,57 +173,10 @@ const UserExpenses = () => {
 
   //test
 
-  const pega = () => {
-    get(child(ref(db), "users/Marcos")).then((snapshot) => {
-      console.log("users/Marcos existe", snapshot.exists());
-      if (snapshot.exists()) {
-        console.log("usuário já existe");
-        console.log("valor", snapshot.val());
-      } else {
-        set(ref(db, "users/Marcos"), {
-          userInfo: { name: "Marcos Moraes", email: "testemail" },
-        });
-        console.log("usuário nao existia");
-      }
-    });
-  };
-  const adicionaCategoria = () => {
-    //get(child(ref(db), "users/{userName}/categories"))
-    get(child(ref(db), "users/Marcos/categories")).then((snapshot) => {
-      console.log("/categories", snapshot.exists());
-      if (snapshot.exists() === true) {
-        console.log("categoria existe: ", snapshot.val());
-
-        //PEGO OS VALORES JÁ EXISTENTES NO BD E JOGO EM UM NOVO
-        let antigos = snapshot.val();
-        //DESSA FORMA CRIA UM NOVO NÓ EM CATEGORIA
-        // push(child(ref(db), "users/Marcos/categories"), {
-        //   categoryId2: { name: "Teste 2", spendLimit: "4000,00" },
-        // });
-
-        const updates = {};
-        updates["/users/Marcos/categories"] = {
-          ...antigos,
-          categoryId3: { name: "Teste 2", spendLimit: "4000,00" },
-        };
-        update(ref(db), updates);
-      } else {
-        console.log("categoria não existia: ", snapshot.val());
-        //DESSA FORMA INICIA O NÓ DE CATEGORIA E SOBRESCREVE SE TIVER OUTROS
-        set(ref(db, "users/Marcos/categories"), {
-          categoryId: { name: "Teste", spendLimit: "5000,00" },
-        });
-      }
-    });
-  };
-
   useEffect(() => {}, [infoBtnList]);
   useEffect(() => {}, [categoryOptions]);
   useEffect(() => {
     ///create();
-
-    pega();
-    adicionaCategoria();
 
     getExpenses();
   }, []);
@@ -731,9 +690,45 @@ const UserExpenses = () => {
     }
   };
 
-  const submitCategory = () => {
+  const submitCategory = async () => {
     setLoadingOnSubmitCategory(true);
-    axiosInstance
+    console.log("usercat", userCategory);
+    await dispatch(postNewCategory(userCategory))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          setCategoryOptions([
+            ...categoryOptions,
+            { name: userCategory.inputNewCategory.value },
+          ]);
+
+          setUserCategory({
+            ...userCategory,
+            inputNewCategory: {
+              ...userCategory.inputNewCategory,
+              isTouched: false,
+              isValid: "false",
+              value: "",
+            },
+            inputSpend: {
+              ...userCategory.inputSpend,
+              isTouched: false,
+              isValid: "false",
+              value: "",
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        setShowModal(true);
+        setModalInformation({
+          ...modalInformation,
+          statusName: err.name,
+          message: err.message,
+        });
+      });
+    setLoadingOnSubmitCategory(false);
+    //será trocado pelo firebase
+    /* axiosInstance
       .post("/category.json", {
         category: userCategory.inputNewCategory.value,
         spendLimit: userCategory.inputSpend.value,
@@ -761,11 +756,10 @@ const UserExpenses = () => {
             },
           });
         }
-        setLoadingOnSubmitCategory(false);
+        //setLoadingOnSubmitCategory(false);
       })
       .catch((err) => {
         setShowModal(true);
-
         setModalInformation({
           ...modalInformation,
           statusName: err.name,
@@ -773,17 +767,36 @@ const UserExpenses = () => {
         });
       });
 
-    setCategorySubmitPermission(false);
+    setCategorySubmitPermission(false);*/
   };
 
-  const submitExpense = (event, categoryValue) => {
+  const submitExpense = async (event, categoryValue) => {
     event.preventDefault();
     setLoadingOnSubmitExpense(true);
     setInfoBtnList(null);
 
+    //utilizando post do firebase
+
     //APENAS TESTE DE REQUEST
     if (userExpense.inputCategory.value === "New Category") {
-      axiosInstance
+      await dispatch(postNewCategory(userExpense))
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            setCategoryOptions([...categoryOptions, { name: categoryValue }]);
+          }
+        })
+        .catch((err) => {
+          setShowModal(true);
+
+          setModalInformation({
+            ...modalInformation,
+            statusName: err.name,
+            message: err.message,
+          });
+        });
+    }
+    //será trocado por dispatch do firebase
+    /*axiosInstance
         .post("/category.json", {
           category: userExpense.inputNewCategory.value,
           spendLimit: userExpense.inputSpend.value,
@@ -801,10 +814,60 @@ const UserExpenses = () => {
             statusName: err.name,
             message: err.message,
           });
-        });
-    }
+        });*/
 
-    axiosInstance
+    await dispatch(postNewExpense(userExpense))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          setLoadingOnSubmitExpense(false);
+          getExpenses();
+          setUserExpense({
+            ...userExpense,
+            inputName: {
+              ...userExpense.inputName,
+              isTouched: false,
+              isValid: "false",
+              value: "",
+            },
+
+            inputDate: {
+              ...userExpense.inputDate,
+              isTouched: false,
+              isValid: "false",
+              value: "",
+            },
+            inputSpend: {
+              ...userExpense.inputSpend,
+              isTouched: false,
+              isValid: "false",
+              value: "",
+            },
+            inputValue: {
+              ...userExpense.inputValue,
+              isTouched: false,
+              isValid: "false",
+              value: "",
+            },
+            inputNewCategory: {
+              ...userExpense.inputNewCategory,
+              isTouched: false,
+              isValid: "false",
+              value: "",
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        setShowModal(true);
+
+        setModalInformation({
+          ...modalInformation,
+          statusName: err.name,
+          message: err.message,
+        });
+      });
+
+    /* axiosInstance
       .post("/expense.json", {
         name: userExpense.inputName.value,
         value: userExpense.inputValue.value,
@@ -863,7 +926,7 @@ const UserExpenses = () => {
           statusName: err.name,
           message: err.message,
         });
-      });
+      });*/
 
     setExpenseSubmitPermission(false);
     // console.log(userExpense);
@@ -934,8 +997,10 @@ const UserExpenses = () => {
     await dispatch(fetchCategoriesData())
       .unwrap()
       .then((res) => {
+        //console.log("AQUI", res);
         if (res !== null) {
           let fetchedCategories = Object.values(res);
+          console.log("DPS", fetchedCategories);
           let categoryArray = [];
           let SpendLimitArray = [];
 
