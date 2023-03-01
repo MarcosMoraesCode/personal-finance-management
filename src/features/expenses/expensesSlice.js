@@ -222,6 +222,8 @@ export const expenseDataSlice = createSlice({
       console.log(action.error);
     });
     builder.addCase(fetchDynamicId.fulfilled, (state, action) => {
+      console.log("payload", action.payload);
+      state.dynamicId = action.payload;
       console.log("Novo id dinamico: ", state.dynamicId);
     });
     builder.addCase(fetchDynamicId.rejected, (state, action) => {

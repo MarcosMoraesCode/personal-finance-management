@@ -142,6 +142,7 @@ const UserExpenses = () => {
     newCategoryName: "",
     newCategorySpendLimit: "",
   });
+
   const [showEditCategories, setShowEditCategories] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const [filterType, setFilterType] = useState("sort by name");
@@ -716,6 +717,7 @@ const UserExpenses = () => {
               value: "",
             },
           });
+          getExpenses();
         }
       })
       .catch((err) => {
@@ -859,74 +861,12 @@ const UserExpenses = () => {
       })
       .catch((err) => {
         setShowModal(true);
-
         setModalInformation({
           ...modalInformation,
           statusName: err.name,
           message: err.message,
         });
       });
-
-    /* axiosInstance
-      .post("/expense.json", {
-        name: userExpense.inputName.value,
-        value: userExpense.inputValue.value,
-        categoryId:
-          userExpense.inputCategory.value !== "" &&
-          userExpense.inputCategory.value !== "New Category"
-            ? userExpense.inputCategory.value
-            : userExpense.inputNewCategory.value,
-        date: userExpense.inputDate.value,
-      })
-      .then((response) => {
-        if (response.data !== null) {
-          setLoadingOnSubmitExpense(false);
-          getExpenses();
-          setUserExpense({
-            ...userExpense,
-            inputName: {
-              ...userExpense.inputName,
-              isTouched: false,
-              isValid: "false",
-              value: "",
-            },
-
-            inputDate: {
-              ...userExpense.inputDate,
-              isTouched: false,
-              isValid: "false",
-              value: "",
-            },
-            inputSpend: {
-              ...userExpense.inputSpend,
-              isTouched: false,
-              isValid: "false",
-              value: "",
-            },
-            inputValue: {
-              ...userExpense.inputValue,
-              isTouched: false,
-              isValid: "false",
-              value: "",
-            },
-            inputNewCategory: {
-              ...userExpense.inputNewCategory,
-              isTouched: false,
-              isValid: "false",
-              value: "",
-            },
-          });
-        }
-      })
-      .catch((err) => {
-        setShowModal(true);
-
-        setModalInformation({
-          ...modalInformation,
-          statusName: err.name,
-          message: err.message,
-        });
-      });*/
 
     setExpenseSubmitPermission(false);
     // console.log(userExpense);
@@ -993,6 +933,7 @@ const UserExpenses = () => {
   const getExpenses = async () => {
     let uniqueCategories = [];
     setLoading(true);
+    dispatch(fetchDynamicId());
 
     await dispatch(fetchCategoriesData())
       .unwrap()
@@ -1071,6 +1012,7 @@ const UserExpenses = () => {
           expenseItems
             .filter((expense) => expense.expensesList.length > 0)
             .forEach((expense) => {
+              console.log("novo", expense);
               buttons.push({ isOpen: false });
             });
 
@@ -1132,11 +1074,15 @@ const UserExpenses = () => {
 
   let fullList = null;
 
-  if (fetchedExpensesList !== null) {
+  if (fetchedExpensesList !== null && infoBtnList !== null) {
+    let btnIndex = 0;
     fullList = fetchedExpensesList.map((expense, index) => {
       if (expense.expensesList.length > 0) {
-        // infoBtnArray.push({ isOpen: false });
+        console.log("btn length", btnIndex, index);
+        let currentBtnIndex = btnIndex;
+        btnIndex += 1;
 
+        //let btnIndex = infoBtnList.buttons.length;
         return (
           <Expense
             expensesPage
@@ -1147,11 +1093,11 @@ const UserExpenses = () => {
             realPercentage={calculateRealPercentage(expense.expensesList)}
             percentageExpected={calculateExpectedPercentage(expense.spendLimit)}
             clicked={() => {
-              expandBtnHandler(index);
+              expandBtnHandler(currentBtnIndex);
             }}
             details={
               infoBtnList !== null
-                ? infoBtnList.buttons[index].isOpen === true
+                ? infoBtnList.buttons[currentBtnIndex].isOpen === true
                   ? "Less Info"
                   : "More Info"
                 : null
