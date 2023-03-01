@@ -20,7 +20,7 @@ export const fetchDynamicId = createAsyncThunk(
     try {
       const dbId = await get(child(ref(db), `users/${userId}/dynamicId`)).then(
         (snapshot) => {
-          console.log("id dinamico", snapshot.val());
+          //console.log("id dinamico", snapshot.val());
           return snapshot.val();
         }
       );
@@ -43,7 +43,7 @@ export const fetchCategoriesData = createAsyncThunk(
       const dbResponse = await get(
         child(ref(db), `users/${userId}/categories`)
       ).then((snapshot) => {
-        console.log("categorias carregadas: ", snapshot.val());
+        // console.log("categorias carregadas: ", snapshot.val());
         return snapshot.val();
       });
       return dbResponse;
@@ -83,9 +83,9 @@ export const postNewExpense = createAsyncThunk(
     try {
       let idValue = state.getState().expensesData.dynamicId;
       await get(child(ref(db), `users/${userId}/expenses`)).then((snapshot) => {
-        console.log("/expenses", snapshot.exists());
+        //  console.log("/expenses", snapshot.exists());
         if (snapshot.exists() === true) {
-          console.log("expense existe: ", snapshot.val());
+          //  console.log("expense existe: ", snapshot.val());
 
           //PEGO OS VALORES JÁ EXISTENTES NO BD E JOGO EM UM NOVO
           let oldExpenses = snapshot.val();
@@ -107,7 +107,7 @@ export const postNewExpense = createAsyncThunk(
           };
           update(ref(db), updates).then((res) => console.log("to aq", res));
         } else {
-          console.log("expense não existia: ", snapshot.val());
+          //console.log("expense não existia: ", snapshot.val());
           //DESSA FORMA INICIA O NÓ DE CATEGORIA E SOBRESCREVE SE TIVER OUTROS
           set(ref(db, `users/${userId}/expenses`), {
             [`expense-${idValue}`]: {
@@ -141,9 +141,9 @@ export const postNewCategory = createAsyncThunk(
 
       await get(child(ref(db), `users/${userId}/categories`)).then(
         (snapshot) => {
-          console.log("/categories", snapshot.exists());
+          //console.log("/categories", snapshot.exists());
           if (snapshot.exists() === true) {
-            console.log("category existe: ", snapshot.val());
+            // console.log("category existe: ", snapshot.val());
 
             //PEGO OS VALORES JÁ EXISTENTES NO BD E JOGO EM UM NOVO
             let oldCategories = snapshot.val();
@@ -157,12 +157,16 @@ export const postNewCategory = createAsyncThunk(
                 spendLimit: action.inputSpend.value,
               },
             };
-            update(ref(db), updates).then((res) =>
-              console.log("resposta da categoria submit", res)
+            update(ref(db), updates).then(
+              (res) => {
+                /*  console.log("resposta da categoria submit", res)*/
+                return;
+              }
+              //  console.log("resposta da categoria submit", res)
             );
           } else {
-            console.log("category não existia: ", snapshot.val());
-            console.log(action.payload);
+            //console.log("category não existia: ", snapshot.val());
+            //console.log(action.payload);
             //DESSA FORMA INICIA O NÓ DE CATEGORIA E SOBRESCREVE SE TIVER OUTROS
             set(ref(db, `users/${userId}/categories`), {
               [`category-${idValue}`]: {
@@ -193,42 +197,42 @@ export const expenseDataSlice = createSlice({
       // console.log("Success", action.payload);
     });
     builder.addCase(fetchCategoriesData.rejected, (state, action) => {
-      console.log("Rejected", action.error.message);
-      console.log(action.error);
+      //console.log("Rejected", action.error.message);
+      // console.log(action.error);
     });
     builder.addCase(fetchExpensesData.fulfilled, (state, action) => {
       //console.log("Success", action.payload);
     });
     builder.addCase(fetchExpensesData.rejected, (state, action) => {
-      console.log("Rejected", action.error.message);
-      console.log(action.error);
+      // console.log("Rejected", action.error.message);
+      //console.log(action.error);
     });
     builder.addCase(postNewExpense.fulfilled, (state, action) => {
       state.dynamicId += 1;
-      console.log("Novo id dinamico: ", state.dynamicId);
+      //console.log("Novo id dinamico: ", state.dynamicId);
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     builder.addCase(postNewExpense.rejected, (state, action) => {
-      console.log("Rejected", action.error.message);
-      console.log(action.error);
+      // console.log("Rejected", action.error.message);
+      // console.log(action.error);
     });
     builder.addCase(postNewCategory.fulfilled, (state, action) => {
       state.dynamicId += 1;
-      console.log("Novo id dinamico: ", state.dynamicId);
+      //console.log("Novo id dinamico: ", state.dynamicId);
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     builder.addCase(postNewCategory.rejected, (state, action) => {
-      console.log("Rejected", action.error.message);
-      console.log(action.error);
+      // console.log("Rejected", action.error.message);
+      //console.log(action.error);
     });
     builder.addCase(fetchDynamicId.fulfilled, (state, action) => {
-      console.log("payload", action.payload);
+      //console.log("payload", action.payload);
       state.dynamicId = action.payload;
-      console.log("Novo id dinamico: ", state.dynamicId);
+      //console.log("Novo id dinamico: ", state.dynamicId);
     });
     builder.addCase(fetchDynamicId.rejected, (state, action) => {
-      console.log("Rejected", action.error.message);
-      console.log(action.error);
+      //console.log("Rejected", action.error.message);
+      //console.log(action.error);
     });
   },
 });

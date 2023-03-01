@@ -22,7 +22,7 @@ const BarTableChart = (props) => {
   function compareNumbers(a, b) {
     return a.value - b.value;
   }
-
+  console.log("deu aq", props.expenses);
   if (props.expenses !== null) {
     let auxArr = props.expenses.map((item) => {
       let initialValue = [...item.value];

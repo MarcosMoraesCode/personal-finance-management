@@ -150,7 +150,7 @@ const UserExpenses = () => {
   const [loadingOnSubmitExpense, setLoadingOnSubmitExpense] = useState(false);
   const [loadingOnSubmitCategory, setLoadingOnSubmitCategory] = useState(false);
   //const [fetchedExpensesList, setFetchedExpensesList] = useState(null);
-  const [fetchedCategoriesList, setFetchedCategoriesList] = useState(null);
+  const [filteredCategories, setFilteredCategories] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [infoBtnList, setInfoBtnList] = useState(null);
   const [expenseSubmitPermission, setExpenseSubmitPermission] = useState(false);
@@ -941,7 +941,7 @@ const UserExpenses = () => {
         //console.log("AQUI", res);
         if (res !== null) {
           let fetchedCategories = Object.values(res);
-          console.log("DPS", fetchedCategories);
+          //console.log("DPS", fetchedCategories);
           let categoryArray = [];
           let SpendLimitArray = [];
 
@@ -1012,7 +1012,7 @@ const UserExpenses = () => {
           expenseItems
             .filter((expense) => expense.expensesList.length > 0)
             .forEach((expense) => {
-              console.log("novo", expense);
+              // console.log("novo", expense);
               buttons.push({ isOpen: false });
             });
 
@@ -1021,7 +1021,14 @@ const UserExpenses = () => {
           setInfoBtnList({ buttons: filteredBtns });
 
           dispatch(addExpenses(expenseItems));
-          //setFetchedExpensesList(expenseItems);
+          console.log("a ser filtrado", expenseItems);
+          const categoryWithExpenses = expenseItems.filter((item) => {
+            if (item.expensesList.length > 0) {
+              return item;
+            }
+          });
+          console.log(categoryWithExpenses);
+          setFilteredCategories(categoryWithExpenses);
           //console.log(expenseItems);
           setLoading(false);
         }
@@ -1078,7 +1085,7 @@ const UserExpenses = () => {
     let btnIndex = 0;
     fullList = fetchedExpensesList.map((expense, index) => {
       if (expense.expensesList.length > 0) {
-        console.log("btn length", btnIndex, index);
+        //console.log("btn length", btnIndex, index);
         let currentBtnIndex = btnIndex;
         btnIndex += 1;
 
@@ -1090,7 +1097,9 @@ const UserExpenses = () => {
             expenseTopic={expense.category}
             expenseTotal={calculateExpenses(expense.expensesList)}
             expenseDataList={expense.expensesList}
-            realPercentage={calculateRealPercentage(expense.expensesList)}
+            realPercentage={calculateRealPercentage(
+              expense.expensesList
+            ).toFixed(2)}
             percentageExpected={calculateExpectedPercentage(expense.spendLimit)}
             clicked={() => {
               expandBtnHandler(currentBtnIndex);
@@ -1384,7 +1393,7 @@ const UserExpenses = () => {
               sliceValues.newValue !== -1 ? (
                 <BarTableChart
                   expenses={
-                    fetchedExpensesList[sliceValues.newValue].expensesList
+                    filteredCategories[sliceValues.newValue].expensesList
                   }
                 />
               ) : (

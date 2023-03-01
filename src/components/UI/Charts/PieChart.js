@@ -27,10 +27,12 @@ const PieChart = (props) => {
   const auxArr = [];
 
   let finalData = [];
-  // console.log("aqui", props.categoryList);
+  console.log("aqui", props.categoryList);
   if (props.categoryList !== null) {
     props.categoryList.forEach((item, index) => {
       const valuesArr = [];
+      //evitar index que não existem
+      let realIndex = 0;
       if (props.categoryList[index].expensesList.length > 0) {
         props.categoryList[index].expensesList.forEach((expense) => {
           let initialValue = [...expense.value];
@@ -48,6 +50,7 @@ const PieChart = (props) => {
 
         auxArr.push([item.category, Number(totalValue)]);
       }
+      realIndex++;
     });
 
     finalData = data.concat(auxArr);
