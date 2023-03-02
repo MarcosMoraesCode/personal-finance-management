@@ -136,6 +136,23 @@ const UserExpenses = () => {
     },
   });
 
+  const [editCategory, setEditCategory] = useState({
+    inputNewCategoryName: {
+      id: "Edit Category Name",
+      value: "",
+      isValid: false,
+      isTouched: false,
+      invalidMessage: "",
+    },
+    inputSpend: {
+      id: "Edit Spending Limit",
+      value: "",
+      isValid: false,
+      isTouched: false,
+      invalidMessage: "",
+    },
+  });
+
   const [modalInformation, setModalInformation] = useState({
     statusName: "",
     message: "",
@@ -280,6 +297,16 @@ const UserExpenses = () => {
       case "New Category Spending Limit":
         validation2 ? (result = true) : (result = false);
         break;
+      case "Edit Category Name":
+        validation1
+          ? !validation4
+            ? (result = true)
+            : (result = false)
+          : (result = false);
+        break;
+      case "Edit Spending Limit":
+        validation2 ? (result = true) : (result = false);
+        break;
       default:
         break;
     }
@@ -366,6 +393,31 @@ const UserExpenses = () => {
           });
 
           break;
+        case "Edit Category Name":
+          exists = categoryAlreadyExists(
+            editCategory.inputNewCategoryName.value
+          );
+          message = "";
+          exists
+            ? (message = "Category Already exists!")
+            : (message = "Invalid name!");
+          setEditCategory({
+            ...editCategory,
+            inputNewCategoryName: {
+              ...editCategory.inputNewCategoryName,
+              invalidMessage: message,
+            },
+          });
+          break;
+        case "Edit Spending Limit":
+          setEditCategory({
+            ...editCategory,
+            inputSpend: {
+              ...editCategory.inputSpend,
+              invalidMessage: "Invalid value!",
+            },
+          });
+          break;
         default:
           break;
       }
@@ -435,7 +487,24 @@ const UserExpenses = () => {
             },
           });
           break;
-
+        case "Edit Spending Limit":
+          setEditCategory({
+            ...editCategory,
+            inputSpend: {
+              ...editCategory.inputSpend,
+              invalidMessage: "",
+            },
+          });
+          break;
+        case "Edit Category Name":
+          setEditCategory({
+            ...editCategory,
+            inputNewCategoryName: {
+              ...editCategory.inputNewCategoryName,
+              invalidMessage: "",
+            },
+          });
+          break;
         default:
           break;
       }
@@ -551,6 +620,28 @@ const UserExpenses = () => {
           },
         });
         checkExpenseButtonValidation(expenseId, event.currentTarget.value);
+        break;
+      case "Edit Category Name":
+        setEditCategory({
+          ...editCategory,
+          inputNewCategoryName: {
+            ...editCategory.inputNewCategoryName,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: checkInputValidation(expenseId, event.currentTarget.value),
+          },
+        });
+        break;
+      case "Edit Spending Limit":
+        setEditCategory({
+          ...editCategory,
+          inputSpend: {
+            ...editCategory.inputSpend,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: checkInputValidation(expenseId, event.currentTarget.value),
+          },
+        });
         break;
       default:
         break;
@@ -878,7 +969,7 @@ const UserExpenses = () => {
         //console.log("AQUI", res);
         if (res !== null) {
           let fetchedCategories = Object.values(res);
-          //console.log("DPS", fetchedCategories);
+
           let categoryArray = [];
           let SpendLimitArray = [];
 
@@ -894,7 +985,7 @@ const UserExpenses = () => {
             );
 
             if (categoryExists) {
-              //console.log("obj", categoryObj);
+              console.log("obj", categoryObj);
               expenseItems.push({
                 category: categoryObj.category,
                 id: categoryObj.id,
@@ -1456,6 +1547,16 @@ const UserExpenses = () => {
             categorySpendLimit={crudType.categorySpendLimit}
             clicked={BackdropHandler}
             cancelAction={BackdropHandler}
+            categoryNameInputConfig={editCategory.inputNewCategoryName}
+            categoryNameChanged={(event) =>
+              InputChangeHandler(event, editCategory.inputNewCategoryName.id)
+            }
+            categoryNameBlur={() =>
+              verifyFocus(
+                editCategory.inputNewCategoryName.id,
+                editCategory.inputNewCategoryName.isValid
+              )
+            }
             editCategory={() =>
               confirmEditCategory(
                 "Veremos se foi",

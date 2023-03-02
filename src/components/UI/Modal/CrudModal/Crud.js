@@ -49,12 +49,26 @@ const Crud = (props) => {
       crudContent = (
         <>
           <CrudStyleTitle>Edit '{props.categoryName}'</CrudStyleTitle>
-
+          {console.log(props.categoryNameInputConfig)}
           <InputsDiv>
-            <InputContainer placeholder={props.categoryName}>
+            <InputContainer
+              placeholder={props.categoryName}
+              width={"200px"}
+              invalidMessage={
+                props.categoryNameInputConfig.isValid
+                  ? ""
+                  : props.categoryNameInputConfig.invalidMessage
+              }
+              value={props.categoryNameInputConfig.value}
+              blur={props.categoryNameBlur}
+              changed={props.categoryNameChanged}
+            >
               Category Name
             </InputContainer>
-            <InputContainer placeholder={props.categorySpendLimit}>
+            <InputContainer
+              placeholder={props.categorySpendLimit}
+              width={"200px"}
+            >
               Spend Limit
             </InputContainer>
           </InputsDiv>
