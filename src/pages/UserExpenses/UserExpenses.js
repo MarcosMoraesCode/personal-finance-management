@@ -85,6 +85,7 @@ const UserExpenses = () => {
     },
     inputCategory: {
       value: "",
+      categoryId: "",
       categoryIsValid: false,
       categoryIsTouched: false,
       id: "Expense Category",
@@ -167,6 +168,7 @@ const UserExpenses = () => {
 
   const [showCrud, setShowCrud] = useState(false);
   const [infoBtnList, setInfoBtnList] = useState(null);
+  const [categoryKeysList, setCategoryKeysList] = useState(null);
   const [expenseSubmitPermission, setExpenseSubmitPermission] = useState(false);
   const [categorySubmitPermission, setCategorySubmitPermission] =
     useState(false);
@@ -449,6 +451,7 @@ const UserExpenses = () => {
           ...userCategory,
           inputNewCategory: {
             ...userCategory.inputNewCategory,
+
             value: event.currentTarget.value,
             isTouched: true,
             isValid: checkInputValidation(expenseId, event.currentTarget.value),
@@ -527,11 +530,13 @@ const UserExpenses = () => {
           ...userExpense,
           inputCategory: {
             ...userExpense.inputCategory,
+            categoryId: findCategoryId(event.currentTarget.value),
             value: event.currentTarget.value,
             isTouched: true,
             isValid: checkInputValidation(expenseId, event.currentTarget.value),
           },
         });
+        console.log("cat", userExpense.inputCategory);
         checkExpenseButtonValidation(expenseId, event.currentTarget.value);
 
         break;
@@ -749,7 +754,7 @@ const UserExpenses = () => {
           });
         });
     }
-
+    //VOLTAR AQUI
     await dispatch(postNewExpense(userExpense))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
@@ -878,7 +883,10 @@ const UserExpenses = () => {
           let SpendLimitArray = [];
 
           fetchedCategories.forEach((categoryObj) => {
-            categoryArray.push({ name: categoryObj.category });
+            categoryArray.push({
+              id: categoryObj.id,
+              name: categoryObj.category,
+            });
             SpendLimitArray.push({ value: categoryObj.spendLimit });
 
             let categoryExists = fetchedCategories.some(
@@ -894,20 +902,30 @@ const UserExpenses = () => {
                 expensesList: [],
               });
             }
+            // console.log("aq", expenseItems);
           });
 
           setTotalSpendLimit(calculateExpenses(SpendLimitArray));
 
           let newCategoryArray = categoryOptions.concat(categoryArray);
+
           let transformedArrayName = newCategoryArray.map((arr) => arr.name);
+          //console.log("trans", transformedArrayName);
           let uniqueNames = [...new Set(transformedArrayName)];
+          let transformedArrayId = newCategoryArray.map((arr) => arr.id);
+          //console.log("ids", transformedArrayId);
+          let uniqueIds = [...new Set(transformedArrayId)];
 
           uniqueNames.forEach((value) => {
             uniqueCategories.push({ name: value });
           });
+          let organizedCategories = uniqueCategories.map(
+            (category, index) =>
+              (category = { name: category.name, id: uniqueIds[index] })
+          );
 
-          setCategoryOptions(uniqueCategories);
-          //console.log("categoria");
+          setCategoryKeysList(organizedCategories);
+          setCategoryOptions(organizedCategories);
         }
       })
       .catch((err) => {
@@ -925,10 +943,11 @@ const UserExpenses = () => {
         //console.log("expenses");
         if (res !== null) {
           let fetchedExpenses = Object.values(res);
-
+          console.log("item", expenseItems);
           fetchedExpenses.forEach((expense) => {
+            console.log("ex", expense);
             let categoryIndex = expenseItems.findIndex(
-              (item) => expense.categoryId === item.category
+              (item) => expense.categoryId === item.id
             );
 
             expenseItems[categoryIndex]?.expensesList.push({
@@ -965,6 +984,7 @@ const UserExpenses = () => {
           setFilteredCategories(categoryWithExpenses);
           //console.log(expenseItems);
           setLoading(false);
+          //console.log("user", userExpense);
         }
       })
       .catch((err) => {
@@ -985,6 +1005,20 @@ const UserExpenses = () => {
     });
   };
   deleta();
+
+  const findCategoryId = (value) => {
+    //console.log(value);
+    let category = categoryKeysList.find((category) => {
+      if (category.name === value) {
+        return category.id;
+      } else {
+        return "";
+      }
+    });
+
+    //console.log("AQ", categoryId.id);
+    return category.id;
+  };
 
   const calculateExpenses = (list) => {
     let valuesList = [];

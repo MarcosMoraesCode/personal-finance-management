@@ -89,6 +89,7 @@ export const postNewExpense = createAsyncThunk(
 
           //PEGO OS VALORES JÁ EXISTENTES NO BD E JOGO EM UM NOVO
           let oldExpenses = snapshot.val();
+          console.log("ACTION", action);
 
           const updates = {};
           updates[`users/${userId}/expenses`] = {
@@ -98,6 +99,11 @@ export const postNewExpense = createAsyncThunk(
               name: action.inputName.value,
               value: action.inputValue.value,
               categoryId:
+                action.inputCategory.value !== "" &&
+                action.inputCategory.value !== "New Category"
+                  ? action.inputCategory.categoryId
+                  : `category-${idValue}`,
+              categoryName:
                 action.inputCategory.value !== "" &&
                 action.inputCategory.value !== "New Category"
                   ? action.inputCategory.value
@@ -115,6 +121,11 @@ export const postNewExpense = createAsyncThunk(
               name: action.inputName.value,
               value: action.inputValue.value,
               categoryId:
+                action.inputCategory.value !== "" &&
+                action.inputCategory.value !== "New Category"
+                  ? action.inputCategory.categoryId
+                  : `category-${idValue}`,
+              categoryName:
                 action.inputCategory.value !== "" &&
                 action.inputCategory.value !== "New Category"
                   ? action.inputCategory.value
