@@ -94,7 +94,7 @@ export const postNewExpense = createAsyncThunk(
           updates[`users/${userId}/expenses`] = {
             ...oldExpenses,
             [`expense-${idValue}`]: {
-              id: `e-${idValue}`,
+              id: `expense-${idValue}`,
               name: action.inputName.value,
               value: action.inputValue.value,
               categoryId:
@@ -111,7 +111,7 @@ export const postNewExpense = createAsyncThunk(
           //DESSA FORMA INICIA O NÓ DE CATEGORIA E SOBRESCREVE SE TIVER OUTROS
           set(ref(db, `users/${userId}/expenses`), {
             [`expense-${idValue}`]: {
-              id: `e-${idValue}`,
+              id: `expense-${idValue}`,
               name: action.inputName.value,
               value: action.inputValue.value,
               categoryId:
@@ -152,7 +152,7 @@ export const postNewCategory = createAsyncThunk(
             updates[`users/${userId}/categories`] = {
               ...oldCategories,
               [`category-${idValue}`]: {
-                id: `c-${idValue}`,
+                id: `category-${idValue}`,
                 category: action.inputNewCategory.value,
                 spendLimit: action.inputSpend.value,
               },
@@ -170,7 +170,7 @@ export const postNewCategory = createAsyncThunk(
             //DESSA FORMA INICIA O NÓ DE CATEGORIA E SOBRESCREVE SE TIVER OUTROS
             set(ref(db, `users/${userId}/categories`), {
               [`category-${idValue}`]: {
-                id: `c-${idValue}`,
+                id: `category-${idValue}`,
                 category: action.inputNewCategory.value,
                 spendLimit: action.inputSpend.value,
               },
@@ -178,6 +178,22 @@ export const postNewCategory = createAsyncThunk(
           }
         }
       );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
+export const editCategory = createAsyncThunk(
+  "userexpenses/editCategory",
+  async (action, state) => {
+    try {
+      console.log("payload", action.categoryId);
+      await set(ref(db, `users/${userId}/categories/${action.categoryId}`), {
+        id: action.categoryId,
+        category: action.newCategoryName,
+        spendLimit: action.newSpendLimit,
+      });
     } catch (err) {
       console.log(err);
     }
@@ -233,6 +249,15 @@ export const expenseDataSlice = createSlice({
     builder.addCase(fetchDynamicId.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);
       //console.log(action.error);
+    });
+    builder.addCase(editCategory.fulfilled, (state, action) => {
+      //state.dynamicId += 1;
+      console.log("Deu certo");
+      //set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
+    });
+    builder.addCase(editCategory.rejected, (state, action) => {
+      // console.log("Rejected", action.error.message);
+      console.log(action.error);
     });
   },
 });

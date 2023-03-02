@@ -2,10 +2,15 @@ import React from "react";
 import Backdrop from "../../Backdrop/Backdrop";
 import {
   ModalStatusDescription,
-  ModalStatusTitle,
   ModalButtonDiv,
 } from "../ConectionModal/ModalStyle";
-import { CancelBtn, ContinueBtn, CrudContentContainer } from "./CrudStyle";
+import {
+  CancelBtn,
+  ContinueBtn,
+  CrudContentContainer,
+  CrudStyleTitle,
+  InputsDiv,
+} from "./CrudStyle";
 import InputContainer from "../../Input/Input";
 
 const Crud = (props) => {
@@ -14,10 +19,10 @@ const Crud = (props) => {
     case "remove-category":
       crudContent = (
         <>
-          <ModalStatusTitle>Remove ${props.categoryName}</ModalStatusTitle>
+          <CrudStyleTitle>Remove {props.categoryName}</CrudStyleTitle>
           <ModalStatusDescription>
-            Do you really want to remove '${props.categoryName}' category? All
-            expenses from '${props.categoryName}' category will be removed too!
+            Do you really want to remove {props.categoryName} category? All
+            expenses from '{props.categoryName}' category will be removed too!
           </ModalStatusDescription>
           <ModalButtonDiv>
             <ContinueBtn onClick={props.removeCategory}>CONTINUE</ContinueBtn>
@@ -29,9 +34,9 @@ const Crud = (props) => {
     case "remove-expense":
       crudContent = (
         <>
-          <ModalStatusTitle>Remove ${props.expenseName}</ModalStatusTitle>
+          <CrudStyleTitle>Remove {props.expenseName}</CrudStyleTitle>
           <ModalStatusDescription>
-            Do you really want to remove '${props.expenseName}' expense?
+            Do you really want to remove '{props.expenseName}' expense?
           </ModalStatusDescription>
           <ModalButtonDiv>
             <ContinueBtn onClick={props.removeExpense}>CONTINUE</ContinueBtn>
@@ -43,17 +48,21 @@ const Crud = (props) => {
     case "edit-category":
       crudContent = (
         <>
-          <ModalStatusTitle>Edit ${props.categoryName}</ModalStatusTitle>
+          <CrudStyleTitle>Edit '{props.categoryName}'</CrudStyleTitle>
 
-          <InputContainer placeholder={props.categoryName}>
-            Category Name
-          </InputContainer>
-          <InputContainer placeholder={props.categorySpendLimit}>
-            Spend Limit
-          </InputContainer>
+          <InputsDiv>
+            <InputContainer placeholder={props.categoryName}>
+              Category Name
+            </InputContainer>
+            <InputContainer placeholder={props.categorySpendLimit}>
+              Spend Limit
+            </InputContainer>
+          </InputsDiv>
 
           <ModalButtonDiv>
-            <ContinueBtn onClick={props.editCategory}>CONTINUE</ContinueBtn>
+            <ContinueBtn {...props} onClick={props.editCategory}>
+              CONTINUE
+            </ContinueBtn>
             <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
           </ModalButtonDiv>
         </>
@@ -62,7 +71,7 @@ const Crud = (props) => {
     case "edit-expense":
       crudContent = (
         <>
-          <ModalStatusTitle>Edit ${props.expenseName}</ModalStatusTitle>
+          <CrudStyleTitle>Edit {props.expenseName}</CrudStyleTitle>
 
           <InputContainer placeholder={props.expenseName}>
             Expense Name

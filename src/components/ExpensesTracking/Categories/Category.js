@@ -39,8 +39,8 @@ const Category = (props) => {
       </CategoryInfosDiv>
       <CategoryManageDiv>
         {" "}
-        <EditButton onClick={props.editAction} />
-        <RemoveButton onClick={props.removeAction} />
+        <EditButton {...props} onClick={props.editAction} />
+        <RemoveButton {...props} onClick={props.removeAction} />
       </CategoryManageDiv>
     </CategoryContainer>
   );

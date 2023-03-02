@@ -36,6 +36,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BarTableChart from "../../components/UI/Charts/BarTableChart/BarTableChart";
 import {
   addExpenses,
+  editCategory,
   fetchCategoriesData,
   fetchDynamicId,
   fetchExpensesData,
@@ -147,9 +148,11 @@ const UserExpenses = () => {
     crudType: "",
     categoryName: "",
     categorySpendLimit: "",
+    categoryId: "",
     expenseName: "",
     expenseValue: "",
     expenseDate: "",
+    expenseId: "",
   });
 
   const [showEditCategories, setShowEditCategories] = useState(false);
@@ -858,7 +861,7 @@ const UserExpenses = () => {
       </>
     );
   }
-
+  //MUDAR O IF RES !== NULL
   const getExpenses = async () => {
     let uniqueCategories = [];
     setLoading(true);
@@ -883,8 +886,10 @@ const UserExpenses = () => {
             );
 
             if (categoryExists) {
+              //console.log("obj", categoryObj);
               expenseItems.push({
                 category: categoryObj.category,
+                id: categoryObj.id,
                 spendLimit: categoryObj.spendLimit,
                 expensesList: [],
               });
@@ -1057,16 +1062,64 @@ const UserExpenses = () => {
 
   let categoryList = null;
 
-  const editCategoryHandler = (categoryName, categorySpendLimit) => {
+  const editCategoryHandler = (
+    categoryName,
+    categorySpendLimit,
+    categoryId
+  ) => {
     let name = categoryName;
     let limit = categorySpendLimit;
+    let id = categoryId;
     setCrudType({
       ...crudType,
       crudType: "edit-category",
       categoryName: name,
       categorySpendLimit: limit,
+      categoryId: id,
     });
     setShowCrud(true);
+  };
+
+  const confirmEditCategory = async (
+    newCategoryName,
+    newSpendLimit,
+    categoryId
+  ) => {
+    let name = newCategoryName;
+    let limit = newSpendLimit;
+    let id = categoryId;
+
+    const editedCategory = {
+      newCategoryName: name,
+      categoryId: id,
+      newSpendLimit: limit,
+    };
+
+    console.log(name, id, limit);
+    setLoading(true);
+    await dispatch(editCategory(editedCategory))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          setLoading(false);
+          setCrudType({
+            ...crudType,
+            crudType: "",
+            categoryName: "",
+            categorySpendLimit: "",
+            categoryId: "",
+          });
+        }
+      })
+      .catch((err) => {
+        setShowModal(true);
+
+        setModalInformation({
+          ...modalInformation,
+          statusName: err.name,
+          message: err.message,
+        });
+      });
+    setShowCrud(false);
   };
 
   if (fetchedExpensesList !== null) {
@@ -1082,7 +1135,9 @@ const UserExpenses = () => {
               ? calculateExpenses(item.expensesList)
               : 0
           }
-          editAction={() => editCategoryHandler(item.category, item.spendLimit)}
+          editAction={() =>
+            editCategoryHandler(item.category, item.spendLimit, item.id)
+          }
         />
       );
     });
@@ -1366,6 +1421,15 @@ const UserExpenses = () => {
             categoryName={crudType.categoryName}
             categorySpendLimit={crudType.categorySpendLimit}
             clicked={BackdropHandler}
+            cancelAction={BackdropHandler}
+            editCategory={() =>
+              confirmEditCategory(
+                "Veremos se foi",
+                "999,00",
+                crudType.categoryId
+              )
+            }
+            //vai mudar
           />
         ) : null}
       </UserExpensesContainer>

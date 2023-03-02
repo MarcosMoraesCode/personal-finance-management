@@ -17,6 +17,8 @@ export const ModalContentContainer = styled.div`
 
 export const ModalButtonDiv = styled.div`
   display: flex;
+  width: 50%;
+  //background-color: blue;
   justify-content: center;
   align-items: center;
   z-index: 100;
