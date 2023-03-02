@@ -27,7 +27,7 @@ const PieChart = (props) => {
   const auxArr = [];
 
   let finalData = [];
-  console.log("aqui", props.categoryList);
+  // console.log("aqui", props.categoryList);
   if (props.categoryList !== null) {
     props.categoryList.forEach((item, index) => {
       const valuesArr = [];

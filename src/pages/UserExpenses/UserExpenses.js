@@ -29,7 +29,7 @@ import SelectContainer from "../../components/UI/Select/Select";
 import axiosInstance from "../../axiosInstance";
 import { BarLoader, FadeLoader } from "react-spinners";
 import Expense from "../../components/ExpensesTracking/Expense/Expense";
-import Modal from "../../components/UI/Modal/Modal";
+import Modal from "../../components/UI/Modal/ConectionModal/Modal";
 import Category from "../../components/ExpensesTracking/Categories/Category";
 import PieChart from "../../components/UI/Charts/PieChart";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,6 +43,7 @@ import {
   postNewExpense,
 } from "../../features/expenses/expensesSlice";
 import startFirebase from "../../services/firebaseConfig";
+import Crud from "../../components/UI/Modal/CrudModal/Crud";
 import { ref, set, get, update, remove, child, push } from "firebase/database";
 
 const UserExpenses = () => {
@@ -142,6 +143,14 @@ const UserExpenses = () => {
     newCategoryName: "",
     newCategorySpendLimit: "",
   });
+  const [crudType, setCrudType] = useState({
+    crudType: "",
+    categoryName: "",
+    categorySpendLimit: "",
+    expenseName: "",
+    expenseValue: "",
+    expenseDate: "",
+  });
 
   const [showEditCategories, setShowEditCategories] = useState(false);
   const [filterValue, setFilterValue] = useState("");
@@ -152,6 +161,8 @@ const UserExpenses = () => {
   //const [fetchedExpensesList, setFetchedExpensesList] = useState(null);
   const [filteredCategories, setFilteredCategories] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
+  const [showCrud, setShowCrud] = useState(false);
   const [infoBtnList, setInfoBtnList] = useState(null);
   const [expenseSubmitPermission, setExpenseSubmitPermission] = useState(false);
   const [categorySubmitPermission, setCategorySubmitPermission] =
@@ -182,33 +193,6 @@ const UserExpenses = () => {
     getExpenses();
   }, []);
 
-  /*
-  const expenseList = expenses.map((expense, index) => {
-    //console.log(infoBtnList);
-
-    infoBtnArray.push({ isOpen: false });
-    return (
-      <Expense
-        expensesPage
-        key={index}
-        expenseTopic={expense.expenseTopic}
-        expenseTotal={expense.expenseTotal}
-        expenseDataList={expense.expenseDataList}
-        clicked={() => {
-          expandBtnHandler(index);
-        }}
-        details={
-          infoBtnList.buttons !== undefined
-            ? infoBtnList.buttons[index].isOpen === true
-              ? "Less Info"
-              : "More Info"
-            : null
-        }
-      />
-    );
-  });
-  */
-
   //Functions
   const expandBtnHandler = (expenseId) => {
     let currentValue = infoBtnList.buttons[expenseId].isOpen;
@@ -223,6 +207,7 @@ const UserExpenses = () => {
 
   const BackdropHandler = () => {
     setShowModal(false);
+    setShowCrud(false);
   };
 
   const categoryAlreadyExists = (expenseCategoryName) => {
@@ -730,46 +715,10 @@ const UserExpenses = () => {
       });
     setLoadingOnSubmitCategory(false);
     //será trocado pelo firebase
-    /* axiosInstance
-      .post("/category.json", {
-        category: userCategory.inputNewCategory.value,
-        spendLimit: userCategory.inputSpend.value,
-      })
-      .then((response) => {
-        if (response.data !== null) {
-          setCategoryOptions([
-            ...categoryOptions,
-            { name: userCategory.inputNewCategory.value },
-          ]);
 
-          setUserCategory({
-            ...userCategory,
-            inputNewCategory: {
-              ...userCategory.inputNewCategory,
-              isTouched: false,
-              isValid: "false",
-              value: "",
-            },
-            inputSpend: {
-              ...userCategory.inputSpend,
-              isTouched: false,
-              isValid: "false",
-              value: "",
-            },
-          });
-        }
-        //setLoadingOnSubmitCategory(false);
-      })
-      .catch((err) => {
-        setShowModal(true);
-        setModalInformation({
-          ...modalInformation,
-          statusName: err.name,
-          message: err.message,
-        });
-      });
+    //setLoadingOnSubmitCategory(false);
 
-    setCategorySubmitPermission(false);*/
+    setCategorySubmitPermission(false);
   };
 
   const submitExpense = async (event, categoryValue) => {
@@ -797,26 +746,6 @@ const UserExpenses = () => {
           });
         });
     }
-    //será trocado por dispatch do firebase
-    /*axiosInstance
-        .post("/category.json", {
-          category: userExpense.inputNewCategory.value,
-          spendLimit: userExpense.inputSpend.value,
-        })
-        .then((response) => {
-          if (response.data !== null) {
-            setCategoryOptions([...categoryOptions, { name: categoryValue }]);
-          }
-        })
-        .catch((err) => {
-          setShowModal(true);
-
-          setModalInformation({
-            ...modalInformation,
-            statusName: err.name,
-            message: err.message,
-          });
-        });*/
 
     await dispatch(postNewExpense(userExpense))
       .then((res) => {
@@ -1021,13 +950,13 @@ const UserExpenses = () => {
           setInfoBtnList({ buttons: filteredBtns });
 
           dispatch(addExpenses(expenseItems));
-          console.log("a ser filtrado", expenseItems);
+          //console.log("a ser filtrado", expenseItems);
           const categoryWithExpenses = expenseItems.filter((item) => {
             if (item.expensesList.length > 0) {
               return item;
             }
           });
-          console.log(categoryWithExpenses);
+          //console.log(categoryWithExpenses);
           setFilteredCategories(categoryWithExpenses);
           //console.log(expenseItems);
           setLoading(false);
@@ -1043,6 +972,14 @@ const UserExpenses = () => {
         });
       });
   };
+
+  const deleta = () => {
+    get(ref(db, "users/Marcos/categories/category-17")).then((snapshot) => {
+      let itemToRemove = snapshot.ref;
+      remove(ref(db, "users/Marcos/categories/category-17"));
+    });
+  };
+  deleta();
 
   const calculateExpenses = (list) => {
     let valuesList = [];
@@ -1120,6 +1057,18 @@ const UserExpenses = () => {
 
   let categoryList = null;
 
+  const editCategoryHandler = (categoryName, categorySpendLimit) => {
+    let name = categoryName;
+    let limit = categorySpendLimit;
+    setCrudType({
+      ...crudType,
+      crudType: "edit-category",
+      categoryName: name,
+      categorySpendLimit: limit,
+    });
+    setShowCrud(true);
+  };
+
   if (fetchedExpensesList !== null) {
     categoryList = fetchedExpensesList.map((item, index) => {
       return (
@@ -1133,6 +1082,7 @@ const UserExpenses = () => {
               ? calculateExpenses(item.expensesList)
               : 0
           }
+          editAction={() => editCategoryHandler(item.category, item.spendLimit)}
         />
       );
     });
@@ -1407,6 +1357,15 @@ const UserExpenses = () => {
             clicked={BackdropHandler}
             status={modalInformation.statusName}
             message={modalInformation.message}
+          />
+        ) : null}
+
+        {showCrud ? (
+          <Crud
+            crudType={crudType.crudType}
+            categoryName={crudType.categoryName}
+            categorySpendLimit={crudType.categorySpendLimit}
+            clicked={BackdropHandler}
           />
         ) : null}
       </UserExpensesContainer>

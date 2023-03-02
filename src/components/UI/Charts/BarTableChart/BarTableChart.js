@@ -16,13 +16,13 @@ const BarTableChart = (props) => {
 
   let finalData = [];
 
-  console.log("renderizou");
+  //console.log("renderizou");
   let tableContent = null;
 
   function compareNumbers(a, b) {
     return a.value - b.value;
   }
-  console.log("deu aq", props.expenses);
+  //console.log("deu aq", props.expenses);
   if (props.expenses !== null) {
     let auxArr = props.expenses.map((item) => {
       let initialValue = [...item.value];
@@ -33,17 +33,17 @@ const BarTableChart = (props) => {
       return { name: item.name, value: convertedValue };
     });
     let organizedArr = [];
-    console.log("inicialmente", auxArr);
+    //console.log("inicialmente", auxArr);
 
     auxArr.join();
     auxArr.sort();
     auxArr.sort(compareNumbers);
-    console.log("ordenado", auxArr);
+    // console.log("ordenado", auxArr);
 
     organizedArr = auxArr.reverse();
-    console.log("expense invertido", organizedArr);
+    // console.log("expense invertido", organizedArr);
     let maxValue = organizedArr[0].value;
-    console.log(maxValue);
+    // console.log(maxValue);
 
     tableContent = organizedArr.map((item, index) => {
       return (
