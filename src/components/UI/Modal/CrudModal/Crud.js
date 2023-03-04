@@ -82,7 +82,11 @@ const Crud = (props) => {
           </InputsDiv>
 
           <ModalButtonDiv>
-            <ContinueBtn {...props} onClick={props.editCategory}>
+            <ContinueBtn
+              disabled={props.continueDisabled}
+              {...props}
+              onClick={props.editCategory}
+            >
               CONTINUE
             </ContinueBtn>
             <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>

@@ -191,6 +191,7 @@ const UserExpenses = () => {
   const [expenseSubmitPermission, setExpenseSubmitPermission] = useState(false);
   const [categorySubmitPermission, setCategorySubmitPermission] =
     useState(false);
+  const [editCategorySubmit, setEditCategorySubmit] = useState(false);
   const [categoryOptions, setCategoryOptions] = useState([
     { id: "new-category", name: "New Category" },
   ]);
@@ -229,9 +230,27 @@ const UserExpenses = () => {
     });
   };
 
-  const BackdropHandler = () => {
+  const BackdropModalHandler = () => {
     setShowModal(false);
+  };
+
+  const BackdropCrudHandler = () => {
     setShowCrud(false);
+    setEditCategory({
+      ...editCategory,
+      inputNewCategoryName: {
+        ...editCategory.inputNewCategoryName,
+        isTouched: false,
+        isValid: false,
+        value: "",
+      },
+      inputSpend: {
+        ...editCategory.inputSpend,
+        isTouched: false,
+        isValid: false,
+        value: "",
+      },
+    });
   };
 
   const categoryAlreadyExists = (expenseCategoryName, categoryId) => {
@@ -257,7 +276,7 @@ const UserExpenses = () => {
       /^([0-9]{4})\-(0[1-9]|1[0-2])\-(0[1-9]|[1-2][0-9]|3[0-1])$/.test(
         expenseDate
       );
-    console.log(value);
+    //console.log(value);
     const validation1 = isValidName(value);
     const validation2 = isValidValue(value);
     const validation3 = value !== "" && value !== "New Category";
@@ -648,6 +667,7 @@ const UserExpenses = () => {
             ),
           },
         });
+        checkEditCategoryBtnValidation(expenseId, event.currentTarget.value);
         break;
       case "Edit Spending Limit":
         setEditCategory({
@@ -659,6 +679,7 @@ const UserExpenses = () => {
             isValid: checkInputValidation(expenseId, event.currentTarget.value),
           },
         });
+        checkEditCategoryBtnValidation(expenseId, event.currentTarget.value);
         break;
       default:
         break;
@@ -789,6 +810,28 @@ const UserExpenses = () => {
       setCategorySubmitPermission(true);
     } else {
       setCategorySubmitPermission(false);
+    }
+  };
+
+  const checkEditCategoryBtnValidation = (expenseId, value) => {
+    let validation1 = editCategory.inputNewCategoryName.isValid === true;
+    let validation2 = editCategory.inputSpend.isValid === true;
+
+    switch (expenseId) {
+      case "Edit Category Name":
+        validation1 = checkInputValidation(expenseId, value);
+        break;
+      case "Edit Spending Limit":
+        validation2 = checkInputValidation(expenseId, value);
+        break;
+      default:
+        break;
+    }
+
+    if (validation1 && validation2) {
+      setEditCategorySubmit(true);
+    } else {
+      setEditCategorySubmit(false);
     }
   };
 
@@ -1110,14 +1153,6 @@ const UserExpenses = () => {
       });
   };
 
-  const deleta = () => {
-    get(ref(db, "users/Marcos/categories/category-17")).then((snapshot) => {
-      let itemToRemove = snapshot.ref;
-      remove(ref(db, "users/Marcos/categories/category-17"));
-    });
-  };
-  deleta();
-
   const findCategoryId = (value) => {
     let category;
     if (categoryKeysList !== null) {
@@ -1246,6 +1281,7 @@ const UserExpenses = () => {
     setLoading(true);
     await dispatch(editACategory(editedCategory))
       .then((res) => {
+        console.log(res.meta);
         if (res.meta.requestStatus === "fulfilled") {
           setLoading(false);
           getExpenses();
@@ -1256,6 +1292,23 @@ const UserExpenses = () => {
             categorySpendLimit: "",
             categoryId: "",
           });
+          setEditCategory({
+            ...editCategory,
+            inputNewCategoryName: {
+              ...editCategory.inputNewCategoryName,
+              isTouched: false,
+              isValid: false,
+              value: "",
+            },
+            inputSpend: {
+              ...editCategory.inputSpend,
+              isTouched: false,
+              isValid: false,
+              value: "",
+            },
+          });
+
+          setEditCategorySubmit(false);
         }
       })
       .catch((err) => {
@@ -1268,6 +1321,7 @@ const UserExpenses = () => {
         });
       });
     setShowCrud(false);
+    console.log(editCategory);
   };
 
   if (fetchedExpensesList !== null) {
@@ -1557,7 +1611,7 @@ const UserExpenses = () => {
         </AuxDiv>
         {showModal ? (
           <Modal
-            clicked={BackdropHandler}
+            clicked={BackdropModalHandler}
             status={modalInformation.statusName}
             message={modalInformation.message}
           />
@@ -1568,8 +1622,8 @@ const UserExpenses = () => {
             crudType={crudType.crudType}
             categoryName={crudType.categoryName}
             categorySpendLimit={crudType.categorySpendLimit}
-            clicked={BackdropHandler}
-            cancelAction={BackdropHandler}
+            clicked={BackdropCrudHandler}
+            cancelAction={BackdropCrudHandler}
             categoryNameInputConfig={editCategory.inputNewCategoryName}
             categorySpendInputConfig={editCategory.inputSpend}
             categoryNameChanged={(event) =>
@@ -1602,7 +1656,7 @@ const UserExpenses = () => {
                 crudType.categoryId
               )
             }
-            //vai mudar
+            continueDisabled={editCategorySubmit ? "" : "disabled"}
           />
         ) : null}
       </UserExpensesContainer>

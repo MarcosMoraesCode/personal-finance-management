@@ -41,13 +41,19 @@ export const UserDefaultButton = styled.button`
   font-family: "Roboto";
   width: fit-content;
   height: 35px;
-  background-color: black;
+  background-color: ${(props) =>
+    props.disabled === "disabled" ? "grey" : "black"};
   padding: 4px 8px 4px 8px;
   box-shadow: 2px 2px gray;
-  border: 2px solid gold;
-  color: gold;
+  opacity: ${(props) => (props.disabled === "disabled" ? "0.5" : "1")};
+  border: ${(props) =>
+    props.disabled === "disabled"
+      ? "1px solid white"
+      : "2px solid gold"}; //2px solid gold;
+  color: ${(props) => (props.disabled === "disabled" ? "white" : "gold")};
   :hover {
-    cursor: pointer;
+    cursor: ${(props) =>
+      props.disabled === "disabled" ? "not-allowed" : "pointer"};
   }
 `;
 

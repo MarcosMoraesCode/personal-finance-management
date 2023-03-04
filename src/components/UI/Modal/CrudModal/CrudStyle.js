@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export const ContinueBtn = styled.button`
-  background-color: transparent;
+  background-color: ${(props) =>
+    props.continueDisabled ? "transparent" : "black"};
   margin: 10px;
   border: 1px solid white;
   min-width: 100px;
@@ -10,7 +11,7 @@ export const ContinueBtn = styled.button`
   font-family: "Roboto";
   font-weight: 800;
   :hover {
-    cursor: pointer;
+    cursor: ${(props) => (props.continueDisabled ? "not-allowed" : "pointer")};
   }
 `;
 
@@ -28,7 +29,7 @@ export const CrudStyleTitle = styled.h1`
 `;
 
 export const CancelBtn = styled.button`
-  background-color: transparent;
+  background-color: black;
   margin: 10px;
   border: 1px solid white;
   //max-width: 140px;
