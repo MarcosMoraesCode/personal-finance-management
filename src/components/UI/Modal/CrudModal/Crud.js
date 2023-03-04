@@ -49,7 +49,7 @@ const Crud = (props) => {
       crudContent = (
         <>
           <CrudStyleTitle>Edit '{props.categoryName}'</CrudStyleTitle>
-          {console.log(props.categoryNameInputConfig)}
+
           <InputsDiv>
             <InputContainer
               placeholder={props.categoryNameInputConfig.placeholder}

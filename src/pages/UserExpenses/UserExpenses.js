@@ -234,15 +234,17 @@ const UserExpenses = () => {
     setShowCrud(false);
   };
 
-  const categoryAlreadyExists = (expenseCategoryName) => {
+  const categoryAlreadyExists = (expenseCategoryName, categoryId) => {
+    // console.log("aqui", categoryOptions);
     let exists = categoryOptions.find(
-      (option) => option.name === expenseCategoryName
+      (option) =>
+        option.name === expenseCategoryName && option.id !== categoryId
     );
 
     return exists;
   };
 
-  const checkInputValidation = (expenseId, value) => {
+  const checkInputValidation = (expenseId, value, categoryId) => {
     const isValidName = (expenseName) =>
       /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,15}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?$/.test(
         expenseName
@@ -255,11 +257,11 @@ const UserExpenses = () => {
       /^([0-9]{4})\-(0[1-9]|1[0-2])\-(0[1-9]|[1-2][0-9]|3[0-1])$/.test(
         expenseDate
       );
-
+    console.log(value);
     const validation1 = isValidName(value);
     const validation2 = isValidValue(value);
     const validation3 = value !== "" && value !== "New Category";
-    const validation4 = categoryAlreadyExists(value);
+    const validation4 = categoryAlreadyExists(value, categoryId);
     const validation5 = isValidDate(value);
 
     let result = false;
@@ -316,7 +318,7 @@ const UserExpenses = () => {
     return result;
   };
 
-  const verifyFocus = (expenseId, elementIsValid) => {
+  const verifyFocus = (expenseId, elementIsValid, categoryId) => {
     let exists = false;
     let message = "";
     if (!elementIsValid) {
@@ -326,7 +328,8 @@ const UserExpenses = () => {
             ...userExpense,
             inputName: {
               ...userExpense.inputName,
-              invalidMessage: "Invalid name!",
+              invalidMessage:
+                userExpense.inputName.value === "" ? "" : "Invalid name!",
             },
           });
           break;
@@ -335,7 +338,8 @@ const UserExpenses = () => {
             ...userExpense,
             inputValue: {
               ...userExpense.inputValue,
-              invalidMessage: "Invalid value!",
+              invalidMessage:
+                userExpense.inputValue.value === "" ? "" : "Invalid value!",
             },
           });
           break;
@@ -344,7 +348,8 @@ const UserExpenses = () => {
             ...userCategory,
             inputSpend: {
               ...userCategory.inputSpend,
-              invalidMessage: "Invalid value!",
+              invalidMessage:
+                userCategory.inputSpend.value === "" ? "" : "Invalid value!",
             },
           });
           break;
@@ -353,7 +358,8 @@ const UserExpenses = () => {
             ...userExpense,
             inputSpend: {
               ...userExpense.inputSpend,
-              invalidMessage: "Invalid value!",
+              invalidMessage:
+                userExpense.inputSpend.value === "" ? "" : "Invalid value!",
             },
           });
           break;
@@ -367,7 +373,8 @@ const UserExpenses = () => {
             ...userExpense,
             inputNewCategory: {
               ...userExpense.inputNewCategory,
-              invalidMessage: message,
+              invalidMessage:
+                userExpense.inputNewCategory.value === "" ? "" : message,
             },
           });
           break;
@@ -390,14 +397,16 @@ const UserExpenses = () => {
             ...userCategory,
             inputNewCategory: {
               ...userCategory.inputNewCategory,
-              invalidMessage: message,
+              invalidMessage:
+                userCategory.inputNewCategory.value === "" ? "" : message,
             },
           });
 
           break;
         case "Edit Category Name":
           exists = categoryAlreadyExists(
-            editCategory.inputNewCategoryName.value
+            editCategory.inputNewCategoryName.value,
+            categoryId
           );
           message = "";
           exists
@@ -407,7 +416,8 @@ const UserExpenses = () => {
             ...editCategory,
             inputNewCategoryName: {
               ...editCategory.inputNewCategoryName,
-              invalidMessage: message,
+              invalidMessage:
+                editCategory.inputNewCategoryName.value === "" ? "" : message,
             },
           });
           break;
@@ -416,7 +426,8 @@ const UserExpenses = () => {
             ...editCategory,
             inputSpend: {
               ...editCategory.inputSpend,
-              invalidMessage: "Invalid value!",
+              invalidMessage:
+                editCategory.inputSpend.value === "" ? "" : "Invalid value!",
             },
           });
           break;
@@ -515,7 +526,7 @@ const UserExpenses = () => {
     }
   };
 
-  const InputChangeHandler = (event, expenseId) => {
+  const InputChangeHandler = (event, expenseId, categoryId) => {
     switch (expenseId) {
       case "Category Name":
         setUserCategory({
@@ -630,7 +641,11 @@ const UserExpenses = () => {
             ...editCategory.inputNewCategoryName,
             value: event.currentTarget.value,
             isTouched: true,
-            isValid: checkInputValidation(expenseId, event.currentTarget.value),
+            isValid: checkInputValidation(
+              expenseId,
+              event.currentTarget.value,
+              categoryId
+            ),
           },
         });
         break;
@@ -1558,7 +1573,11 @@ const UserExpenses = () => {
             categoryNameInputConfig={editCategory.inputNewCategoryName}
             categorySpendInputConfig={editCategory.inputSpend}
             categoryNameChanged={(event) =>
-              InputChangeHandler(event, editCategory.inputNewCategoryName.id)
+              InputChangeHandler(
+                event,
+                editCategory.inputNewCategoryName.id,
+                crudType.categoryId
+              )
             }
             categorySpendChanged={(event) =>
               InputChangeHandler(event, editCategory.inputSpend.id)
@@ -1566,7 +1585,8 @@ const UserExpenses = () => {
             categoryNameBlur={() =>
               verifyFocus(
                 editCategory.inputNewCategoryName.id,
-                editCategory.inputNewCategoryName.isValid
+                editCategory.inputNewCategoryName.isValid,
+                crudType.categoryId
               )
             }
             categorySpendBlur={() =>
