@@ -52,7 +52,7 @@ const Crud = (props) => {
           {console.log(props.categoryNameInputConfig)}
           <InputsDiv>
             <InputContainer
-              placeholder={props.categoryName}
+              placeholder={props.categoryNameInputConfig.placeholder}
               width={"200px"}
               invalidMessage={
                 props.categoryNameInputConfig.isValid
@@ -66,8 +66,16 @@ const Crud = (props) => {
               Category Name
             </InputContainer>
             <InputContainer
-              placeholder={props.categorySpendLimit}
+              placeholder={props.categorySpendInputConfig.placeholder}
               width={"200px"}
+              invalidMessage={
+                props.categorySpendInputConfig.isValid
+                  ? ""
+                  : props.categorySpendInputConfig.invalidMessage
+              }
+              value={props.categorySpendInputConfig.value}
+              blur={props.categorySpendBlur}
+              changed={props.categorySpendChanged}
             >
               Spend Limit
             </InputContainer>

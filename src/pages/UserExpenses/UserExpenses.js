@@ -143,6 +143,7 @@ const UserExpenses = () => {
       isValid: false,
       isTouched: false,
       invalidMessage: "",
+      placeholder: "New Category Name",
     },
     inputSpend: {
       id: "Edit Spending Limit",
@@ -150,6 +151,7 @@ const UserExpenses = () => {
       isValid: false,
       isTouched: false,
       invalidMessage: "",
+      placeholder: "Ex: 2000,00",
     },
   });
 
@@ -1554,8 +1556,12 @@ const UserExpenses = () => {
             clicked={BackdropHandler}
             cancelAction={BackdropHandler}
             categoryNameInputConfig={editCategory.inputNewCategoryName}
+            categorySpendInputConfig={editCategory.inputSpend}
             categoryNameChanged={(event) =>
               InputChangeHandler(event, editCategory.inputNewCategoryName.id)
+            }
+            categorySpendChanged={(event) =>
+              InputChangeHandler(event, editCategory.inputSpend.id)
             }
             categoryNameBlur={() =>
               verifyFocus(
@@ -1563,10 +1569,16 @@ const UserExpenses = () => {
                 editCategory.inputNewCategoryName.isValid
               )
             }
+            categorySpendBlur={() =>
+              verifyFocus(
+                editCategory.inputSpend.id,
+                editCategory.inputSpend.isValid
+              )
+            }
             editCategory={() =>
               confirmEditCategory(
                 editCategory.inputNewCategoryName.value,
-                "2999,00",
+                editCategory.inputSpend.value,
                 crudType.categoryId
               )
             }
