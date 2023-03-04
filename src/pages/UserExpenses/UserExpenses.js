@@ -36,7 +36,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BarTableChart from "../../components/UI/Charts/BarTableChart/BarTableChart";
 import {
   addExpenses,
-  editCategory,
+  editACategory,
   fetchCategoriesData,
   fetchDynamicId,
   fetchExpensesData,
@@ -190,7 +190,7 @@ const UserExpenses = () => {
   const [categorySubmitPermission, setCategorySubmitPermission] =
     useState(false);
   const [categoryOptions, setCategoryOptions] = useState([
-    { name: "New Category" },
+    { id: "new-category", name: "New Category" },
   ]);
   const [totalSpendLimit, setTotalSpendLimit] = useState(0);
 
@@ -605,7 +605,7 @@ const UserExpenses = () => {
             isValid: checkInputValidation(expenseId, event.currentTarget.value),
           },
         });
-        console.log("cat", userExpense.inputCategory);
+        //console.log("cat", userExpense.inputCategory);
         checkExpenseButtonValidation(expenseId, event.currentTarget.value);
 
         break;
@@ -777,8 +777,8 @@ const UserExpenses = () => {
 
   const submitCategory = async () => {
     setLoadingOnSubmitCategory(true);
-    console.log("usercat", userCategory);
-    await dispatch(postNewCategory(userCategory))
+
+    await dispatch(postNewCategory(userCategory, { pudim: "oi" }))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setCategoryOptions([
@@ -884,6 +884,12 @@ const UserExpenses = () => {
               isValid: "false",
               value: "",
             },
+            inputCategory: {
+              ...userExpense.inputCategory,
+              isTouched: false,
+              isValid: false,
+              value: "",
+            },
           });
         }
       })
@@ -985,7 +991,6 @@ const UserExpenses = () => {
             );
 
             if (categoryExists) {
-              console.log("obj", categoryObj);
               expenseItems.push({
                 category: categoryObj.category,
                 id: categoryObj.id,
@@ -1034,9 +1039,8 @@ const UserExpenses = () => {
         //console.log("expenses");
         if (res !== null) {
           let fetchedExpenses = Object.values(res);
-          console.log("item", expenseItems);
+
           fetchedExpenses.forEach((expense) => {
-            console.log("ex", expense);
             let categoryIndex = expenseItems.findIndex(
               (item) => expense.categoryId === item.id
             );
@@ -1098,17 +1102,18 @@ const UserExpenses = () => {
   deleta();
 
   const findCategoryId = (value) => {
-    //console.log(value);
-    let category = categoryKeysList.find((category) => {
-      if (category.name === value) {
-        return category.id;
-      } else {
-        return "";
-      }
-    });
-
+    let category;
+    if (categoryKeysList !== null) {
+      category = categoryKeysList.find((category) => {
+        if (category.name === value) {
+          return category;
+        }
+      });
+      // console.log("a", category);
+      return category !== undefined ? category.id : "default";
+    }
+    return;
     //console.log("AQ", categoryId.id);
-    return category.id;
   };
 
   const calculateExpenses = (list) => {
@@ -1222,10 +1227,11 @@ const UserExpenses = () => {
 
     console.log(name, id, limit);
     setLoading(true);
-    await dispatch(editCategory(editedCategory))
+    await dispatch(editACategory(editedCategory))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setLoading(false);
+          getExpenses();
           setCrudType({
             ...crudType,
             crudType: "",
@@ -1559,8 +1565,8 @@ const UserExpenses = () => {
             }
             editCategory={() =>
               confirmEditCategory(
-                "Veremos se foi",
-                "999,00",
+                editCategory.inputNewCategoryName.value,
+                "2999,00",
                 crudType.categoryId
               )
             }

@@ -102,7 +102,7 @@ export const postNewExpense = createAsyncThunk(
                 action.inputCategory.value !== "" &&
                 action.inputCategory.value !== "New Category"
                   ? action.inputCategory.categoryId
-                  : `category-${idValue}`,
+                  : `category-${idValue - 1}`,
               categoryName:
                 action.inputCategory.value !== "" &&
                 action.inputCategory.value !== "New Category"
@@ -124,7 +124,7 @@ export const postNewExpense = createAsyncThunk(
                 action.inputCategory.value !== "" &&
                 action.inputCategory.value !== "New Category"
                   ? action.inputCategory.categoryId
-                  : `category-${idValue}`,
+                  : `category-${idValue - 1}`,
               categoryName:
                 action.inputCategory.value !== "" &&
                 action.inputCategory.value !== "New Category"
@@ -148,7 +148,6 @@ export const postNewCategory = createAsyncThunk(
 
     try {
       //const idValue = initialState.dynamicId;
-      //console.log("valor state:", idValue);
 
       await get(child(ref(db), `users/${userId}/categories`)).then(
         (snapshot) => {
@@ -195,8 +194,8 @@ export const postNewCategory = createAsyncThunk(
   }
 );
 
-export const editCategory = createAsyncThunk(
-  "userexpenses/editCategory",
+export const editACategory = createAsyncThunk(
+  "userexpenses/editACategory",
   async (action, state) => {
     try {
       console.log("payload", action.categoryId);
@@ -261,12 +260,12 @@ export const expenseDataSlice = createSlice({
       //console.log("Rejected", action.error.message);
       //console.log(action.error);
     });
-    builder.addCase(editCategory.fulfilled, (state, action) => {
+    builder.addCase(editACategory.fulfilled, (state, action) => {
       //state.dynamicId += 1;
       console.log("Deu certo");
       //set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
-    builder.addCase(editCategory.rejected, (state, action) => {
+    builder.addCase(editACategory.rejected, (state, action) => {
       // console.log("Rejected", action.error.message);
       console.log(action.error);
     });
