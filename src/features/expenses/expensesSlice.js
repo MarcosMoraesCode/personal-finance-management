@@ -89,7 +89,7 @@ export const postNewExpense = createAsyncThunk(
 
           //PEGO OS VALORES JÁ EXISTENTES NO BD E JOGO EM UM NOVO
           let oldExpenses = snapshot.val();
-          console.log("ACTION", action);
+          //console.log("ACTION", action);
 
           const updates = {};
           updates[`users/${userId}/expenses`] = {
@@ -111,7 +111,7 @@ export const postNewExpense = createAsyncThunk(
               date: action.inputDate.value,
             },
           };
-          update(ref(db), updates).then((res) => console.log("to aq", res));
+          update(ref(db), updates).then((res) => res);
         } else {
           //console.log("expense não existia: ", snapshot.val());
           //DESSA FORMA INICIA O NÓ DE CATEGORIA E SOBRESCREVE SE TIVER OUTROS
@@ -198,7 +198,7 @@ export const editACategory = createAsyncThunk(
   "userexpenses/editACategory",
   async (action, state) => {
     try {
-      console.log("payload", action.categoryId);
+      // console.log("payload", action.categoryId);
       await set(ref(db, `users/${userId}/categories/${action.categoryId}`), {
         id: action.categoryId,
         category: action.newCategoryName,
@@ -214,7 +214,7 @@ export const removeACategory = createAsyncThunk(
   "userexpenses/removeACategory",
   async (action, state) => {
     try {
-      console.log("payload", action);
+      // console.log("payload", action);
       await remove(ref(db, `users/${userId}/categories/${action}`));
     } catch (err) {
       console.log(err);
@@ -226,7 +226,7 @@ export const removeAnExpense = createAsyncThunk(
   "userexpenses/removeAnExpense",
   async (action, state) => {
     try {
-      console.log("payload", action);
+      //  console.log("payload", action);
       await remove(ref(db, `users/${userId}/expenses/${action}`));
     } catch (err) {
       console.log(err);

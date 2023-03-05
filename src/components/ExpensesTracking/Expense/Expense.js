@@ -47,15 +47,15 @@ const Expense = (props) => {
     return (
       <ExtraContentWrapper key={`${props.expenseTopic}-sub-${index}`}>
         {" "}
-        <ExtraContentBlock>
+        <ExtraContentBlock width={"48%"}>
           <ExtraText>{subTopic.name}</ExtraText>
           <ExtraText>{`$ ${convertedValue}`}</ExtraText>
         </ExtraContentBlock>
-        <ExtraContentBlock>
+        <ExtraContentBlock width={"25%"}>
           <ExtraText>{subTopic.percentage}%</ExtraText>
           <ExtraText>{subTopic.date}</ExtraText>
         </ExtraContentBlock>
-        <ExtraContentBlock reduceWidth>{lastContent}</ExtraContentBlock>
+        <ExtraContentBlock width={"15%"}>{lastContent}</ExtraContentBlock>
       </ExtraContentWrapper>
     );
   });
@@ -66,29 +66,29 @@ const Expense = (props) => {
         <ExpenseLiContent>
           <ExpenseDefaultContent>
             <ExpenseSubtitlesDiv>
-              <SubtitleBlock>
+              <SubtitleBlock width={"48%"}>
                 <p>Category</p>
                 <div />
                 <p>Value</p>
               </SubtitleBlock>
-              <SubtitleBlock>
+              <SubtitleBlock width={"25%"}>
                 <p>Real Percentage</p>
                 <p>Expected</p>
               </SubtitleBlock>
-              <SubtitleBlock reduceWidth>
+              <SubtitleBlock width={"15%"}>
                 <div />
               </SubtitleBlock>
             </ExpenseSubtitlesDiv>
             <ExpenseTextDiv>
-              <DefaultContentBlock>
+              <DefaultContentBlock width={"48%"}>
                 <p>{props.expenseTopic}</p>
                 <p> {`$ ${props.expenseTotal}`}</p>
               </DefaultContentBlock>
-              <DefaultContentBlock>
+              <DefaultContentBlock width={"25%"}>
                 <p>{props.realPercentage}%</p>
                 <p>{props.percentageExpected}%</p>
               </DefaultContentBlock>
-              <DefaultContentBlock reduceWidth>
+              <DefaultContentBlock width={"15%"}>
                 <div />
                 <ExpenseDefaultButton onClick={props.clicked}>
                   {props.details}
@@ -99,16 +99,16 @@ const Expense = (props) => {
 
           <ExpenseExtraContent {...props}>
             <ExpenseSubtitlesDiv>
-              <SubtitleBlock color={"gold"}>
+              <SubtitleBlock width={"48%"} color={"gold"}>
                 <p>Expense</p>
                 <div />
                 <p>Value</p>
               </SubtitleBlock>
-              <SubtitleBlock color={"gold"}>
+              <SubtitleBlock width={"25%"} color={"gold"}>
                 <p>Percentage</p>
                 <p>Date</p>
               </SubtitleBlock>
-              <SubtitleBlock reduceWidth>
+              <SubtitleBlock width={"15%"}>
                 <div />
               </SubtitleBlock>
             </ExpenseSubtitlesDiv>

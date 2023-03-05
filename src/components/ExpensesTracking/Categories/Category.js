@@ -17,24 +17,28 @@ const Category = (props) => {
     <CategoryContainer>
       <CategoryInfosDiv>
         <CategorySubtitlesDiv>
-          <SubtitleBlock>Name</SubtitleBlock>
-          <SubtitleBlock paddingLeft={"25px"}>
+          <SubtitleBlock width={"60%"}>Name</SubtitleBlock>
+          <SubtitleBlock width={"40%"} paddingLeft={"25px"}>
             Category's expenses
           </SubtitleBlock>
         </CategorySubtitlesDiv>
         <CategoryContentDiv>
-          <ContentBlock>{props.categoryName}</ContentBlock>
-          <ContentBlock paddingLeft={"25px"}>
+          <ContentBlock width={"60%"}>{props.categoryName}</ContentBlock>
+          <ContentBlock width={"40%"} paddingLeft={"25px"}>
             {props.expensesNumber}
           </ContentBlock>
         </CategoryContentDiv>
         <CategorySubtitlesDiv>
-          <SubtitleBlock>Real Spend</SubtitleBlock>
-          <SubtitleBlock paddingLeft={"25px"}>Spend Limit</SubtitleBlock>
+          <SubtitleBlock width={"60%"}>Real Spend</SubtitleBlock>
+          <SubtitleBlock width={"40%"} paddingLeft={"25px"}>
+            Spend Limit
+          </SubtitleBlock>
         </CategorySubtitlesDiv>
         <CategoryContentDiv>
-          <ContentBlock>$ {props.realSpend}</ContentBlock>
-          <ContentBlock paddingLeft={"25px"}>$ {props.spendLimit}</ContentBlock>
+          <ContentBlock width={"60%"}> $ {props.realSpend}</ContentBlock>
+          <ContentBlock width={"40%"} paddingLeft={"25px"}>
+            $ {props.spendLimit}
+          </ContentBlock>
         </CategoryContentDiv>
       </CategoryInfosDiv>
       <CategoryManageDiv>

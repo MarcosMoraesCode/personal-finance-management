@@ -91,16 +91,18 @@ export const ExpenseTextDiv = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
   //background-color: red;
 `;
 export const DefaultContentBlock = styled.div`
   display: flex;
   flex-direction: row;
-  font-size: 15px;
+  font-size: 13px;
   justify-content: space-between;
-  width: ${(props) => (props.reduceWidth ? "15%" : "35%")};
+  width: ${(props) => props.width};
   margin-top: 5px;
   margin-bottom: 5px;
+  //background-color: blue;
   @media (max-width: 1300px) {
     font-size: 12px;
   }
@@ -109,17 +111,18 @@ export const ExtraContentBlock = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: ${(props) => (props.reduceWidth ? "15%" : "35%")};
+  width: ${(props) => props.width};
   font-weight: 400;
   margin-top: 10px;
   margin-bottom: 5px;
+  //background-color: red;
 `;
 
 export const SubtitleBlock = styled.div`
   display: flex;
   justify-content: space-between;
   height: fit-content;
-  width: ${(props) => (props.reduceWidth ? "15%" : "35%")};
+  width: ${(props) => props.width};
   font-weight: 400;
   color: ${(props) => props.color};
 `;

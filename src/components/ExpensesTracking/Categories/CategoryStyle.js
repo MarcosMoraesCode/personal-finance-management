@@ -44,14 +44,14 @@ export const SubtitleBlock = styled.div`
   display: flex;
   justify-content: flex-start;
   padding-left: ${(props) => props.paddingLeft};
-  width: 50%;
+  width: ${(props) => props.width};
 `;
 
 export const ContentBlock = styled.div`
   display: flex;
   justify-content: flex-start;
   padding-left: ${(props) => props.paddingLeft};
-  width: 50%;
+  width: ${(props) => props.width};
 `;
 
 export const EditButton = styled.button`
