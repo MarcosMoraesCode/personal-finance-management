@@ -210,6 +210,17 @@ export const editACategory = createAsyncThunk(
   }
 );
 
+export const removeACategory = createAsyncThunk(
+  "userexpenses/removeACategory",
+  async (action, state) => {
+    try {
+      console.log("payload", action);
+      await remove(ref(db, `users/${userId}/categories/${action}`));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
 export const expenseDataSlice = createSlice({
   name: "expensesData",
   initialState,
@@ -266,6 +277,15 @@ export const expenseDataSlice = createSlice({
       //set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     builder.addCase(editACategory.rejected, (state, action) => {
+      // console.log("Rejected", action.error.message);
+      console.log(action.error);
+    });
+    builder.addCase(removeACategory.fulfilled, (state, action) => {
+      //state.dynamicId += 1;
+      console.log("Deu certo");
+      //set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
+    });
+    builder.addCase(removeACategory.rejected, (state, action) => {
       // console.log("Rejected", action.error.message);
       console.log(action.error);
     });

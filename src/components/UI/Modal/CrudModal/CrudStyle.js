@@ -1,15 +1,16 @@
 import styled from "styled-components";
 
 export const ContinueBtn = styled.button`
-  background-color: ${(props) =>
-    props.continueDisabled ? "transparent" : "black"};
+  background-color: transparent;
   margin: 10px;
-  border: 1px solid white;
+  border: ${(props) =>
+    props.continueDisabled ? "1px solid white" : "1px solid gold"};
   min-width: 100px;
   padding: 5px;
   color: #51d289;
   font-family: "Roboto";
   font-weight: 800;
+  opacity: ${(props) => (props.continueDisabled ? "0.5" : "1")};
   :hover {
     cursor: ${(props) => (props.continueDisabled ? "not-allowed" : "pointer")};
   }
@@ -29,26 +30,36 @@ export const CrudStyleTitle = styled.h1`
 `;
 
 export const CancelBtn = styled.button`
-  background-color: black;
+  background-color: transparent;
   margin: 10px;
-  border: 1px solid white;
+  border: 1px solid gold;
   //max-width: 140px;
   min-width: 100px;
   padding: 5px;
   color: red;
   font-family: "Roboto";
-  font-weight: 800;
+
+  font-weight: 600;
   :hover {
     cursor: pointer;
   }
 `;
+
+export const CrudStatusDescription = styled.p`
+  max-width: 300px;
+  padding: 5px;
+  font-family: "Roboto";
+  font-size: 20px;
+  color: white;
+`;
+
 export const CrudContentContainer = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  background-color: #2b2b2b;
+  background-color: #1b1b1b;
   border: 1px solid gold;
   border-radius: 10px;
 

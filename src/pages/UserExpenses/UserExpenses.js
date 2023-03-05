@@ -42,6 +42,7 @@ import {
   fetchExpensesData,
   postNewCategory,
   postNewExpense,
+  removeACategory,
 } from "../../features/expenses/expensesSlice";
 import startFirebase from "../../services/firebaseConfig";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
@@ -214,7 +215,7 @@ const UserExpenses = () => {
   useEffect(() => {}, [categoryOptions]);
   useEffect(() => {
     ///create();
-
+    dispatch(removeACategory("olá"));
     getExpenses();
   }, []);
 
@@ -1321,7 +1322,28 @@ const UserExpenses = () => {
         });
       });
     setShowCrud(false);
-    console.log(editCategory);
+  };
+
+  const removeCategoryHandler = (categoryName, categoryId) => {
+    let name = categoryName;
+    let id = categoryId;
+
+    setShowCrud(true);
+    setCrudType({
+      ...crudType,
+      crudType: "remove-category",
+      categoryName: name,
+      categoryId: id,
+    });
+    // console.log("id", categoryId);
+  };
+
+  const confirmRemoveCategory = async (id) => {
+    await dispatch(removeACategory(id)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        alert("Category was removed!");
+      }
+    });
   };
 
   if (fetchedExpensesList !== null) {
@@ -1340,6 +1362,7 @@ const UserExpenses = () => {
           editAction={() =>
             editCategoryHandler(item.category, item.spendLimit, item.id)
           }
+          removeAction={() => removeCategoryHandler(item.category, item.id)}
         />
       );
     });
@@ -1656,6 +1679,9 @@ const UserExpenses = () => {
                 crudType.categoryId
               )
             }
+            removeCategory={() => {
+              confirmRemoveCategory(crudType.categoryId);
+            }}
             continueDisabled={editCategorySubmit ? "" : "disabled"}
           />
         ) : null}

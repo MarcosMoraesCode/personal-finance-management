@@ -33,8 +33,8 @@ const Category = (props) => {
           <SubtitleBlock paddingLeft={"25px"}>Spend Limit</SubtitleBlock>
         </CategorySubtitlesDiv>
         <CategoryContentDiv>
-          <ContentBlock>{props.realSpend}</ContentBlock>
-          <ContentBlock paddingLeft={"25px"}>{props.spendLimit}</ContentBlock>
+          <ContentBlock>$ {props.realSpend}</ContentBlock>
+          <ContentBlock paddingLeft={"25px"}>$ {props.spendLimit}</ContentBlock>
         </CategoryContentDiv>
       </CategoryInfosDiv>
       <CategoryManageDiv>

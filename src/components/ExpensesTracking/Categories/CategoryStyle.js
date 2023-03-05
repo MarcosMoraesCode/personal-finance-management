@@ -58,7 +58,7 @@ export const EditButton = styled.button`
   width: 30px;
   height: 30px;
   background-image: url(${editIcon});
-  background-size: cover;
+  background-size: auto;
   background-repeat: no-repeat;
   border: none;
   margin: 15px;

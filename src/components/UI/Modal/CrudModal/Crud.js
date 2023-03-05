@@ -8,6 +8,7 @@ import {
   CancelBtn,
   ContinueBtn,
   CrudContentContainer,
+  CrudStatusDescription,
   CrudStyleTitle,
   InputsDiv,
 } from "./CrudStyle";
@@ -19,11 +20,14 @@ const Crud = (props) => {
     case "remove-category":
       crudContent = (
         <>
-          <CrudStyleTitle>Remove {props.categoryName}</CrudStyleTitle>
-          <ModalStatusDescription>
-            Do you really want to remove {props.categoryName} category? All
-            expenses from '{props.categoryName}' category will be removed too!
-          </ModalStatusDescription>
+          <CrudStyleTitle>Remove "{props.categoryName}"</CrudStyleTitle>
+          <CrudStatusDescription>
+            Do you really want to remove {props.categoryName} category?
+            <br></br>
+            <br></br>
+            All expenses from '{props.categoryName}' category will be removed
+            too!
+          </CrudStatusDescription>
           <ModalButtonDiv>
             <ContinueBtn onClick={props.removeCategory}>CONTINUE</ContinueBtn>
             <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
@@ -48,7 +52,7 @@ const Crud = (props) => {
     case "edit-category":
       crudContent = (
         <>
-          <CrudStyleTitle>Edit '{props.categoryName}'</CrudStyleTitle>
+          <CrudStyleTitle>Edit "{props.categoryName}"</CrudStyleTitle>
 
           <InputsDiv>
             <InputContainer
