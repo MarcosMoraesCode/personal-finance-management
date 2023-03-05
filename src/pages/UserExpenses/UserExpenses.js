@@ -43,6 +43,7 @@ import {
   postNewCategory,
   postNewExpense,
   removeACategory,
+  removeAnExpense,
 } from "../../features/expenses/expensesSlice";
 import startFirebase from "../../services/firebaseConfig";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
@@ -182,7 +183,7 @@ const UserExpenses = () => {
   const [loading, setLoading] = useState(false);
   const [loadingOnSubmitExpense, setLoadingOnSubmitExpense] = useState(false);
   const [loadingOnSubmitCategory, setLoadingOnSubmitCategory] = useState(false);
-  //const [fetchedExpensesList, setFetchedExpensesList] = useState(null);
+  const [allExpensesList, setAllExpensesList] = useState(null);
   const [filteredCategories, setFilteredCategories] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -212,10 +213,12 @@ const UserExpenses = () => {
   //test
 
   useEffect(() => {}, [infoBtnList]);
-  useEffect(() => {}, [categoryOptions]);
+  useEffect(() => {
+    //getExpenses();
+  }, [categoryOptions]);
   useEffect(() => {
     ///create();
-    dispatch(removeACategory("olá"));
+    //dispatch(removeACategory("olá"));
     getExpenses();
   }, []);
 
@@ -862,8 +865,8 @@ const UserExpenses = () => {
               value: "",
             },
           });
-          getExpenses();
         }
+        getExpenses();
       })
       .catch((err) => {
         setShowModal(true);
@@ -1083,6 +1086,7 @@ const UserExpenses = () => {
 
           setCategoryKeysList(organizedCategories);
           setCategoryOptions(organizedCategories);
+          setLoading(false);
         }
       })
       .catch((err) => {
@@ -1101,10 +1105,17 @@ const UserExpenses = () => {
         if (res !== null) {
           let fetchedExpenses = Object.values(res);
 
+          // console.log(fetchedExpenses);
+          let allExpenses = [];
           fetchedExpenses.forEach((expense) => {
             let categoryIndex = expenseItems.findIndex(
               (item) => expense.categoryId === item.id
             );
+
+            allExpenses.push({
+              categoryId: expense.categoryId,
+              expenseId: expense.id,
+            });
 
             expenseItems[categoryIndex]?.expensesList.push({
               name: expense.name,
@@ -1128,8 +1139,8 @@ const UserExpenses = () => {
           let filteredBtns = buttons.slice(0, uniqueCategories.length - 1);
 
           setInfoBtnList({ buttons: filteredBtns });
-
-          dispatch(addExpenses(expenseItems));
+          setAllExpensesList(allExpenses);
+          // dispatch(addExpenses(expenseItems));
           //console.log("a ser filtrado", expenseItems);
           const categoryWithExpenses = expenseItems.filter((item) => {
             if (item.expensesList.length > 0) {
@@ -1140,7 +1151,7 @@ const UserExpenses = () => {
           setFilteredCategories(categoryWithExpenses);
           //console.log(expenseItems);
           setLoading(false);
-          //console.log("user", userExpense);
+          // console.log("user", allExpenses);
         }
       })
       .catch((err) => {
@@ -1152,6 +1163,7 @@ const UserExpenses = () => {
           message: err.message,
         });
       });
+    dispatch(addExpenses(expenseItems));
   };
 
   const findCategoryId = (value) => {
@@ -1277,15 +1289,22 @@ const UserExpenses = () => {
       categoryId: id,
       newSpendLimit: limit,
     };
+    // console.log("antes", categoryOptions);
 
-    console.log(name, id, limit);
-    setLoading(true);
+    //console.log(name, id, limit);
+
+    let optionIndex = categoryOptions.findIndex((item) => item.id === id);
+
     await dispatch(editACategory(editedCategory))
       .then((res) => {
-        console.log(res.meta);
         if (res.meta.requestStatus === "fulfilled") {
-          setLoading(false);
-          getExpenses();
+          // setLoading(false);
+
+          setCategoryOptions([
+            ...categoryOptions,
+            (categoryOptions[optionIndex] = { name: name, id: id }),
+          ]);
+          console.log("dps", categoryOptions);
           setCrudType({
             ...crudType,
             crudType: "",
@@ -1321,7 +1340,10 @@ const UserExpenses = () => {
           message: err.message,
         });
       });
+
     setShowCrud(false);
+    await getExpenses();
+    console.log(fetchedExpensesList);
   };
 
   const removeCategoryHandler = (categoryName, categoryId) => {
@@ -1339,10 +1361,39 @@ const UserExpenses = () => {
   };
 
   const confirmRemoveCategory = async (id) => {
+    let expensesToRemove = [];
+    if (allExpensesList !== null) {
+      expensesToRemove = allExpensesList.filter(
+        (item) => item.categoryId === id
+      );
+    }
+    let optionIndex = categoryOptions.findIndex((item) => item.id === id);
+    console.log(expensesToRemove);
+
+    console.log("esse", optionIndex);
+    let newOptions = categoryOptions;
+    newOptions.splice(optionIndex, 1);
+    console.log(newOptions);
+
     await dispatch(removeACategory(id)).then((res) => {
+      setCrudType({
+        ...crudType,
+        crudType: "",
+        categoryName: "",
+        categoryId: "",
+      });
       if (res.meta.requestStatus === "fulfilled") {
-        alert("Category was removed!");
+        setCategoryOptions(newOptions);
+
+        if (expensesToRemove.length > 0) {
+          expensesToRemove.forEach((expense) => {
+            dispatch(removeAnExpense(expense.expenseId));
+            console.log(expense.expenseId, "removido com sucesso");
+          });
+        }
       }
+      setShowCrud(false);
+      getExpenses();
     });
   };
 
