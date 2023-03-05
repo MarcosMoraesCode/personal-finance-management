@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import pig from "../../images/pig.png";
 
 export const LoadingDiv = styled.div`
   display: flex;
@@ -17,6 +18,9 @@ export const UserExpensesDiv = styled.div`
   border-bottom: 1px solid gold;
   font-family: "Roboto";
   background-color: #1f1f1f;
+  // background-image: url(${pig});
+  //background-repeat: no-repeat;
+  //background-size: auto;
 
   @media (max-width: 1100px) {
     flex-direction: column;
@@ -62,7 +66,8 @@ export const AuxDiv = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 30%;
+  width: ${(props) => (props.width ? props.width : "30%")};
+  min-width: 320px;
   height: 100%;
   border: 1px solid black;
 `;
@@ -74,7 +79,7 @@ export const NewCategoryDiv = styled.div`
   justify-content: space-between;
   height: 35%;
   width: 100%;
-  border: 1px solid gold;
+  // border: 1px solid gold;
 `;
 
 export const NewCategoryTitleDiv = styled.div`
@@ -83,7 +88,7 @@ export const NewCategoryTitleDiv = styled.div`
   justify-content: center;
   width: 100%;
   height: 20%;
-  border: blue solid 1px;
+  //border: blue solid 1px;
 `;
 
 export const NewCategoryFormDiv = styled.div`
@@ -93,11 +98,11 @@ export const NewCategoryFormDiv = styled.div`
   justify-content: center;
   width: 100%;
   height: 80%;
-  border: 1px solid red;
+  // border: 1px solid red;
 `;
 
 export const DefaultTitle = styled.h1`
-  color: gold;
+  color: #51d289; ;
 `;
 
 export const NewExpenseTitleDiv = styled.div`
@@ -106,7 +111,7 @@ export const NewExpenseTitleDiv = styled.div`
   justify-content: center;
   width: 100%;
   height: 10%;
-  border: blue solid 1px;
+  //border: blue solid 1px;
 `;
 
 export const NewExpenseDiv = styled.div`
@@ -116,17 +121,18 @@ export const NewExpenseDiv = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 65%;
-  border: 1px solid gold;
+  //border: 1px solid gold;
 `;
 
 export const NewExpenseFormDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   height: 90%;
-  border: 1px solid red;
+  //border: 1px solid red;
+  padding-top: 20px;
 `;
 
 export const UserExpensesListContainer = styled.div`
@@ -134,7 +140,7 @@ export const UserExpensesListContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid white;
+  //border: 1px solid white;
   width: 100%;
   height: 95%;
 `;
@@ -180,7 +186,7 @@ export const ListFilterDiv = styled.div`
   height: 10%;
 `;
 export const UserItemsList = styled.div`
-  border: 1px solid gold;
+  // border: 1px solid gold;
   width: 100%;
   height: 90%;
   overflow-y: auto;
@@ -215,7 +221,7 @@ export const ListTitleDiv = styled.div`
   justify-content: space-around;
   width: 100%;
   height: 10%;
-  border: 1px solid green;
+  // border: 1px solid green;
 `;
 
 export const ExpenseHistoryDiv = styled.div`
@@ -225,8 +231,8 @@ export const ExpenseHistoryDiv = styled.div`
 `;
 
 export const ExpenseAnalysisDiv = styled.div`
-  border: 1px solid pink;
-  height: 90%;
+  //border: 1px solid pink;
+  height: 100%;
   width: 100%;
 `;
 
@@ -247,7 +253,7 @@ export const AnalysisTitleDiv = styled.div`
   align-items: center;
   height: 10%;
   width: 100%;
-  border: 1px solid red;
+  // border: 1px solid red;
 `;
 
 export const HistoryContainer = styled.div`

@@ -8,7 +8,19 @@ const Layout = (props) => {
     <>
       <MainDiv>
         <Toolbar></Toolbar>
-        <MainContent>{props.children}</MainContent>
+        <MainContent>
+          {/* <div
+            style={{
+              display: "flex",
+              position: "absolute",
+              width: "10%",
+              height: "88vh",
+              backgroundColor: "red",
+              marginTop: "6vh",
+            }}
+          ></div>*/}
+          {props.children}
+        </MainContent>
         <Footer></Footer>
       </MainDiv>
     </>

@@ -1607,7 +1607,7 @@ const UserExpenses = () => {
   return (
     <UserExpensesDiv>
       <UserExpensesContainer>
-        <AuxDiv>
+        <AuxDiv width={"20%"}>
           <NewCategoryDiv>
             <NewCategoryTitleDiv>
               <DefaultTitle>New Category</DefaultTitle>
@@ -1658,12 +1658,6 @@ const UserExpenses = () => {
           </UserExpensesListContainer>
         </AuxDiv>
         <AuxDiv>
-          <ExpenseHistoryDiv>
-            <HistoryTitleDiv>
-              <DefaultTitle>History</DefaultTitle>
-            </HistoryTitleDiv>
-            <HistoryContainer>{listContent}</HistoryContainer>
-          </ExpenseHistoryDiv>
           <ExpenseAnalysisDiv>
             <AnalysisTitleDiv>
               <DefaultTitle>Analysis</DefaultTitle>
