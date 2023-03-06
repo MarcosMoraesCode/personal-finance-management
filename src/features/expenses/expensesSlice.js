@@ -234,6 +234,25 @@ export const removeAnExpense = createAsyncThunk(
   }
 );
 
+export const editAnExpense = createAsyncThunk(
+  "userexpenses/editAnExpense",
+  async (action, state) => {
+    try {
+      // console.log("payload", action.categoryId);
+      await set(ref(db, `users/${userId}/expenses/${action.expenseId}`), {
+        id: action.expenseId,
+        categoryName: action.categoryName,
+        categoryId: action.categoryId,
+        date: action.newDate,
+        name: action.newExpenseName,
+        value: action.newValue,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const expenseDataSlice = createSlice({
   name: "expensesData",
   initialState,

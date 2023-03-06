@@ -157,6 +157,32 @@ const UserExpenses = () => {
     },
   });
 
+  const [editExpense, setEditExpense] = useState({
+    inputNewExpenseName: {
+      id: "Edit Expense Name",
+      value: "",
+      isValid: false,
+      isTouched: false,
+      invalidMessage: "",
+      placeholder: "New Expense Name",
+    },
+    inputNewValue: {
+      id: "Edit Expense Value",
+      value: "",
+      isValid: false,
+      isTouched: false,
+      invalidMessage: "",
+      placeholder: "Ex: 2000,00",
+    },
+    inputNewDate: {
+      id: "Edit Expense Date",
+      value: "",
+      isValid: false,
+      isTouched: false,
+      invalidMessage: "",
+    },
+  });
+
   const [modalInformation, setModalInformation] = useState({
     statusName: "",
     message: "",
@@ -194,6 +220,7 @@ const UserExpenses = () => {
   const [categorySubmitPermission, setCategorySubmitPermission] =
     useState(false);
   const [editCategorySubmit, setEditCategorySubmit] = useState(false);
+  const [editExpenseSubmit, setEditExpenseSubmit] = useState(false);
   const [categoryOptions, setCategoryOptions] = useState([
     { id: "new-category", name: "New Category" },
   ]);
@@ -250,6 +277,28 @@ const UserExpenses = () => {
       },
       inputSpend: {
         ...editCategory.inputSpend,
+        isTouched: false,
+        isValid: false,
+        value: "",
+      },
+    });
+    setEditExpense({
+      ...editExpense,
+      inputNewExpenseName: {
+        ...editExpense.inputNewExpenseName,
+        isTouched: false,
+        isValid: false,
+        value: "",
+      },
+      inputNewDate: {
+        ...editExpense.inputNewDate,
+        isTouched: false,
+        isValid: false,
+        value: "",
+        invalidMessage: "",
+      },
+      inputNewValue: {
+        ...editExpense.inputNewValue,
         isTouched: false,
         isValid: false,
         value: "",
@@ -333,6 +382,16 @@ const UserExpenses = () => {
         break;
       case "Edit Spending Limit":
         validation2 ? (result = true) : (result = false);
+        break;
+      case "Edit Expense Name":
+        validation1 ? (result = true) : (result = false);
+        break;
+      case "Edit Expense Value":
+        validation2 ? (result = true) : (result = false);
+        break;
+      case "Edit Expense Date":
+        //   console.log(value);
+        validation5 ? (result = true) : (result = false);
         break;
       default:
         break;
@@ -454,6 +513,37 @@ const UserExpenses = () => {
             },
           });
           break;
+        case "Edit Expense Name":
+          setEditExpense({
+            ...editExpense,
+            inputNewExpenseName: {
+              ...editExpense.inputNewExpenseName,
+              invalidMessage:
+                editExpense.inputNewExpenseName.value === ""
+                  ? ""
+                  : "Invalid name!",
+            },
+          });
+          break;
+        case "Edit Expense Value":
+          setEditExpense({
+            ...editExpense,
+            inputNewValue: {
+              ...editExpense.inputNewValue,
+              invalidMessage:
+                editExpense.inputNewValue.value === "" ? "" : "Invalid value!",
+            },
+          });
+          break;
+        case "Edit Expense Date":
+          setEditExpense({
+            ...editExpense,
+            inputNewDate: {
+              ...editExpense.inputNewDate,
+              invalidMessage: "Invalid date!",
+            },
+          });
+          break;
         default:
           break;
       }
@@ -537,6 +627,33 @@ const UserExpenses = () => {
             ...editCategory,
             inputNewCategoryName: {
               ...editCategory.inputNewCategoryName,
+              invalidMessage: "",
+            },
+          });
+          break;
+        case "Edit Expense Name":
+          setEditExpense({
+            ...editExpense,
+            inputNewExpenseName: {
+              ...editExpense.inputNewExpenseName,
+              invalidMessage: "",
+            },
+          });
+          break;
+        case "Edit Expense Value":
+          setEditExpense({
+            ...editExpense,
+            inputNewValue: {
+              ...editExpense.inputNewValue,
+              invalidMessage: "",
+            },
+          });
+          break;
+        case "Edit Expense Date":
+          setEditExpense({
+            ...editExpense,
+            inputNewDate: {
+              ...editExpense.inputNewDate,
               invalidMessage: "",
             },
           });
@@ -684,6 +801,44 @@ const UserExpenses = () => {
           },
         });
         checkEditCategoryBtnValidation(expenseId, event.currentTarget.value);
+        break;
+      case "Edit Expense Name":
+        setEditExpense({
+          ...editExpense,
+          inputNewExpenseName: {
+            ...editExpense.inputNewExpenseName,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: checkInputValidation(expenseId, event.currentTarget.value),
+          },
+        });
+
+        checkEditExpenseBtnValidation(expenseId, event.currentTarget.value);
+        break;
+      case "Edit Expense Value":
+        setEditExpense({
+          ...editExpense,
+          inputNewValue: {
+            ...editExpense.inputNewValue,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: checkInputValidation(expenseId, event.currentTarget.value),
+          },
+        });
+        checkEditExpenseBtnValidation(expenseId, event.currentTarget.value);
+        break;
+      case "Edit Expense Date":
+        setEditExpense({
+          ...editExpense,
+          inputNewDate: {
+            ...editExpense.inputNewDate,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: checkInputValidation(expenseId, event.currentTarget.value),
+          },
+        });
+        console.log("teste", editExpense.inputNewDate);
+        checkEditExpenseBtnValidation(expenseId, event.currentTarget.value);
         break;
       default:
         break;
@@ -836,6 +991,31 @@ const UserExpenses = () => {
       setEditCategorySubmit(true);
     } else {
       setEditCategorySubmit(false);
+    }
+  };
+
+  const checkEditExpenseBtnValidation = (expenseId, value) => {
+    let validation1 = editExpense.inputNewExpenseName.isValid === true;
+    let validation2 = editExpense.inputNewValue.isValid === true;
+    let validation3 = editExpense.inputNewDate.isValid === true;
+
+    switch (expenseId) {
+      case "Edit Expense Name":
+        validation1 = checkInputValidation(expenseId, value);
+        break;
+      case "Edit Expense Value":
+        validation2 = checkInputValidation(expenseId, value);
+        break;
+      case "Edit Expense Date":
+        validation3 = checkInputValidation(expenseId, value);
+      default:
+        break;
+    }
+
+    if (validation1 && validation2 && validation3) {
+      setEditExpenseSubmit(true);
+    } else {
+      setEditExpenseSubmit(false);
     }
   };
 
@@ -1217,23 +1397,46 @@ const UserExpenses = () => {
   };
 
   let fullList = null;
+  const editExpenseHandler = (expenseName, expenseValue, expenseDate) => {
+    let name = expenseName;
+    let value = expenseValue;
+    let date = expenseDate;
+    console.log(name, value, date);
+    setCrudType({
+      ...crudType,
+      crudType: "edit-expense",
+      expenseName: name,
+      expenseValue: value,
+      expenseDate: date,
+    });
+    setShowCrud(true);
+  };
 
   if (fetchedExpensesList !== null && infoBtnList !== null) {
     let btnIndex = 0;
     fullList = fetchedExpensesList.map((expense, index) => {
       if (expense.expensesList.length > 0) {
-        //console.log("btn length", btnIndex, index);
         let currentBtnIndex = btnIndex;
         btnIndex += 1;
+        // console.log("ex", expense.expensesList);
+        let editArr = expense.expensesList.map((expense) => {
+          return {
+            date: expense.date,
+            name: expense.name,
+            percentage: expense.percentage,
+            value: expense.value,
+            editAction: () =>
+              editExpenseHandler(expense.name, expense.value, expense.date),
+          };
+        });
 
-        //let btnIndex = infoBtnList.buttons.length;
         return (
           <Expense
             expensesPage
             key={index}
             expenseTopic={expense.category}
             expenseTotal={calculateExpenses(expense.expensesList)}
-            expenseDataList={expense.expensesList}
+            expenseDataList={editArr /*expense.expensesList*/}
             realPercentage={calculateRealPercentage(
               expense.expensesList
             ).toFixed(2)}
@@ -1690,10 +1893,35 @@ const UserExpenses = () => {
             crudType={crudType.crudType}
             categoryName={crudType.categoryName}
             categorySpendLimit={crudType.categorySpendLimit}
+            expenseName={crudType.expenseName}
             clicked={BackdropCrudHandler}
             cancelAction={BackdropCrudHandler}
+            expenseNameInputConfig={editExpense.inputNewExpenseName}
+            expenseValueInputConfig={editExpense.inputNewValue}
+            expenseDateInputConfig={editExpense.inputNewDate}
             categoryNameInputConfig={editCategory.inputNewCategoryName}
             categorySpendInputConfig={editCategory.inputSpend}
+            expenseNameChanged={(event) =>
+              InputChangeHandler(
+                event,
+                editExpense.inputNewExpenseName.id
+                //crudType.expenseId
+              )
+            }
+            expenseValueChanged={(event) =>
+              InputChangeHandler(
+                event,
+                editExpense.inputNewValue.id
+                //crudType.expenseId
+              )
+            }
+            expenseDateChanged={(event) =>
+              InputChangeHandler(
+                event,
+                editExpense.inputNewDate.id
+                //crudType.expenseId
+              )
+            }
             categoryNameChanged={(event) =>
               InputChangeHandler(
                 event,
@@ -1703,6 +1931,27 @@ const UserExpenses = () => {
             }
             categorySpendChanged={(event) =>
               InputChangeHandler(event, editCategory.inputSpend.id)
+            }
+            expenseNameBlur={() =>
+              verifyFocus(
+                editExpense.inputNewExpenseName.id,
+                editExpense.inputNewExpenseName.isValid
+                //crudType.expenseId
+              )
+            }
+            expenseValueBlur={() =>
+              verifyFocus(
+                editExpense.inputNewValue.id,
+                editExpense.inputNewValue.isValid
+                //crudType.expenseId
+              )
+            }
+            expenseDateBlur={() =>
+              verifyFocus(
+                editExpense.inputNewDate.id,
+                editExpense.inputNewDate.isValid
+                //crudType.expenseId
+              )
             }
             categoryNameBlur={() =>
               verifyFocus(
@@ -1727,7 +1976,17 @@ const UserExpenses = () => {
             removeCategory={() => {
               confirmRemoveCategory(crudType.categoryId);
             }}
-            continueDisabled={editCategorySubmit ? "" : "disabled"}
+            continueDisabled={
+              crudType.crudType === "edit-category"
+                ? editCategorySubmit
+                  ? ""
+                  : "disabled"
+                : crudType.crudType === "edit-expense"
+                ? editExpenseSubmit
+                  ? ""
+                  : "disabled"
+                : "disabled"
+            }
           />
         ) : null}
       </UserExpensesContainer>

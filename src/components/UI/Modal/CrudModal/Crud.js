@@ -87,7 +87,7 @@ const Crud = (props) => {
 
           <ModalButtonDiv>
             <ContinueBtn
-              disabled={props.continueDisabled}
+              disabled={props.continueCategoryDisabled}
               {...props}
               onClick={props.editCategory}
             >
@@ -101,20 +101,60 @@ const Crud = (props) => {
     case "edit-expense":
       crudContent = (
         <>
-          <CrudStyleTitle>Edit {props.expenseName}</CrudStyleTitle>
-
-          <InputContainer placeholder={props.expenseName}>
-            Expense Name
-          </InputContainer>
-          <InputContainer placeholder={props.expenseValue}>
-            Expense Value
-          </InputContainer>
-          <InputContainer type={"date"} placeholder={props.expenseDate}>
-            Date
-          </InputContainer>
-
+          <CrudStyleTitle>Edit "{props.expenseName}"</CrudStyleTitle>
+          <InputsDiv>
+            <InputContainer
+              placeholder={props.expenseNameInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.expenseNameInputConfig.isValid
+                  ? ""
+                  : props.expenseNameInputConfig.invalidMessage
+              }
+              value={props.expenseNameInputConfig.value}
+              blur={props.expenseNameBlur}
+              changed={props.expenseNameChanged}
+            >
+              Expense Name
+            </InputContainer>
+            <InputContainer
+              placeholder={props.expenseValueInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.expenseValueInputConfig.isValid
+                  ? ""
+                  : props.expenseValueInputConfig.invalidMessage
+              }
+              value={props.expenseValueInputConfig.value}
+              blur={props.expenseValueBlur}
+              changed={props.expenseValueChanged}
+            >
+              Expense Value
+            </InputContainer>
+            <InputContainer
+              type={"date"}
+              placeholder={props.expenseDateInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.expenseDateInputConfig.isValid
+                  ? ""
+                  : props.expenseDateInputConfig.invalidMessage
+              }
+              value={props.expenseDateInputConfig.value}
+              blur={props.expenseDateBlur}
+              changed={props.expenseDateChanged}
+            >
+              Date
+            </InputContainer>
+          </InputsDiv>
           <ModalButtonDiv>
-            <ContinueBtn onClick={props.editExpense}>CONTINUE</ContinueBtn>
+            <ContinueBtn
+              onClick={props.editExpense}
+              disabled={props.continueExpenseDisabled}
+              {...props}
+            >
+              CONTINUE
+            </ContinueBtn>
             <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
           </ModalButtonDiv>
         </>

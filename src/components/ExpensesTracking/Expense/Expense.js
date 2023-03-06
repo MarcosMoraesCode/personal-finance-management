@@ -31,8 +31,8 @@ const Expense = (props) => {
     if (props.expensesPage) {
       lastContent = (
         <ButtonsDiv>
-          <EditButton onClick={props.editAction}> </EditButton>
-          <RemoveButton onClick={props.removeAction}></RemoveButton>
+          <EditButton onClick={subTopic.editAction}> </EditButton>
+          <RemoveButton onClick={subTopic.removeAction}></RemoveButton>
         </ButtonsDiv>
       );
     }
