@@ -23,6 +23,14 @@ import {
   UserExpensesListContainer,
   LoadingDiv,
   UserCategoriesListContainer,
+  AnalysisInfoDiv,
+  AnalysisTableDiv,
+  SpendingBar,
+  AnalysisInfoContainer,
+  SpendingInfoDiv,
+  SpendingInfoTitle,
+  SpendingInfoSpan,
+  SpendingBarValue,
 } from "./UserExpensesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import SelectContainer from "../../components/UI/Select/Select";
@@ -226,6 +234,7 @@ const UserExpenses = () => {
     { id: "new-category", name: "New Category" },
   ]);
   const [totalSpendLimit, setTotalSpendLimit] = useState(0);
+  const [totalSpent, setTotalSpent] = useState(0);
 
   //Selectors
 
@@ -247,6 +256,7 @@ const UserExpenses = () => {
   useEffect(() => {
     ///create();
     //dispatch(removeACategory("olá"));
+
     getExpenses();
   }, []);
 
@@ -1310,6 +1320,7 @@ const UserExpenses = () => {
             allExpenses.push({
               categoryId: expense.categoryId,
               expenseId: expense.id,
+              expenseValue: expense.value,
             });
 
             expenseItems[categoryIndex]?.expensesList.push({
@@ -1324,7 +1335,8 @@ const UserExpenses = () => {
               ).toFixed(2),
             });
           });
-
+          setTotalSpent(sumTotalSpent(allExpenses));
+          console.log(allExpenses);
           expenseItems
             .filter((expense) => expense.expensesList.length > 0)
             .forEach((expense) => {
@@ -1391,6 +1403,17 @@ const UserExpenses = () => {
     return totalValue.toFixed(2);
   };
 
+  const sumTotalSpent = (list) => {
+    console.log(list);
+    let total = 0;
+    list.forEach((item) => {
+      console.log(item.expenseValue);
+      let value = convertToNumber(item.expenseValue);
+      total += Number(value);
+    });
+
+    return total;
+  };
   const convertToNumber = (stringValue) => {
     let initialValue = [...stringValue];
     let commaIndex = initialValue.findIndex((element) => element === ",");
@@ -1959,17 +1982,40 @@ const UserExpenses = () => {
               <DefaultTitle>Analysis</DefaultTitle>
             </AnalysisTitleDiv>
             <AnalysisContainer>
+              <AnalysisInfoDiv>
+                <AnalysisInfoContainer width={"70%"}>
+                  <SpendingInfoDiv>
+                    <SpendingInfoTitle
+                      color={(totalSpendLimit - totalSpent).toFixed(2)}
+                    >
+                      {" "}
+                      <SpendingInfoSpan>
+                        bugder lasting for this month
+                      </SpendingInfoSpan>{" "}
+                      $ {(totalSpendLimit - totalSpent).toFixed(2)}
+                    </SpendingInfoTitle>
+                    <SpendingBar>
+                      <SpendingBarValue
+                        width={`${(totalSpent / totalSpendLimit) * 100}%`}
+                      />
+                    </SpendingBar>
+                  </SpendingInfoDiv>
+                </AnalysisInfoContainer>
+                <AnalysisInfoContainer width={"30%"}></AnalysisInfoContainer>
+              </AnalysisInfoDiv>
               <PieChart categoryList={fetchedExpensesList} />
-              {sliceValues.newValue === sliceValues.oldValue &&
-              sliceValues.newValue !== -1 ? (
-                <BarTableChart
-                  expenses={
-                    filteredCategories[sliceValues.newValue].expensesList
-                  }
-                />
-              ) : (
-                "Double click a slice to see more details."
-              )}
+              <AnalysisTableDiv>
+                {sliceValues.newValue === sliceValues.oldValue &&
+                sliceValues.newValue !== -1 ? (
+                  <BarTableChart
+                    expenses={
+                      filteredCategories[sliceValues.newValue].expensesList
+                    }
+                  />
+                ) : (
+                  "Double click a slice to see more details."
+                )}
+              </AnalysisTableDiv>
             </AnalysisContainer>
           </ExpenseAnalysisDiv>
         </AuxDiv>

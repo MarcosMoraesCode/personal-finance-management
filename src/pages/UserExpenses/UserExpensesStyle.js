@@ -262,7 +262,71 @@ export const HistoryContainer = styled.div`
 `;
 
 export const AnalysisContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   width: 100%;
   height: 90%;
   //background-color: red;
+`;
+
+export const AnalysisInfoDiv = styled.div`
+  display: flex;
+  width: 90%;
+  height: 10%;
+  background-color: black;
+  // border: 1px solid white;
+  border-radius: 10px;
+`;
+
+export const AnalysisTableDiv = styled.div`
+  width: 100%;
+  //background-color: blue;
+`;
+export const SpendingInfoDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  //background-color: red;
+`;
+export const SpendingInfoTitle = styled.h3`
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  color: ${(props) => (props.color > 0 ? "white" : "red")};
+  font-weight: ${(props) => (props.color > 0 ? "500" : "600")};
+  // background-color: rebeccapurple;
+`;
+
+export const SpendingInfoSpan = styled.span`
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 300;
+  color: gold;
+`;
+
+export const SpendingBar = styled.div`
+  width: 90%;
+  height: 4px;
+  border-radius: 2px;
+  background-color: white;
+`;
+export const SpendingBarValue = styled.div`
+  width: ${(props) => props.width};
+  max-width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  background-color: #51d289;
+`;
+
+export const AnalysisInfoContainer = styled.div`
+  width: ${(props) => props.width};
+  height: 100%;
+  // border: 1px solid red;
 `;
