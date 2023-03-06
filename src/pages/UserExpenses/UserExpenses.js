@@ -31,6 +31,7 @@ import {
   SpendingInfoTitle,
   SpendingInfoSpan,
   SpendingBarValue,
+  TestDiv,
 } from "./UserExpensesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import SelectContainer from "../../components/UI/Select/Select";
@@ -57,6 +58,7 @@ import {
 import startFirebase from "../../services/firebaseConfig";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
 import { ref, set, get, update, remove, child, push } from "firebase/database";
+import LineChart from "../../components/UI/Charts/LineChart";
 
 const UserExpenses = () => {
   //Store
@@ -235,6 +237,10 @@ const UserExpenses = () => {
   ]);
   const [totalSpendLimit, setTotalSpendLimit] = useState(0);
   const [totalSpent, setTotalSpent] = useState(0);
+  const [currentAnalysisOption, setCurrentAnalysisOption] = useState({
+    rerender: false,
+    id: "This Month",
+  });
 
   //Selectors
 
@@ -244,6 +250,11 @@ const UserExpenses = () => {
 
   const expenseItems = [];
   const buttons = [];
+  const analysisOptions = [
+    { id: "this-month", name: "This Month" },
+    { id: "last-year", name: "Last Year" },
+    { id: "all-time", name: "All Time" },
+  ];
 
   //Effects
 
@@ -1407,7 +1418,7 @@ const UserExpenses = () => {
     console.log(list);
     let total = 0;
     list.forEach((item) => {
-      console.log(item.expenseValue);
+      //  console.log(item.expenseValue);
       let value = convertToNumber(item.expenseValue);
       total += Number(value);
     });
@@ -1922,6 +1933,60 @@ const UserExpenses = () => {
       </UserItemsList>
     );
   }
+  let analisysContent = (
+    <>
+      <PieChart categoryList={fetchedExpensesList} />
+      <AnalysisTableDiv>
+        {sliceValues.newValue === sliceValues.oldValue &&
+        sliceValues.newValue !== -1 ? (
+          <BarTableChart
+            expenses={filteredCategories[sliceValues.newValue].expensesList}
+          />
+        ) : (
+          "Double click a slice to see more details."
+        )}
+      </AnalysisTableDiv>
+    </>
+  );
+  //if()
+  const ChangeAnalisysOptionHandler = (event) => {
+    setCurrentAnalysisOption({ rerender: true, id: event.currentTarget.value });
+  };
+  if (currentAnalysisOption.rerender) {
+    switch (currentAnalysisOption.id) {
+      case "This Month":
+        analisysContent = (
+          <>
+            <PieChart categoryList={fetchedExpensesList} />
+            <AnalysisTableDiv>
+              {sliceValues.newValue === sliceValues.oldValue &&
+              sliceValues.newValue !== -1 ? (
+                <BarTableChart
+                  expenses={
+                    filteredCategories[sliceValues.newValue].expensesList
+                  }
+                />
+              ) : (
+                "Double click a slice to see more details."
+              )}
+            </AnalysisTableDiv>
+          </>
+        );
+        break;
+      case "Last Year":
+        analisysContent = (
+          <TestDiv>
+            <LineChart />
+          </TestDiv>
+        );
+        break;
+      case "All Time":
+        analisysContent = <div>All time</div>;
+        break;
+      default:
+        analisysContent = null;
+    }
+  }
 
   return (
     <UserExpensesDiv>
@@ -2001,21 +2066,17 @@ const UserExpenses = () => {
                     </SpendingBar>
                   </SpendingInfoDiv>
                 </AnalysisInfoContainer>
-                <AnalysisInfoContainer width={"30%"}></AnalysisInfoContainer>
-              </AnalysisInfoDiv>
-              <PieChart categoryList={fetchedExpensesList} />
-              <AnalysisTableDiv>
-                {sliceValues.newValue === sliceValues.oldValue &&
-                sliceValues.newValue !== -1 ? (
-                  <BarTableChart
-                    expenses={
-                      filteredCategories[sliceValues.newValue].expensesList
-                    }
+                <AnalysisInfoContainer width={"30%"}>
+                  <SelectContainer
+                    paddingTop={"20px"}
+                    options={analysisOptions}
+                    width={"100px"}
+                    changed={(event) => ChangeAnalisysOptionHandler(event)}
                   />
-                ) : (
-                  "Double click a slice to see more details."
-                )}
-              </AnalysisTableDiv>
+                </AnalysisInfoContainer>
+              </AnalysisInfoDiv>
+
+              {analisysContent}
             </AnalysisContainer>
           </ExpenseAnalysisDiv>
         </AuxDiv>

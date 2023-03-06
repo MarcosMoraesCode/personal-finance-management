@@ -25,7 +25,11 @@ const SelectContainer = (props) => {
   }
 
   return (
-    <WrappComponent noMargin={props.noMargin} width={props.width}>
+    <WrappComponent
+      paddingTop={props.paddingTop}
+      noMargin={props.noMargin}
+      width={props.width}
+    >
       <StyledLabel htmlFor={props.categoryName}>{props.label}</StyledLabel>
       <StyledSelect
         id={props.categoryName}

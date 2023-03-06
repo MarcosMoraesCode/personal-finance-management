@@ -21,6 +21,7 @@ export const WrappComponent = styled.div`
   width: ${(props) => (props.width ? props.width : "230px")};
   margin: ${(props) => (props.noMargin ? "0px" : "10px")};
   margin-top: 0px;
+  padding-top: ${(props) => props.paddingTop};
   display: flex;
   flex-direction: column;
   font-family: "Roboto";

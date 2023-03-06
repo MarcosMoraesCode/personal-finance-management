@@ -326,7 +326,15 @@ export const SpendingBarValue = styled.div`
 `;
 
 export const AnalysisInfoContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: ${(props) => props.width};
   height: 100%;
-  // border: 1px solid red;
+  //margin: auto;
+  //border: 1px solid red;
+`;
+
+export const TestDiv = styled.div`
+  background-color: "red";
 `;
