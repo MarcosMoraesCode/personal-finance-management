@@ -240,10 +240,10 @@ export const editAnExpense = createAsyncThunk(
     try {
       // console.log("payload", action.categoryId);
       await set(ref(db, `users/${userId}/expenses/${action.expenseId}`), {
-        id: action.expenseId,
-        categoryName: action.categoryName,
         categoryId: action.categoryId,
+        categoryName: action.categoryName,
         date: action.newDate,
+        id: action.expenseId,
         name: action.newExpenseName,
         value: action.newValue,
       });

@@ -39,9 +39,9 @@ const Crud = (props) => {
       crudContent = (
         <>
           <CrudStyleTitle>Remove {props.expenseName}</CrudStyleTitle>
-          <ModalStatusDescription>
+          <CrudStatusDescription>
             Do you really want to remove '{props.expenseName}' expense?
-          </ModalStatusDescription>
+          </CrudStatusDescription>
           <ModalButtonDiv>
             <ContinueBtn onClick={props.removeExpense}>CONTINUE</ContinueBtn>
             <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
@@ -87,7 +87,7 @@ const Crud = (props) => {
 
           <ModalButtonDiv>
             <ContinueBtn
-              disabled={props.continueCategoryDisabled}
+              disabled={props.continueDisabled}
               {...props}
               onClick={props.editCategory}
             >
@@ -150,7 +150,7 @@ const Crud = (props) => {
           <ModalButtonDiv>
             <ContinueBtn
               onClick={props.editExpense}
-              disabled={props.continueExpenseDisabled}
+              disabled={props.continueDisabled}
               {...props}
             >
               CONTINUE

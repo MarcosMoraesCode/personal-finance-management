@@ -37,6 +37,7 @@ import BarTableChart from "../../components/UI/Charts/BarTableChart/BarTableChar
 import {
   addExpenses,
   editACategory,
+  editAnExpense,
   fetchCategoriesData,
   fetchDynamicId,
   fetchExpensesData,
@@ -274,12 +275,14 @@ const UserExpenses = () => {
         isTouched: false,
         isValid: false,
         value: "",
+        invalidMessage: "",
       },
       inputSpend: {
         ...editCategory.inputSpend,
         isTouched: false,
         isValid: false,
         value: "",
+        invalidMessage: "",
       },
     });
     setEditExpense({
@@ -289,6 +292,7 @@ const UserExpenses = () => {
         isTouched: false,
         isValid: false,
         value: "",
+        invalidMessage: "",
       },
       inputNewDate: {
         ...editExpense.inputNewDate,
@@ -302,7 +306,18 @@ const UserExpenses = () => {
         isTouched: false,
         isValid: false,
         value: "",
+        invalidMessage: "",
       },
+    });
+    setCrudType({
+      ...crudType,
+      crudType: "",
+      expenseName: "",
+      expenseValue: "",
+      expenseDate: "",
+      expenseId: "",
+      categoryName: "",
+      categoryId: "",
     });
   };
 
@@ -1298,6 +1313,7 @@ const UserExpenses = () => {
             });
 
             expenseItems[categoryIndex]?.expensesList.push({
+              id: expense.id,
               name: expense.name,
               value: expense.value,
               date: expense.date,
@@ -1393,14 +1409,24 @@ const UserExpenses = () => {
   const calculateRealPercentage = (list) => {
     let allCategoryExpenses = calculateExpenses(list);
     let realPercentage = allCategoryExpenses / totalSpendLimit;
-    return realPercentage.toFixed(2) * 100;
+    return realPercentage * 100;
   };
 
   let fullList = null;
-  const editExpenseHandler = (expenseName, expenseValue, expenseDate) => {
+  const editExpenseHandler = (
+    expenseName,
+    expenseValue,
+    expenseDate,
+    expenseId,
+    categoryName,
+    categoryId
+  ) => {
     let name = expenseName;
     let value = expenseValue;
     let date = expenseDate;
+    let id = expenseId;
+    let catName = categoryName;
+    let catId = categoryId;
     console.log(name, value, date);
     setCrudType({
       ...crudType,
@@ -1408,25 +1434,69 @@ const UserExpenses = () => {
       expenseName: name,
       expenseValue: value,
       expenseDate: date,
+      expenseId: id,
+      categoryName: catName,
+      categoryId: catId,
     });
     setShowCrud(true);
+  };
+  const confirmEditExpense = (
+    newName,
+    newValue,
+    newDate,
+    exId,
+    catName,
+    catId
+  ) => {
+    const newExpenseObj = {
+      categoryId: catId,
+      categoryName: catName,
+      newDate: newDate,
+      expenseId: exId,
+      newExpenseName: newName,
+      newValue: newValue,
+    };
+
+    dispatch(editAnExpense(newExpenseObj)).then((res) => {
+      setCrudType({
+        ...crudType,
+        crudType: "",
+        expenseName: "",
+        expenseValue: "",
+        expenseDate: "",
+        expenseId: "",
+        categoryName: "",
+        categoryId: "",
+      });
+    });
+
+    setShowCrud(false);
+    getExpenses();
   };
 
   if (fetchedExpensesList !== null && infoBtnList !== null) {
     let btnIndex = 0;
-    fullList = fetchedExpensesList.map((expense, index) => {
-      if (expense.expensesList.length > 0) {
+    fullList = fetchedExpensesList.map((item, index) => {
+      if (item.expensesList.length > 0) {
         let currentBtnIndex = btnIndex;
         btnIndex += 1;
-        // console.log("ex", expense.expensesList);
-        let editArr = expense.expensesList.map((expense) => {
+        //console.log("ex", item, item.expensesList);
+        let editArr = item.expensesList.map((expense) => {
           return {
             date: expense.date,
             name: expense.name,
             percentage: expense.percentage,
             value: expense.value,
             editAction: () =>
-              editExpenseHandler(expense.name, expense.value, expense.date),
+              editExpenseHandler(
+                expense.name,
+                expense.value,
+                expense.date,
+                expense.id,
+                item.category,
+                item.id
+              ),
+            removeAction: () => removeExpenseHandler(expense.name, expense.id),
           };
         });
 
@@ -1434,13 +1504,13 @@ const UserExpenses = () => {
           <Expense
             expensesPage
             key={index}
-            expenseTopic={expense.category}
-            expenseTotal={calculateExpenses(expense.expensesList)}
+            expenseTopic={item.category}
+            expenseTotal={calculateExpenses(item.expensesList)}
             expenseDataList={editArr /*expense.expensesList*/}
-            realPercentage={calculateRealPercentage(
-              expense.expensesList
-            ).toFixed(2)}
-            percentageExpected={calculateExpectedPercentage(expense.spendLimit)}
+            realPercentage={calculateRealPercentage(item.expensesList).toFixed(
+              2
+            )}
+            percentageExpected={calculateExpectedPercentage(item.spendLimit)}
             clicked={() => {
               expandBtnHandler(currentBtnIndex);
             }}
@@ -1561,6 +1631,29 @@ const UserExpenses = () => {
       categoryId: id,
     });
     // console.log("id", categoryId);
+  };
+
+  const removeExpenseHandler = (exName, exId) => {
+    setShowCrud(true);
+    setCrudType({
+      ...crudType,
+      crudType: "remove-expense",
+      expenseName: exName,
+      expenseId: exId,
+    });
+  };
+
+  const confirmRemoveExpense = async (id) => {
+    await dispatch(removeAnExpense(id)).then((res) => {
+      setCrudType({
+        ...crudType,
+        crudType: "",
+        expenseName: "",
+        expenseId: "",
+      });
+    });
+    setShowCrud(false);
+    getExpenses();
   };
 
   const confirmRemoveCategory = async (id) => {
@@ -1966,6 +2059,17 @@ const UserExpenses = () => {
                 editCategory.inputSpend.isValid
               )
             }
+            editExpense={() =>
+              confirmEditExpense(
+                editExpense.inputNewExpenseName.value,
+                editExpense.inputNewValue.value,
+                editExpense.inputNewDate.value,
+                crudType.expenseId,
+                crudType.categoryName,
+                crudType.categoryId
+              )
+            }
+            removeExpense={() => confirmRemoveExpense(crudType.expenseId)}
             editCategory={() =>
               confirmEditCategory(
                 editCategory.inputNewCategoryName.value,
