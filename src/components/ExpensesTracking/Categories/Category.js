@@ -31,7 +31,7 @@ const Category = (props) => {
         <CategorySubtitlesDiv>
           <SubtitleBlock width={"60%"}>Real Spend</SubtitleBlock>
           <SubtitleBlock width={"40%"} paddingLeft={"25px"}>
-            Spend Limit
+            Monthly Spend Limit
           </SubtitleBlock>
         </CategorySubtitlesDiv>
         <CategoryContentDiv>

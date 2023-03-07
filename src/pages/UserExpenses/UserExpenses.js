@@ -59,6 +59,7 @@ import startFirebase from "../../services/firebaseConfig";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
 import { ref, set, get, update, remove, child, push } from "firebase/database";
 import LineChart from "../../components/UI/Charts/LineChart";
+import CalendarChart from "../../components/UI/Charts/CalendarChart/CalendarChart";
 
 const UserExpenses = () => {
   //Store
@@ -76,6 +77,7 @@ const UserExpenses = () => {
   /*const create = () => {
     set(ref(db, "category"), { test: "teste validado" });
   };*/
+  //console.log(new Date());
 
   //States
   const [userExpense, setUserExpense] = useState({
@@ -222,6 +224,9 @@ const UserExpenses = () => {
   const [loadingOnSubmitCategory, setLoadingOnSubmitCategory] = useState(false);
   const [allExpensesList, setAllExpensesList] = useState(null);
   const [filteredCategories, setFilteredCategories] = useState(null);
+  const [filteredMonthlyCategories, setMonthlyFilteredCategories] =
+    useState(null);
+  const [monthlyCategories, setMonthlyCategories] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
   const [showCrud, setShowCrud] = useState(false);
@@ -246,8 +251,8 @@ const UserExpenses = () => {
 
   const sliceValues = useSelector((state) => state.initialSlices);
 
-  //Support Arrays
-
+  //Support Arrays and Values
+  const actualDate = new Date();
   const expenseItems = [];
   const buttons = [];
   const analysisOptions = [
@@ -1243,6 +1248,7 @@ const UserExpenses = () => {
       </>
     );
   }
+
   //MUDAR O IF RES !== NULL
   const getExpenses = async () => {
     let uniqueCategories = [];
@@ -1317,12 +1323,12 @@ const UserExpenses = () => {
     await dispatch(fetchExpensesData())
       .unwrap()
       .then((res) => {
-        //console.log("expenses");
         if (res !== null) {
           let fetchedExpenses = Object.values(res);
 
           // console.log(fetchedExpenses);
           let allExpenses = [];
+
           fetchedExpenses.forEach((expense) => {
             let categoryIndex = expenseItems.findIndex(
               (item) => expense.categoryId === item.id
@@ -1346,7 +1352,7 @@ const UserExpenses = () => {
               ).toFixed(2),
             });
           });
-          setTotalSpent(sumTotalSpent(allExpenses));
+
           console.log(allExpenses);
           expenseItems
             .filter((expense) => expense.expensesList.length > 0)
@@ -1359,15 +1365,63 @@ const UserExpenses = () => {
 
           setInfoBtnList({ buttons: filteredBtns });
           setAllExpensesList(allExpenses);
-          // dispatch(addExpenses(expenseItems));
-          //console.log("a ser filtrado", expenseItems);
+
           const categoryWithExpenses = expenseItems.filter((item) => {
             if (item.expensesList.length > 0) {
               return item;
             }
           });
-          //console.log(categoryWithExpenses);
+          //console.log("aq", categoryWithExpenses);
+          let monthExpensesValues = [];
+          const thisMonthExpenses = expenseItems.map((item) => {
+            let monthlyList = item.expensesList.filter((expense) => {
+              let stringDate = [...expense.date];
+              let year = stringDate.slice(0, 4).join("");
+              let month = stringDate.slice(5, 7).join("");
+              let day = stringDate.slice(8, 10).join("");
+              let expenseDate = new Date(year, month - 1, day);
+              /*console.log(
+                  "expenses",
+                  "mes",
+                  expenseDate.getMonth(),
+                  "ano",
+                  expenseDate.getFullYear(),
+                  "atual",
+                  actualDate.getMonth(),
+                  actualDate.getFullYear()
+                );*/
+
+              if (
+                Number(expenseDate.getMonth()) ===
+                  Number(actualDate.getMonth()) &&
+                Number(expenseDate.getFullYear()) ===
+                  Number(actualDate.getFullYear())
+              ) {
+                console.log(expense);
+                monthExpensesValues.push({ expenseValue: expense.value });
+                return expense;
+              }
+            });
+            // console.log("lista mensal", monthlyList);
+            return { ...item, expensesList: monthlyList };
+          });
+
+          const thisCategoriesWithExpenses = thisMonthExpenses.filter(
+            (item) => {
+              if (item.expensesList.length > 0) {
+                return item;
+              }
+            }
+          );
+          console.log(thisCategoriesWithExpenses);
+
+          console.log("Mensal", thisMonthExpenses);
+          console.log("Completa", categoryWithExpenses);
+          setTotalSpent(sumTotalSpent(monthExpensesValues));
+          setMonthlyCategories(thisMonthExpenses);
           setFilteredCategories(categoryWithExpenses);
+          setMonthlyFilteredCategories(thisCategoriesWithExpenses);
+
           //console.log(expenseItems);
           setLoading(false);
           // console.log("user", allExpenses);
@@ -1508,9 +1562,11 @@ const UserExpenses = () => {
     getExpenses();
   };
 
-  if (fetchedExpensesList !== null && infoBtnList !== null) {
+  //if (fetchedExpensesList !== null && infoBtnList !== null) {
+
+  if (monthlyCategories !== null && infoBtnList !== null) {
     let btnIndex = 0;
-    fullList = fetchedExpensesList.map((item, index) => {
+    fullList = monthlyCategories.map((item, index) => {
       if (item.expensesList.length > 0) {
         let currentBtnIndex = btnIndex;
         btnIndex += 1;
@@ -1727,8 +1783,8 @@ const UserExpenses = () => {
     });
   };
 
-  if (fetchedExpensesList !== null) {
-    categoryList = fetchedExpensesList.map((item, index) => {
+  if (monthlyCategories !== null) {
+    categoryList = monthlyCategories.map((item, index) => {
       return (
         <Category
           key={index}
@@ -1935,12 +1991,17 @@ const UserExpenses = () => {
   }
   let analisysContent = (
     <>
-      <PieChart categoryList={fetchedExpensesList} />
+      <PieChart
+        categoryList={filteredMonthlyCategories /*fetchedExpensesList*/}
+      />
       <AnalysisTableDiv>
         {sliceValues.newValue === sliceValues.oldValue &&
         sliceValues.newValue !== -1 ? (
           <BarTableChart
-            expenses={filteredCategories[sliceValues.newValue].expensesList}
+            expenses={
+              filteredMonthlyCategories[sliceValues.newValue]
+                .expensesList /*filteredCategories[sliceValues.newValue].expensesList*/
+            }
           />
         ) : (
           "Double click a slice to see more details."
@@ -1957,13 +2018,16 @@ const UserExpenses = () => {
       case "This Month":
         analisysContent = (
           <>
-            <PieChart categoryList={fetchedExpensesList} />
+            <PieChart
+              categoryList={filteredMonthlyCategories /*fetchedExpensesList*/}
+            />
             <AnalysisTableDiv>
               {sliceValues.newValue === sliceValues.oldValue &&
               sliceValues.newValue !== -1 ? (
                 <BarTableChart
                   expenses={
-                    filteredCategories[sliceValues.newValue].expensesList
+                    filteredMonthlyCategories[sliceValues.newValue]
+                      .expensesList /*filteredCategories[sliceValues.newValue].expensesList*/
                   }
                 />
               ) : (
@@ -1977,6 +2041,7 @@ const UserExpenses = () => {
         analisysContent = (
           <TestDiv>
             <LineChart />
+            <CalendarChart />
           </TestDiv>
         );
         break;
