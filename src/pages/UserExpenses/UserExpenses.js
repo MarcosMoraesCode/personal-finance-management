@@ -60,6 +60,10 @@ import Crud from "../../components/UI/Modal/CrudModal/Crud";
 import { ref, set, get, update, remove, child, push } from "firebase/database";
 import LineChart from "../../components/UI/Charts/LineChart";
 import CalendarChart from "../../components/UI/Charts/CalendarChart/CalendarChart";
+import {
+  getAnnualHistoric,
+  getAllCategories,
+} from "../../features/charts/chartsSlice";
 
 const UserExpenses = () => {
   //Store
@@ -1269,6 +1273,7 @@ const UserExpenses = () => {
             categoryArray.push({
               id: categoryObj.id,
               name: categoryObj.category,
+              spendLimit: categoryObj.spendLimit,
             });
             SpendLimitArray.push({ value: categoryObj.spendLimit });
 
@@ -1284,8 +1289,9 @@ const UserExpenses = () => {
                 expensesList: [],
               });
             }
-            // console.log("aq", expenseItems);
+            console.log("aq", categoryObj);
           });
+          dispatch(getAllCategories(categoryArray));
 
           setTotalSpendLimit(calculateExpenses(SpendLimitArray));
 
@@ -1305,6 +1311,7 @@ const UserExpenses = () => {
             (category, index) =>
               (category = { name: category.name, id: uniqueIds[index] })
           );
+          console.log(organizedCategories);
 
           setCategoryKeysList(organizedCategories);
           setCategoryOptions(organizedCategories);
@@ -1338,6 +1345,8 @@ const UserExpenses = () => {
               categoryId: expense.categoryId,
               expenseId: expense.id,
               expenseValue: expense.value,
+              //testando por aqui
+              expenseDate: expense.date,
             });
 
             expenseItems[categoryIndex]?.expensesList.push({
@@ -1353,7 +1362,7 @@ const UserExpenses = () => {
             });
           });
 
-          console.log(allExpenses);
+          console.log("aq", allExpenses);
           expenseItems
             .filter((expense) => expense.expensesList.length > 0)
             .forEach((expense) => {
@@ -1365,6 +1374,8 @@ const UserExpenses = () => {
 
           setInfoBtnList({ buttons: filteredBtns });
           setAllExpensesList(allExpenses);
+          //TROCAR ALL EXPENSES POR LAST 12 MONTHS EXPENSES
+          dispatch(getAnnualHistoric(allExpenses));
 
           const categoryWithExpenses = expenseItems.filter((item) => {
             if (item.expensesList.length > 0) {
@@ -1397,7 +1408,7 @@ const UserExpenses = () => {
                 Number(expenseDate.getFullYear()) ===
                   Number(actualDate.getFullYear())
               ) {
-                console.log(expense);
+                //console.log(expense);
                 monthExpensesValues.push({ expenseValue: expense.value });
                 return expense;
               }
@@ -1413,10 +1424,10 @@ const UserExpenses = () => {
               }
             }
           );
-          console.log(thisCategoriesWithExpenses);
 
-          console.log("Mensal", thisMonthExpenses);
-          console.log("Completa", categoryWithExpenses);
+          // console.log(thisCategoriesWithExpenses);
+          // console.log("Mensal", thisMonthExpenses);
+          // console.log("Completa", categoryWithExpenses);
           setTotalSpent(sumTotalSpent(monthExpensesValues));
           setMonthlyCategories(thisMonthExpenses);
           setFilteredCategories(categoryWithExpenses);
@@ -1438,7 +1449,7 @@ const UserExpenses = () => {
       });
     dispatch(addExpenses(expenseItems));
   };
-
+  console.log(sliceValues);
   const findCategoryId = (value) => {
     let category;
     if (categoryKeysList !== null) {
