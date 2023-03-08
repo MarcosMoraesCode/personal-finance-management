@@ -1292,8 +1292,11 @@ const UserExpenses = () => {
             console.log("aq", categoryObj);
           });
           dispatch(getAllCategories(categoryArray));
-
-          setTotalSpendLimit(calculateExpenses(SpendLimitArray));
+          console.log("AQ", actualDate.getMonth());
+          //aq
+          setTotalSpendLimit(
+            sliceValues.spendingHistory[actualDate.getMonth()].spendLimit
+          );
 
           let newCategoryArray = categoryOptions.concat(categoryArray);
 
