@@ -2,7 +2,7 @@ import React from "react";
 import { Chart } from "react-google-charts";
 
 const LineChart = (props) => {
-  console.log(props.expenses);
+  console.log("oi", props.annualExpenses);
 
   const data = [
     ["Month", "Expected", "Spent"],

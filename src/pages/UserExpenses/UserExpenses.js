@@ -70,18 +70,14 @@ const UserExpenses = () => {
   const fetchedExpensesList = useSelector(
     (state) => state.expensesData.userExpenses
   );
-  const postRequestStatus = useSelector(
+
+  /*const postRequestStatus = useSelector(
     (state) => state.expensesData.postRequest
-  );
+  );*/
   const dispatch = useDispatch();
 
   //Firebase
   const db = startFirebase();
-
-  /*const create = () => {
-    set(ref(db, "category"), { test: "teste validado" });
-  };*/
-  //console.log(new Date());
 
   //States
   const [userExpense, setUserExpense] = useState({
@@ -244,17 +240,12 @@ const UserExpenses = () => {
   const [categoryOptions, setCategoryOptions] = useState([
     { id: "new-category", name: "New Category" },
   ]);
-  const [totalSpendLimit, setTotalSpendLimit] = useState(0);
+  //const [totalSpendLimit, setTotalSpendLimit] = useState(undefined);
   const [totalSpent, setTotalSpent] = useState(0);
   const [currentAnalysisOption, setCurrentAnalysisOption] = useState({
     rerender: false,
     id: "This Month",
   });
-
-  //Selectors
-
-  const sliceValues = useSelector((state) => state.initialSlices);
-
   //Support Arrays and Values
   const actualDate = new Date();
   const expenseItems = [];
@@ -264,6 +255,15 @@ const UserExpenses = () => {
     { id: "last-year", name: "Last Year" },
     { id: "all-time", name: "All Time" },
   ];
+
+  //Selectors
+
+  const sliceValues = useSelector((state) => state.initialSlices);
+  //console.log(sliceValues);
+  const totalSpendLimit = useSelector(
+    (state) =>
+      state.initialSlices.spendingHistory[actualDate.getMonth()].spendLimit
+  );
 
   //Effects
 
@@ -1289,14 +1289,11 @@ const UserExpenses = () => {
                 expensesList: [],
               });
             }
-            console.log("aq", categoryObj);
+            //console.log("aq", categoryObj);
           });
           dispatch(getAllCategories(categoryArray));
-          console.log("AQ", actualDate.getMonth());
+          //console.log("AQ", actualDate.getMonth());
           //aq
-          setTotalSpendLimit(
-            sliceValues.spendingHistory[actualDate.getMonth()].spendLimit
-          );
 
           let newCategoryArray = categoryOptions.concat(categoryArray);
 
@@ -1330,6 +1327,7 @@ const UserExpenses = () => {
         });
       });
     //console.log("category finalizada");
+    let allExpenses = [];
     await dispatch(fetchExpensesData())
       .unwrap()
       .then((res) => {
@@ -1337,7 +1335,6 @@ const UserExpenses = () => {
           let fetchedExpenses = Object.values(res);
 
           // console.log(fetchedExpenses);
-          let allExpenses = [];
 
           fetchedExpenses.forEach((expense) => {
             let categoryIndex = expenseItems.findIndex(
@@ -1365,7 +1362,7 @@ const UserExpenses = () => {
             });
           });
 
-          console.log("aq", allExpenses);
+          //console.log("aq", allExpenses);
           expenseItems
             .filter((expense) => expense.expensesList.length > 0)
             .forEach((expense) => {
@@ -1451,8 +1448,12 @@ const UserExpenses = () => {
         });
       });
     dispatch(addExpenses(expenseItems));
+
+    let limit = sliceValues.spendingHistory[actualDate.getMonth()].spendLimit;
+
+    // setTotalSpendLimit(limit);
   };
-  console.log(sliceValues);
+
   const findCategoryId = (value) => {
     let category;
     if (categoryKeysList !== null) {
@@ -1504,6 +1505,7 @@ const UserExpenses = () => {
   };
 
   const calculateExpectedPercentage = (categoryLimit) => {
+    //console.log("a", totalSpendLimit);
     let expectedPercentage = convertToNumber(categoryLimit) / totalSpendLimit;
     return (expectedPercentage * 100).toFixed(2);
   };
@@ -2023,10 +2025,11 @@ const UserExpenses = () => {
       </AnalysisTableDiv>
     </>
   );
-  //if()
+
   const ChangeAnalisysOptionHandler = (event) => {
     setCurrentAnalysisOption({ rerender: true, id: event.currentTarget.value });
   };
+
   if (currentAnalysisOption.rerender) {
     switch (currentAnalysisOption.id) {
       case "This Month":
@@ -2054,7 +2057,7 @@ const UserExpenses = () => {
       case "Last Year":
         analisysContent = (
           <TestDiv>
-            <LineChart />
+            <LineChart annualExpenses={sliceValues.spendingHistory} />
             <CalendarChart />
           </TestDiv>
         );
@@ -2065,6 +2068,17 @@ const UserExpenses = () => {
       default:
         analisysContent = null;
     }
+  }
+  let spendInfo;
+  if (sliceValues.loadingData) {
+    spendInfo = (
+      <LoadingDiv>
+        <BarLoader color="#51d289"></BarLoader>
+      </LoadingDiv>
+    );
+  } else {
+    let value = sliceValues.spendingHistory[actualDate.getMonth()].spendLimit;
+    spendInfo = Number(value - totalSpent).toFixed(2);
   }
 
   return (
@@ -2136,7 +2150,8 @@ const UserExpenses = () => {
                       <SpendingInfoSpan>
                         bugder lasting for this month
                       </SpendingInfoSpan>{" "}
-                      $ {(totalSpendLimit - totalSpent).toFixed(2)}
+                      {totalSpendLimit === undefined ? "" : "$"}
+                      {spendInfo /*(totalSpendLimit - totalSpent).toFixed(2)*/}
                     </SpendingInfoTitle>
                     <SpendingBar>
                       <SpendingBarValue
