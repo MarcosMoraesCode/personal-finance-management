@@ -32,6 +32,8 @@ import {
   SpendingInfoSpan,
   SpendingBarValue,
   TestDiv,
+  CalendarInformationContent,
+  CalendarInformationDiv,
 } from "./UserExpensesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import SelectContainer from "../../components/UI/Select/Select";
@@ -263,6 +265,10 @@ const UserExpenses = () => {
   const totalSpendLimit = useSelector(
     (state) =>
       state.initialSlices.spendingHistory[actualDate.getMonth()].spendLimit
+  );
+
+  const dayOfLastSemester = useSelector(
+    (state) => state.initialSlices.clickedDate
   );
 
   //Effects
@@ -1345,7 +1351,7 @@ const UserExpenses = () => {
               categoryId: expense.categoryId,
               expenseId: expense.id,
               expenseValue: expense.value,
-              //testando por aqui
+              expenseName: expense.name,
               expenseDate: expense.date,
             });
 
@@ -1391,16 +1397,6 @@ const UserExpenses = () => {
               let month = stringDate.slice(5, 7).join("");
               let day = stringDate.slice(8, 10).join("");
               let expenseDate = new Date(year, month - 1, day);
-              /*console.log(
-                  "expenses",
-                  "mes",
-                  expenseDate.getMonth(),
-                  "ano",
-                  expenseDate.getFullYear(),
-                  "atual",
-                  actualDate.getMonth(),
-                  actualDate.getFullYear()
-                );*/
 
               if (
                 Number(expenseDate.getMonth()) ===
@@ -2030,6 +2026,35 @@ const UserExpenses = () => {
     setCurrentAnalysisOption({ rerender: true, id: event.currentTarget.value });
   };
 
+  let selectedDay = [];
+  let selectedInfo = null;
+
+  if (dayOfLastSemester.year !== 0 && allExpensesList !== null) {
+    allExpensesList.forEach((expense) => {
+      console.log(expense);
+      let stringDate = [...expense.expenseDate];
+      let year = stringDate.slice(0, 4).join("");
+      let month = stringDate.slice(5, 7).join("") - 1;
+      let day = stringDate.slice(8, 10).join("");
+
+      if (
+        dayOfLastSemester.year === Number(year) &&
+        dayOfLastSemester.month === Number(month) &&
+        dayOfLastSemester.day === Number(day)
+      ) {
+        selectedDay.push(expense);
+      }
+    });
+    selectedInfo = selectedDay.map((expense) => {
+      return (
+        <CalendarInformationDiv>
+          <div>Expense: {expense.expenseName}</div>
+          <div>Value: {expense.expenseValue}</div>
+        </CalendarInformationDiv>
+      );
+    });
+  }
+
   if (currentAnalysisOption.rerender) {
     switch (currentAnalysisOption.id) {
       case "This Month":
@@ -2058,7 +2083,14 @@ const UserExpenses = () => {
         analisysContent = (
           <TestDiv>
             <LineChart annualExpenses={sliceValues.spendingHistory} />
-            <CalendarChart allExpenses={allExpensesList} />
+            <CalendarChart
+              allExpenses={allExpensesList}
+              clickedDay={dayOfLastSemester}
+            >
+              <CalendarInformationContent>
+                {selectedInfo}
+              </CalendarInformationContent>
+            </CalendarChart>
           </TestDiv>
         );
         break;

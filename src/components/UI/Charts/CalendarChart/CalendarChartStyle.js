@@ -15,14 +15,41 @@ export const CalendarInformationDiv = styled.div`
   margin: auto;
   margin-top: 15px;
   margin-bottom: -10px;
-  width: 80%;
+  padding-left: 5px;
+  width: 95%;
   //padding-bottom: 20px;
   display: flex;
   justify-content: center;
   position: relative;
-  //min-width: 100%;
-  border: 1px solid gold;
-  //background-color: blue;
+  //border-radius: 5px;
+  //border: 1px solid gold;
+  height: 30px;
+  max-height: 30px;
+  // background-color: black;
+
+  overflow-y: auto;
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: black;
+  }
 `;
 
 export const CalendarContainer = styled.div`

@@ -338,3 +338,23 @@ export const AnalysisInfoContainer = styled.div`
 export const TestDiv = styled.div`
   background-color: "red";
 `;
+
+export const CalendarInformationContent = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const CalendarInformationDiv = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 95%;
+  height: 18px;
+  font-family: "Roboto";
+  font-size: 10px;
+  border: 1px solid gold;
+  border-radius: 3px;
+  margin: 3px;
+`;

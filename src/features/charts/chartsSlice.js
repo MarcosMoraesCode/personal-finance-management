@@ -79,6 +79,7 @@ const initialState = {
   ],
   categories: [],
   loadingData: false,
+  clickedDate: "",
 };
 
 export const chartsSlice = createSlice({
@@ -392,10 +393,17 @@ export const chartsSlice = createSlice({
         state.categories.push(item);
       });
     },
+    changeClickedDate: (state, action) => {
+      state.clickedDate = action.payload;
+    },
   },
 });
 
-export const { changeValue, getAnnualHistoric, getAllCategories } =
-  chartsSlice.actions;
+export const {
+  changeValue,
+  getAnnualHistoric,
+  getAllCategories,
+  changeClickedDate,
+} = chartsSlice.actions;
 
 export default chartsSlice.reducer;

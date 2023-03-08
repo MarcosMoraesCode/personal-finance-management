@@ -1,5 +1,7 @@
 import React from "react";
 import { Chart } from "react-google-charts";
+import { useDispatch } from "react-redux";
+import { changeClickedDate } from "../../../../features/charts/chartsSlice";
 import {
   CalendarTitleDiv,
   CalendarContainer,
@@ -7,10 +9,12 @@ import {
 } from "./CalendarChartStyle";
 
 const CalendarChart = (props) => {
-  console.log("ca estamos", props.allExpenses);
+  const dispatch = useDispatch();
+
   const actualDate = new Date();
   const actualMonth = actualDate.getMonth();
   const actualYear = actualDate.getFullYear();
+  const lastSixMonthsExpenses = [];
 
   //LEMBRAR QUE OS MESES VÃO DE 0 A 11
   const checkLastSixMonths = () => {
@@ -159,6 +163,8 @@ const CalendarChart = (props) => {
       let replacedValue = initialValue.join("");
       let convertedValue = Number(replacedValue).toFixed(2);
 
+      lastSixMonthsExpenses.push(expense);
+
       let dayValue = newData.findIndex((item) => {
         if (
           item[0].getFullYear() === expenseDate.getFullYear() &&
@@ -178,11 +184,26 @@ const CalendarChart = (props) => {
     }
   });
 
-  /*const filteredDate = newData.map((item) => item[0]);
+  const chartEvents = [
+    {
+      eventName: "select",
+      callback({ chartWrapper }) {
+        const chart = chartWrapper.getChart();
+        const selection = chart.getSelection();
+        if (selection[0].date !== undefined) {
+          let fullDate = new Date(selection[0].date + 86400000);
+          let year = fullDate.getFullYear();
+          let month = fullDate.getMonth();
+          let day = fullDate.getDate();
 
-  const uniqueDate = new Set(filteredDate);
-
-  console.log(uniqueDate[1] === uniqueDate[5]);*/
+          dispatch(changeClickedDate({ year: year, month: month, day: day }));
+          // console.log(new Date(selection[0].date + 86400000));
+        } else {
+          dispatch(changeClickedDate({ year: 0, month: 0, day: 0 }));
+        }
+      },
+    },
+  ];
 
   const data = [["Date", "Sales"]];
 
@@ -216,18 +237,20 @@ const CalendarChart = (props) => {
       colors: ["#51d289", "green"],
     },
   };
+
   return (
     <CalendarContainer>
       <CalendarTitleDiv>
         <h4>Last Semester</h4>
       </CalendarTitleDiv>
-      <CalendarInformationDiv>Some information here</CalendarInformationDiv>
+      <CalendarInformationDiv> {props.children}</CalendarInformationDiv>
       <Chart
         chartType="Calendar"
         width="100%"
         height="fit-content"
         data={finalData}
         options={options}
+        chartEvents={chartEvents}
       />
     </CalendarContainer>
   );
