@@ -4,21 +4,20 @@ import { Chart } from "react-google-charts";
 const LineChart = (props) => {
   console.log("oi", props.annualExpenses);
 
-  const data = [
-    ["Month", "Expected", "Spent"],
-    ["Jan", 80.8, 141.8],
-    ["Feb", 69.5, 32.4],
-    ["Mar", 57, 25.7],
-    ["Apr", 18.8, 10.5],
-    ["May", 17.6, 100.4],
-    ["Jun", 13.6, 70.7],
-    ["Jul", 12.3, 9.6],
-    ["Aug", 29.2, 10.6],
-    ["Sep", 42.9, 60.8],
-    ["Oct", 30.9, 11.6],
-    ["Nov", 7.9, 4.7],
-    ["Dec", 8.4, 5.2],
-  ];
+  let newData = props.annualExpenses.map((item) => {
+    console.log(item);
+    return [
+      item.month,
+      item.spendLimit === -1 ? 0 : item.spendLimit,
+      item.totalSpent,
+    ];
+  });
+
+  console.log("olha", newData);
+
+  const data = [["Month", "Expected", "Spent"]];
+
+  let finalData = data.concat(newData);
 
   const options = {
     backgroundColor: "transparent",
@@ -52,7 +51,7 @@ const LineChart = (props) => {
       width="100%"
       minWidth="320px"
       height="400px"
-      data={data}
+      data={finalData}
       options={options}
     />
   );

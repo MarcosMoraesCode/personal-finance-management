@@ -7,17 +7,186 @@ import {
 } from "./CalendarChartStyle";
 
 const CalendarChart = (props) => {
-  const data = [
-    ["Date", "Sales"],
-    [new Date(2023, 0, 1), 100],
-    [new Date(2023, 0, 2), 150],
-    [new Date(2023, 0, 3), 200],
-    [new Date(2023, 0, 4), 175],
-    [new Date(2023, 0, 5), 250],
-    [new Date(2023, 0, 6), 300],
-    [new Date(2023, 0, 7), 250],
-    [new Date(2023, 5, 17), 250],
-  ];
+  console.log("ca estamos", props.allExpenses);
+  const actualDate = new Date();
+  const actualMonth = actualDate.getMonth();
+  const actualYear = actualDate.getFullYear();
+
+  //LEMBRAR QUE OS MESES VÃO DE 0 A 11
+  const checkLastSixMonths = () => {
+    let validExpensesKey = [];
+    console.log("dentro", actualMonth);
+    switch (actualMonth) {
+      case 0:
+        validExpensesKey.push({ month: 0, year: actualYear });
+        validExpensesKey.push({ month: 11, year: actualYear - 1 });
+        validExpensesKey.push({ month: 10, year: actualYear - 1 });
+        validExpensesKey.push({ month: 9, year: actualYear - 1 });
+        validExpensesKey.push({ month: 8, year: actualYear - 1 });
+        validExpensesKey.push({ month: 7, year: actualYear - 1 });
+
+        break;
+      case 1:
+        validExpensesKey.push({ month: 1, year: actualYear });
+        validExpensesKey.push({ month: 0, year: actualYear });
+        validExpensesKey.push({ month: 11, year: actualYear - 1 });
+        validExpensesKey.push({ month: 10, year: actualYear - 1 });
+        validExpensesKey.push({ month: 9, year: actualYear - 1 });
+        validExpensesKey.push({ month: 8, year: actualYear - 1 });
+
+        break;
+      case 2:
+        console.log("passou aqui dentro");
+        validExpensesKey.push({ month: 2, year: actualYear });
+        validExpensesKey.push({ month: 1, year: actualYear });
+        validExpensesKey.push({ month: 0, year: actualYear });
+        validExpensesKey.push({ month: 11, year: actualYear - 1 });
+        validExpensesKey.push({ month: 10, year: actualYear - 1 });
+        validExpensesKey.push({ month: 9, year: actualYear - 1 });
+
+        break;
+      case 3:
+        validExpensesKey.push({ month: 3, year: actualYear });
+        validExpensesKey.push({ month: 2, year: actualYear });
+        validExpensesKey.push({ month: 1, year: actualYear });
+        validExpensesKey.push({ month: 0, year: actualYear });
+        validExpensesKey.push({ month: 11, year: actualYear - 1 });
+        validExpensesKey.push({ month: 10, year: actualYear - 1 });
+
+        break;
+      case 4:
+        validExpensesKey.push({ month: 4, year: actualYear });
+        validExpensesKey.push({ month: 3, year: actualYear });
+        validExpensesKey.push({ month: 2, year: actualYear });
+        validExpensesKey.push({ month: 1, year: actualYear });
+        validExpensesKey.push({ month: 0, year: actualYear });
+        validExpensesKey.push({ month: 11, year: actualYear - 1 });
+
+        break;
+      case 5:
+        validExpensesKey.push({ month: 5, year: actualYear });
+        validExpensesKey.push({ month: 4, year: actualYear });
+        validExpensesKey.push({ month: 3, year: actualYear });
+        validExpensesKey.push({ month: 2, year: actualYear });
+        validExpensesKey.push({ month: 1, year: actualYear });
+        validExpensesKey.push({ month: 0, year: actualYear });
+
+        break;
+      case 6:
+        validExpensesKey.push({ month: 6, year: actualYear });
+        validExpensesKey.push({ month: 5, year: actualYear });
+        validExpensesKey.push({ month: 4, year: actualYear });
+        validExpensesKey.push({ month: 3, year: actualYear });
+        validExpensesKey.push({ month: 2, year: actualYear });
+        validExpensesKey.push({ month: 1, year: actualYear });
+
+        break;
+      case 7:
+        validExpensesKey.push({ month: 7, year: actualYear });
+        validExpensesKey.push({ month: 6, year: actualYear });
+        validExpensesKey.push({ month: 5, year: actualYear });
+        validExpensesKey.push({ month: 4, year: actualYear });
+        validExpensesKey.push({ month: 3, year: actualYear });
+        validExpensesKey.push({ month: 2, year: actualYear });
+
+        break;
+      case 8:
+        validExpensesKey.push({ month: 8, year: actualYear });
+        validExpensesKey.push({ month: 7, year: actualYear });
+        validExpensesKey.push({ month: 6, year: actualYear });
+        validExpensesKey.push({ month: 5, year: actualYear });
+        validExpensesKey.push({ month: 4, year: actualYear });
+        validExpensesKey.push({ month: 3, year: actualYear });
+
+        break;
+      case 9:
+        validExpensesKey.push({ month: 9, year: actualYear });
+        validExpensesKey.push({ month: 8, year: actualYear });
+        validExpensesKey.push({ month: 7, year: actualYear });
+        validExpensesKey.push({ month: 6, year: actualYear });
+        validExpensesKey.push({ month: 5, year: actualYear });
+        validExpensesKey.push({ month: 4, year: actualYear });
+
+        break;
+      case 10:
+        validExpensesKey.push({ month: 10, year: actualYear });
+        validExpensesKey.push({ month: 9, year: actualYear });
+        validExpensesKey.push({ month: 8, year: actualYear });
+        validExpensesKey.push({ month: 7, year: actualYear });
+        validExpensesKey.push({ month: 6, year: actualYear });
+        validExpensesKey.push({ month: 5, year: actualYear });
+
+        break;
+      case 11:
+        validExpensesKey.push({ month: 11, year: actualYear });
+        validExpensesKey.push({ month: 10, year: actualYear });
+        validExpensesKey.push({ month: 9, year: actualYear });
+        validExpensesKey.push({ month: 8, year: actualYear });
+        validExpensesKey.push({ month: 7, year: actualYear });
+        validExpensesKey.push({ month: 6, year: actualYear });
+
+        break;
+      default:
+        break;
+    }
+    return validExpensesKey;
+  };
+
+  const expensesFilter = checkLastSixMonths();
+
+  console.log("filtro", expensesFilter);
+
+  const newData = [];
+  props.allExpenses.forEach((expense) => {
+    //convertendo a data
+    let stringDate = [...expense.expenseDate];
+    let year = stringDate.slice(0, 4).join("");
+    let month = stringDate.slice(5, 7).join("");
+    let day = stringDate.slice(8, 10).join("");
+    let expenseDate = new Date(year, month - 1, day);
+
+    let validIndex = expensesFilter.findIndex(
+      (validDate) =>
+        validDate.month === expenseDate.getMonth() &&
+        validDate.year === expenseDate.getFullYear()
+    );
+
+    if (validIndex !== -1) {
+      //convertendo o numero
+      let initialValue = [...expense.expenseValue];
+      let commaIndex = initialValue.findIndex((element) => element === ",");
+      initialValue.splice(commaIndex, 1, ".");
+      let replacedValue = initialValue.join("");
+      let convertedValue = Number(replacedValue).toFixed(2);
+
+      let dayValue = newData.findIndex((item) => {
+        if (
+          item[0].getFullYear() === expenseDate.getFullYear() &&
+          item[0].getMonth() === expenseDate.getMonth() &&
+          item[0].getDate() === expenseDate.getDate()
+        ) {
+          return item;
+        }
+      });
+
+      if (dayValue === -1) {
+        newData.push([expenseDate, Number(convertedValue)]);
+      } else {
+        let oldValue = newData[dayValue][1];
+        newData[dayValue][1] = oldValue + Number(convertedValue);
+      }
+    }
+  });
+
+  /*const filteredDate = newData.map((item) => item[0]);
+
+  const uniqueDate = new Set(filteredDate);
+
+  console.log(uniqueDate[1] === uniqueDate[5]);*/
+
+  const data = [["Date", "Sales"]];
+
+  let finalData = data.concat(newData);
 
   const options = {
     //title: "Last semester",
@@ -44,7 +213,7 @@ const CalendarChart = (props) => {
       },
     },
     colorAxis: {
-      colors: ["white", "green"],
+      colors: ["#51d289", "green"],
     },
   };
   return (
@@ -57,7 +226,7 @@ const CalendarChart = (props) => {
         chartType="Calendar"
         width="100%"
         height="fit-content"
-        data={data}
+        data={finalData}
         options={options}
       />
     </CalendarContainer>

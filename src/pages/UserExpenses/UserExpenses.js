@@ -252,7 +252,7 @@ const UserExpenses = () => {
   const buttons = [];
   const analysisOptions = [
     { id: "this-month", name: "This Month" },
-    { id: "last-year", name: "Last Year" },
+    { id: "this-year", name: "This Year" },
     { id: "all-time", name: "All Time" },
   ];
 
@@ -2054,11 +2054,11 @@ const UserExpenses = () => {
           </>
         );
         break;
-      case "Last Year":
+      case "This Year":
         analisysContent = (
           <TestDiv>
             <LineChart annualExpenses={sliceValues.spendingHistory} />
-            <CalendarChart />
+            <CalendarChart allExpenses={allExpensesList} />
           </TestDiv>
         );
         break;

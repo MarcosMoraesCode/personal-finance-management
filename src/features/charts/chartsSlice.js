@@ -103,9 +103,225 @@ export const chartsSlice = createSlice({
         { value: 0, categoryList: [], spendLimit: 0 },
         { value: 0, categoryList: [], spendLimit: 0 },
       ];
-      action.payload.forEach((expense) => {
-        // console.log(expense);
+      const actualDate = new Date();
+      const actualMonth = actualDate.getMonth();
+      const actualYear = actualDate.getFullYear();
 
+      const checkLastTwelveMonths = () => {
+        let validExpensesKey = [];
+        console.log("dentro", actualMonth);
+        switch (actualMonth) {
+          case 0:
+            validExpensesKey.push({ month: 0, year: actualYear });
+            validExpensesKey.push({ month: 11, year: actualYear - 1 });
+            validExpensesKey.push({ month: 10, year: actualYear - 1 });
+            validExpensesKey.push({ month: 9, year: actualYear - 1 });
+            validExpensesKey.push({ month: 8, year: actualYear - 1 });
+            validExpensesKey.push({ month: 7, year: actualYear - 1 });
+            validExpensesKey.push({ month: 6, year: actualYear - 1 });
+            validExpensesKey.push({ month: 5, year: actualYear - 1 });
+            validExpensesKey.push({ month: 4, year: actualYear - 1 });
+            validExpensesKey.push({ month: 3, year: actualYear - 1 });
+            validExpensesKey.push({ month: 2, year: actualYear - 1 });
+            validExpensesKey.push({ month: 1, year: actualYear - 1 });
+
+            break;
+          case 1:
+            validExpensesKey.push({ month: 1, year: actualYear });
+            validExpensesKey.push({ month: 0, year: actualYear });
+            validExpensesKey.push({ month: 11, year: actualYear - 1 });
+            validExpensesKey.push({ month: 10, year: actualYear - 1 });
+            validExpensesKey.push({ month: 9, year: actualYear - 1 });
+            validExpensesKey.push({ month: 8, year: actualYear - 1 });
+            validExpensesKey.push({ month: 7, year: actualYear - 1 });
+            validExpensesKey.push({ month: 6, year: actualYear - 1 });
+            validExpensesKey.push({ month: 5, year: actualYear - 1 });
+            validExpensesKey.push({ month: 4, year: actualYear - 1 });
+            validExpensesKey.push({ month: 3, year: actualYear - 1 });
+            validExpensesKey.push({ month: 2, year: actualYear - 1 });
+
+            break;
+          case 2:
+            console.log("passou aqui dentro");
+            validExpensesKey.push({ month: 2, year: actualYear });
+            validExpensesKey.push({ month: 1, year: actualYear });
+            validExpensesKey.push({ month: 0, year: actualYear });
+            validExpensesKey.push({ month: 11, year: actualYear - 1 });
+            validExpensesKey.push({ month: 10, year: actualYear - 1 });
+            validExpensesKey.push({ month: 9, year: actualYear - 1 });
+            validExpensesKey.push({ month: 8, year: actualYear - 1 });
+            validExpensesKey.push({ month: 7, year: actualYear - 1 });
+            validExpensesKey.push({ month: 6, year: actualYear - 1 });
+            validExpensesKey.push({ month: 5, year: actualYear - 1 });
+            validExpensesKey.push({ month: 4, year: actualYear - 1 });
+            validExpensesKey.push({ month: 3, year: actualYear - 1 });
+
+            break;
+          case 3:
+            validExpensesKey.push({ month: 3, year: actualYear });
+            validExpensesKey.push({ month: 2, year: actualYear });
+            validExpensesKey.push({ month: 1, year: actualYear });
+            validExpensesKey.push({ month: 0, year: actualYear });
+            validExpensesKey.push({ month: 11, year: actualYear - 1 });
+            validExpensesKey.push({ month: 10, year: actualYear - 1 });
+            validExpensesKey.push({ month: 9, year: actualYear - 1 });
+            validExpensesKey.push({ month: 8, year: actualYear - 1 });
+            validExpensesKey.push({ month: 7, year: actualYear - 1 });
+            validExpensesKey.push({ month: 6, year: actualYear - 1 });
+            validExpensesKey.push({ month: 5, year: actualYear - 1 });
+            validExpensesKey.push({ month: 4, year: actualYear - 1 });
+
+            break;
+          case 4:
+            validExpensesKey.push({ month: 4, year: actualYear });
+            validExpensesKey.push({ month: 3, year: actualYear });
+            validExpensesKey.push({ month: 2, year: actualYear });
+            validExpensesKey.push({ month: 1, year: actualYear });
+            validExpensesKey.push({ month: 0, year: actualYear });
+            validExpensesKey.push({ month: 11, year: actualYear - 1 });
+            validExpensesKey.push({ month: 10, year: actualYear - 1 });
+            validExpensesKey.push({ month: 9, year: actualYear - 1 });
+            validExpensesKey.push({ month: 8, year: actualYear - 1 });
+            validExpensesKey.push({ month: 7, year: actualYear - 1 });
+            validExpensesKey.push({ month: 6, year: actualYear - 1 });
+            validExpensesKey.push({ month: 5, year: actualYear - 1 });
+
+            break;
+          case 5:
+            validExpensesKey.push({ month: 5, year: actualYear });
+            validExpensesKey.push({ month: 4, year: actualYear });
+            validExpensesKey.push({ month: 3, year: actualYear });
+            validExpensesKey.push({ month: 2, year: actualYear });
+            validExpensesKey.push({ month: 1, year: actualYear });
+            validExpensesKey.push({ month: 0, year: actualYear });
+            validExpensesKey.push({ month: 11, year: actualYear - 1 });
+            validExpensesKey.push({ month: 10, year: actualYear - 1 });
+            validExpensesKey.push({ month: 9, year: actualYear - 1 });
+            validExpensesKey.push({ month: 8, year: actualYear - 1 });
+            validExpensesKey.push({ month: 7, year: actualYear - 1 });
+            validExpensesKey.push({ month: 6, year: actualYear - 1 });
+
+            break;
+          case 6:
+            validExpensesKey.push({ month: 6, year: actualYear });
+            validExpensesKey.push({ month: 5, year: actualYear });
+            validExpensesKey.push({ month: 4, year: actualYear });
+            validExpensesKey.push({ month: 3, year: actualYear });
+            validExpensesKey.push({ month: 2, year: actualYear });
+            validExpensesKey.push({ month: 1, year: actualYear });
+            validExpensesKey.push({ month: 0, year: actualYear });
+            validExpensesKey.push({ month: 11, year: actualYear - 1 });
+            validExpensesKey.push({ month: 10, year: actualYear - 1 });
+            validExpensesKey.push({ month: 9, year: actualYear - 1 });
+            validExpensesKey.push({ month: 8, year: actualYear - 1 });
+            validExpensesKey.push({ month: 7, year: actualYear - 1 });
+
+            break;
+          case 7:
+            validExpensesKey.push({ month: 7, year: actualYear });
+            validExpensesKey.push({ month: 6, year: actualYear });
+            validExpensesKey.push({ month: 5, year: actualYear });
+            validExpensesKey.push({ month: 4, year: actualYear });
+            validExpensesKey.push({ month: 3, year: actualYear });
+            validExpensesKey.push({ month: 2, year: actualYear });
+            validExpensesKey.push({ month: 1, year: actualYear });
+            validExpensesKey.push({ month: 0, year: actualYear });
+            validExpensesKey.push({ month: 11, year: actualYear - 1 });
+            validExpensesKey.push({ month: 10, year: actualYear - 1 });
+            validExpensesKey.push({ month: 9, year: actualYear - 1 });
+            validExpensesKey.push({ month: 8, year: actualYear - 1 });
+
+            break;
+          case 8:
+            validExpensesKey.push({ month: 8, year: actualYear });
+            validExpensesKey.push({ month: 7, year: actualYear });
+            validExpensesKey.push({ month: 6, year: actualYear });
+            validExpensesKey.push({ month: 5, year: actualYear });
+            validExpensesKey.push({ month: 4, year: actualYear });
+            validExpensesKey.push({ month: 3, year: actualYear });
+            validExpensesKey.push({ month: 2, year: actualYear });
+            validExpensesKey.push({ month: 1, year: actualYear });
+            validExpensesKey.push({ month: 0, year: actualYear });
+            validExpensesKey.push({ month: 11, year: actualYear - 1 });
+            validExpensesKey.push({ month: 10, year: actualYear - 1 });
+            validExpensesKey.push({ month: 9, year: actualYear - 1 });
+
+            break;
+          case 9:
+            validExpensesKey.push({ month: 9, year: actualYear });
+            validExpensesKey.push({ month: 8, year: actualYear });
+            validExpensesKey.push({ month: 7, year: actualYear });
+            validExpensesKey.push({ month: 6, year: actualYear });
+            validExpensesKey.push({ month: 5, year: actualYear });
+            validExpensesKey.push({ month: 4, year: actualYear });
+            validExpensesKey.push({ month: 3, year: actualYear });
+            validExpensesKey.push({ month: 2, year: actualYear });
+            validExpensesKey.push({ month: 1, year: actualYear });
+            validExpensesKey.push({ month: 0, year: actualYear });
+            validExpensesKey.push({ month: 11, year: actualYear - 1 });
+            validExpensesKey.push({ month: 10, year: actualYear - 1 });
+
+            break;
+          case 10:
+            validExpensesKey.push({ month: 10, year: actualYear });
+            validExpensesKey.push({ month: 9, year: actualYear });
+            validExpensesKey.push({ month: 8, year: actualYear });
+            validExpensesKey.push({ month: 7, year: actualYear });
+            validExpensesKey.push({ month: 6, year: actualYear });
+            validExpensesKey.push({ month: 5, year: actualYear });
+            validExpensesKey.push({ month: 4, year: actualYear });
+            validExpensesKey.push({ month: 3, year: actualYear });
+            validExpensesKey.push({ month: 2, year: actualYear });
+            validExpensesKey.push({ month: 1, year: actualYear });
+            validExpensesKey.push({ month: 0, year: actualYear });
+            validExpensesKey.push({ month: 11, year: actualYear - 1 });
+
+            break;
+          case 11:
+            validExpensesKey.push({ month: 11, year: actualYear });
+            validExpensesKey.push({ month: 10, year: actualYear });
+            validExpensesKey.push({ month: 9, year: actualYear });
+            validExpensesKey.push({ month: 8, year: actualYear });
+            validExpensesKey.push({ month: 7, year: actualYear });
+            validExpensesKey.push({ month: 6, year: actualYear });
+            validExpensesKey.push({ month: 5, year: actualYear });
+            validExpensesKey.push({ month: 4, year: actualYear });
+            validExpensesKey.push({ month: 3, year: actualYear });
+            validExpensesKey.push({ month: 2, year: actualYear });
+            validExpensesKey.push({ month: 1, year: actualYear });
+            validExpensesKey.push({ month: 0, year: actualYear });
+
+            break;
+          default:
+            break;
+        }
+        return validExpensesKey;
+      };
+
+      const expensesFilter = checkLastTwelveMonths();
+
+      const lastTwelveMonthsExpenses = [];
+
+      action.payload.forEach((expense) => {
+        //convertendo data
+        let stringDate = [...expense.expenseDate];
+        let year = stringDate.slice(0, 4).join("");
+        let month = stringDate.slice(5, 7).join("");
+        let day = stringDate.slice(8, 10).join("");
+        let expenseDate = new Date(year, month - 1, day);
+
+        let validIndex = expensesFilter.findIndex(
+          (validDate) =>
+            validDate.month === expenseDate.getMonth() &&
+            validDate.year === expenseDate.getFullYear()
+        );
+
+        if (validIndex !== -1) {
+          lastTwelveMonthsExpenses.push(expense);
+        }
+      });
+
+      lastTwelveMonthsExpenses.forEach((expense) => {
         //convertendo o numero
         let initialValue = [...expense.expenseValue];
         let commaIndex = initialValue.findIndex((element) => element === ",");
