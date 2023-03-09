@@ -5,9 +5,6 @@ import {
   AnalysisTitleDiv,
   AuxDiv,
   ExpenseAnalysisDiv,
-  ExpenseHistoryDiv,
-  HistoryContainer,
-  HistoryTitleDiv,
   ListFilterDiv,
   ListTitleDiv,
   NewCategoryDiv,
@@ -34,10 +31,10 @@ import {
   TestDiv,
   CalendarInformationContent,
   CalendarInformationDiv,
+  CalendarInfoSpan,
 } from "./UserExpensesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import SelectContainer from "../../components/UI/Select/Select";
-import axiosInstance from "../../axiosInstance";
 import { BarLoader, FadeLoader } from "react-spinners";
 import Expense from "../../components/ExpensesTracking/Expense/Expense";
 import Modal from "../../components/UI/Modal/ConectionModal/Modal";
@@ -59,11 +56,10 @@ import {
 } from "../../features/expenses/expensesSlice";
 import startFirebase from "../../services/firebaseConfig";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
-import { ref, set, get, update, remove, child, push } from "firebase/database";
 import LineChart from "../../components/UI/Charts/LineChart";
 import CalendarChart from "../../components/UI/Charts/CalendarChart/CalendarChart";
 import {
-  getAnnualHistoric,
+  getThisYearHistoric,
   getAllCategories,
 } from "../../features/charts/chartsSlice";
 
@@ -255,6 +251,7 @@ const UserExpenses = () => {
   const analysisOptions = [
     { id: "this-month", name: "This Month" },
     { id: "this-year", name: "This Year" },
+    { id: "last-year", name: "Last Year" },
     { id: "all-time", name: "All Time" },
   ];
 
@@ -264,12 +261,14 @@ const UserExpenses = () => {
   //console.log(sliceValues);
   const totalSpendLimit = useSelector(
     (state) =>
-      state.initialSlices.spendingHistory[actualDate.getMonth()].spendLimit
+      state.initialSlices.yearSpendingHistory[actualDate.getMonth()].spendLimit
   );
 
-  const dayOfLastSemester = useSelector(
-    (state) => state.initialSlices.clickedDate
-  );
+  const dayOfThisYear = useSelector((state) => state.initialSlices.clickedDate);
+
+  const allCategories = useSelector((state) => state.initialSlices.categories);
+
+  console.log("olha", allCategories);
 
   //Effects
 
@@ -1317,7 +1316,7 @@ const UserExpenses = () => {
             (category, index) =>
               (category = { name: category.name, id: uniqueIds[index] })
           );
-          console.log(organizedCategories);
+          //console.log(organizedCategories);
 
           setCategoryKeysList(organizedCategories);
           setCategoryOptions(organizedCategories);
@@ -1381,7 +1380,7 @@ const UserExpenses = () => {
           setInfoBtnList({ buttons: filteredBtns });
           setAllExpensesList(allExpenses);
           //TROCAR ALL EXPENSES POR LAST 12 MONTHS EXPENSES
-          dispatch(getAnnualHistoric(allExpenses));
+          dispatch(getThisYearHistoric(allExpenses));
 
           const categoryWithExpenses = expenseItems.filter((item) => {
             if (item.expensesList.length > 0) {
@@ -1431,12 +1430,12 @@ const UserExpenses = () => {
 
           //console.log(expenseItems);
           setLoading(false);
-          // console.log("user", allExpenses);
+          console.log("user", allExpenses);
         }
       })
       .catch((err) => {
         setShowModal(true);
-
+        console.log(err);
         setModalInformation({
           ...modalInformation,
           statusName: err.name,
@@ -1445,7 +1444,7 @@ const UserExpenses = () => {
       });
     dispatch(addExpenses(expenseItems));
 
-    let limit = sliceValues.spendingHistory[actualDate.getMonth()].spendLimit;
+    //let limit = sliceValues.spendingHistory[actualDate.getMonth()].spendLimit;
 
     // setTotalSpendLimit(limit);
   };
@@ -2029,27 +2028,45 @@ const UserExpenses = () => {
   let selectedDay = [];
   let selectedInfo = null;
 
-  if (dayOfLastSemester.year !== 0 && allExpensesList !== null) {
+  if (dayOfThisYear.year !== 0 && allExpensesList !== null) {
     allExpensesList.forEach((expense) => {
-      console.log(expense);
+      //  console.log(expense);
       let stringDate = [...expense.expenseDate];
       let year = stringDate.slice(0, 4).join("");
       let month = stringDate.slice(5, 7).join("") - 1;
       let day = stringDate.slice(8, 10).join("");
 
       if (
-        dayOfLastSemester.year === Number(year) &&
-        dayOfLastSemester.month === Number(month) &&
-        dayOfLastSemester.day === Number(day)
+        dayOfThisYear.year === Number(year) &&
+        dayOfThisYear.month === Number(month) &&
+        dayOfThisYear.day === Number(day)
       ) {
         selectedDay.push(expense);
       }
     });
-    selectedInfo = selectedDay.map((expense) => {
+    selectedInfo = selectedDay.map((expense, index) => {
+      //categoryId
+
+      let categoryIndex = allCategories.findIndex(
+        (category) => category.id === expense.categoryId
+      );
+
       return (
-        <CalendarInformationDiv>
-          <div>Expense: {expense.expenseName}</div>
-          <div>Value: {expense.expenseValue}</div>
+        <CalendarInformationDiv key={`selected-expense-${index}`}>
+          <div>
+            {" "}
+            <CalendarInfoSpan>Expense:</CalendarInfoSpan> {expense.expenseName}
+          </div>
+          <div>
+            <CalendarInfoSpan>Value:</CalendarInfoSpan> {expense.expenseValue}
+          </div>
+          <div>
+            <CalendarInfoSpan>Category:</CalendarInfoSpan>{" "}
+            {allCategories[categoryIndex].name}
+          </div>
+          <div>
+            <CalendarInfoSpan>Date:</CalendarInfoSpan> {expense.expenseDate}
+          </div>
         </CalendarInformationDiv>
       );
     });
@@ -2080,12 +2097,30 @@ const UserExpenses = () => {
         );
         break;
       case "This Year":
+        console.log(currentAnalysisOption);
         analisysContent = (
           <TestDiv>
-            <LineChart annualExpenses={sliceValues.spendingHistory} />
+            <LineChart annualExpenses={sliceValues.yearSpendingHistory} />
             <CalendarChart
               allExpenses={allExpensesList}
-              clickedDay={dayOfLastSemester}
+              clickedDay={dayOfThisYear}
+              year={currentAnalysisOption.id}
+            >
+              <CalendarInformationContent>
+                {selectedInfo}
+              </CalendarInformationContent>
+            </CalendarChart>
+          </TestDiv>
+        );
+        break;
+      case "Last Year":
+        analisysContent = (
+          <TestDiv>
+            <LineChart annualExpenses={sliceValues.lastYearSpendingHistory} />
+            <CalendarChart
+              allExpenses={allExpensesList}
+              clickedDay={dayOfThisYear}
+              year={currentAnalysisOption.id}
             >
               <CalendarInformationContent>
                 {selectedInfo}
@@ -2109,7 +2144,8 @@ const UserExpenses = () => {
       </LoadingDiv>
     );
   } else {
-    let value = sliceValues.spendingHistory[actualDate.getMonth()].spendLimit;
+    let value =
+      sliceValues.yearSpendingHistory[actualDate.getMonth()].spendLimit;
     spendInfo = Number(value - totalSpent).toFixed(2);
   }
 

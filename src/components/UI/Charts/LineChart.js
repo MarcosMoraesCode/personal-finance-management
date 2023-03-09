@@ -13,7 +13,7 @@ const LineChart = (props) => {
     ];
   });
 
-  console.log("olha", newData);
+  // console.log("olha", newData);
 
   const data = [["Month", "Expected", "Spent"]];
 

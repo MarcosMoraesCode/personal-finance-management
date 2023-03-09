@@ -351,10 +351,13 @@ export const CalendarInformationDiv = styled.div`
   justify-content: space-around;
   align-items: center;
   width: 95%;
-  height: 18px;
+  height: 25px;
   font-family: "Roboto";
   font-size: 10px;
   border: 1px solid gold;
   border-radius: 3px;
   margin: 3px;
+`;
+export const CalendarInfoSpan = styled.span`
+  color: #51d289;
 `;

@@ -6,6 +6,7 @@ import {
   CalendarTitleDiv,
   CalendarContainer,
   CalendarInformationDiv,
+  ChartContainer,
 } from "./CalendarChartStyle";
 
 const CalendarChart = (props) => {
@@ -14,9 +15,12 @@ const CalendarChart = (props) => {
   const actualDate = new Date();
   const actualMonth = actualDate.getMonth();
   const actualYear = actualDate.getFullYear();
-  const lastSixMonthsExpenses = [];
+  const thisYearExpenses = [];
+  const lastYearExpenses = [];
+  let subtitle = "";
 
   //LEMBRAR QUE OS MESES VÃO DE 0 A 11
+  /* A LÓGICA FUNCIONA MAS O GOOGLE CHART NÃO SUPORTA
   const checkLastSixMonths = () => {
     let validExpensesKey = [];
     console.log("dentro", actualMonth);
@@ -139,9 +143,10 @@ const CalendarChart = (props) => {
   const expensesFilter = checkLastSixMonths();
 
   console.log("filtro", expensesFilter);
-
+  */
   const newData = [];
   props.allExpenses.forEach((expense) => {
+    //console.log("ex", expense);
     //convertendo a data
     let stringDate = [...expense.expenseDate];
     let year = stringDate.slice(0, 4).join("");
@@ -149,13 +154,79 @@ const CalendarChart = (props) => {
     let day = stringDate.slice(8, 10).join("");
     let expenseDate = new Date(year, month - 1, day);
 
-    let validIndex = expensesFilter.findIndex(
+    //A lógica funciona, mas o calendário do google não suporta
+    /* let validIndex = expensesFilter.findIndex(
       (validDate) =>
         validDate.month === expenseDate.getMonth() &&
         validDate.year === expenseDate.getFullYear()
-    );
+      //validDate.year >= expenseDate.getFullYear()
+    ); */
 
-    if (validIndex !== -1) {
+    switch (props.year) {
+      case "This Year":
+        subtitle = "Current year expenses";
+        if (expenseDate.getFullYear() === actualDate.getFullYear()) {
+          //convertendo o numero
+          let initialValue = [...expense.expenseValue];
+          let commaIndex = initialValue.findIndex((element) => element === ",");
+          initialValue.splice(commaIndex, 1, ".");
+          let replacedValue = initialValue.join("");
+          let convertedValue = Number(replacedValue).toFixed(2);
+
+          thisYearExpenses.push(expense);
+
+          let dayValue = newData.findIndex((item) => {
+            if (
+              item[0].getFullYear() === expenseDate.getFullYear() &&
+              item[0].getMonth() === expenseDate.getMonth() &&
+              item[0].getDate() === expenseDate.getDate()
+            ) {
+              return item;
+            }
+          });
+
+          if (dayValue === -1) {
+            newData.push([expenseDate, Number(convertedValue)]);
+          } else {
+            let oldValue = newData[dayValue][1];
+            newData[dayValue][1] = oldValue + Number(convertedValue);
+          }
+        }
+
+        break;
+      case "Last Year":
+        subtitle = "Last year expenses";
+        if (expenseDate.getFullYear() === actualDate.getFullYear() - 1) {
+          //convertendo o numero
+          let initialValue = [...expense.expenseValue];
+          let commaIndex = initialValue.findIndex((element) => element === ",");
+          initialValue.splice(commaIndex, 1, ".");
+          let replacedValue = initialValue.join("");
+          let convertedValue = Number(replacedValue).toFixed(2);
+
+          lastYearExpenses.push(expense);
+
+          let dayValue = newData.findIndex((item) => {
+            if (
+              item[0].getFullYear() === expenseDate.getFullYear() &&
+              item[0].getMonth() === expenseDate.getMonth() &&
+              item[0].getDate() === expenseDate.getDate()
+            ) {
+              return item;
+            }
+          });
+
+          if (dayValue === -1) {
+            newData.push([expenseDate, Number(convertedValue)]);
+          } else {
+            let oldValue = newData[dayValue][1];
+            newData[dayValue][1] = oldValue + Number(convertedValue);
+          }
+        }
+        break;
+    }
+
+    /* if (expenseDate.getFullYear() === actualDate.getFullYear()) {
       //convertendo o numero
       let initialValue = [...expense.expenseValue];
       let commaIndex = initialValue.findIndex((element) => element === ",");
@@ -163,7 +234,7 @@ const CalendarChart = (props) => {
       let replacedValue = initialValue.join("");
       let convertedValue = Number(replacedValue).toFixed(2);
 
-      lastSixMonthsExpenses.push(expense);
+      thisYearExpenses.push(expense);
 
       let dayValue = newData.findIndex((item) => {
         if (
@@ -181,7 +252,7 @@ const CalendarChart = (props) => {
         let oldValue = newData[dayValue][1];
         newData[dayValue][1] = oldValue + Number(convertedValue);
       }
-    }
+    }*/
   });
 
   const chartEvents = [
@@ -205,7 +276,7 @@ const CalendarChart = (props) => {
     },
   ];
 
-  const data = [["Date", "Sales"]];
+  const data = [["Date", "Value"]];
 
   let finalData = data.concat(newData);
 
@@ -214,8 +285,9 @@ const CalendarChart = (props) => {
 
     // set t
     calendar: {
+      title: "oi",
       yearLabel: {
-        color: "none",
+        color: "",
         bold: true,
         fontSize: 1,
         italic: false,
@@ -241,17 +313,19 @@ const CalendarChart = (props) => {
   return (
     <CalendarContainer>
       <CalendarTitleDiv>
-        <h4>Last Semester</h4>
+        <h4>{subtitle}</h4>
       </CalendarTitleDiv>
       <CalendarInformationDiv> {props.children}</CalendarInformationDiv>
-      <Chart
-        chartType="Calendar"
-        width="100%"
-        height="fit-content"
-        data={finalData}
-        options={options}
-        chartEvents={chartEvents}
-      />
+      <ChartContainer>
+        <Chart
+          chartType="Calendar"
+          width="820px"
+          height="fit-content"
+          data={finalData}
+          options={options}
+          chartEvents={chartEvents}
+        />
+      </ChartContainer>
     </CalendarContainer>
   );
 };

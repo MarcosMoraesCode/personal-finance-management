@@ -3,7 +3,81 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   newValue: -1,
   oldValue: -1,
-  spendingHistory: [
+  yearSpendingHistory: [
+    {
+      month: "Jan",
+      spendLimit: -1,
+      totalSpent: 0,
+      usedCategories: [],
+    },
+    {
+      month: "Feb",
+      spendLimit: -1,
+      totalSpent: 0,
+      usedCategories: [],
+    },
+    {
+      month: "Mar",
+      spendLimit: -1,
+      totalSpent: 0,
+      usedCategories: [],
+    },
+    {
+      month: "Apr",
+      spendLimit: -1,
+      totalSpent: 0,
+      usedCategories: [],
+    },
+    {
+      month: "May",
+      spendLimit: -1,
+      totalSpent: 0,
+      usedCategories: [],
+    },
+    {
+      month: "Jun",
+      spendLimit: -1,
+      totalSpent: 0,
+      usedCategories: [],
+    },
+    {
+      month: "Jul",
+      spendLimit: -1,
+      totalSpent: 0,
+      usedCategories: [],
+    },
+    {
+      month: "Aug",
+      spendLimit: -1,
+      totalSpent: 0,
+      usedCategories: [],
+    },
+    {
+      month: "Sep",
+      spendLimit: -1,
+      totalSpent: 0,
+      usedCategories: [],
+    },
+    {
+      month: "Oct",
+      spendLimit: -1,
+      totalSpent: 0,
+      usedCategories: [],
+    },
+    {
+      month: "Nov",
+      spendLimit: -1,
+      totalSpent: 0,
+      usedCategories: [],
+    },
+    {
+      month: "Dec",
+      spendLimit: -1,
+      totalSpent: 0,
+      usedCategories: [],
+    },
+  ],
+  lastYearSpendingHistory: [
     {
       month: "Jan",
       spendLimit: -1,
@@ -90,7 +164,7 @@ export const chartsSlice = createSlice({
       state.oldValue = state.newValue;
       state.newValue = action.payload;
     },
-    getAnnualHistoric: (state, action) => {
+    getThisYearHistoric: (state, action) => {
       state.loadingData = true;
       const arr = [
         { value: 0, categoryList: [], spendLimit: 0 },
@@ -103,12 +177,30 @@ export const chartsSlice = createSlice({
         { value: 0, categoryList: [], spendLimit: 0 },
         { value: 0, categoryList: [], spendLimit: 0 },
         { value: 0, categoryList: [], spendLimit: 0 },
+        { value: 0, categoryList: [], spendLimit: 0 },
+        { value: 0, categoryList: [], spendLimit: 0 },
       ];
+      const lastYearArr = [
+        { value: 0, categoryList: [], spendLimit: 0 },
+        { value: 0, categoryList: [], spendLimit: 0 },
+        { value: 0, categoryList: [], spendLimit: 0 },
+        { value: 0, categoryList: [], spendLimit: 0 },
+        { value: 0, categoryList: [], spendLimit: 0 },
+        { value: 0, categoryList: [], spendLimit: 0 },
+        { value: 0, categoryList: [], spendLimit: 0 },
+        { value: 0, categoryList: [], spendLimit: 0 },
+        { value: 0, categoryList: [], spendLimit: 0 },
+        { value: 0, categoryList: [], spendLimit: 0 },
+        { value: 0, categoryList: [], spendLimit: 0 },
+        { value: 0, categoryList: [], spendLimit: 0 },
+      ];
+
       const actualDate = new Date();
       const actualMonth = actualDate.getMonth();
       const actualYear = actualDate.getFullYear();
 
-      const checkLastTwelveMonths = () => {
+      //A LÓGICA FUNCIONA MAS O GOOGLE CHARTS NÃO SUPORTA
+      /*const checkLastTwelveMonths = () => {
         let validExpensesKey = [];
         console.log("dentro", actualMonth);
         switch (actualMonth) {
@@ -299,9 +391,10 @@ export const chartsSlice = createSlice({
         return validExpensesKey;
       };
 
-      const expensesFilter = checkLastTwelveMonths();
+      const expensesFilter = checkLastTwelveMonths();*/
 
-      const lastTwelveMonthsExpenses = [];
+      const thisYearExpenses = [];
+      const lastYearExpenses = [];
 
       action.payload.forEach((expense) => {
         //convertendo data
@@ -311,18 +404,23 @@ export const chartsSlice = createSlice({
         let day = stringDate.slice(8, 10).join("");
         let expenseDate = new Date(year, month - 1, day);
 
-        let validIndex = expensesFilter.findIndex(
+        /*let validIndex = expensesFilter.findIndex(
           (validDate) =>
             validDate.month === expenseDate.getMonth() &&
             validDate.year === expenseDate.getFullYear()
-        );
+          //validDate.year >= expenseDate.getFullYear()
+        );*/
 
-        if (validIndex !== -1) {
-          lastTwelveMonthsExpenses.push(expense);
+        if (expenseDate.getFullYear() === actualDate.getFullYear()) {
+          thisYearExpenses.push(expense);
+        }
+        if (expenseDate.getFullYear() === actualDate.getFullYear() - 1) {
+          lastYearExpenses.push(expense);
         }
       });
 
-      lastTwelveMonthsExpenses.forEach((expense) => {
+      thisYearExpenses.forEach((expense) => {
+        console.log("roda", expense);
         //convertendo o numero
         let initialValue = [...expense.expenseValue];
         let commaIndex = initialValue.findIndex((element) => element === ",");
@@ -336,6 +434,8 @@ export const chartsSlice = createSlice({
         let month = stringDate.slice(5, 7).join("");
         let day = stringDate.slice(8, 10).join("");
         let expenseDate = new Date(year, month - 1, day);
+        console.log(expenseDate.getMonth());
+        console.log(arr);
 
         let index = arr[expenseDate.getMonth()].categoryList.findIndex(
           (category) => category === expense.categoryId
@@ -373,20 +473,86 @@ export const chartsSlice = createSlice({
 
         arr[expenseDate.getMonth()].value = newValue;
 
-        /*state.spendingHistory[expenseDate.getMonth()] = {
-          ...state.spendingHistory[expenseDate.getMonth()],
+        /*state.yearSpendingHistory[expenseDate.getMonth()] = {
+          ...state.yearSpendingHistory[expenseDate.getMonth()],
           totalSpent:
-            state.spendingHistory[expenseDate.getMonth()].totalSpent +
+            state.yearSpendingHistory[expenseDate.getMonth()].totalSpent +
             Number(convertedValue),
         };*/
       });
-      arr.forEach((item, index) => {
-        state.spendingHistory[index].totalSpent = item.value;
-        state.spendingHistory[index].spendLimit = item.spendLimit;
-        state.spendingHistory[index].usedCategories = [...item.categoryList];
+
+      lastYearExpenses.forEach((expense) => {
+        let initialValue = [...expense.expenseValue];
+        let commaIndex = initialValue.findIndex((element) => element === ",");
+        initialValue.splice(commaIndex, 1, ".");
+        let replacedValue = initialValue.join("");
+        let convertedValue = Number(replacedValue).toFixed(2);
+
+        //convertendo a data
+        let stringDate = [...expense.expenseDate];
+        let year = stringDate.slice(0, 4).join("");
+        let month = stringDate.slice(5, 7).join("");
+        let day = stringDate.slice(8, 10).join("");
+        let expenseDate = new Date(year, month - 1, day);
+        console.log(expenseDate.getMonth());
+        console.log(lastYearArr);
+
+        let index = lastYearArr[expenseDate.getMonth()].categoryList.findIndex(
+          (category) => category === expense.categoryId
+        );
+
+        if (Number(index) === -1) {
+          //console.log("passou aq");
+          lastYearArr[expenseDate.getMonth()].categoryList.push(
+            expense.categoryId
+          );
+          let oldSpendLimit =
+            lastYearArr[expenseDate.getMonth()].spendLimit === -1
+              ? 0
+              : lastYearArr[expenseDate.getMonth()].spendLimit;
+          let category = state.categories.find(
+            (category) => category.id === expense.categoryId
+          );
+
+          //convertendo numero
+          let initialValue = [...category.spendLimit];
+          let commaIndex = initialValue.findIndex((element) => element === ",");
+          initialValue.splice(commaIndex, 1, ".");
+          let replacedValue = initialValue.join("");
+          let convertedValue = Number(replacedValue).toFixed(2);
+
+          let newSpendLimit = oldSpendLimit + Number(convertedValue);
+
+          lastYearArr[expenseDate.getMonth()].spendLimit = newSpendLimit;
+        }
+
+        //console.log(index);
+
+        let oldValue = lastYearArr[expenseDate.getMonth()].value;
+        // console.log("old value", oldValue);
+
+        let newValue = oldValue + Number(convertedValue);
+
+        lastYearArr[expenseDate.getMonth()].value = newValue;
       });
-      console.log("concluiu");
+
+      arr.forEach((item, index) => {
+        state.yearSpendingHistory[index].totalSpent = item.value;
+        state.yearSpendingHistory[index].spendLimit = item.spendLimit;
+        state.yearSpendingHistory[index].usedCategories = [
+          ...item.categoryList,
+        ];
+      });
+
       state.loadingData = false;
+
+      lastYearArr.forEach((item, index) => {
+        state.lastYearSpendingHistory[index].totalSpent = item.value;
+        state.lastYearSpendingHistory[index].spendLimit = item.spendLimit;
+        state.lastYearSpendingHistory[index].usedCategories = [
+          ...item.categoryList,
+        ];
+      });
     },
     getAllCategories: (state, action) => {
       action.payload.forEach((item) => {
@@ -401,7 +567,7 @@ export const chartsSlice = createSlice({
 
 export const {
   changeValue,
-  getAnnualHistoric,
+  getThisYearHistoric,
   getAllCategories,
   changeClickedDate,
 } = chartsSlice.actions;
