@@ -102,7 +102,7 @@ export const NewCategoryFormDiv = styled.div`
 `;
 
 export const DefaultTitle = styled.h1`
-  color: #51d289; ;
+  color: #51d289;
 `;
 
 export const NewExpenseTitleDiv = styled.div`
@@ -150,9 +150,9 @@ export const UserCategoriesListContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-
+  // background-color: blue;
   width: 100%;
-  height: 95%;
+  height: 100%;
   overflow-y: auto;
 
   /* width */
@@ -183,12 +183,13 @@ export const ListFilterDiv = styled.div`
   align-items: center;
   justify-content: end;
   width: 90%;
-  height: 10%;
+  height: 100px;
+  //background-color: red;
 `;
 export const UserItemsList = styled.div`
-  // border: 1px solid gold;
+  //border: 1px solid gold;
   width: 100%;
-  height: 90%;
+  height: 95%;
   overflow-y: auto;
   padding: 5px;
 
@@ -216,11 +217,14 @@ export const UserItemsList = styled.div`
 `;
 
 export const ListTitleDiv = styled.div`
+  padding-top: 20px;
   display: flex;
   align-items: center;
   justify-content: space-around;
   width: 100%;
-  height: 10%;
+  height: 5%;
+  //background-color: red;
+  //min-height: 10%;
   // border: 1px solid green;
 `;
 

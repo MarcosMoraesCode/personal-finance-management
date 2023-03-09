@@ -62,6 +62,7 @@ import {
   getThisYearHistoric,
   getAllCategories,
 } from "../../features/charts/chartsSlice";
+import CompletePieChart from "../../components/UI/Charts/CompletePieChart/CompletePieChart";
 
 const UserExpenses = () => {
   //Store
@@ -268,7 +269,9 @@ const UserExpenses = () => {
 
   const allCategories = useSelector((state) => state.initialSlices.categories);
 
-  console.log("olha", allCategories);
+  const allExpenses = useSelector((state) => state.expensesData.userExpenses);
+
+  //console.log("olha", allCategories);
 
   //Effects
 
@@ -2130,7 +2133,12 @@ const UserExpenses = () => {
         );
         break;
       case "All Time":
-        analisysContent = <div>All time</div>;
+        analisysContent = (
+          <CompletePieChart
+            allCategories={allCategories}
+            allExpenses={allExpensesList}
+          />
+        );
         break;
       default:
         analisysContent = null;

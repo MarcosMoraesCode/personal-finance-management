@@ -420,7 +420,7 @@ export const chartsSlice = createSlice({
       });
 
       thisYearExpenses.forEach((expense) => {
-        console.log("roda", expense);
+        // console.log("roda", expense);
         //convertendo o numero
         let initialValue = [...expense.expenseValue];
         let commaIndex = initialValue.findIndex((element) => element === ",");
@@ -434,8 +434,8 @@ export const chartsSlice = createSlice({
         let month = stringDate.slice(5, 7).join("");
         let day = stringDate.slice(8, 10).join("");
         let expenseDate = new Date(year, month - 1, day);
-        console.log(expenseDate.getMonth());
-        console.log(arr);
+        // console.log(expenseDate.getMonth());
+        // console.log(arr);
 
         let index = arr[expenseDate.getMonth()].categoryList.findIndex(
           (category) => category === expense.categoryId
@@ -494,8 +494,8 @@ export const chartsSlice = createSlice({
         let month = stringDate.slice(5, 7).join("");
         let day = stringDate.slice(8, 10).join("");
         let expenseDate = new Date(year, month - 1, day);
-        console.log(expenseDate.getMonth());
-        console.log(lastYearArr);
+        // console.log(expenseDate.getMonth());
+        // console.log(lastYearArr);
 
         let index = lastYearArr[expenseDate.getMonth()].categoryList.findIndex(
           (category) => category === expense.categoryId
