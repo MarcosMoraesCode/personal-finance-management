@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Chart } from "react-google-charts";
 import {
-  AgeControlDiv,
+  ValueControlDiv,
   CategoryControlDiv,
   PieChartContainer,
   PieChartControlsDiv,
@@ -52,7 +52,7 @@ const CompletePieChart = (props) => {
   console.log(props.allExpenses);
 
   let newData = props.allExpenses.map((expense) => {
-    console.log("ex", expense);
+    // console.log("ex", expense);
     let categoryIndex = props.allCategories.findIndex(
       (category) => category.id === expense.categoryId
     );
@@ -70,14 +70,14 @@ const CompletePieChart = (props) => {
     }
 
     //transformando o valor do limite da categoria em numero
-    let initialCategoryValue = [
+    /* let initialCategoryValue = [
       ...props.allCategories[categoryIndex].spendLimit,
     ];
     let commaCategoryIndex = initialCategoryValue.findIndex(
       (element) => element === ","
     );
     initialCategoryValue.splice(commaCategoryIndex, 1, ".");
-    let replacedCategoryValue = initialCategoryValue.join("");
+    let replacedCategoryValue = initialCategoryValue.join("");*/
     //let convertedCategoryValue = Number(replacedCategoryValue).toFixed(2);
 
     return [
@@ -90,28 +90,48 @@ const CompletePieChart = (props) => {
 
   let finalData = data.concat(newData);
 
+  const chartRef = useRef(null);
+
+  //aa;
+
+  const chartEvents = [
+    {
+      eventName: "select",
+      callback({ chartWrapper }) {
+        const chart = chartWrapper.getChart();
+        const selection = chart.getSelection();
+        console.log(chartWrapper.getState());
+        console.log(selection);
+      },
+    },
+  ];
+
   return (
     <>
       <StyledChart
-        width={"100%"}
-        height={300}
+        width={"90%"}
+        height={"fit-content"}
         chartType="PieChart"
         loader={<div>Loading Chart</div>}
+        chartEvents={chartEvents}
         data={finalData}
         options={options}
         rootProps={{ "data-testid": "1" }}
-        chartWrapperParams={{ view: { columns: [0, 3] } }}
+        ref={chartRef}
+        chartWrapperParams={{
+          view: { columns: [0, 3] },
+        }}
         chartPackages={["corechart", "controls"]}
         render={({ renderControl, renderChart }) => {
           return (
             <PieChartContainer>
               <PieChartControlsDiv>
-                <AgeControlDiv>
+                <ValueControlDiv>
                   {renderControl(
                     ({ controlProp }) =>
                       controlProp.controlID === "select-value"
                   )}
-                </AgeControlDiv>
+                </ValueControlDiv>
                 <CategoryControlDiv>
                   {renderControl(
                     ({ controlProp }) =>

@@ -32,6 +32,9 @@ import {
   CalendarInformationContent,
   CalendarInformationDiv,
   CalendarInfoSpan,
+  SimpleBtn,
+  SimpleLabel,
+  JoinInputsDiv,
 } from "./UserExpensesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import SelectContainer from "../../components/UI/Select/Select";
@@ -63,6 +66,7 @@ import {
   getAllCategories,
 } from "../../features/charts/chartsSlice";
 import CompletePieChart from "../../components/UI/Charts/CompletePieChart/CompletePieChart";
+import AllExpensesInfo from "../../components/UI/Charts/AllExpensesInfo/AllExpensesInfo";
 
 const UserExpenses = () => {
   //Store
@@ -214,7 +218,7 @@ const UserExpenses = () => {
     expenseDate: "",
     expenseId: "",
   });
-
+  const [showMonthExpenses, setShowMonthExpenses] = useState(true);
   const [showEditCategories, setShowEditCategories] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const [filterType, setFilterType] = useState("sort by name");
@@ -357,6 +361,10 @@ const UserExpenses = () => {
       categoryName: "",
       categoryId: "",
     });
+  };
+
+  const showMonthExpensesHandler = () => {
+    setShowMonthExpenses(!showMonthExpenses);
   };
 
   const categoryAlreadyExists = (expenseCategoryName, categoryId) => {
@@ -1357,11 +1365,14 @@ const UserExpenses = () => {
               expenseDate: expense.date,
             });
 
+            // console.log("ex", expense);
+
             expenseItems[categoryIndex]?.expensesList.push({
               id: expense.id,
               name: expense.name,
               value: expense.value,
               date: expense.date,
+              categoryName: expense.categoryName,
               percentage: (
                 (convertToNumber(expense.value) /
                   convertToNumber(expenseItems[categoryIndex].spendLimit)) *
@@ -1386,6 +1397,7 @@ const UserExpenses = () => {
           dispatch(getThisYearHistoric(allExpenses));
 
           const categoryWithExpenses = expenseItems.filter((item) => {
+            console.log("item", item);
             if (item.expensesList.length > 0) {
               return item;
             }
@@ -1431,7 +1443,7 @@ const UserExpenses = () => {
           setFilteredCategories(categoryWithExpenses);
           setMonthlyFilteredCategories(thisCategoriesWithExpenses);
 
-          //console.log(expenseItems);
+          console.log("categoryWith", categoryWithExpenses);
           setLoading(false);
           console.log("user", allExpenses);
         }
@@ -1579,8 +1591,12 @@ const UserExpenses = () => {
   //if (fetchedExpensesList !== null && infoBtnList !== null) {
 
   if (monthlyCategories !== null && infoBtnList !== null) {
+    console.log("aq", monthlyCategories);
+    console.log("ali", allExpenses);
+    let listToBeSet =
+      showMonthExpenses === true ? monthlyCategories : allExpenses;
     let btnIndex = 0;
-    fullList = monthlyCategories.map((item, index) => {
+    fullList = listToBeSet.map((item, index) => {
       if (item.expensesList.length > 0) {
         let currentBtnIndex = btnIndex;
         btnIndex += 1;
@@ -1606,6 +1622,7 @@ const UserExpenses = () => {
 
         return (
           <Expense
+            showValues={showMonthExpenses}
             expensesPage
             key={index}
             expenseTopic={item.category}
@@ -2134,10 +2151,16 @@ const UserExpenses = () => {
         break;
       case "All Time":
         analisysContent = (
-          <CompletePieChart
-            allCategories={allCategories}
-            allExpenses={allExpensesList}
-          />
+          <>
+            <CompletePieChart
+              allCategories={allCategories}
+              allExpenses={allExpensesList}
+            />
+            <AllExpensesInfo
+              allCategories={filteredCategories}
+              allExpenses={allExpensesList}
+            />
+          </>
         );
         break;
       default:
@@ -2177,7 +2200,7 @@ const UserExpenses = () => {
         <AuxDiv>
           <ListTitleDiv>
             <DefaultTitle>
-              {showEditCategories ? "Categories List" : "Expenses"}
+              {showEditCategories ? "Categories List" : "Month Expenses"}
             </DefaultTitle>
             <UserDefaultButton onClick={changeCategoryDivHandler}>
               {showEditCategories ? "Expenses List" : "Edit Category"}
@@ -2185,27 +2208,40 @@ const UserExpenses = () => {
           </ListTitleDiv>
           <UserExpensesListContainer>
             <ListFilterDiv>
-              <InputContainer
-                placeholder={
-                  filterType === "Sort by name"
-                    ? "Search by name"
-                    : showEditCategories
-                    ? "Spend Limit"
-                    : "Minimum amount"
-                }
-                noMargin
-                changed={(event) => FilterInputChangeHandler(event)}
-                border={"no-right-border"}
-                value={filterValue}
-                width={"160px"}
-              ></InputContainer>{" "}
-              <SelectContainer
-                options={[{ name: "sort by name" }, { name: "sort by value" }]}
-                changed={(event) => FilterChangeHandler(event)}
-                border={"no-left-border"}
-                width={"110px"}
-                noMargin
-              ></SelectContainer>
+              <JoinInputsDiv>
+                <SimpleBtn
+                  onClick={() => showMonthExpensesHandler()}
+                  show={showMonthExpenses}
+                />
+                <SimpleLabel> Show only month expenses</SimpleLabel>
+              </JoinInputsDiv>
+
+              <JoinInputsDiv>
+                <InputContainer
+                  placeholder={
+                    filterType === "Sort by name"
+                      ? "Search by name"
+                      : showEditCategories
+                      ? "Spend Limit"
+                      : "Minimum amount"
+                  }
+                  noMargin
+                  changed={(event) => FilterInputChangeHandler(event)}
+                  border={"no-right-border"}
+                  value={filterValue}
+                  width={"160px"}
+                ></InputContainer>{" "}
+                <SelectContainer
+                  options={[
+                    { name: "sort by name" },
+                    { name: "sort by value" },
+                  ]}
+                  changed={(event) => FilterChangeHandler(event)}
+                  border={"no-left-border"}
+                  width={"110px"}
+                  noMargin
+                ></SelectContainer>
+              </JoinInputsDiv>
             </ListFilterDiv>
             {categoriesDiv}
           </UserExpensesListContainer>

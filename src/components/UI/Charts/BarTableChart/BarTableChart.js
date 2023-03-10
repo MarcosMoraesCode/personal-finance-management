@@ -22,7 +22,7 @@ const BarTableChart = (props) => {
   function compareNumbers(a, b) {
     return a.value - b.value;
   }
-  console.log("deu aq", props.expenses);
+  //console.log("deu aq", props.expenses);
   if (props.expenses !== null) {
     let auxArr = props.expenses.map((item) => {
       let initialValue = [...item.value];
@@ -64,9 +64,9 @@ const BarTableChart = (props) => {
     });
   }
 
-  let test = (
+  let table = (
     <>
-      <BarTable>
+      <BarTable maxHeigth={"300px"}>
         <tbody>
           <tr>
             <TableHeader width={"30%"}>Expense</TableHeader>
@@ -94,7 +94,7 @@ const BarTableChart = (props) => {
         tableLayout: {},
       }}
     />*/
-    test
+    table
   );
 };
 

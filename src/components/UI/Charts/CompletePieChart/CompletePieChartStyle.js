@@ -32,7 +32,7 @@ export const PieChartControlsDiv = styled.div`
   //background-color: red;
 `;
 
-export const AgeControlDiv = styled.div`
+export const ValueControlDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -10,9 +10,7 @@ export const WrapExpenseLi = styled.div`
   border-bottom: white 1px solid;
   margin: auto;
   width: 100%;
-  height: ${(props) =>
-    //console.log(props.expenseDataList.length);
-    props.expenseDataList.length > 4 ? "60%" : "fit-content"};
+  height: fit-content;
   max-height: ${(props) =>
     props.details === "Less Info" ? "400px" : "10%"}; //50 ou 150
   min-height: 45px;
@@ -65,7 +63,7 @@ export const ExpenseLi = styled.li`
 
 export const ExpenseLiContent = styled.div`
   width: 100%;
-  height: 100%;
+  height: "fit-content";
 `;
 
 export const ExpenseSubtitlesDiv = styled.div`

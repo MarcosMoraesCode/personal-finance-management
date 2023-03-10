@@ -2,10 +2,10 @@ import React from "react";
 import { Chart } from "react-google-charts";
 
 const LineChart = (props) => {
-  console.log("oi", props.annualExpenses);
+  //console.log("oi", props.annualExpenses);
 
   let newData = props.annualExpenses.map((item) => {
-    console.log(item);
+    // console.log(item);
     return [
       item.month,
       item.spendLimit === -1 ? 0 : item.spendLimit,

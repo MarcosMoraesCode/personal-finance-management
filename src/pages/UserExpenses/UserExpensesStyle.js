@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import pig from "../../images/pig.png";
+import check from "../../images/checkIcon.svg";
 
 export const LoadingDiv = styled.div`
   display: flex;
@@ -38,6 +39,26 @@ export const UserExpensesContainer = styled.div`
   height: 90%;
   width: 90%;
   margin: auto;
+`;
+
+export const SimpleLabel = styled.label`
+  font-size: 12px;
+  font-family: "Roboto";
+  text-align: start;
+  padding-left: 5px;
+`;
+export const SimpleBtn = styled.button`
+  display: flex;
+  width: 18px;
+  height: 18px;
+  border: ${(props) =>
+    props.show === true ? "2px solid gold" : "2px solid #51d289 "};
+  border-radius: 5px;
+  background-image: ${(props) =>
+    props.show === true ? `url(${check})` : `none`};
+  background-size: cover;
+  //background-color: ;
+  //border: none;
 `;
 
 export const UserDefaultButton = styled.button`
@@ -181,10 +202,15 @@ export const UserCategoriesListContainer = styled.div`
 export const ListFilterDiv = styled.div`
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: space-between;
   width: 90%;
   height: 100px;
   //background-color: red;
+`;
+export const JoinInputsDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 export const UserItemsList = styled.div`
   //border: 1px solid gold;

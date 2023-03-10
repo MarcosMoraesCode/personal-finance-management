@@ -48,11 +48,14 @@ const Expense = (props) => {
       <ExtraContentWrapper key={`${props.expenseTopic}-sub-${index}`}>
         {" "}
         <ExtraContentBlock width={"48%"}>
-          <ExtraText>{subTopic.name}</ExtraText>
+          <ExtraText> {subTopic.name}</ExtraText>
           <ExtraText>{`$ ${convertedValue}`}</ExtraText>
         </ExtraContentBlock>
         <ExtraContentBlock width={"25%"}>
-          <ExtraText>{subTopic.percentage}%</ExtraText>
+          <ExtraText>
+            {" "}
+            {props.showValues ? `${subTopic.percentage}%` : `--`}{" "}
+          </ExtraText>
           <ExtraText>{subTopic.date}</ExtraText>
         </ExtraContentBlock>
         <ExtraContentBlock width={"15%"}>{lastContent}</ExtraContentBlock>
@@ -82,10 +85,10 @@ const Expense = (props) => {
             <ExpenseTextDiv>
               <DefaultContentBlock width={"48%"}>
                 <p>{props.expenseTopic}</p>
-                <p> {`$ ${props.expenseTotal}`}</p>
+                <p> {props.showValues ? `$ ${props.expenseTotal}` : `--`} </p>
               </DefaultContentBlock>
               <DefaultContentBlock width={"25%"}>
-                <p>{props.realPercentage}%</p>
+                <p> {props.showValues ? `${props.realPercentage}%` : `--`} </p>
                 <p>{props.percentageExpected}%</p>
               </DefaultContentBlock>
               <DefaultContentBlock width={"15%"}>

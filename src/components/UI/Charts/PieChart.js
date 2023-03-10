@@ -57,9 +57,9 @@ const PieChart = (props) => {
   }
 
   const options = {
-    title: "Monthly Expenses",
+    title: "Month Expenses",
     highlightOnMouseOver: false,
-    titleTextStyle: { color: "white", fontSize: 18, fontFamily: "Roboto" },
+    titleTextStyle: { color: "#51d289", fontSize: 18, fontFamily: "Roboto" },
     backgroundColor: "transparent",
     legend: {
       textStyle: {
