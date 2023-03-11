@@ -34,26 +34,29 @@ export const AuxContainerDivOne = styled.div`
   justify-content: space-around;
   width: 70%;
   max-width: 100%;
-  max-height: 100%;
-  //background-color: red;
-  @media (max-width: 1200px) {
+  //max-height: 80%;
+  background-color: blue;
+  @media (max-width: 1300px) {
     align-items: center;
     width: 100%;
-    min-width: 850px;
+    //min-width: 850px;
+    min-height: 45%;
   }
-  @media (max-width: 850px) {
+  @media (max-width: 900px) {
     flex-direction: column;
-    //min-height: 200%;
+
+    min-height: 100%;
     //align-items: center;
   }
 `;
 export const AuxContainerDivTwo = styled.div`
   width: 30%;
-  @media (max-width: 1200px) {
+  @media (max-width: 1300px) {
     width: 100%;
     height: fit-content;
     padding-top: 50px;
     padding-bottom: 50px;
+    min-width: 320px;
     // background-color: red;
   }
 `;
@@ -62,15 +65,24 @@ export const UserExpensesContainer = styled.div`
   display: flex;
   flex-direction: row;
   //justify-content: space-between;
-  height: fit-content;
-  min-height: 90%;
+  height: 90%;
+  max-height: 90%;
   width: 90%;
   min-width: 320px;
   margin: auto;
-  //background-color: red;
-  @media (max-width: 1200px) {
+  // background-color: red;
+  @media (max-width: 1300px) {
+    margin-top: 50px;
     flex-direction: column;
-    //min-height: 200vh;
+    height: 200%;
+    min-height: 200%;
+    //max-height: fit-content;
+  }
+  @media (max-width: 930px) {
+    margin-top: 50px;
+    flex-direction: column;
+    height: 180%;
+    max-height: 180%;
   }
 `;
 
@@ -125,7 +137,7 @@ export const FormDiv = styled.div`
   opacity: 1;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   width: 20%;
 
   min-width: 320px;
@@ -135,6 +147,21 @@ export const FormDiv = styled.div`
   background-image: url(${formPig});
   background-size: cover;
   //border: 1px solid white;
+
+  @media (max-width: 900px) {
+    flex-direction: row;
+    min-width: 90%;
+    margin: auto;
+    min-height: 40%;
+    padding-top: 35px;
+  }
+  @media (max-width: 690px) {
+    flex-direction: column;
+    min-width: 100%;
+    margin: auto;
+    min-height: 40%;
+    padding-top: 35px;
+  }
 
   :hover {
     //border: 1px solid gold;
@@ -152,19 +179,28 @@ export const ExpensesDiv = styled.div`
   justify-content: center;
   width: fit-content;
   min-width: 550px;
-  max-height: 100%;
-  height: 100%;
+  //max-height: 100%;
+  height: 90%;
   margin: auto;
 
-  // background-color: #1f1f1f;
+  background-color: #1f1f1f;
   border-radius: 20px;
   :hover {
     //border: 1px solid gold;
     opacity: 1;
   }
-  @media (max-width: 930px) {
-    width: 600px;
-    min-width: 400px;
+  @media (max-width: 1200px) {
+  }
+  @media (max-width: 900px) {
+    width: 90%;
+    min-width: 90%;
+    margin-top: 20px;
+    min-height: 45%;
+    height: 45%;
+  }
+  @media (max-width: 690px) {
+    width: 100%;
+    min-width: 90%;
   }
   //border-radius: 50px;
 `;
@@ -186,22 +222,35 @@ export const AnalysisDiv = styled.div`
     opacity: 1;
   }
 
-  @media (max-width: 1200px) {
-    width: 80%;
+  @media (max-width: 1300px) {
+    width: 100%;
     margin: auto;
     min-height: 800px;
     margin-top: 20px;
-  } //background-image: url(${pig});
+  }
+  @media (max-width: 420px) {
+    width: 100%;
+    margin: auto;
+    min-height: 800px;
+    margin-top: 20px;
+    min-width: 320px;
+    box-shadow: none;
+    background-color: transparent;
+  }
 `;
 
 export const NewCategoryDiv = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   height: 35%;
   width: 100%;
   // border: 1px solid gold;
+  @media (max-width: 930px) {
+    height: 100%;
+    justify-content: flex-start;
+  }
 `;
 
 export const NewCategoryTitleDiv = styled.div`
@@ -212,7 +261,12 @@ export const NewCategoryTitleDiv = styled.div`
   height: 20%;
   text-shadow: 2px 2px 2px green;
 
-  //border: blue solid 1px;
+  @media (max-width: 1300px) {
+    //padding-bottom: 20px;
+    height: 10%;
+  }
+
+  // border: blue solid 1px;
 `;
 
 export const NewCategoryFormDiv = styled.div`
@@ -222,7 +276,12 @@ export const NewCategoryFormDiv = styled.div`
   justify-content: center;
   width: 100%;
   height: 80%;
-  // border: 1px solid red;
+  //border: 1px solid red;
+  padding-top: 20px;
+  @media (max-width: 900px) {
+    justify-content: flex-start;
+    height: 90%;
+  }
 `;
 
 export const DefaultTitle = styled.h1`
@@ -248,6 +307,9 @@ export const NewExpenseDiv = styled.div`
   width: 100%;
   height: 65%;
   //border: 1px solid gold;
+  @media (max-width: 900px) {
+    height: 100%;
+  }
 `;
 
 export const NewExpenseFormDiv = styled.div`
@@ -279,7 +341,7 @@ export const UserCategoriesListContainer = styled.div`
   justify-content: flex-start;
   // background-color: blue;
   width: 100%;
-  height: 100%;
+  height: 90%;
   overflow-y: auto;
 
   /* width */
@@ -311,7 +373,13 @@ export const ListFilterDiv = styled.div`
   justify-content: space-between;
   width: 90%;
   height: 100px;
-  //background-color: red;
+  @media (max-width: 512px) {
+    background-color: red;
+    margin-top: 40px;
+    height: fit-content;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
 `;
 export const JoinInputsDiv = styled.div`
   display: flex;
@@ -409,6 +477,9 @@ export const AnalysisInfoDiv = styled.div`
   //background: linear-gradient(to left top, grey, grey 5%, black, black 80%);
   //border: 1px solid white;
   border-radius: 10px;
+  @media (max-width: 400px) {
+    width: 100%;
+  }
 `;
 
 export const AnalysisTableDiv = styled.div`
@@ -467,7 +538,12 @@ export const AnalysisInfoContainer = styled.div`
 `;
 
 export const TestDiv = styled.div`
-  background-color: "red";
+  display: flex;
+  flex-direction: column;
+  //justify-content: center;
+  //align-items: center;
+  width: 90%;
+  //border: 1px solid white;
 `;
 
 export const CalendarInformationContent = styled.div`

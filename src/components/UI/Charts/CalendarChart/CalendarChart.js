@@ -7,6 +7,7 @@ import {
   CalendarContainer,
   CalendarInformationDiv,
   ChartContainer,
+  StyledChart,
 } from "./CalendarChartStyle";
 
 const CalendarChart = (props) => {
@@ -317,7 +318,7 @@ const CalendarChart = (props) => {
       </CalendarTitleDiv>
       <CalendarInformationDiv> {props.children}</CalendarInformationDiv>
       <ChartContainer>
-        <Chart
+        <StyledChart
           chartType="Calendar"
           width="820px"
           height="fit-content"

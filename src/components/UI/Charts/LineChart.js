@@ -1,5 +1,25 @@
 import React from "react";
 import { Chart } from "react-google-charts";
+import styled from "styled-components";
+
+export const StyledChart = styled(Chart)`
+  width: 100%;
+  height: 400px;
+  margin: auto;
+
+  @media screen and (max-width: 1540px) {
+    height: 300px;
+    max-width: 300px;
+  }
+  @media screen and (max-width: 1300px) {
+    height: 300px;
+    max-width: 100%;
+  }
+  @media screen and (max-width: 480px) {
+    height: 300px;
+    width: 320px;
+  }
+`;
 
 const LineChart = (props) => {
   //console.log("oi", props.annualExpenses);
@@ -46,11 +66,11 @@ const LineChart = (props) => {
   };
 
   return (
-    <Chart
+    <StyledChart
       chartType="AreaChart"
-      width="100%"
-      minWidth="320px"
-      height="400px"
+      //width="100%"
+      //  minWidth="320px"
+      // height="400px"
       data={finalData}
       options={options}
     />

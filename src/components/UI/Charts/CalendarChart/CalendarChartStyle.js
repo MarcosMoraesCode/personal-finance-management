@@ -1,4 +1,15 @@
 import styled from "styled-components";
+import Chart from "react-google-charts";
+
+export const StyledChart = styled(Chart)`
+  width: 100%;
+  height: 400px;
+
+  @media screen and (max-width: 480px) {
+    height: 200px;
+    width: 80%;
+  }
+`;
 
 export const CalendarTitleDiv = styled.div`
   display: flex;
@@ -56,9 +67,20 @@ export const CalendarContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  //background-color: red;
+
+  margin: auto;
+  background-color: red;
   width: 400px;
   min-width: 320px;
+  @media screen and (max-width: 1540px) {
+    height: 320px;
+    width: 70%;
+  }
+  @media screen and (max-width: 1300px) {
+    align-items: center;
+    width: 90%;
+    min-width: 300px;
+  }
 
   //max-height: 250px;
   //height: 100%;
@@ -78,6 +100,17 @@ export const ChartContainer = styled.div`
   overflow-y: hidden;
   height: 140px;
   /* width */
+
+  @media (max-width: 480px) {
+    //max-width: 320px;
+    max-width: 320px;
+  }
+  @media (max-width: 1300px) {
+    //max-width: 320px;
+
+    width: 100%;
+    max-width: fit-content;
+  }
   ::-webkit-scrollbar {
     height: 3px;
   }
