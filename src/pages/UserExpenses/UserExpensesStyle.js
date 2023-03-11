@@ -35,12 +35,13 @@ export const AuxContainerDivOne = styled.div`
   width: 70%;
   max-width: 100%;
   //max-height: 80%;
-  background-color: blue;
+  //background-color: blue;
   @media (max-width: 1300px) {
+    min-height: 88vh;
     align-items: center;
     width: 100%;
     //min-width: 850px;
-    min-height: 45%;
+    //min-height: 45%;
   }
   @media (max-width: 900px) {
     flex-direction: column;
@@ -51,12 +52,15 @@ export const AuxContainerDivOne = styled.div`
 `;
 export const AuxContainerDivTwo = styled.div`
   width: 30%;
+  //margin-right: -20px;
+  padding-left: 20px;
   @media (max-width: 1300px) {
     width: 100%;
     height: fit-content;
     padding-top: 50px;
     padding-bottom: 50px;
     min-width: 320px;
+    padding-left: 0;
     // background-color: red;
   }
 `;
@@ -130,6 +134,24 @@ export const UserDefaultButton = styled.button`
       props.disabled === "disabled" ? "not-allowed" : "pointer"};
   }
 `;
+
+export const SwitchListsButton = styled.button`
+  border: none;
+  color: white;
+  border-bottom: 1px solid white;
+  min-width: fit-content;
+  background-color: transparent;
+  margin-right: 10px;
+  padding-right: 5px;
+  padding-left: 5px;
+  font-family: "Roboto";
+  :hover {
+    //background-color: #51d289;
+    transition: 0.1s;
+    box-shadow: 0px 5px 5px 0 white;
+    border-top: 1px solid gold;
+  }
+`;
 //FORM
 export const FormDiv = styled.div`
   display: flex;
@@ -147,6 +169,13 @@ export const FormDiv = styled.div`
   background-image: url(${formPig});
   background-size: cover;
   //border: 1px solid white;
+  @media (max-width: 1300px) {
+    max-height: 75vh;
+    padding-top: 35px;
+    padding-bottom: 35px;
+    overflow-y: auto;
+    //box-sizing: border-box;
+  }
 
   @media (max-width: 900px) {
     flex-direction: row;
@@ -155,6 +184,7 @@ export const FormDiv = styled.div`
     min-height: 40%;
     padding-top: 35px;
   }
+
   @media (max-width: 690px) {
     flex-direction: column;
     min-width: 100%;
@@ -183,7 +213,7 @@ export const ExpensesDiv = styled.div`
   height: 90%;
   margin: auto;
 
-  background-color: #1f1f1f;
+  //background-color: #1f1f1f;
   border-radius: 20px;
   :hover {
     //border: 1px solid gold;
@@ -374,7 +404,7 @@ export const ListFilterDiv = styled.div`
   width: 90%;
   height: 100px;
   @media (max-width: 512px) {
-    background-color: red;
+    //background-color: red;
     margin-top: 40px;
     height: fit-content;
     flex-direction: column-reverse;
@@ -437,7 +467,6 @@ export const ExpenseHistoryDiv = styled.div`
 `;
 
 export const ExpenseAnalysisDiv = styled.div`
-  //border: 1px solid pink;
   height: 100%;
   width: 100%;
 `;
@@ -475,10 +504,12 @@ export const AnalysisInfoDiv = styled.div`
   background-color: #1b1b1b;
   //box-shadow: 2px 2px 5px white;
   //background: linear-gradient(to left top, grey, grey 5%, black, black 80%);
-  //border: 1px solid white;
+
   border-radius: 10px;
   @media (max-width: 400px) {
     width: 100%;
+    //border: 1px solid white;
+    background-color: transparent;
   }
 `;
 
@@ -502,6 +533,7 @@ export const SpendingInfoTitle = styled.h3`
   padding: 5px;
   color: ${(props) => (props.color > 0 ? "white" : "red")};
   font-weight: ${(props) => (props.color > 0 ? "500" : "600")};
+  font-size: 15px;
   //background-color: rebeccapurple;
 `;
 

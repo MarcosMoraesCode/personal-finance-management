@@ -9,6 +9,9 @@ export const StyledChart = styled(Chart)`
     height: 200px;
     width: 80%;
   }
+  @media screen and (max-width: 360px) {
+    height: 200px;
+  }
 `;
 
 export const CalendarTitleDiv = styled.div`
@@ -69,7 +72,7 @@ export const CalendarContainer = styled.div`
   justify-content: center;
 
   margin: auto;
-  background-color: red;
+  // background-color: red;
   width: 400px;
   min-width: 320px;
   @media screen and (max-width: 1540px) {
@@ -110,6 +113,12 @@ export const ChartContainer = styled.div`
 
     width: 100%;
     max-width: fit-content;
+  }
+  @media screen and (max-width: 360px) {
+    align-items: center;
+
+    max-width: 280px;
+    min-width: 200px;
   }
   ::-webkit-scrollbar {
     height: 3px;

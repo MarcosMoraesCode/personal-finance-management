@@ -27,9 +27,15 @@ export const PieChartContainer = styled.div`
 export const PieChartControlsDiv = styled.div`
   font-size: 13px;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
   width: 100%;
   padding-top: 10px;
-  //background-color: red;
+  // background-color: red;
+  @media (max-width: 530px) {
+    flex-direction: column;
+  }
 `;
 
 export const ValueControlDiv = styled.div`
@@ -37,11 +43,13 @@ export const ValueControlDiv = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 60%;
+  width: fit-content;
+  min-width: 20%;
   height: 100px;
-  // border: solid 1px #ccc;
+  //background-color: blue;
   padding: 20px;
   margin-top: 10px;
+
   .google-visualization-controls-slider-handle {
     background-color: white;
   }
@@ -55,6 +63,9 @@ export const ValueControlDiv = styled.div`
   }
   .google-visualization-controls-rangefilter-thumblabel {
     color: #51d289;
+  }
+  @media (max-width: 530px) {
+    height: fit-content;
   }
 
   // background-color: pink;
@@ -70,5 +81,10 @@ export const CategoryControlDiv = styled.div`
   //border: solid 1px #ccc;
   padding: 20px;
   margin-top: 10px;
-  // background-color: pink;
+  //background-color: pink;
+  @media (max-width: 530px) {
+    height: 35px;
+    width: 100%;
+    margin-bottom: 15px;
+  }
 `;

@@ -40,6 +40,7 @@ import {
   AnalysisDiv,
   AuxContainerDivOne,
   AuxContainerDivTwo,
+  SwitchListsButton,
 } from "./UserExpensesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import SelectContainer from "../../components/UI/Select/Select";
@@ -1643,8 +1644,8 @@ const UserExpenses = () => {
             details={
               infoBtnList !== null
                 ? infoBtnList.buttons[currentBtnIndex].isOpen === true
-                  ? "Less Info"
-                  : "More Info"
+                  ? "Less"
+                  : "More"
                 : null
             }
           />
@@ -2212,9 +2213,9 @@ const UserExpenses = () => {
                   ? "Month Expenses"
                   : "All Expenses"}
               </DefaultTitle>
-              <UserDefaultButton onClick={changeCategoryDivHandler}>
+              <SwitchListsButton onClick={changeCategoryDivHandler}>
                 {showEditCategories ? "Expenses List" : "Edit Category"}
-              </UserDefaultButton>
+              </SwitchListsButton>
             </ListTitleDiv>
             <UserExpensesListContainer>
               <ListFilterDiv>

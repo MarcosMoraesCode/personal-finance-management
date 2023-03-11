@@ -12,7 +12,7 @@ export const WrapExpenseLi = styled.div`
   width: 100%;
   height: fit-content;
   max-height: ${(props) =>
-    props.details === "Less Info" ? "400px" : "10%"}; //50 ou 150
+    props.details === "Less" ? "400px" : "10%"}; //50 ou 150
   min-height: 45px;
   margin-top: 15px;
   padding: 2px;
@@ -85,14 +85,16 @@ export const ExpenseSubtitlesDiv = styled.div`
   height: fit-content;
   font-size: xx-small;
   font-weight: 600;
+  //background-color: red;
   color: #51d289;
+  // border: 1px solid gold;
 `;
 
 export const ExpenseDefaultContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
+  //background-color: red;
   height: fit-content;
 `;
 
@@ -111,9 +113,14 @@ export const DefaultContentBlock = styled.div`
   width: ${(props) => props.width};
   margin-top: 5px;
   margin-bottom: 5px;
-
+  // border: 1px solid white;
   @media (max-width: 1300px) {
     font-size: 12px;
+  }
+
+  @media (max-width: 570px) {
+    width: ${(props) => (props.width === "15%" ? "15%" : "40%")};
+    font-size: 10px;
   }
 `;
 export const ExtraContentBlock = styled.div`
@@ -124,6 +131,9 @@ export const ExtraContentBlock = styled.div`
   font-weight: 400;
   margin-top: 10px;
   margin-bottom: 5px;
+  @media (max-width: 570px) {
+    width: ${(props) => (props.width === "15%" ? "15%" : "40%")};
+  }
 
   //background-color: red;
 `;
@@ -135,10 +145,13 @@ export const SubtitleBlock = styled.div`
   width: ${(props) => props.width};
   font-weight: 400;
   color: ${(props) => props.color};
+  @media (max-width: 570px) {
+    width: ${(props) => (props.width === "15%" ? "15%" : "40%")};
+  }
 `;
 export const ExpenseExtraContent = styled.div`
   display: ${(props) =>
-    props.details === "Less Info"
+    props.details === "Less"
       ? "flex"
       : "none"}; //APPEARS CONDITIONALY WITH PROPS props.isNeeded
   flex-direction: column;
@@ -172,6 +185,9 @@ export const ExtraText = styled.p`
   font-size: 12px;
   @media (max-width: 1300px) {
     font-size: 10px;
+  }
+  @media (max-width: 570px) {
+    font-size: 9px;
   }
 `;
 

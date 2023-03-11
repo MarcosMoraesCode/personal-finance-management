@@ -12,12 +12,19 @@ export const CategoryContainer = styled.div`
 
 export const CategoryInfosDiv = styled.div`
   width: 70%;
+  @media (max-width: 520px) {
+    width: 80%;
+  }
 `;
 export const CategoryManageDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 30%;
+  //background-color: red;
+  @media (max-width: 520px) {
+    width: 20%;
+  }
 `;
 
 export const CategorySubtitlesDiv = styled.div`
@@ -38,6 +45,7 @@ export const CategoryContentDiv = styled.div`
   font-family: "Roboto";
   padding: 5px 0px 5px 0px;
   margin-bottom: 2px;
+  //background-color: blue;
 `;
 
 export const SubtitleBlock = styled.div`
@@ -45,6 +53,12 @@ export const SubtitleBlock = styled.div`
   justify-content: flex-start;
   padding-left: ${(props) => props.paddingLeft};
   width: ${(props) => props.width};
+  // border: 1px solid gold;
+  @media (max-width: 520px) {
+    width: 50%;
+    padding-left: 0;
+    //justify-content: center;
+  }
 `;
 
 export const ContentBlock = styled.div`
@@ -52,6 +66,10 @@ export const ContentBlock = styled.div`
   justify-content: flex-start;
   padding-left: ${(props) => props.paddingLeft};
   width: ${(props) => props.width};
+  @media (max-width: 520px) {
+    width: 50%;
+    padding-left: 0;
+  }
 `;
 
 export const EditButton = styled.button`
@@ -66,6 +84,11 @@ export const EditButton = styled.button`
   :hover {
     cursor: pointer;
   }
+  @media (max-width: 520px) {
+    width: 20px;
+    height: 20px;
+    margin-left: 0;
+  }
 `;
 export const RemoveButton = styled.button`
   width: 30px;
@@ -77,5 +100,10 @@ export const RemoveButton = styled.button`
   margin: 15px;
   :hover {
     cursor: pointer;
+  }
+  @media (max-width: 520px) {
+    width: 20px;
+    height: 20px;
+    margin: 0;
   }
 `;
