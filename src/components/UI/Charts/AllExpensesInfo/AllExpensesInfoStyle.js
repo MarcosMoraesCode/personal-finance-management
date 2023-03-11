@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const AllExpensesDiv = styled.div`
   margin-top: 35px;
+  padding-top: 50px;
   width: 100%;
   // background-color: red;
 `;

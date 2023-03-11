@@ -7,6 +7,7 @@ import {
   DataContentDiv,
   TableData,
   TableHeader,
+  TableWrapper,
 } from "./BarTableChartStyle";
 
 const BarTableChart = (props) => {
@@ -65,8 +66,8 @@ const BarTableChart = (props) => {
   }
 
   let table = (
-    <>
-      <BarTable maxHeigth={"300px"}>
+    <TableWrapper maxHeigth={"300px"}>
+      <BarTable>
         <tbody>
           <tr>
             <TableHeader width={"30%"}>Expense</TableHeader>
@@ -75,7 +76,7 @@ const BarTableChart = (props) => {
           {tableContent}
         </tbody>
       </BarTable>
-    </>
+    </TableWrapper>
   );
 
   return (

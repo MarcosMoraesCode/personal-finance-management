@@ -1,12 +1,9 @@
 import styled from "styled-components";
 
-export const BarTable = styled.table`
-  width: 90%;
-  margin: auto;
+export const TableWrapper = styled.div`
   max-height: ${(props) => props.maxHeigth};
-  //background-color: red;
-  justify-content: flex-start;
   overflow-y: auto;
+  width: 95%;
 
   /* width */
   ::-webkit-scrollbar {
@@ -29,6 +26,14 @@ export const BarTable = styled.table`
   ::-webkit-scrollbar-thumb:hover {
     background: black;
   }
+`;
+
+export const BarTable = styled.table`
+  width: 90%;
+  margin: auto;
+  max-height: ${(props) => props.maxHeigth};
+  //background-color: red;
+  justify-content: flex-start;
 `;
 
 export const TableHeader = styled.th`

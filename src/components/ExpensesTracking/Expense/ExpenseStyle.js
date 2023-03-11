@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import removeIcon from "../../../images/removeIcon.png";
-import editIcon from "../../../images/editIcon.png";
+import styled, { keyframes } from "styled-components";
+import removeIcon from "../../../images/removeIcon.svg";
+import editIcon from "../../../images/editIcon.svg";
 
 export const WrapExpenseLi = styled.div`
   display: flex;
@@ -16,11 +16,20 @@ export const WrapExpenseLi = styled.div`
   min-height: 45px;
   margin-top: 15px;
   padding: 2px;
-
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.8s;
   //overflow-y: auto;
 
   // padding-bottom: 10px;
 `;
+
+const DivShowingUp = keyframes` 
+ {0%{transform:translateY(-1000px) scaleY(2.5) scaleX(.2);
+ transform-origin:50% 0;
+ filter:blur(40px);opacity:0}100%{transform:translateY(0) scaleY(1) scaleX(1);
+ transform-origin:50% 50%;filter:blur(0);opacity:1}}
+`;
+//animation: ${DivShowingUp} .6s cubic-bezier(.23,1.000,.32,1.000) both
 
 export const ButtonsDiv = styled.div`
   display: flex;
@@ -37,6 +46,7 @@ export const EditButton = styled.button`
   height: 15px;
   background-image: url(${editIcon});
   background-size: contain;
+  background-color: transparent;
   border: none;
   :hover {
     cursor: pointer;
@@ -45,6 +55,7 @@ export const EditButton = styled.button`
 export const RemoveButton = styled.button`
   width: 15px;
   height: 15px;
+  background-color: transparent;
   background-image: url(${removeIcon});
   background-size: contain;
   border: none;
@@ -100,7 +111,7 @@ export const DefaultContentBlock = styled.div`
   width: ${(props) => props.width};
   margin-top: 5px;
   margin-bottom: 5px;
-  //background-color: blue;
+
   @media (max-width: 1300px) {
     font-size: 12px;
   }
@@ -113,6 +124,7 @@ export const ExtraContentBlock = styled.div`
   font-weight: 400;
   margin-top: 10px;
   margin-bottom: 5px;
+
   //background-color: red;
 `;
 
@@ -151,7 +163,7 @@ export const ExpenseDefaultButton = styled.button`
 export const ExtraContentWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-
+  animation: ${DivShowingUp} 0.4s cubic-bezier(0.23, 1, 0.32, 1) both;
   height: fit-content;
   margin-bottom: 3px;
 `;

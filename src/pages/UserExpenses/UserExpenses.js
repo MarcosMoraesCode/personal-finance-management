@@ -35,6 +35,11 @@ import {
   SimpleBtn,
   SimpleLabel,
   JoinInputsDiv,
+  FormDiv,
+  ExpensesDiv,
+  AnalysisDiv,
+  AuxContainerDivOne,
+  AuxContainerDivTwo,
 } from "./UserExpensesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import SelectContainer from "../../components/UI/Select/Select";
@@ -2183,109 +2188,120 @@ const UserExpenses = () => {
   return (
     <UserExpensesDiv>
       <UserExpensesContainer>
-        <AuxDiv width={"20%"}>
-          <NewCategoryDiv>
-            <NewCategoryTitleDiv>
-              <DefaultTitle>New Category</DefaultTitle>
-            </NewCategoryTitleDiv>
-            {categoryForm}
-          </NewCategoryDiv>
-          <NewExpenseDiv>
-            <NewExpenseTitleDiv>
-              <DefaultTitle>New Expense</DefaultTitle>
-            </NewExpenseTitleDiv>
-            {expenseForm}
-          </NewExpenseDiv>
-        </AuxDiv>
-        <AuxDiv>
-          <ListTitleDiv>
-            <DefaultTitle>
-              {showEditCategories ? "Categories List" : "Month Expenses"}
-            </DefaultTitle>
-            <UserDefaultButton onClick={changeCategoryDivHandler}>
-              {showEditCategories ? "Expenses List" : "Edit Category"}
-            </UserDefaultButton>
-          </ListTitleDiv>
-          <UserExpensesListContainer>
-            <ListFilterDiv>
-              <JoinInputsDiv>
-                <SimpleBtn
-                  onClick={() => showMonthExpensesHandler()}
-                  show={showMonthExpenses}
-                />
-                <SimpleLabel> Show only month expenses</SimpleLabel>
-              </JoinInputsDiv>
-
-              <JoinInputsDiv>
-                <InputContainer
-                  placeholder={
-                    filterType === "Sort by name"
-                      ? "Search by name"
-                      : showEditCategories
-                      ? "Spend Limit"
-                      : "Minimum amount"
-                  }
-                  noMargin
-                  changed={(event) => FilterInputChangeHandler(event)}
-                  border={"no-right-border"}
-                  value={filterValue}
-                  width={"160px"}
-                ></InputContainer>{" "}
-                <SelectContainer
-                  options={[
-                    { name: "sort by name" },
-                    { name: "sort by value" },
-                  ]}
-                  changed={(event) => FilterChangeHandler(event)}
-                  border={"no-left-border"}
-                  width={"110px"}
-                  noMargin
-                ></SelectContainer>
-              </JoinInputsDiv>
-            </ListFilterDiv>
-            {categoriesDiv}
-          </UserExpensesListContainer>
-        </AuxDiv>
-        <AuxDiv>
-          <ExpenseAnalysisDiv>
-            <AnalysisTitleDiv>
-              <DefaultTitle>Analysis</DefaultTitle>
-            </AnalysisTitleDiv>
-            <AnalysisContainer>
-              <AnalysisInfoDiv>
-                <AnalysisInfoContainer width={"70%"}>
-                  <SpendingInfoDiv>
-                    <SpendingInfoTitle
-                      color={(totalSpendLimit - totalSpent).toFixed(2)}
-                    >
-                      {" "}
-                      <SpendingInfoSpan>
-                        bugder lasting for this month
-                      </SpendingInfoSpan>{" "}
-                      {totalSpendLimit === undefined ? "" : "$"}
-                      {spendInfo /*(totalSpendLimit - totalSpent).toFixed(2)*/}
-                    </SpendingInfoTitle>
-                    <SpendingBar>
-                      <SpendingBarValue
-                        width={`${(totalSpent / totalSpendLimit) * 100}%`}
-                      />
-                    </SpendingBar>
-                  </SpendingInfoDiv>
-                </AnalysisInfoContainer>
-                <AnalysisInfoContainer width={"30%"}>
-                  <SelectContainer
-                    paddingTop={"20px"}
-                    options={analysisOptions}
-                    width={"100px"}
-                    changed={(event) => ChangeAnalisysOptionHandler(event)}
+        <AuxContainerDivOne>
+          <FormDiv>
+            <NewCategoryDiv>
+              <NewCategoryTitleDiv>
+                <DefaultTitle>New Category</DefaultTitle>
+              </NewCategoryTitleDiv>
+              {categoryForm}
+            </NewCategoryDiv>
+            <NewExpenseDiv>
+              <NewExpenseTitleDiv>
+                <DefaultTitle>New Expense</DefaultTitle>
+              </NewExpenseTitleDiv>
+              {expenseForm}
+            </NewExpenseDiv>
+          </FormDiv>
+          <ExpensesDiv>
+            <ListTitleDiv>
+              <DefaultTitle>
+                {showEditCategories
+                  ? "Categories List"
+                  : showMonthExpenses
+                  ? "Month Expenses"
+                  : "All Expenses"}
+              </DefaultTitle>
+              <UserDefaultButton onClick={changeCategoryDivHandler}>
+                {showEditCategories ? "Expenses List" : "Edit Category"}
+              </UserDefaultButton>
+            </ListTitleDiv>
+            <UserExpensesListContainer>
+              <ListFilterDiv>
+                <JoinInputsDiv>
+                  <SimpleBtn
+                    onClick={() => showMonthExpensesHandler()}
+                    show={showMonthExpenses}
                   />
-                </AnalysisInfoContainer>
-              </AnalysisInfoDiv>
+                  <SimpleLabel> Show only month expenses</SimpleLabel>
+                </JoinInputsDiv>
 
-              {analisysContent}
-            </AnalysisContainer>
-          </ExpenseAnalysisDiv>
-        </AuxDiv>
+                <JoinInputsDiv>
+                  <InputContainer
+                    placeholder={
+                      filterType === "Sort by name"
+                        ? "Search by name"
+                        : showEditCategories
+                        ? "Spend Limit"
+                        : "Minimum amount"
+                    }
+                    noMargin
+                    changed={(event) => FilterInputChangeHandler(event)}
+                    border={"no-right-border"}
+                    value={filterValue}
+                    width={"160px"}
+                  ></InputContainer>{" "}
+                  <SelectContainer
+                    options={[
+                      { name: "sort by name" },
+                      { name: "sort by value" },
+                    ]}
+                    changed={(event) => FilterChangeHandler(event)}
+                    border={"no-left-border"}
+                    width={"110px"}
+                    noMargin
+                  ></SelectContainer>
+                </JoinInputsDiv>
+              </ListFilterDiv>
+              {categoriesDiv}
+            </UserExpensesListContainer>
+          </ExpensesDiv>
+        </AuxContainerDivOne>
+        <AuxContainerDivTwo>
+          <AnalysisDiv>
+            <ExpenseAnalysisDiv>
+              <AnalysisTitleDiv>
+                <DefaultTitle>Analysis</DefaultTitle>
+              </AnalysisTitleDiv>
+              <AnalysisContainer>
+                <AnalysisInfoDiv>
+                  <AnalysisInfoContainer width={"70%"}>
+                    <SpendingInfoDiv>
+                      <SpendingInfoTitle
+                        color={(totalSpendLimit - totalSpent).toFixed(2)}
+                      >
+                        {" "}
+                        <SpendingInfoSpan>
+                          bugder lasting for this month
+                        </SpendingInfoSpan>{" "}
+                        {totalSpendLimit === undefined ? "" : "$"}
+                        {
+                          spendInfo /*(totalSpendLimit - totalSpent).toFixed(2)*/
+                        }
+                      </SpendingInfoTitle>
+                      <SpendingBar>
+                        <SpendingBarValue
+                          width={`${(totalSpent / totalSpendLimit) * 100}%`}
+                        />
+                      </SpendingBar>
+                    </SpendingInfoDiv>
+                  </AnalysisInfoContainer>
+                  <AnalysisInfoContainer width={"30%"}>
+                    <SelectContainer
+                      paddingTop={"20px"}
+                      options={analysisOptions}
+                      width={"100px"}
+                      changed={(event) => ChangeAnalisysOptionHandler(event)}
+                    />
+                  </AnalysisInfoContainer>
+                </AnalysisInfoDiv>
+
+                {analisysContent}
+              </AnalysisContainer>
+            </ExpenseAnalysisDiv>
+          </AnalysisDiv>
+        </AuxContainerDivTwo>
+
         {showModal ? (
           <Modal
             clicked={BackdropModalHandler}

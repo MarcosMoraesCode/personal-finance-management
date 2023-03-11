@@ -9,7 +9,7 @@ export const BudgetTrackingDiv = styled.div`
   border-bottom: 1px solid gold;
   justify-content: space-between;
   font-family: "Roboto";
-  background-color: #1f1f1f;
+  background-color: black;
   //background-image: url(${pig});
   @media (max-width: 1100px) {
     flex-direction: column;

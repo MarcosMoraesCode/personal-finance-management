@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+import formPig from "../../images/formPig.png";
 import pig from "../../images/pig.png";
 import check from "../../images/checkIcon.svg";
 
@@ -16,29 +17,61 @@ export const UserExpensesDiv = styled.div`
   display: flex;
   flex-direction: row;
   text-align: center;
+
   border-bottom: 1px solid gold;
   font-family: "Roboto";
-  background-color: #1f1f1f;
+  background-color: black;
   // background-image: url(${pig});
   //background-repeat: no-repeat;
   //background-size: auto;
-
-  @media (max-width: 1100px) {
-    flex-direction: column;
-    height: 172vh;
+  background: linear-gradient(to right top, grey, grey 20%, black, black 80%);
+  overflow-y: auto;
+  //justify-content: space-around;
+`;
+export const AuxContainerDivOne = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 70%;
+  max-width: 100%;
+  max-height: 100%;
+  //background-color: red;
+  @media (max-width: 1200px) {
+    align-items: center;
+    width: 100%;
+    min-width: 850px;
   }
-  @media (max-width: 700px) {
-    height: 285vh;
+  @media (max-width: 850px) {
+    flex-direction: column;
+    //min-height: 200%;
+    //align-items: center;
+  }
+`;
+export const AuxContainerDivTwo = styled.div`
+  width: 30%;
+  @media (max-width: 1200px) {
+    width: 100%;
+    height: fit-content;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    // background-color: red;
   }
 `;
 
 export const UserExpensesContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  height: 90%;
+  //justify-content: space-between;
+  height: fit-content;
+  min-height: 90%;
   width: 90%;
+  min-width: 320px;
   margin: auto;
+  //background-color: red;
+  @media (max-width: 1200px) {
+    flex-direction: column;
+    //min-height: 200vh;
+  }
 `;
 
 export const SimpleLabel = styled.label`
@@ -46,11 +79,15 @@ export const SimpleLabel = styled.label`
   font-family: "Roboto";
   text-align: start;
   padding-left: 5px;
+
+  @media (max-width: 932px) {
+    font-size: 9px;
+  } ;
 `;
 export const SimpleBtn = styled.button`
   display: flex;
-  width: 18px;
-  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
   border: ${(props) =>
     props.show === true ? "2px solid gold" : "2px solid #51d289 "};
   border-radius: 5px;
@@ -81,16 +118,80 @@ export const UserDefaultButton = styled.button`
       props.disabled === "disabled" ? "not-allowed" : "pointer"};
   }
 `;
-
-export const AuxDiv = styled.div`
+//FORM
+export const FormDiv = styled.div`
   display: flex;
+  // background-color: #1f1f1f;
+  opacity: 1;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: ${(props) => (props.width ? props.width : "30%")};
+  width: 20%;
+
   min-width: 320px;
+  //max-height: 100%;
+  min-height: 100%;
+  box-shadow: 2px 2px 20px 1px black;
+  background-image: url(${formPig});
+  background-size: cover;
+  //border: 1px solid white;
+
+  :hover {
+    //border: 1px solid gold;
+    opacity: 1;
+  }
+  border-radius: 50px;
+`;
+
+//DIV DAS TABELAS
+export const ExpensesDiv = styled.div`
+  display: flex;
+  opacity: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-width: 550px;
+  max-height: 100%;
   height: 100%;
-  border: 1px solid black;
+  margin: auto;
+
+  // background-color: #1f1f1f;
+  border-radius: 20px;
+  :hover {
+    //border: 1px solid gold;
+    opacity: 1;
+  }
+  @media (max-width: 930px) {
+    width: 600px;
+    min-width: 400px;
+  }
+  //border-radius: 50px;
+`;
+export const AnalysisDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 320px;
+  max-height: 100%;
+  height: 100%;
+  border-radius: 50px;
+  box-shadow: 2px 2px 20px 1px white;
+  background-color: black;
+  :hover {
+    //border: 1px solid gold;
+    opacity: 1;
+  }
+
+  @media (max-width: 1200px) {
+    width: 80%;
+    margin: auto;
+    min-height: 800px;
+    margin-top: 20px;
+  } //background-image: url(${pig});
 `;
 
 export const NewCategoryDiv = styled.div`
@@ -109,6 +210,8 @@ export const NewCategoryTitleDiv = styled.div`
   justify-content: center;
   width: 100%;
   height: 20%;
+  text-shadow: 2px 2px 2px green;
+
   //border: blue solid 1px;
 `;
 
@@ -132,6 +235,8 @@ export const NewExpenseTitleDiv = styled.div`
   justify-content: center;
   width: 100%;
   height: 10%;
+  text-shadow: 2px 2px 2px green;
+
   //border: blue solid 1px;
 `;
 
@@ -160,9 +265,10 @@ export const UserExpensesListContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   //border: 1px solid white;
-  width: 100%;
+  max-height: 90%;
+  width: 90%;
   height: 95%;
 `;
 
@@ -249,6 +355,8 @@ export const ListTitleDiv = styled.div`
   justify-content: space-around;
   width: 100%;
   height: 5%;
+  text-shadow: 2px 2px 2px green;
+
   //background-color: red;
   //min-height: 10%;
   // border: 1px solid green;
@@ -266,16 +374,6 @@ export const ExpenseAnalysisDiv = styled.div`
   width: 100%;
 `;
 
-export const HistoryTitleDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 50%;
-  width: 100%;
-  border: 1px solid white;
-`;
-
 export const AnalysisTitleDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -283,6 +381,7 @@ export const AnalysisTitleDiv = styled.div`
   align-items: center;
   height: 10%;
   width: 100%;
+  text-shadow: 2px 2px 2px green;
   // border: 1px solid red;
 `;
 
@@ -305,8 +404,10 @@ export const AnalysisInfoDiv = styled.div`
   display: flex;
   width: 90%;
   height: 10%;
-  background-color: black;
-  // border: 1px solid white;
+  background-color: #1b1b1b;
+  //box-shadow: 2px 2px 5px white;
+  //background: linear-gradient(to left top, grey, grey 5%, black, black 80%);
+  //border: 1px solid white;
   border-radius: 10px;
 `;
 
@@ -330,7 +431,7 @@ export const SpendingInfoTitle = styled.h3`
   padding: 5px;
   color: ${(props) => (props.color > 0 ? "white" : "red")};
   font-weight: ${(props) => (props.color > 0 ? "500" : "600")};
-  // background-color: rebeccapurple;
+  //background-color: rebeccapurple;
 `;
 
 export const SpendingInfoSpan = styled.span`

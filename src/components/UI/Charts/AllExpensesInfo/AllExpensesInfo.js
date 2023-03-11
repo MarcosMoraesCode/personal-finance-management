@@ -7,12 +7,10 @@ import {
   TableHeader,
   BarTable,
   BarDivContent,
+  TableWrapper,
 } from "../BarTableChart/BarTableChartStyle";
 
 const AllExpensesInfo = (props) => {
-  console.log(props.allExpenses);
-  console.log("aq", props.allCategories);
-
   //console.log(allCategories);
 
   const filteredCategories = props.allCategories.map((category) => {
@@ -114,8 +112,8 @@ const AllExpensesInfo = (props) => {
   });
 
   let table = (
-    <>
-      <BarTable maxHeigth={"250px"}>
+    <TableWrapper maxHeigth={"100px"}>
+      <BarTable>
         <tbody>
           <tr>
             <TableHeader fontSize={defaultFontSize} width={"20%"}>
@@ -137,7 +135,7 @@ const AllExpensesInfo = (props) => {
           {tableContent}
         </tbody>
       </BarTable>
-    </>
+    </TableWrapper>
   );
 
   return <AllExpensesDiv>{table}</AllExpensesDiv>;

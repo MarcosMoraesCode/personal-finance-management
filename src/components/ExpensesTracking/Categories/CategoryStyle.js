@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import removeIcon from "../../../images/removeIcon.png";
-import editIcon from "../../../images/editIcon.png";
+import removeIcon from "../../../images/removeIcon.svg";
+import editIcon from "../../../images/editIcon.svg";
 
 export const CategoryContainer = styled.div`
   display: flex;
@@ -58,7 +58,8 @@ export const EditButton = styled.button`
   width: 30px;
   height: 30px;
   background-image: url(${editIcon});
-  background-size: auto;
+  background-color: transparent;
+  background-size: cover;
   background-repeat: no-repeat;
   border: none;
   margin: 15px;
@@ -69,6 +70,7 @@ export const EditButton = styled.button`
 export const RemoveButton = styled.button`
   width: 30px;
   height: 30px;
+  background-color: transparent;
   background-image: url(${removeIcon});
   background-size: cover;
   border: none;
