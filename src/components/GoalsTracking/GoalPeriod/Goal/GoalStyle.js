@@ -6,10 +6,10 @@ export const GoalDiv = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 10px;
-  min-width: 150px;
+  min-height: 80%;
   height: 80%;
   margin: 5px;
-  //border: 2px solid gold;
+  min-width: 150px;
   border-radius: 5px;
   background-color: white;
 `;

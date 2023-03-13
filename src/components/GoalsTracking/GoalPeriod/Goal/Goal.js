@@ -11,8 +11,7 @@ import {
 import DonutChart from "../../../UI/Charts/DonutChart";
 
 const Goal = (props) => {
-  console.log(props.income);
-  return (
+  let goalContent = (
     <GoalDiv>
       <GoalTitle>{props.goalName}</GoalTitle>
       <GoalPercentageDiv>
@@ -27,6 +26,16 @@ const Goal = (props) => {
       </GoalInformationDiv>
     </GoalDiv>
   );
+
+  if (props.goalExample) {
+    goalContent = (
+      <GoalDiv {...props}>
+        <GoalTitle>{props.goalName}</GoalTitle>
+      </GoalDiv>
+    );
+  }
+
+  return <>{goalContent}</>;
 };
 
 export default Goal;
