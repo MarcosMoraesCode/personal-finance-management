@@ -19,7 +19,7 @@ const InputContainer = (props) => {
     case "email":
       inputElement = (
         <WrappComponent>
-          <StyledLabel>{props.children}</StyledLabel>
+          <StyledLabel {...props}>{props.children}</StyledLabel>
           <StyledInput
             value={props.value}
             onChange={props.changed}
@@ -37,7 +37,9 @@ const InputContainer = (props) => {
     case "password":
       inputElement = (
         <WrappComponent key={props.id}>
-          <StyledLabel key={props.id}>{props.children}</StyledLabel>
+          <StyledLabel {...props} key={props.id}>
+            {props.children}
+          </StyledLabel>
           <WrappPasswordComponent>
             <StyledInput
               type={props.type}
@@ -88,7 +90,9 @@ const InputContainer = (props) => {
     case "new-password":
       inputElement = (
         <WrappComponent key={props.id}>
-          <StyledLabel key={props.id}>{props.children}</StyledLabel>
+          <StyledLabel {...props} key={props.id}>
+            {props.children}
+          </StyledLabel>
           <WrappPasswordComponent>
             <StyledInput
               type={props.type}
@@ -115,7 +119,9 @@ const InputContainer = (props) => {
     case "nickname":
       inputElement = (
         <WrappComponent key={props.id}>
-          <StyledLabel key={props.id}>{props.children}</StyledLabel>
+          <StyledLabel {...props} key={props.id}>
+            {props.children}
+          </StyledLabel>
           <StyledInput
             key={props.id}
             value={props.value}
@@ -144,7 +150,9 @@ const InputContainer = (props) => {
           noMargin={props.noMargin}
           width={props.width}
         >
-          <StyledLabel key={props.id}>{props.children}</StyledLabel>
+          <StyledLabel {...props} key={props.id}>
+            {props.children}
+          </StyledLabel>
 
           <StyledInput
             type={props.type}
@@ -157,6 +165,8 @@ const InputContainer = (props) => {
             }
             border={props.border}
             height={props.height}
+            fontSize={props.fontSize}
+            outline={props.outline}
           />
           <StyledMessage
             key={`message-1-${props.id}`}

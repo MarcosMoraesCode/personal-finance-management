@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+
+import InputContainer from "../../components/UI/Input/Input";
 import {
   CreateButton,
   GoalExample,
@@ -8,72 +10,148 @@ import {
   UserGoalsContainer,
   UserGoalsDiv,
   ButtonDiv,
-  Test,
+  FormContainer,
   ShortGoalExample,
   MediumGoalExample,
   LongGoalExample,
+  BackButton,
 } from "./UserGoalsStyle";
 
 const UserGoals = (props) => {
   const [openShortForm, setOpenShortForm] = useState(false);
   const [openMediumForm, setOpenMediumForm] = useState(false);
   const [openLongForm, setOpenLongForm] = useState(false);
-  const [startAnimations, setStartAnimations] = useState(false);
+  const [startShortAnimations, setStartShortAnimations] = useState(false);
+  const [startMediumAnimations, setStartMediumAnimations] = useState(false);
+  const [startLongAnimations, setStartLongAnimations] = useState(false);
+
+  let shortTermContent = (
+    <>
+      <GoalExampleTitle>Short Term Goal</GoalExampleTitle>
+      <GoalExampleContent>
+        <GoalExampleDescription>
+          Typically take less than one year to achieve.
+        </GoalExampleDescription>
+        <ButtonDiv>
+          <CreateButton
+            onClick={() => {
+              setStartShortAnimations(true);
+              setOpenShortForm(!openShortForm);
+            }}
+          />
+        </ButtonDiv>
+      </GoalExampleContent>
+    </>
+  );
+
+  if (openShortForm) {
+    shortTermContent = (
+      <>
+        <GoalExampleTitle>Create a new Short Term Goal!</GoalExampleTitle>
+        <FormContainer>
+          <InputContainer
+            outline={"0px"}
+            width={"118px"}
+            height={"15px"}
+            fontSize={"7px"}
+            //noMargin
+          >
+            Goal Name
+          </InputContainer>
+          <InputContainer
+            outline={"0px"}
+            width={"118px"}
+            height={"15px"}
+            fontSize={"7px"}
+            //noMargin
+          >
+            Ammount to achieve
+          </InputContainer>
+          <InputContainer
+            outline={"0px"}
+            width={"118px"}
+            height={"15px"}
+            fontSize={"7px"}
+            // noMargin
+          >
+            Portfolio's percent to be allocated
+          </InputContainer>
+
+          <InputContainer
+            noMargin
+            outline={"0px"}
+            width={"118px"}
+            height={"15px"}
+            fontSize={"7px"}
+            type={"date"}
+          >
+            Date to achieve your goal
+          </InputContainer>
+        </FormContainer>
+        <ButtonDiv>
+          <BackButton onClick={() => setOpenShortForm(!openShortForm)}>
+            Back
+          </BackButton>
+        </ButtonDiv>
+      </>
+    );
+  }
+
+  let mediumTermContent = (
+    <>
+      <GoalExampleTitle>Medium Term Goal</GoalExampleTitle>
+      <GoalExampleContent>
+        <GoalExampleDescription>
+          Typically take between one and five years to achieve.
+        </GoalExampleDescription>
+        <ButtonDiv>
+          <CreateButton
+            onClick={() => {
+              setStartMediumAnimations(true);
+              setOpenMediumForm(!openMediumForm);
+            }}
+          />
+        </ButtonDiv>
+      </GoalExampleContent>
+    </>
+  );
+
+  let longTermContent = (
+    <>
+      <GoalExampleTitle>Long Term Goal</GoalExampleTitle>
+      <GoalExampleContent>
+        <GoalExampleDescription>
+          Typically take more than five years to achieve.
+        </GoalExampleDescription>
+        <ButtonDiv>
+          <CreateButton
+            onClick={() => {
+              setStartLongAnimations(true);
+              setOpenLongForm(!openLongForm);
+            }}
+          />
+        </ButtonDiv>
+      </GoalExampleContent>
+    </>
+  );
 
   return (
     <UserGoalsDiv>
       <UserGoalsContainer>
         <ShortGoalExample
           open={openShortForm}
-          animations={startAnimations}
-          shadow={"2px 2px 20px 1px white"}
+          animations={startShortAnimations}
         >
-          <GoalExampleTitle>Short Term Goal</GoalExampleTitle>
-          <GoalExampleContent>
-            <GoalExampleDescription>
-              Typically take less than one year to achieve.
-            </GoalExampleDescription>
-            <ButtonDiv>
-              <CreateButton
-                onClick={() => {
-                  setStartAnimations(true);
-                  setOpenShortForm(!openShortForm);
-                }}
-              />
-            </ButtonDiv>
-          </GoalExampleContent>
+          {shortTermContent}
         </ShortGoalExample>
-        <MediumGoalExample open={openMediumForm} animations={startAnimations}>
-          <GoalExampleTitle>Medium Term Goal</GoalExampleTitle>
-          <GoalExampleContent>
-            <GoalExampleDescription>
-              Typically take between one and five years to achieve.
-            </GoalExampleDescription>
-            <ButtonDiv>
-              <CreateButton
-                onClick={() => {
-                  setStartAnimations(true);
-                  setOpenMediumForm(!openMediumForm);
-                }}
-              />
-            </ButtonDiv>
-          </GoalExampleContent>
+        <MediumGoalExample
+          open={openMediumForm}
+          animations={startMediumAnimations}
+        >
+          {mediumTermContent}
         </MediumGoalExample>
-        <LongGoalExample open={openLongForm} animations={startAnimations}>
-          <GoalExampleTitle>Long Term Goal</GoalExampleTitle>
-          <GoalExampleContent>
-            <GoalExampleDescription>
-              Typically take more than five years to achieve.
-            </GoalExampleDescription>
-            <ButtonDiv>
-              <CreateButton
-                onClick={() => {
-                  setStartAnimations(true);
-                  setOpenLongForm(!openLongForm);
-                }}
-              />
-            </ButtonDiv>
-          </GoalExampleContent>
+        <LongGoalExample open={openLongForm} animations={startLongAnimations}>
+          {longTermContent}
         </LongGoalExample>
       </UserGoalsContainer>
     </UserGoalsDiv>

@@ -1,9 +1,10 @@
 import styled, { css, keyframes } from "styled-components";
 import createIcon from "../../images/createIcon.png";
+import pig from "../../images/pig.png";
 
 const scaleUpRight = keyframes`
  0% {
-    width: 10px ;
+    
     -webkit-transform: scale(1);
             transform: scale(1);
     -webkit-transform-origin: 100% 50%;
@@ -28,6 +29,8 @@ const scaleUpRight = keyframes`
 const scaleDownRight = keyframes`
 
 0% {
+    width: 1000px;
+    z-index: 100;
     -webkit-transform: scale(2);
             transform: scale(2);
             
@@ -59,6 +62,8 @@ const scaleUpCenter = keyframes`
 
 const scaleDownCenter = keyframes`
     0% {
+        width: 1000px;
+    z-index: 100;
     -webkit-transform: scale(2);
             transform: scale(2);
   }
@@ -69,24 +74,29 @@ const scaleDownCenter = keyframes`
   } `;
 
 const scaleUpLeft = keyframes`
- 0% {
+
+    0% {
     -webkit-transform: scale(1);
             transform: scale(1);
     -webkit-transform-origin: 0% 50%;
             transform-origin: 0% 50%;
   }
   100% {
-    width: 1000px;
+        width: 1000px;
     z-index: 100;
     -webkit-transform: scale(2);
             transform: scale(2);
     -webkit-transform-origin: 0% 50%;
             transform-origin: 0% 50%;
+}
+
 
 `;
 
 const scaleDownLeft = keyframes`
 0% {
+    width: 1000px;
+    z-index: 100;
     -webkit-transform: scale(2);
             transform: scale(2);
     -webkit-transform-origin: 0% 50%;
@@ -145,23 +155,23 @@ export const LongGoalExample = styled.div`
   font-family: "Robot";
   box-shadow: 2px 2px 20px 1px white;
   -webkit-animation: ${(props) =>
-    props.animations === false || props.open === false
-      ? "none"
-      : props.open === true
+    props.open === true
       ? css`
           ${scaleUpRight} 0.7s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
         `
+      : props.animation === false
+      ? "none"
       : css`
           ${scaleDownRight} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
 
   animation: ${(props) =>
-    props.animations === false || props.open === false
-      ? "none"
-      : props.open
+    props.open === true
       ? css`
           ${scaleUpRight} 0.7s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
         `
+      : props.animations === false
+      ? "none"
       : css`
           ${scaleDownRight} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
@@ -181,23 +191,23 @@ export const MediumGoalExample = styled.div`
   box-shadow: 2px 2px 20px 1px white;
 
   -webkit-animation: ${(props) =>
-    props.animations === false || props.open === false
-      ? "none"
-      : props.animations === true
+    props.open === true
       ? css`
           ${scaleUpCenter} 0.7s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
         `
+      : props.animations === false
+      ? "none"
       : css`
           ${scaleDownCenter} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
 
   animation: ${(props) =>
-    props.animations === false || props.open === false
-      ? "none"
-      : props.open
+    props.open === true
       ? css`
           ${scaleUpCenter} 0.7s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
         `
+      : props.animations === false
+      ? "none"
       : css`
           ${scaleDownCenter} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
@@ -211,28 +221,29 @@ export const ShortGoalExample = styled.div`
   min-width: 25%;
   min-height: 300px;
   height: 100%;
-  //border: 1px solid gold;
+  background-image: url(${pig});
+  background-size: cover;
   font-family: "Robot";
   box-shadow: 2px 2px 20px 1px white;
 
   -webkit-animation: ${(props) =>
-    props.animations === false || props.open === false
-      ? "none"
-      : props.open === true
+    props.open === true
       ? css`
           ${scaleUpLeft} 0.7s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
         `
+      : props.animations === false
+      ? "none"
       : css`
           ${scaleDownLeft} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
 
   animation: ${(props) =>
-    props.animations === false || props.open === false
-      ? "none"
-      : props.open
+    props.open === true
       ? css`
           ${scaleUpLeft} 0.7s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
         `
+      : props.animations === false
+      ? "none"
       : css`
           ${scaleDownLeft} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
@@ -282,4 +293,21 @@ export const CreateButton = styled.button`
     transform-origin: center;
     transition: 0.2s;
   }
+`;
+
+export const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  // background-color: red;
+  width: 100%;
+  min-height: 150px;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-y: auto;
+`;
+
+export const BackButton = styled.button`
+  border: none;
+  color: white;
+  background-color: transparent;
 `;

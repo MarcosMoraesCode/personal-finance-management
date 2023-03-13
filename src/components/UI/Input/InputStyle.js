@@ -11,15 +11,21 @@ export const StyledInput = styled.input`
     `${props.border === "no-right-border" ? "0px" : "1px solid black"}`};
   align-self: center;
   padding-left: 5px;
-  font-size: 12px;
+  font-size: ${(props) => (props.fontSize ? props.fontSize : "12px")};
   font-weight: 400;
   margin-top: 2px;
+  :active {
+    outline-width: ${(props) => props.outline};
+  }
+  :focus {
+    outline-width: ${(props) => props.outline};
+  }
 `;
 export const StyledLabel = styled.label`
   display: flex;
   align-self: flex-start;
   padding-left: 4px;
-  font-size: 12px;
+  font-size: ${(props) => (props.fontSize ? props.fontSize : "12px")};
 `;
 export const StyledMessage = styled.p`
   text-align: end;
