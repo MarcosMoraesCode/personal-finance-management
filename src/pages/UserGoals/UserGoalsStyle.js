@@ -42,7 +42,10 @@ const scaleDownRight = keyframes`
             transform: scale(1);
     -webkit-transform-origin: 100% 50%;
             transform-origin: 100% 50%;
+        
+  
   }
+  
   
 
 `;
@@ -175,6 +178,10 @@ export const LongGoalExample = styled.div`
       : css`
           ${scaleDownRight} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
+  :hover {
+    transform: scale(1.05);
+    transition: 0.2s ease-in-out;
+  }
 `;
 
 export const MediumGoalExample = styled.div`
@@ -211,6 +218,10 @@ export const MediumGoalExample = styled.div`
       : css`
           ${scaleDownCenter} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
+  :hover {
+    transform: scale(1.05);
+    transition: 0.2s ease-in-out;
+  }
 `;
 export const ShortGoalExample = styled.div`
   display: flex;
@@ -247,6 +258,11 @@ export const ShortGoalExample = styled.div`
       : css`
           ${scaleDownLeft} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
+
+  :hover {
+    transform: scale(1.05);
+    transition: 0.2s ease-in-out;
+  }
 `;
 
 export const GoalExampleTitle = styled.h1`
@@ -272,8 +288,10 @@ export const GoalExampleDescription = styled.p`
 
 export const ButtonDiv = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: ${(props) => (props.center ? "center" : "flex-end")};
   padding: 10px;
+  padding-top: 0px;
+  // background-color: red;
 `;
 
 export const CreateButton = styled.button`
@@ -298,10 +316,10 @@ export const CreateButton = styled.button`
 export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  // background-color: red;
+  //background-color: red;
   width: 100%;
   min-height: 150px;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   overflow-y: auto;
 `;
@@ -310,4 +328,36 @@ export const BackButton = styled.button`
   border: none;
   color: white;
   background-color: transparent;
+  //text-decoration: underline;
+  font-size: 8px;
+  border: 1px solid white;
+  padding: 2px;
+  padding-left: 3px;
+  padding-right: 3px;
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+export const AddButton = styled.button`
+  margin: 5px;
+  margin-top: 0px;
+  font-family: "Roboto";
+  width: fit-content;
+  height: 17px;
+  background-color: ${(props) =>
+    props.disabled === "disabled" ? "grey" : "black"};
+  padding: 2px 4px 2px 4px;
+  box-shadow: 1px 1px gray;
+  font-size: 8px;
+  opacity: ${(props) => (props.disabled === "disabled" ? "0.5" : "1")};
+  border: ${(props) =>
+    props.disabled === "disabled"
+      ? "1px solid white"
+      : "2px solid gold"}; //2px solid gold;
+  color: ${(props) => (props.disabled === "disabled" ? "white" : "gold")};
+  :hover {
+    cursor: ${(props) =>
+      props.disabled === "disabled" ? "not-allowed" : "pointer"};
+  }
 `;
