@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { EditButton } from "../../components/ExpensesTracking/Expense/ExpenseStyle";
 
 import InputContainer from "../../components/UI/Input/Input";
 import {
@@ -16,6 +17,15 @@ import {
   LongGoalExample,
   BackButton,
   AddButton,
+  GoalsInfoContainer,
+  UserContentWrapper,
+  AchievementDiv,
+  AchievementTitle,
+  GoalsDiv,
+  GoalListTitle,
+  AllocatedMoneyDiv,
+  AllocatedMoneyTitle,
+  SpanMoneyTitle,
 } from "./UserGoalsStyle";
 
 const UserGoals = (props) => {
@@ -34,7 +44,7 @@ const UserGoals = (props) => {
       isValid: false,
       isTouched: false,
       id: "Goal Value",
-      placeholder: "Ex 150,00",
+      placeholder: "Ex 3550,00",
       invalidMessage: "",
     },
     inputPercentage: {
@@ -42,7 +52,7 @@ const UserGoals = (props) => {
       isValid: false,
       isTouched: false,
       id: "Goal Percentage",
-      placeholder: "A number between 0 and 1",
+      placeholder: "Ex: 75.00%",
       invalidMessage: "",
     },
     inputDate: {
@@ -53,6 +63,7 @@ const UserGoals = (props) => {
       invalidMessage: "",
     },
   });
+  const [submitPermission, setSubmitPermission] = useState(false);
 
   const [openShortForm, setOpenShortForm] = useState(false);
   const [openMediumForm, setOpenMediumForm] = useState(false);
@@ -61,6 +72,7 @@ const UserGoals = (props) => {
   const [startMediumAnimations, setStartMediumAnimations] = useState(false);
   const [startLongAnimations, setStartLongAnimations] = useState(false);
 
+  console.log("é valido: ", userInputs.inputDate.isValid);
   const InputChangeHandler = (event, inputId) => {
     switch (inputId) {
       case "Goal Name":
@@ -94,7 +106,7 @@ const UserGoals = (props) => {
             ...userInputs.inputPercentage,
             value: event.currentTarget.value,
             isTouched: true,
-            // isValid: CheckInputValidation(inputId, event.currentTarget.value),
+            isValid: CheckInputValidation(inputId, event.currentTarget.value),
           },
         });
         checkButtonValidation(inputId, event.currentTarget.value);
@@ -106,7 +118,7 @@ const UserGoals = (props) => {
             ...userInputs.inputDate,
             value: event.currentTarget.value,
             isTouched: true,
-            // isValid: CheckInputValidation(inputId, event.currentTarget.value),
+            isValid: CheckInputValidation(inputId, event.currentTarget.value),
           },
         });
         checkButtonValidation(inputId, event.currentTarget.value);
@@ -125,7 +137,7 @@ const UserGoals = (props) => {
     const isValidValue = (goalValue) => /^[0-9]+\,[0-9]{2,2}$/i.test(goalValue);
 
     const isValidPercentage = (goalPercentage) =>
-      /^0(?:\.\d{1,2})?|1(?:\.0{1,2})?$/i.test(goalPercentage);
+      /^(100\.00%|\d{1,2}\.\d{2}%|[1-9]\d?\.\d{2}%)$/i.test(goalPercentage);
 
     const isValidDate = (expenseDate) =>
       /^([0-9]{4})\-(0[1-9]|1[0-2])\-(0[1-9]|[1-2][0-9]|3[0-1])$/.test(
@@ -157,11 +169,12 @@ const UserGoals = (props) => {
       default:
         break;
     }
+    return result;
   };
 
   const verifyFocus = (inputId, elementIsValid) => {
     //let exists = false;
-    let message = "";
+    let message = "Valor inválido!";
     if (!elementIsValid) {
       switch (inputId) {
         case "Goal Percentage":
@@ -171,7 +184,8 @@ const UserGoals = (props) => {
             ...userInputs,
             inputPercentage: {
               ...userInputs.inputPercentage,
-              invalidMessage: userInputs.inputName.value === "" ? "" : message,
+              invalidMessage:
+                userInputs.inputPercentage.value === "" ? "" : message,
             },
           });
           break;
@@ -191,7 +205,7 @@ const UserGoals = (props) => {
             inputValue: {
               ...userInputs.inputValue,
               invalidMessage:
-                userInputs.inputName.value === "" ? "" : "Invalid value!",
+                userInputs.inputValue.value === "" ? "" : "Invalid value!",
             },
           });
           break;
@@ -200,8 +214,46 @@ const UserGoals = (props) => {
             ...userInputs,
             inputDate: {
               ...userInputs.inputDate,
-              invalidMessage:
-                userInputs.inputDate.value === "" ? "" : "Invalid date!",
+              invalidMessage: "Invalid date!",
+            },
+          });
+          break;
+      }
+    } else {
+      switch (inputId) {
+        case "Goal Percentage":
+          setUserInputs({
+            ...userInputs,
+            inputPercentage: {
+              ...userInputs.inputPercentage,
+              invalidMessage: "",
+            },
+          });
+          break;
+        case "Goal Name":
+          setUserInputs({
+            ...userInputs,
+            inputName: {
+              ...userInputs.inputName,
+              invalidMessage: "",
+            },
+          });
+          break;
+        case "Goal Value":
+          setUserInputs({
+            ...userInputs,
+            inputValue: {
+              ...userInputs.inputValue,
+              invalidMessage: "",
+            },
+          });
+          break;
+        case "Goal Date":
+          setUserInputs({
+            ...userInputs,
+            inputDate: {
+              ...userInputs.inputDate,
+              invalidMessage: "",
             },
           });
           break;
@@ -209,46 +261,132 @@ const UserGoals = (props) => {
     }
   };
 
-  const checkButtonValidation = (inputId, value) => {};
+  const checkButtonValidation = (inputId, value) => {
+    let validation1 = userInputs.inputName.isValid === true;
+    let validation2 = userInputs.inputValue.isValid === true;
+    let validation3 = userInputs.inputPercentage.isValid === true;
+    let validation4 = userInputs.inputDate.isValid === true;
+
+    switch (inputId) {
+      case "Goal Name":
+        validation1 = CheckInputValidation(inputId, value);
+        break;
+      case "Goal Value":
+        validation2 = CheckInputValidation(inputId, value);
+        break;
+      case "Goal Percentage":
+        validation3 = CheckInputValidation(inputId, value);
+        break;
+      case "Goal Date":
+        validation4 = CheckInputValidation(inputId, value);
+        break;
+      default:
+        break;
+    }
+
+    if (validation1 && validation2 && validation3 && validation4) {
+      setSubmitPermission(true);
+    } else {
+      setSubmitPermission(false);
+    }
+  };
 
   let defaultForm = (
     <>
       <FormContainer>
         <InputContainer
+          elementType={"scaled"}
           outline={"0px"}
           width={"118px"}
           height={"15px"}
           fontSize={"7px"}
           noMargin
+          placeholder={userInputs.inputName.placeholder}
+          changed={(event) =>
+            InputChangeHandler(event, userInputs.inputName.id)
+          }
+          invalidMessage={
+            userInputs.inputName.isValid
+              ? ""
+              : userInputs.inputName.invalidMessage
+          }
+          blur={() =>
+            verifyFocus(userInputs.inputName.id, userInputs.inputName.isValid)
+          }
+          value={userInputs.inputName.value}
         >
           Goal Name
         </InputContainer>
         <InputContainer
+          elementType={"scaled"}
           outline={"0px"}
           width={"118px"}
           height={"15px"}
           fontSize={"7px"}
           noMargin
+          placeholder={userInputs.inputValue.placeholder}
+          changed={(event) =>
+            InputChangeHandler(event, userInputs.inputValue.id)
+          }
+          invalidMessage={
+            userInputs.inputValue.isValid
+              ? ""
+              : userInputs.inputValue.invalidMessage
+          }
+          blur={() =>
+            verifyFocus(userInputs.inputValue.id, userInputs.inputValue.isValid)
+          }
+          value={userInputs.inputValue.value}
         >
           Ammount to achieve
         </InputContainer>
+
         <InputContainer
+          elementType={"scaled"}
           outline={"0px"}
           width={"118px"}
           height={"15px"}
           fontSize={"7px"}
           noMargin
+          placeholder={userInputs.inputPercentage.placeholder}
+          changed={(event) =>
+            InputChangeHandler(event, userInputs.inputPercentage.id)
+          }
+          invalidMessage={
+            userInputs.inputPercentage.isValid
+              ? ""
+              : userInputs.inputPercentage.invalidMessage
+          }
+          blur={() =>
+            verifyFocus(
+              userInputs.inputPercentage.id,
+              userInputs.inputPercentage.isValid
+            )
+          }
+          value={userInputs.inputPercentage.value}
         >
           Portfolio's percent to be allocated
         </InputContainer>
-
         <InputContainer
+          elementType={"scaled"}
           noMargin
           outline={"0px"}
           width={"118px"}
           height={"15px"}
           fontSize={"7px"}
           type={"date"}
+          changed={(event) =>
+            InputChangeHandler(event, userInputs.inputDate.id)
+          }
+          invalidMessage={
+            userInputs.inputDate.isValid
+              ? ""
+              : userInputs.inputDate.invalidMessage
+          }
+          blur={() =>
+            verifyFocus(userInputs.inputDate.id, userInputs.inputDate.isValid)
+          }
+          value={userInputs.inputDate.value}
         >
           Date to achieve your goal
         </InputContainer>
@@ -281,7 +419,9 @@ const UserGoals = (props) => {
         <GoalExampleTitle>Create a new Short Term Goal!</GoalExampleTitle>
         {defaultForm}
         <ButtonDiv center>
-          <AddButton>Add Goal</AddButton>
+          <AddButton disabled={submitPermission ? "" : "disabled"}>
+            Add Goal
+          </AddButton>
         </ButtonDiv>
         <ButtonDiv>
           <BackButton onClick={() => setOpenShortForm(!openShortForm)}>
@@ -317,7 +457,9 @@ const UserGoals = (props) => {
         <GoalExampleTitle>Create a new Medium Term Goal!</GoalExampleTitle>
         {defaultForm}
         <ButtonDiv center>
-          <AddButton>Add Goal</AddButton>
+          <AddButton disabled={submitPermission ? "" : "disabled"}>
+            Add Goal
+          </AddButton>
         </ButtonDiv>
         <ButtonDiv>
           <BackButton onClick={() => setOpenMediumForm(!openMediumForm)}>
@@ -353,7 +495,9 @@ const UserGoals = (props) => {
         <GoalExampleTitle>Create a new Long Term Goal!</GoalExampleTitle>
         {defaultForm}
         <ButtonDiv center>
-          <AddButton>Add Goal</AddButton>
+          <AddButton disabled={submitPermission ? "" : "disabled"}>
+            Add Goal
+          </AddButton>
         </ButtonDiv>
         <ButtonDiv>
           <BackButton onClick={() => setOpenLongForm(!openLongForm)}>
@@ -366,23 +510,39 @@ const UserGoals = (props) => {
 
   return (
     <UserGoalsDiv>
-      <UserGoalsContainer>
-        <ShortGoalExample
-          open={openShortForm}
-          animations={startShortAnimations}
-        >
-          {shortTermContent}
-        </ShortGoalExample>
-        <MediumGoalExample
-          open={openMediumForm}
-          animations={startMediumAnimations}
-        >
-          {mediumTermContent}
-        </MediumGoalExample>
-        <LongGoalExample open={openLongForm} animations={startLongAnimations}>
-          {longTermContent}
-        </LongGoalExample>
-      </UserGoalsContainer>
+      <UserContentWrapper>
+        <GoalsInfoContainer>
+          <AllocatedMoneyDiv>
+            <AllocatedMoneyTitle>
+              <SpanMoneyTitle> Allocated income</SpanMoneyTitle> $ 1600.00
+            </AllocatedMoneyTitle>
+            <EditButton />
+          </AllocatedMoneyDiv>
+          <GoalsDiv>
+            <GoalListTitle>Goals List</GoalListTitle>
+          </GoalsDiv>
+          <AchievementDiv>
+            <AchievementTitle>Achievements</AchievementTitle>
+          </AchievementDiv>
+        </GoalsInfoContainer>
+        <UserGoalsContainer>
+          <ShortGoalExample
+            open={openShortForm}
+            animations={startShortAnimations}
+          >
+            {shortTermContent}
+          </ShortGoalExample>
+          <MediumGoalExample
+            open={openMediumForm}
+            animations={startMediumAnimations}
+          >
+            {mediumTermContent}
+          </MediumGoalExample>
+          <LongGoalExample open={openLongForm} animations={startLongAnimations}>
+            {longTermContent}
+          </LongGoalExample>
+        </UserGoalsContainer>
+      </UserContentWrapper>
     </UserGoalsDiv>
   );
 };

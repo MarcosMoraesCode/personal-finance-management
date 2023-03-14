@@ -28,16 +28,24 @@ export const StyledLabel = styled.label`
   font-size: ${(props) => (props.fontSize ? props.fontSize : "12px")};
 `;
 export const StyledMessage = styled.p`
-  text-align: end;
   padding-right: 10px;
   margin: ${(props) => `${props.margin}px`};
   padding-left: ${(props) => `${props.paddingLeft}px`};
-  font-size: 10px;
+  font-size: ${(props) => props.fontSize};
   font-weight: ${(props) => `${props.fontWeight}`};
   color: ${(props) => props.color};
   cursor: ${(props) => (props.cursor ? "pointer" : "unset")};
   text-decoration: ${(props) => (props.underline ? "underline white" : "none")};
 `;
+export const StyledMessageScaled = styled.p`
+  color: #fc2469;
+  padding: 1px;
+  padding-right: 6px;
+  font-weight: 600;
+  font-size: 5px;
+  text-align: end;
+`;
+
 export const StyledCheckboxLabel = styled.label`
   position: absolute;
   top: 0;

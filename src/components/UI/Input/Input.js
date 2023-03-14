@@ -5,6 +5,7 @@ import {
   StyledCheckboxLabel,
   StyledInput,
   StyledLabel,
+  StyledMessageScaled,
   WrappComponent,
   WrappPasswordComponent,
 } from "./InputStyle";
@@ -143,6 +144,38 @@ const InputContainer = (props) => {
         </WrappComponent>
       );
       break;
+    case "scaled":
+      inputElement = (
+        <WrappComponent
+          key={props.id}
+          noMargin={props.noMargin}
+          width={props.width}
+        >
+          <StyledLabel {...props} key={props.id}>
+            {props.children}
+          </StyledLabel>
+
+          <StyledInput
+            type={props.type}
+            key={props.id}
+            value={props.value}
+            onChange={props.changed}
+            placeholder={props.placeholder}
+            onBlur={
+              props.blur //? (message = null) : (message = props.invalidMessage)
+            }
+            border={props.border}
+            height={props.height}
+            fontSize={props.fontSize}
+            outline={props.outline}
+          />
+          <StyledMessageScaled key={`message-1-${props.id}`}>
+            {props.invalidMessage}
+          </StyledMessageScaled>
+        </WrappComponent>
+      );
+      break;
+
     default:
       inputElement = (
         <WrappComponent
@@ -170,9 +203,9 @@ const InputContainer = (props) => {
           />
           <StyledMessage
             key={`message-1-${props.id}`}
-            color={"#fc2469"}
+            color={"#fc2462"}
             margin={2}
-            fontWeight={900}
+            fontWeight={600}
           >
             {props.invalidMessage}
           </StyledMessage>

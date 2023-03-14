@@ -1,6 +1,7 @@
 import styled, { css, keyframes } from "styled-components";
 import createIcon from "../../images/createIcon.png";
 import pig from "../../images/pig.png";
+import babyPig from "../../images/formPig.png";
 
 const scaleUpRight = keyframes`
  0% {
@@ -13,6 +14,7 @@ const scaleUpRight = keyframes`
   100% {
     width: 1000px;
     z-index: 100;
+    background-size: 700px 100% ;
     
     -webkit-transform: scale(2);
             transform: scale(2);
@@ -58,6 +60,7 @@ const scaleUpCenter = keyframes`
   100% {
     width: 1000px;
     z-index: 100;
+   background-size: contain;
     -webkit-transform: scale(2);
             transform: scale(2);
   }
@@ -85,6 +88,7 @@ const scaleUpLeft = keyframes`
             transform-origin: 0% 50%;
   }
   100% {
+    background-size: 700px 100% ;
         width: 1000px;
     z-index: 100;
     -webkit-transform: scale(2);
@@ -115,6 +119,11 @@ const scaleDownLeft = keyframes`
 
 `;
 
+export const UserContentWrapper = styled.div`
+  width: 100%;
+  min-height: 100%;
+`;
+
 export const UserGoalsDiv = styled.div`
   padding-top: 6vh;
   min-height: 94vh;
@@ -138,7 +147,7 @@ export const UserGoalsContainer = styled.div`
   justify-content: space-around;
   border: 1px solid white;
   max-width: 70%;
-  width: 90%;
+  width: 70%;
   min-height: 300px;
   max-height: 90%;
   margin: auto;
@@ -148,6 +157,8 @@ export const UserGoalsContainer = styled.div`
 export const LongGoalExample = styled.div`
   display: flex;
   flex-direction: column;
+  background-image: url(${pig});
+  background-size: cover;
   justify-content: space-between;
   border-radius: 10px;
   max-width: 100%;
@@ -179,6 +190,7 @@ export const LongGoalExample = styled.div`
           ${scaleDownRight} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
   :hover {
+    cursor: pointer;
     transform: scale(1.05);
     transition: 0.2s ease-in-out;
   }
@@ -188,6 +200,8 @@ export const MediumGoalExample = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-image: url(${babyPig});
+  background-size: cover;
   border-radius: 10px;
   max-width: 100%;
   min-width: 25%;
@@ -219,6 +233,7 @@ export const MediumGoalExample = styled.div`
           ${scaleDownCenter} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
   :hover {
+    cursor: pointer;
     transform: scale(1.05);
     transition: 0.2s ease-in-out;
   }
@@ -260,6 +275,7 @@ export const ShortGoalExample = styled.div`
         `};
 
   :hover {
+    cursor: pointer;
     transform: scale(1.05);
     transition: 0.2s ease-in-out;
   }
@@ -360,4 +376,104 @@ export const AddButton = styled.button`
     cursor: ${(props) =>
       props.disabled === "disabled" ? "not-allowed" : "pointer"};
   }
+`;
+
+export const GoalsInfoContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  padding-top: 35px;
+  margin: auto;
+  width: 70%;
+  height: 25%;
+  border: 1px solid white;
+`;
+
+export const AchievementDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid gold;
+  border-radius: 10px;
+  width: 15%;
+  height: 35%;
+  box-shadow: 2px 2px 20px 1px gold;
+  :hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: 0.4s ease-in-out;
+  }
+`;
+
+export const AchievementTitle = styled.h1`
+  color: gold;
+  font-family: "Roboto";
+  font-weight: 600;
+  font-size: 25px;
+`;
+
+export const GoalsDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // border-bottom: 2px solid white;
+  border-radius: 10px;
+  width: 20%;
+  height: 35%;
+  border: none;
+  //box-shadow: 2px 2px 20px 2px white;
+  :hover {
+    cursor: pointer;
+
+    transition: 0.4s ease-in-out;
+    box-shadow: 2px 2px 20px 2px white;
+  }
+`;
+
+export const GoalListTitle = styled.h1`
+  color: white;
+  font-family: "Roboto";
+  font-weight: 600;
+  font-size: 25px;
+  :hover {
+    transform: scale(1.1);
+    transition: 0.4s ease-in-out;
+  }
+`;
+
+export const AllocatedMoneyDiv = styled.div`
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  // border: 1px solid white;
+  border-radius: 10px;
+  width: fit-content;
+  height: 35%;
+  //border: none;
+  //box-shadow: 2px 2px 20px 2px white;
+  :hover {
+    cursor: pointer;
+
+    transition: 0.4s ease-in-out;
+    box-shadow: 0px 2px 10px 2px #51d289;
+  }
+`;
+export const AllocatedMoneyTitle = styled.h1`
+  display: flex;
+  flex-direction: column;
+  color: #51d289;
+  font-family: "Roboto";
+  font-weight: 600;
+  font-size: 16px;
+  margin-right: 15px;
+  //background-color: red;
+`;
+
+export const SpanMoneyTitle = styled.span`
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 3px;
 `;
