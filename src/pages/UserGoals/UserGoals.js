@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { EditButton } from "../../components/ExpensesTracking/Expense/ExpenseStyle";
+import GoalInformation from "../../components/GoalsTracking/GoalList/GoalInformations";
 
 import InputContainer from "../../components/UI/Input/Input";
 import {
@@ -26,6 +27,8 @@ import {
   AllocatedMoneyDiv,
   AllocatedMoneyTitle,
   SpanMoneyTitle,
+  GoalListContainer,
+  GoalsExpandedDiv,
 } from "./UserGoalsStyle";
 
 const UserGoals = (props) => {
@@ -71,8 +74,11 @@ const UserGoals = (props) => {
   const [startShortAnimations, setStartShortAnimations] = useState(false);
   const [startMediumAnimations, setStartMediumAnimations] = useState(false);
   const [startLongAnimations, setStartLongAnimations] = useState(false);
+  const [openList, setOpenList] = useState(false);
+  const [startListAnimations, setStartListAnimation] = useState(false);
+  const [openAchiev, setOpenAchiev] = useState(false);
+  const [startAchievAnimation, setStartAchievAnimation] = useState(false);
 
-  console.log("é valido: ", userInputs.inputDate.isValid);
   const InputChangeHandler = (event, inputId) => {
     switch (inputId) {
       case "Goal Name":
@@ -508,20 +514,56 @@ const UserGoals = (props) => {
     );
   }
 
+  let GoalListContent = <GoalListTitle>Goals List</GoalListTitle>;
+  if (openList) {
+    GoalListContent = (
+      <GoalsExpandedDiv>
+        <GoalListTitle>Goals List</GoalListTitle>
+        <GoalListContainer>
+          <GoalInformation />
+          <GoalInformation />
+          <GoalInformation />
+          <GoalInformation />
+          <GoalInformation />
+          <GoalInformation />
+          <GoalInformation />
+          <GoalInformation />
+        </GoalListContainer>
+        <ButtonDiv>
+          <BackButton>Go Back</BackButton>
+        </ButtonDiv>
+      </GoalsExpandedDiv>
+    );
+  }
+
   return (
     <UserGoalsDiv>
       <UserContentWrapper>
         <GoalsInfoContainer>
           <AllocatedMoneyDiv>
             <AllocatedMoneyTitle>
-              <SpanMoneyTitle> Allocated income</SpanMoneyTitle> $ 1600.00
+              <SpanMoneyTitle> Allocated income</SpanMoneyTitle> $ 156500.00
             </AllocatedMoneyTitle>
             <EditButton />
           </AllocatedMoneyDiv>
-          <GoalsDiv>
-            <GoalListTitle>Goals List</GoalListTitle>
+          <GoalsDiv
+            open={openList}
+            animations={startListAnimations}
+            onClick={() => {
+              setOpenList(!openList);
+              setStartListAnimation(true);
+            }}
+          >
+            {GoalListContent}
           </GoalsDiv>
-          <AchievementDiv>
+          <AchievementDiv
+            open={openAchiev}
+            animations={startAchievAnimation}
+            onClick={() => {
+              setOpenAchiev(!openAchiev);
+              setStartAchievAnimation(true);
+            }}
+          >
             <AchievementTitle>Achievements</AchievementTitle>
           </AchievementDiv>
         </GoalsInfoContainer>

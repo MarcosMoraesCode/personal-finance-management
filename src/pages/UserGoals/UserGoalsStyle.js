@@ -12,9 +12,10 @@ const scaleUpRight = keyframes`
             transform-origin: 100% 50%;
   }
   100% {
-    width: 1000px;
+    min-width: 50%;
+    //min-height: 500px ;
     z-index: 100;
-    background-size: 700px 100% ;
+    
     
     -webkit-transform: scale(2);
             transform: scale(2);
@@ -31,7 +32,7 @@ const scaleUpRight = keyframes`
 const scaleDownRight = keyframes`
 
 0% {
-    width: 1000px;
+  min-width: 50%;
     z-index: 100;
     -webkit-transform: scale(2);
             transform: scale(2);
@@ -58,9 +59,9 @@ const scaleUpCenter = keyframes`
             transform: scale(1);
   }
   100% {
-    width: 1000px;
+    min-width: 50%;
     z-index: 100;
-   background-size: contain;
+   
     -webkit-transform: scale(2);
             transform: scale(2);
   }
@@ -68,7 +69,7 @@ const scaleUpCenter = keyframes`
 
 const scaleDownCenter = keyframes`
     0% {
-        width: 1000px;
+      min-width: 50%;
     z-index: 100;
     -webkit-transform: scale(2);
             transform: scale(2);
@@ -88,8 +89,9 @@ const scaleUpLeft = keyframes`
             transform-origin: 0% 50%;
   }
   100% {
-    background-size: 700px 100% ;
-        width: 1000px;
+   min-width: 50%;
+    
+     //   width: 1000px;
     z-index: 100;
     -webkit-transform: scale(2);
             transform: scale(2);
@@ -102,7 +104,7 @@ const scaleUpLeft = keyframes`
 
 const scaleDownLeft = keyframes`
 0% {
-    width: 1000px;
+  min-width: 50%;
     z-index: 100;
     -webkit-transform: scale(2);
             transform: scale(2);
@@ -116,6 +118,93 @@ const scaleDownLeft = keyframes`
             transform-origin: 0% 50%;
   }
 
+
+`;
+
+const scaleUpTop = keyframes`
+  
+
+   0% {
+    
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    -webkit-transform-origin: 50% 0%;
+            transform-origin: 50% 0%;
+  }
+  100% {
+    
+    height: 500px ;
+    
+    //max-height: 70vh;
+    width: 100% ;
+   
+    
+    z-index: 200;
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
+    
+    -webkit-transform-origin: 50% 0%;
+            transform-origin: 50% 0%;
+  }
+
+`;
+
+const scaleDownTop = keyframes`
+0% { 
+  height: 500px ;
+    width: 100% ;
+    
+   
+        z-index: 200;
+    -webkit-transform: scale(1.5);
+            transform: scale(1.5);
+    -webkit-transform-origin: 50% 0%;
+            transform-origin: 50% 0%;
+  }
+  100% {
+    
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    -webkit-transform-origin: 50% 0%;
+            transform-origin: 50% 0%;
+  }
+  `;
+
+const scaleUpTopLeft = keyframes`
+0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    -webkit-transform-origin: 100% 0%;
+            transform-origin: 100% 0%;
+  }
+  100% {
+    
+    width: 50% ;
+    height: 50% ;
+    -webkit-transform: scale(1.5);
+            transform: scale(1.5);
+    -webkit-transform-origin: 100% 0%;
+            transform-origin: 100% 0%;
+  }
+
+`;
+
+const scaleDownTopLeft = keyframes`
+
+0% {
+  width: 50% ;
+    height: 50% ;
+    -webkit-transform: scale(1.5);
+            transform: scale(1.5);
+    -webkit-transform-origin: 100% 0%;
+            transform-origin: 100% 0%;
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    -webkit-transform-origin: 100% 0%;
+            transform-origin: 100% 0%;
+  }
 
 `;
 
@@ -397,6 +486,30 @@ export const AchievementDiv = styled.div`
   width: 15%;
   height: 35%;
   box-shadow: 2px 2px 20px 1px gold;
+  background-color: black;
+
+  -webkit-animation: ${(props) =>
+    props.open === true
+      ? css`
+          ${scaleUpTopLeft} 0.7s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
+        `
+      : props.animations === false
+      ? "none"
+      : css`
+          ${scaleDownTopLeft} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
+        `};
+
+  animation: ${(props) =>
+    props.open === true
+      ? css`
+          ${scaleUpTopLeft} 0.7s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
+        `
+      : props.animations === false
+      ? "none"
+      : css`
+          ${scaleDownTopLeft} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
+        `};
+
   :hover {
     cursor: pointer;
     transform: scale(1.1);
@@ -420,7 +533,33 @@ export const GoalsDiv = styled.div`
   width: 20%;
   height: 35%;
   border: none;
+
+  -webkit-animation: ${(props) =>
+    props.open === true
+      ? css`
+          ${scaleUpTop} 0.9s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
+        `
+      : props.animations === false
+      ? "none"
+      : css`
+          ${scaleDownTop} 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
+        `};
+
+  animation: ${(props) =>
+    props.open === true
+      ? css`
+          ${scaleUpTop} 0.9s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
+        `
+      : props.animations === false
+      ? "none"
+      : css`
+          ${scaleDownTop} 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
+        `};
+
   //box-shadow: 2px 2px 20px 2px white;
+  // -webkit-animation: ${scaleUpTop} 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  // animation: ${scaleUpTop} 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  background-color: black;
   :hover {
     cursor: pointer;
 
@@ -434,6 +573,7 @@ export const GoalListTitle = styled.h1`
   font-family: "Roboto";
   font-weight: 600;
   font-size: 25px;
+
   :hover {
     transform: scale(1.1);
     transition: 0.4s ease-in-out;
@@ -476,4 +616,53 @@ export const SpanMoneyTitle = styled.span`
   font-size: 16px;
   font-weight: 600;
   padding: 3px;
+`;
+
+export const GoalListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  align-items: center;
+  //border: 1px solid red;
+  max-width: 85%;
+  min-width: 85%;
+  min-height: 300px;
+  max-height: 30%;
+  overflow-y: auto;
+  /* width */
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: black;
+  }
+`;
+
+export const GoalsExpandedDiv = styled.div`
+  display: flex;
+  padding: 5px;
+  padding-top: 15px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 500px;
+  min-height: 400px;
+  :hover {
+    cursor: auto;
+  }
 `;
