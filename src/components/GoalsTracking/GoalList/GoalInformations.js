@@ -71,8 +71,10 @@ const GoalInformation = (props) => {
           <EmptyBar percentage={percentage}>
             <StatusBar width={`${percentage}%`} />
           </EmptyBar>
-          <SpanInfo>
-            {percentage === "100.00" ? "Click to complete!" : ""}
+          <SpanInfo
+            onClick={percentage === "100.00" ? props.finishTask : () => {}}
+          >
+            {percentage === "100.00" ? "click to complete!" : ""}
           </SpanInfo>
         </ProgressBarDiv>
         <ButtonsDiv>

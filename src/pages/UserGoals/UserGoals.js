@@ -41,6 +41,7 @@ import {
   ExpandButton,
 } from "./UserGoalsStyle";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
+import CongratulationsModal from "../../components/UI/Modal/CongratulationsModal/CongratulationsModal";
 
 const UserGoals = (props) => {
   const [userInputs, setUserInputs] = useState({
@@ -87,6 +88,8 @@ const UserGoals = (props) => {
     goalDate: "",
   });
   const [showCrud, setShowCrud] = useState(false);
+
+  const [showCongratulation, setShowCongratulation] = useState(false);
 
   const [submitPermission, setSubmitPermission] = useState(false);
 
@@ -742,6 +745,10 @@ const UserGoals = (props) => {
               goal.term
             ),
           removeAction: () => removeGoalHandler(goal.name, goal.id),
+          finishTask: () => {
+            setCrudType({ ...crudType, goalName: goal.name });
+            setShowCongratulation(true);
+          },
         };
       });
 
@@ -757,6 +764,7 @@ const UserGoals = (props) => {
             value={goal.value}
             editAction={goal.editAction}
             removeAction={goal.removeAction}
+            finishTask={goal.finishTask}
           />
         );
       });
@@ -892,6 +900,9 @@ const UserGoals = (props) => {
           
           }*/
         />
+      ) : null}
+      {showCongratulation ? (
+        <CongratulationsModal goalName={crudType.goalName} />
       ) : null}
     </UserGoalsDiv>
   );
