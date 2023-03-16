@@ -1089,7 +1089,7 @@ const UserExpenses = () => {
   const submitCategory = async () => {
     setLoadingOnSubmitCategory(true);
 
-    await dispatch(postNewCategory(userCategory, { pudim: "oi" }))
+    await dispatch(postNewCategory(userCategory))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setCategoryOptions([

@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { EditButton } from "../../components/ExpensesTracking/Expense/ExpenseStyle";
 import GoalInformation from "../../components/GoalsTracking/GoalList/GoalInformations";
 
 import InputContainer from "../../components/UI/Input/Input";
+import { fetchDynamicId } from "../../features/expenses/expensesSlice";
+import {
+  addGoals,
+  fetchGoalsData,
+  postNewGoal,
+} from "../../features/goals/goalsSlice";
 import {
   CreateButton,
   GoalExample,
@@ -55,7 +62,7 @@ const UserGoals = (props) => {
       isValid: false,
       isTouched: false,
       id: "Goal Percentage",
-      placeholder: "Ex: 75.00%",
+      placeholder: "Ex: 100,00",
       invalidMessage: "",
     },
     inputDate: {
@@ -65,6 +72,7 @@ const UserGoals = (props) => {
       id: "Goal Date",
       invalidMessage: "",
     },
+    term: "",
   });
   const [submitPermission, setSubmitPermission] = useState(false);
 
@@ -78,6 +86,13 @@ const UserGoals = (props) => {
   const [startListAnimations, setStartListAnimation] = useState(false);
   const [openAchiev, setOpenAchiev] = useState(false);
   const [startAchievAnimation, setStartAchievAnimation] = useState(false);
+
+  const dispatch = useDispatch();
+  const userGoals = useSelector((state) => state.goalsData.userGoals);
+
+  useEffect(() => {
+    getGoals();
+  }, []);
 
   const InputChangeHandler = (event, inputId) => {
     switch (inputId) {
@@ -152,8 +167,8 @@ const UserGoals = (props) => {
     //console.log(value);
     const validation1 = isValidName(value);
     const validation2 = isValidValue(value);
-    const validation3 = isValidPercentage(value);
-    const validation4 = "1"; //VERIFICAR A QUANTIDADE JÁ DISTRIBUIDA DAS OUTRAS METAS
+    // const validation3 = isValidPercentage(value);
+    const validation4 = "1"; //VERIFICAR SE O VALOR ALOCADO CORRESPONDE AO SALDO
     const validation5 = isValidDate(value);
 
     let result = false;
@@ -166,7 +181,7 @@ const UserGoals = (props) => {
         validation2 ? (result = true) : (result = false);
         break;
       case "Goal Percentage":
-        validation3 ? (result = true) : (result = false); //VALIDATION 4 TOO
+        validation2 ? (result = true) : (result = false); //VALIDATION 4 TOO
         break;
       case "Goal Date":
         //   console.log(value);
@@ -297,6 +312,41 @@ const UserGoals = (props) => {
     }
   };
 
+  const refreshInputs = () => {
+    setUserInputs({
+      ...userInputs,
+      inputName: {
+        ...userInputs.inputName,
+        value: "",
+        isValid: false,
+        isTouched: false,
+        invalidMessage: "",
+      },
+      inputValue: {
+        ...userInputs.inputValue,
+        value: "",
+        isValid: false,
+        isTouched: false,
+        invalidMessage: "",
+      },
+      inputPercentage: {
+        ...userInputs.inputPercentage,
+        value: "",
+        isValid: false,
+        isTouched: false,
+        invalidMessage: "",
+      },
+      inputDate: {
+        ...userInputs.inputDate,
+        value: "",
+        isValid: false,
+        isTouched: false,
+        invalidMessage: "",
+      },
+      term: "",
+    });
+  };
+
   let defaultForm = (
     <>
       <FormContainer>
@@ -371,7 +421,7 @@ const UserGoals = (props) => {
           }
           value={userInputs.inputPercentage.value}
         >
-          Portfolio's percent to be allocated
+          Initial contribution
         </InputContainer>
         <InputContainer
           elementType={"scaled"}
@@ -412,6 +462,7 @@ const UserGoals = (props) => {
             onClick={() => {
               setStartShortAnimations(true);
               setOpenShortForm(!openShortForm);
+              setUserInputs({ ...userInputs, term: "Short" });
             }}
           />
         </ButtonDiv>
@@ -425,7 +476,12 @@ const UserGoals = (props) => {
         <GoalExampleTitle>Create a new Short Term Goal!</GoalExampleTitle>
         {defaultForm}
         <ButtonDiv center>
-          <AddButton disabled={submitPermission ? "" : "disabled"}>
+          <AddButton
+            disabled={submitPermission ? "" : "disabled"}
+            onClick={() => {
+              submitGoal();
+            }}
+          >
             Add Goal
           </AddButton>
         </ButtonDiv>
@@ -450,6 +506,7 @@ const UserGoals = (props) => {
             onClick={() => {
               setStartMediumAnimations(true);
               setOpenMediumForm(!openMediumForm);
+              setUserInputs({ ...userInputs, term: "Medium" });
             }}
           />
         </ButtonDiv>
@@ -463,7 +520,12 @@ const UserGoals = (props) => {
         <GoalExampleTitle>Create a new Medium Term Goal!</GoalExampleTitle>
         {defaultForm}
         <ButtonDiv center>
-          <AddButton disabled={submitPermission ? "" : "disabled"}>
+          <AddButton
+            disabled={submitPermission ? "" : "disabled"}
+            onClick={() => {
+              submitGoal();
+            }}
+          >
             Add Goal
           </AddButton>
         </ButtonDiv>
@@ -488,6 +550,7 @@ const UserGoals = (props) => {
             onClick={() => {
               setStartLongAnimations(true);
               setOpenLongForm(!openLongForm);
+              setUserInputs({ ...userInputs, term: "Long" });
             }}
           />
         </ButtonDiv>
@@ -501,7 +564,12 @@ const UserGoals = (props) => {
         <GoalExampleTitle>Create a new Long Term Goal!</GoalExampleTitle>
         {defaultForm}
         <ButtonDiv center>
-          <AddButton disabled={submitPermission ? "" : "disabled"}>
+          <AddButton
+            disabled={submitPermission ? "" : "disabled"}
+            onClick={() => {
+              submitGoal();
+            }}
+          >
             Add Goal
           </AddButton>
         </ButtonDiv>
@@ -535,6 +603,39 @@ const UserGoals = (props) => {
       </GoalsExpandedDiv>
     );
   }
+
+  const getGoals = async () => {
+    dispatch(fetchDynamicId());
+
+    await dispatch(fetchGoalsData()).then((res) => {
+      console.log(res);
+      if (res.payload !== null) {
+        dispatch(addGoals(res.payload));
+        console.log("aq", userGoals);
+      }
+    });
+  };
+
+  const submitGoal = async () => {
+    // setLoadingSubmit(true);
+    await dispatch(postNewGoal(userInputs))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          refreshInputs();
+          getGoals();
+          setSubmitPermission(false);
+          //   setLoadingSubmit(false);
+        }
+      })
+      .catch((err) => {
+        /*  setShowModal(true);
+        setModalInformation({
+          ...modalInformation,
+          statusName: err.name,
+          message: err.message,
+        });*/
+      });
+  };
 
   return (
     <UserGoalsDiv>

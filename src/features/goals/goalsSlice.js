@@ -11,7 +11,30 @@ const userId = "Marcos";
 
 const initialState = {
   userGoals: null,
+  dynamicId: 0,
 };
+
+export const fetchDynamicId = createAsyncThunk(
+  "userexpenses/fetchDynamicId",
+  async (action) => {
+    try {
+      const dbId = await get(child(ref(db), `users/${userId}/dynamicId`)).then(
+        (snapshot) => {
+          //console.log("id dinamico", snapshot.val());
+          return snapshot.val();
+        }
+      );
+      return dbId;
+      //ANTES DO FIREBASE
+      //const response = await axiosInstance.get("/category.json");
+      //console.log("resposta axios", response.data);
+      //return response.data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+);
 
 export const fetchGoalsData = createAsyncThunk(
   "usergoals/fetchGoalsData",
@@ -58,6 +81,7 @@ export const postNewGoal = createAsyncThunk(
               value: action.inputValue.value,
               allocated: action.inputPercentage.value,
               date: action.inputDate.value,
+              term: action.term,
             },
           };
           update(ref(db), updates).then((res) => res);
@@ -71,6 +95,7 @@ export const postNewGoal = createAsyncThunk(
               value: action.inputValue.value,
               allocated: action.inputPercentage.value,
               date: action.inputDate.value,
+              term: action.term,
             },
           });
         }
@@ -114,17 +139,23 @@ export const removeAGoal = createAsyncThunk(
 export const goalDataSlice = createSlice({
   name: "goalsData",
   initialState,
-  reducers: {},
+  reducers: {
+    addGoals: (state, action) => {
+      state.userGoals = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchGoalsData.fulfilled, (state, action) => {
-      // console.log("Success", action.payload);
+      console.log("Success", state.dynamicId);
     });
     builder.addCase(fetchGoalsData.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);
       // console.log(action.error);
     });
     builder.addCase(postNewGoal.fulfilled, (state, action) => {
-      // console.log("Success", action.payload);
+      state.dynamicId += 1;
+      //console.log("Novo id dinamico: ", state.dynamicId);
+      set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     builder.addCase(postNewGoal.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);
@@ -144,7 +175,18 @@ export const goalDataSlice = createSlice({
       //console.log("Rejected", action.error.message);
       // console.log(action.error);
     });
+    builder.addCase(fetchDynamicId.fulfilled, (state, action) => {
+      //console.log("payload", action.payload);
+      state.dynamicId = action.payload;
+      //console.log("Novo id dinamico: ", state.dynamicId);
+    });
+    builder.addCase(fetchDynamicId.rejected, (state, action) => {
+      //console.log("Rejected", action.error.message);
+      //console.log(action.error);
+    });
   },
 });
+
+export const { addGoals } = goalDataSlice.actions;
 
 export default goalDataSlice.reducer;
