@@ -7,6 +7,7 @@ import {
   ThanksButton,
   CongratulationsDescription,
   AuxDiv,
+  Span,
 } from "./CongratulationsModalStyle";
 
 const CongratulationsModal = (props) => {
@@ -17,12 +18,15 @@ const CongratulationsModal = (props) => {
         <CongratulationsContainer>
           <CongratulationsTitle>CONGRATULATIONS</CongratulationsTitle>
           <CongratulationsDescription>
-            You achieve it! Now you can get your {props.goalName}!<br></br>
+            You achieve it!
+            <br></br>
+            <br></br>
+            Now you can get your <Span>{props.goalName}</Span>!<br></br>
             <br></br>
             Keep on going, you deserve nothing but the best!
           </CongratulationsDescription>
           <ButtonDiv>
-            <ThanksButton>Thanks!</ThanksButton>
+            <ThanksButton onClick={props.backAction}>Thanks!</ThanksButton>
           </ButtonDiv>
         </CongratulationsContainer>
       </AuxDiv>

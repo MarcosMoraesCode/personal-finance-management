@@ -902,7 +902,14 @@ const UserGoals = (props) => {
         />
       ) : null}
       {showCongratulation ? (
-        <CongratulationsModal goalName={crudType.goalName} />
+        <CongratulationsModal
+          clicked={() => setShowCongratulation(false)}
+          goalName={crudType.goalName}
+          backAction={() => {
+            setShowCongratulation(false);
+            console.log("REMOVER OBJETIVO E POSTAR EM ACHIEVEMENTS");
+          }}
+        />
       ) : null}
     </UserGoalsDiv>
   );
