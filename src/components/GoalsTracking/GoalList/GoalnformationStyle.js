@@ -1,6 +1,44 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import editIcon from "../../../images/editIcon.svg";
 import removeIcon from "../../../images/removeIcon.svg";
+
+const FocusInExpand = keyframes`
+
+0% {
+    letter-spacing: -0.5em;
+    -webkit-transform: translateZ(-800px);
+            transform: translateZ(-800px);
+    -webkit-filter: blur(12px);
+            filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+    -webkit-filter: blur(0);
+            filter: blur(0);
+    opacity: 1;
+  }
+
+`;
+const scaleUpLeft = keyframes`
+
+0% {
+    width:0px ;
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+  }
+  100% {
+    width: ${(props) => props.width} ;
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+  }
+
+`;
 
 export const GoalContainer = styled.div`
   display: flex;
@@ -61,10 +99,10 @@ export const SecondaryContainer = styled.div`
 export const ProgressBarDiv = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   width: 65%;
-  height: 65%;
+  height: 100%;
   padding-bottom: 5px;
   //border: 1px solid green;
 `;
@@ -75,6 +113,8 @@ export const EmptyBar = styled.div`
   min-width: 100%;
   max-width: 100%;
   background-color: white;
+  border: ${(props) =>
+    props.percentage === "100.00" ? "1px gold solid" : "none"};
 `;
 
 export const StatusBar = styled.div`
@@ -83,7 +123,11 @@ export const StatusBar = styled.div`
   min-width: 0%;
   width: ${(props) => props.width};
   max-width: 100%;
-  background-color: #51d289; ;
+  background-color: ${(props) =>
+    props.percentage === "100.00" ? "gold" : "#51d289"};
+  -webkit-animation: ${scaleUpLeft} 2.4s cubic-bezier(0.39, 0.575, 0.565, 1)
+    both;
+  animation: ${scaleUpLeft} 2.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 `;
 
 export const ButtonsDiv = styled.div`
@@ -126,7 +170,21 @@ export const ProgressTitle = styled.h1`
   padding-bottom: 3px;
   width: 100%;
   text-align: start;
-  color: #51d289;
+  color: ${(props) => (props.percentage === "100.00" ? "gold" : "#51d289")};
   font-size: 8px;
-  font-weight: 200;
+  font-weight: ${(props) => (props.percentage === "100.00" ? "600" : "200")};
+`;
+
+export const SpanInfo = styled.span`
+  font-size: 10px;
+  color: gold;
+  width: 100%;
+  -webkit-animation: ${FocusInExpand} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: ${FocusInExpand} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+
+  :hover {
+    cursor: pointer;
+  }
+  // background-color: blue;
 `;

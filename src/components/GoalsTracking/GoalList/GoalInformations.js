@@ -15,6 +15,7 @@ import {
   RemoveButton,
   SecondaryContainer,
   ProgressTitle,
+  SpanInfo,
 } from "./GoalnformationStyle";
 
 const GoalInformation = (props) => {
@@ -29,6 +30,12 @@ const GoalInformation = (props) => {
   let replacedValue = initialValue.join("");
   let convertedValue = Number(replacedValue).toFixed(2);
 
+  let percentage = (
+    (Number(convertedAllocated) / Number(convertedValue)) *
+    100
+  ).toFixed(2);
+  console.log(typeof Number(percentage), percentage);
+
   console.log("props", props);
   return (
     <GoalContainer>
@@ -41,13 +48,7 @@ const GoalInformation = (props) => {
         <GoalContentInfo>
           <GoalContentBlock width={"33%"}>{props.term}</GoalContentBlock>
           <GoalContentBlock width={"33%"}>{props.name}</GoalContentBlock>
-          <GoalContentBlock width={"33%"}>
-            {(
-              (Number(convertedAllocated) / Number(convertedValue)) *
-              100
-            ).toFixed(2)}{" "}
-            %
-          </GoalContentBlock>
+          <GoalContentBlock width={"33%"}>{percentage} %</GoalContentBlock>
         </GoalContentInfo>
         <GoalSubtitleDiv>
           <GoalSubtitleBlock width={"33%"}>Allocated</GoalSubtitleBlock>
@@ -64,15 +65,15 @@ const GoalInformation = (props) => {
       </InfoContainer>
       <SecondaryContainer>
         <ProgressBarDiv>
-          <ProgressTitle>Progress</ProgressTitle>
-          <EmptyBar>
-            <StatusBar
-              width={`${(
-                (Number(convertedAllocated) / Number(convertedValue)) *
-                100
-              ).toFixed(2)}%`}
-            />
+          <ProgressTitle percentage={percentage}>
+            {percentage === "100.00" ? "YOU MADE IT!" : "Progress"}
+          </ProgressTitle>
+          <EmptyBar percentage={percentage}>
+            <StatusBar width={`${percentage}%`} />
           </EmptyBar>
+          <SpanInfo>
+            {percentage === "100.00" ? "Click to complete!" : ""}
+          </SpanInfo>
         </ProgressBarDiv>
         <ButtonsDiv>
           <EditButton onClick={props.editAction} />{" "}
