@@ -138,6 +138,76 @@ export const removeAGoal = createAsyncThunk(
   }
 );
 
+export const transferGoalToAchievement = createAsyncThunk(
+  "usergoals/transferGoalToAchievement",
+  async (action, state) => {
+    try {
+      await get(child(ref(db), `users/${userId}/goals/${action.id}`)).then(
+        (snapshot) => {
+          if (snapshot.exists() === true) {
+            get(child(ref(db), `users/${userId}/achievements`)).then(
+              (snapshot) => {
+                if (snapshot.exists() === true) {
+                  let oldAchievements = snapshot.val();
+                  console.log("old", oldAchievements);
+
+                  const updates = {};
+                  updates[`users/${userId}/achievements`] = {
+                    ...oldAchievements,
+                    [action.id]: {
+                      id: action.id,
+                      name: action.name,
+                      value: action.value,
+                      allocated: action.allocated,
+                      date: action.date,
+                      term: action.term,
+                    },
+                  };
+                  update(ref(db), updates);
+                  //remover do BD de goals
+                } else {
+                  set(ref(db, `users/${userId}/achievements`), {
+                    [action.id]: {
+                      id: action.id,
+                      name: action.name,
+                      value: action.value,
+                      allocated: action.allocated,
+                      date: action.date,
+                      term: action.term,
+                    },
+                  });
+                  //remover do BD de goals
+                }
+              }
+            );
+
+            //remove(ref(db, `users/${userId}/goals/`));
+            /*
+          let oldGoals = snapshot.val();
+          //console.log("ACTION", action);
+
+          const updates = {};
+          updates[`users/${userId}/goals`] = {
+            ...oldGoals,
+            [`goal-${idValue}`]: {
+              id: `goal-${idValue}`,
+              name: action.inputName.value,
+              value: action.inputValue.value,
+              allocated: action.inputPercentage.value,
+              date: action.inputDate.value,
+              term: action.term,
+            },
+          };
+          update(ref(db), updates).then((res) => res); */
+          }
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const goalDataSlice = createSlice({
   name: "goalsData",
   initialState,
@@ -183,6 +253,14 @@ export const goalDataSlice = createSlice({
       //console.log("Novo id dinamico: ", state.dynamicId);
     });
     builder.addCase(fetchDynamicId.rejected, (state, action) => {
+      //console.log("Rejected", action.error.message);
+      //console.log(action.error);
+    });
+    builder.addCase(transferGoalToAchievement.fulfilled, (state, action) => {
+      //console.log("payload", action.payload);
+      //console.log("Novo id dinamico: ", state.dynamicId);
+    });
+    builder.addCase(transferGoalToAchievement.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);
       //console.log(action.error);
     });

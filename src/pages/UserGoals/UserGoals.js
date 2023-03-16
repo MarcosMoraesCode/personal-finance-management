@@ -11,6 +11,7 @@ import {
   fetchGoalsData,
   postNewGoal,
   removeAGoal,
+  transferGoalToAchievement,
 } from "../../features/goals/goalsSlice";
 import {
   CreateButton,
@@ -86,6 +87,7 @@ const UserGoals = (props) => {
     goalId: "",
     goalAllocated: "",
     goalDate: "",
+    goalValue: "",
   });
   const [showCrud, setShowCrud] = useState(false);
 
@@ -663,6 +665,7 @@ const UserGoals = (props) => {
           goalId: "",
           goalAllocated: "",
           goalDate: "",
+          goalValue: "",
         });
         refreshInputs();
         setShowCrud(false);
@@ -692,6 +695,7 @@ const UserGoals = (props) => {
         goalId: "",
         goalAllocated: "",
         goalDate: "",
+        goalValue: "",
       });
     });
     setShowCrud(false);
@@ -708,6 +712,7 @@ const UserGoals = (props) => {
       goalId: "",
       goalAllocated: "",
       goalDate: "",
+      goalValue: "",
     });
   };
 
@@ -722,12 +727,13 @@ const UserGoals = (props) => {
       />
     </>
   );
-  if (openList) {
+  if (openList && userGoals !== null) {
     let goalsList = "Nothing to show yet.";
 
     if (userGoals !== null) {
       let goalsArr = Object.values(userGoals);
       let newArr = goalsArr.map((goal) => {
+        console.log("aqui", goal);
         return {
           name: goal.name,
           date: goal.date,
@@ -746,7 +752,15 @@ const UserGoals = (props) => {
             ),
           removeAction: () => removeGoalHandler(goal.name, goal.id),
           finishTask: () => {
-            setCrudType({ ...crudType, goalName: goal.name });
+            setCrudType({
+              ...crudType,
+              goalName: goal.name,
+              goalId: goal.id,
+              goalAllocated: goal.allocated,
+              goalDate: goal.date,
+              goalTerm: goal.term,
+              goalValue: goal.value,
+            });
             setShowCongratulation(true);
           },
         };
@@ -812,6 +826,35 @@ const UserGoals = (props) => {
           message: err.message,
         });*/
       });
+  };
+
+  const thanksButtonHandler = async () => {
+    let goal = {
+      name: crudType.goalName,
+      value: crudType.goalValue,
+      id: crudType.goalId,
+      allocated: crudType.goalAllocated,
+      date: crudType.goalDate,
+      term: crudType.goalTerm,
+    };
+    await dispatch(transferGoalToAchievement(goal)).then((res) => {
+      if (res !== null) {
+        dispatch(removeAGoal(goal.id));
+        getGoals();
+        setShowCongratulation(false);
+        setCrudType({
+          crudType: "",
+          goalTerm: "",
+          goalName: "",
+          goalId: "",
+          goalAllocated: "",
+          goalDate: "",
+          goalValue: "",
+        });
+      }
+    });
+
+    console.log("e por ultimo aqui");
   };
 
   return (
@@ -905,10 +948,7 @@ const UserGoals = (props) => {
         <CongratulationsModal
           clicked={() => setShowCongratulation(false)}
           goalName={crudType.goalName}
-          backAction={() => {
-            setShowCongratulation(false);
-            console.log("REMOVER OBJETIVO E POSTAR EM ACHIEVEMENTS");
-          }}
+          backAction={() => thanksButtonHandler()}
         />
       ) : null}
     </UserGoalsDiv>
