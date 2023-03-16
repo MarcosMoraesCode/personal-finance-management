@@ -10,6 +10,7 @@ import {
   editAGoal,
   fetchGoalsData,
   postNewGoal,
+  removeAGoal,
 } from "../../features/goals/goalsSlice";
 import {
   CreateButton,
@@ -502,7 +503,12 @@ const UserGoals = (props) => {
           </AddButton>
         </ButtonDiv>
         <ButtonDiv>
-          <BackButton onClick={() => setOpenShortForm(!openShortForm)}>
+          <BackButton
+            onClick={() => {
+              setOpenShortForm(!openShortForm);
+              refreshInputs();
+            }}
+          >
             Back
           </BackButton>
         </ButtonDiv>
@@ -546,7 +552,12 @@ const UserGoals = (props) => {
           </AddButton>
         </ButtonDiv>
         <ButtonDiv>
-          <BackButton onClick={() => setOpenMediumForm(!openMediumForm)}>
+          <BackButton
+            onClick={() => {
+              setOpenMediumForm(!openMediumForm);
+              refreshInputs();
+            }}
+          >
             Back
           </BackButton>
         </ButtonDiv>
@@ -590,7 +601,12 @@ const UserGoals = (props) => {
           </AddButton>
         </ButtonDiv>
         <ButtonDiv>
-          <BackButton onClick={() => setOpenLongForm(!openLongForm)}>
+          <BackButton
+            onClick={() => {
+              setOpenLongForm(!openLongForm);
+              refreshInputs();
+            }}
+          >
             Back
           </BackButton>
         </ButtonDiv>
@@ -598,14 +614,14 @@ const UserGoals = (props) => {
     );
   }
 
-  const editGoalHandler = (
+  const editGoalHandler = async (
     goalName,
     goalAllocated,
     goalDate,
     goalId,
     goalTerm
   ) => {
-    console.log("oi", goalName, goalAllocated, goalDate, goalId, goalTerm);
+    //console.log("oi", goalName, goalAllocated, goalDate, goalId, goalTerm);
     setCrudType({
       ...crudType,
       crudType: "edit-goal",
@@ -640,8 +656,10 @@ const UserGoals = (props) => {
           ...crudType,
           crudType: "",
           goalTerm: "",
+          goalName: "",
           goalId: "",
           goalAllocated: "",
+          goalDate: "",
         });
         refreshInputs();
         setShowCrud(false);
@@ -650,11 +668,44 @@ const UserGoals = (props) => {
       }
     });
   };
+  const removeGoalHandler = (goalName, goalId) => {
+    console.log("clicou");
+    setCrudType({
+      ...crudType,
+      crudType: "remove-goal",
+      goalName: goalName,
+      goalId: goalId,
+    });
+    setShowCrud(true);
+  };
+
+  const confirmRemoveGoal = async (goalId) => {
+    await dispatch(removeAGoal(goalId)).then((res) => {
+      setCrudType({
+        ...crudType,
+        crudType: "",
+        goalTerm: "",
+        goalName: "",
+        goalId: "",
+        goalAllocated: "",
+        goalDate: "",
+      });
+    });
+    setShowCrud(false);
+    getGoals();
+  };
 
   const BackdropCrudHandler = () => {
     setShowCrud(false);
     refreshInputs();
-    setCrudType({ crudType: "", goalTerm: "", goalId: "", goalAllocated: "" });
+    setCrudType({
+      crudType: "",
+      goalTerm: "",
+      goalName: "",
+      goalId: "",
+      goalAllocated: "",
+      goalDate: "",
+    });
   };
 
   let GoalListContent = (
@@ -690,12 +741,12 @@ const UserGoals = (props) => {
               goal.id,
               goal.term
             ),
-          //removeAction: () => removeGoalHandler(goal.name, goal.id),
+          removeAction: () => removeGoalHandler(goal.name, goal.id),
         };
       });
 
       goalsList = newArr.map((goal, index) => {
-        console.log("a", goal);
+        // console.log("a", goal);
         return (
           <GoalInformation
             key={`goal-${index}`}
@@ -705,6 +756,7 @@ const UserGoals = (props) => {
             term={goal.term}
             value={goal.value}
             editAction={goal.editAction}
+            removeAction={goal.removeAction}
           />
         );
       });
@@ -728,7 +780,7 @@ const UserGoals = (props) => {
       console.log(res);
       if (res.payload !== null) {
         dispatch(addGoals(res.payload));
-        console.log("aq", userGoals);
+        //console.log("aq", userGoals);
       }
     });
   };
@@ -834,6 +886,7 @@ const UserGoals = (props) => {
               crudType.goalAllocated
             )
           }
+          removeGoal={() => confirmRemoveGoal(crudType.goalId)}
 
           /* crudType={crudType.crudType}
           

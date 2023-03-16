@@ -76,7 +76,7 @@ const GoalInformation = (props) => {
         </ProgressBarDiv>
         <ButtonsDiv>
           <EditButton onClick={props.editAction} />{" "}
-          <RemoveButton onClick={() => props.removeAction} />
+          <RemoveButton onClick={props.removeAction} />
         </ButtonsDiv>
       </SecondaryContainer>
     </GoalContainer>
