@@ -584,19 +584,28 @@ const UserGoals = (props) => {
 
   let GoalListContent = <GoalListTitle>Goals List</GoalListTitle>;
   if (openList) {
+    let goalsList = "Nothing to show yet.";
+
+    if (userGoals !== null) {
+      let goalsArr = Object.values(userGoals);
+      console.log("édiferente", goalsArr);
+      goalsList = goalsArr.map((goal) => {
+        return (
+          <GoalInformation
+            name={goal.name}
+            date={goal.date}
+            allocated={goal.allocated}
+            term={goal.term}
+            value={goal.value}
+          />
+        );
+      });
+    }
+
     GoalListContent = (
       <GoalsExpandedDiv>
         <GoalListTitle>Goals List</GoalListTitle>
-        <GoalListContainer>
-          <GoalInformation />
-          <GoalInformation />
-          <GoalInformation />
-          <GoalInformation />
-          <GoalInformation />
-          <GoalInformation />
-          <GoalInformation />
-          <GoalInformation />
-        </GoalListContainer>
+        <GoalListContainer>{goalsList}</GoalListContainer>
         <ButtonDiv>
           <BackButton>Go Back</BackButton>
         </ButtonDiv>

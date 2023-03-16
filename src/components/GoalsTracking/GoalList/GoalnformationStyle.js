@@ -81,7 +81,7 @@ export const StatusBar = styled.div`
   border-radius: 4px;
   height: 100%;
   min-width: 0%;
-  width: 70%;
+  width: ${(props) => props.width};
   max-width: 100%;
   background-color: #51d289; ;
 `;

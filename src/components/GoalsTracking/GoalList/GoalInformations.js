@@ -17,7 +17,18 @@ import {
   ProgressTitle,
 } from "./GoalnformationStyle";
 
-const GoalInformation = () => {
+const GoalInformation = (props) => {
+  let initialAllocated = [...props.allocated];
+  let commaIndex = initialAllocated.findIndex((element) => element === ",");
+  initialAllocated.splice(commaIndex, 1, ".");
+  let replacedAllocated = initialAllocated.join("");
+  let convertedAllocated = Number(replacedAllocated).toFixed(2);
+  let initialValue = [...props.value];
+  commaIndex = initialValue.findIndex((element) => element === ",");
+  initialValue.splice(commaIndex, 1, ".");
+  let replacedValue = initialValue.join("");
+  let convertedValue = Number(replacedValue).toFixed(2);
+
   return (
     <GoalContainer>
       <InfoContainer>
@@ -27,9 +38,15 @@ const GoalInformation = () => {
           <GoalSubtitleBlock width={"33%"}>Percentage</GoalSubtitleBlock>
         </GoalSubtitleDiv>
         <GoalContentInfo>
-          <GoalContentBlock width={"33%"}>Long</GoalContentBlock>
-          <GoalContentBlock width={"33%"}>New House</GoalContentBlock>
-          <GoalContentBlock width={"33%"}>33%</GoalContentBlock>
+          <GoalContentBlock width={"33%"}>{props.term}</GoalContentBlock>
+          <GoalContentBlock width={"33%"}>{props.name}</GoalContentBlock>
+          <GoalContentBlock width={"33%"}>
+            {(
+              (Number(convertedAllocated) / Number(convertedValue)) *
+              100
+            ).toFixed(2)}{" "}
+            %
+          </GoalContentBlock>
         </GoalContentInfo>
         <GoalSubtitleDiv>
           <GoalSubtitleBlock width={"33%"}>Allocated</GoalSubtitleBlock>
@@ -37,16 +54,23 @@ const GoalInformation = () => {
           <GoalSubtitleBlock width={"33%"}>Limit Date</GoalSubtitleBlock>
         </GoalSubtitleDiv>
         <GoalContentInfo>
-          <GoalContentBlock width={"33%"}>$ 40000</GoalContentBlock>
-          <GoalContentBlock width={"33%"}>$ 200000</GoalContentBlock>
-          <GoalContentBlock width={"33%"}>15/03/2026</GoalContentBlock>
+          <GoalContentBlock width={"33%"}>
+            $ {convertedAllocated}
+          </GoalContentBlock>
+          <GoalContentBlock width={"33%"}>$ {convertedValue}</GoalContentBlock>
+          <GoalContentBlock width={"33%"}>{props.date}</GoalContentBlock>
         </GoalContentInfo>
       </InfoContainer>
       <SecondaryContainer>
         <ProgressBarDiv>
           <ProgressTitle>Progress</ProgressTitle>
           <EmptyBar>
-            <StatusBar />
+            <StatusBar
+              width={`${(
+                (Number(convertedAllocated) / Number(convertedValue)) *
+                100
+              ).toFixed(2)}%`}
+            />
           </EmptyBar>
         </ProgressBarDiv>
         <ButtonsDiv>
