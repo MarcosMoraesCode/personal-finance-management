@@ -29,6 +29,7 @@ const GoalInformation = (props) => {
   let replacedValue = initialValue.join("");
   let convertedValue = Number(replacedValue).toFixed(2);
 
+  console.log("props", props);
   return (
     <GoalContainer>
       <InfoContainer>
@@ -74,7 +75,8 @@ const GoalInformation = (props) => {
           </EmptyBar>
         </ProgressBarDiv>
         <ButtonsDiv>
-          <EditButton /> <RemoveButton />
+          <EditButton onClick={props.editAction} />{" "}
+          <RemoveButton onClick={() => props.removeAction} />
         </ButtonsDiv>
       </SecondaryContainer>
     </GoalContainer>

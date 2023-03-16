@@ -670,6 +670,8 @@ export const GoalsExpandedDiv = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  border: 1px solid white;
+  border-radius: 10px;
   width: 100%;
   height: 500px;
   min-height: 400px;

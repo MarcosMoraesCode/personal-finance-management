@@ -160,6 +160,126 @@ const Crud = (props) => {
         </>
       );
       break;
+    case "remove-goal":
+      crudContent = (
+        <>
+          <CrudStyleTitle>Remove "{props.goalName}"</CrudStyleTitle>
+          <CrudStatusDescription>
+            Do you really want to remove {props.goalName} goal?
+          </CrudStatusDescription>
+          <ModalButtonDiv>
+            <ContinueBtn onClick={props.removeGoal}>CONTINUE</ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+          </ModalButtonDiv>
+        </>
+      );
+      break;
+    case "edit-goal":
+      crudContent = (
+        <>
+          <CrudStyleTitle>Edit "{props.goalName} goal"</CrudStyleTitle>
+          <InputsDiv>
+            <InputContainer
+              placeholder={props.goalNameInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.goalNameInputConfig.isValid
+                  ? ""
+                  : props.goalNameInputConfig.invalidMessage
+              }
+              value={props.goalNameInputConfig.value}
+              blur={props.goalNameBlur}
+              changed={props.goalNameChanged}
+            >
+              Goal Name
+            </InputContainer>
+            <InputContainer
+              placeholder={props.goalValueInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.goalValueInputConfig.isValid
+                  ? ""
+                  : props.goalValueInputConfig.invalidMessage
+              }
+              value={props.goalValueInputConfig.value}
+              blur={props.goalValueBlur}
+              changed={props.goalValueChanged}
+            >
+              Ammount to achieve
+            </InputContainer>
+            <InputContainer
+              type={"date"}
+              placeholder={props.goalDateInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.goalDateInputConfig.isValid
+                  ? ""
+                  : props.goalDateInputConfig.invalidMessage
+              }
+              value={props.goalDateInputConfig.value}
+              blur={props.goalDateBlur}
+              changed={props.goalDateChanged}
+            >
+              Date
+            </InputContainer>
+          </InputsDiv>
+          {/* 
+            <InputContainer
+              placeholder={props.goalNameInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.goalNameInputConfig.isValid
+                  ? ""
+                  : props.goalNameInputConfig.invalidMessage
+              }
+              value={props.goalNameInputConfig.value}
+              blur={props.goalNameBlur}
+              changed={props.goalNameChanged}
+            >
+              Goal Name
+            </InputContainer>
+            <InputContainer
+              placeholder={props.goalValueInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.goalValueInputConfig.isValid
+                  ? ""
+                  : props.goalValueInputConfig.invalidMessage
+              }
+              value={props.goalValueInputConfig.value}
+              blur={props.goalValueBlur}
+              changed={props.goalValueChanged}
+            >
+              Ammount to achieve
+            </InputContainer>
+            <InputContainer
+              type={"date"}
+              placeholder={props.goalDateInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.goalDateInputConfig.isValid
+                  ? ""
+                  : props.goalDateInputConfig.invalidMessage
+              }
+              value={props.goalDateInputConfig.value}
+              blur={props.goalDateBlur}
+              changed={props.goalDateChanged}
+            >
+              Date
+            </InputContainer>
+          </InputsDiv> */}
+          <ModalButtonDiv>
+            <ContinueBtn
+              onClick={props.editGoal}
+              disabled={props.continueDisabled}
+              {...props}
+            >
+              CONTINUE
+            </ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+          </ModalButtonDiv>
+        </>
+      );
     default:
       break;
   }

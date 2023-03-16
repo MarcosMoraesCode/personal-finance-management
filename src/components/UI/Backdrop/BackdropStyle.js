@@ -11,5 +11,5 @@ export const BackdropContainer = styled.div`
   width: 100%;
   height: 100%;
   opacity: 0.8;
-  z-index: 20;
+  z-index: 999;
 `;

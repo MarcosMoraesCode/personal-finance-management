@@ -7,6 +7,7 @@ import InputContainer from "../../components/UI/Input/Input";
 import { fetchDynamicId } from "../../features/expenses/expensesSlice";
 import {
   addGoals,
+  editAGoal,
   fetchGoalsData,
   postNewGoal,
 } from "../../features/goals/goalsSlice";
@@ -38,6 +39,7 @@ import {
   GoalsExpandedDiv,
   ExpandButton,
 } from "./UserGoalsStyle";
+import Crud from "../../components/UI/Modal/CrudModal/Crud";
 
 const UserGoals = (props) => {
   const [userInputs, setUserInputs] = useState({
@@ -75,6 +77,16 @@ const UserGoals = (props) => {
     },
     term: "",
   });
+  const [crudType, setCrudType] = useState({
+    crudType: "",
+    goalTerm: "",
+    goalName: "",
+    goalId: "",
+    goalAllocated: "",
+    goalDate: "",
+  });
+  const [showCrud, setShowCrud] = useState(false);
+
   const [submitPermission, setSubmitPermission] = useState(false);
 
   const [openShortForm, setOpenShortForm] = useState(false);
@@ -157,9 +169,6 @@ const UserGoals = (props) => {
       );
 
     const isValidValue = (goalValue) => /^[0-9]+\,[0-9]{2,2}$/i.test(goalValue);
-
-    const isValidPercentage = (goalPercentage) =>
-      /^(100\.00%|\d{1,2}\.\d{2}%|[1-9]\d?\.\d{2}%)$/i.test(goalPercentage);
 
     const isValidDate = (expenseDate) =>
       /^([0-9]{4})\-(0[1-9]|1[0-2])\-(0[1-9]|[1-2][0-9]|3[0-1])$/.test(
@@ -309,7 +318,13 @@ const UserGoals = (props) => {
     if (validation1 && validation2 && validation3 && validation4) {
       setSubmitPermission(true);
     } else {
-      setSubmitPermission(false);
+      if (crudType.crudType !== "") {
+        if (validation1 && validation2 && validation4) {
+          setSubmitPermission(true);
+        } else {
+          setSubmitPermission(false);
+        }
+      }
     }
   };
 
@@ -582,7 +597,66 @@ const UserGoals = (props) => {
       </>
     );
   }
-  console.log(openList);
+
+  const editGoalHandler = (
+    goalName,
+    goalAllocated,
+    goalDate,
+    goalId,
+    goalTerm
+  ) => {
+    console.log("oi", goalName, goalAllocated, goalDate, goalId, goalTerm);
+    setCrudType({
+      ...crudType,
+      crudType: "edit-goal",
+      goalName: goalName,
+      goalAllocated: goalAllocated,
+      goalDate: goalDate,
+      goalId: goalId,
+      goalTerm: goalTerm,
+    });
+    setShowCrud(true);
+  };
+  const confirmEditGoal = (
+    newName,
+    newValue,
+    newDate,
+    goalId,
+    goalTerm,
+    goalAllocated
+  ) => {
+    const newGoalObj = {
+      newName: newName,
+      newValue: newValue,
+      newDate: newDate,
+      goalId: goalId,
+      goalTerm: goalTerm,
+      goalAllocated: goalAllocated,
+    };
+
+    dispatch(editAGoal(newGoalObj)).then((res) => {
+      if (res !== null) {
+        setCrudType({
+          ...crudType,
+          crudType: "",
+          goalTerm: "",
+          goalId: "",
+          goalAllocated: "",
+        });
+        refreshInputs();
+        setShowCrud(false);
+        getGoals();
+        setSubmitPermission(false);
+      }
+    });
+  };
+
+  const BackdropCrudHandler = () => {
+    setShowCrud(false);
+    refreshInputs();
+    setCrudType({ crudType: "", goalTerm: "", goalId: "", goalAllocated: "" });
+  };
+
   let GoalListContent = (
     <>
       <GoalListTitle>Goals List</GoalListTitle>
@@ -599,15 +673,38 @@ const UserGoals = (props) => {
 
     if (userGoals !== null) {
       let goalsArr = Object.values(userGoals);
-      console.log("édiferente", goalsArr);
-      goalsList = goalsArr.map((goal) => {
+      let newArr = goalsArr.map((goal) => {
+        return {
+          name: goal.name,
+          date: goal.date,
+          value: goal.value,
+          id: goal.id,
+          allocated: goal.allocated,
+          term: goal.term,
+
+          editAction: () =>
+            editGoalHandler(
+              goal.name,
+              goal.allocated,
+              goal.date,
+              goal.id,
+              goal.term
+            ),
+          //removeAction: () => removeGoalHandler(goal.name, goal.id),
+        };
+      });
+
+      goalsList = newArr.map((goal, index) => {
+        console.log("a", goal);
         return (
           <GoalInformation
+            key={`goal-${index}`}
             name={goal.name}
             date={goal.date}
             allocated={goal.allocated}
             term={goal.term}
             value={goal.value}
+            editAction={goal.editAction}
           />
         );
       });
@@ -699,6 +796,50 @@ const UserGoals = (props) => {
           </LongGoalExample>
         </UserGoalsContainer>
       </UserContentWrapper>
+      {showCrud ? (
+        <Crud
+          crudType={crudType.crudType}
+          goalName={crudType.goalName}
+          goalNameInputConfig={userInputs.inputName}
+          goalValueInputConfig={userInputs.inputValue}
+          goalDateInputConfig={userInputs.inputDate}
+          continueDisabled={submitPermission ? "" : "disabled"}
+          clicked={BackdropCrudHandler}
+          cancelAction={BackdropCrudHandler}
+          goalNameChanged={(event) =>
+            InputChangeHandler(event, userInputs.inputName.id)
+          }
+          goalValueChanged={(event) =>
+            InputChangeHandler(event, userInputs.inputValue.id)
+          }
+          goalDateChanged={(event) =>
+            InputChangeHandler(event, userInputs.inputDate.id)
+          }
+          goalNameBlur={() =>
+            verifyFocus(userInputs.inputName.id, userInputs.inputName.isValid)
+          }
+          goalValueBlur={() =>
+            verifyFocus(userInputs.inputValue.id, userInputs.inputValue.isValid)
+          }
+          goalDateBlur={() =>
+            verifyFocus(userInputs.inputDate.id, userInputs.inputDate.isValid)
+          }
+          editGoal={() =>
+            confirmEditGoal(
+              userInputs.inputName.value,
+              userInputs.inputValue.value,
+              userInputs.inputDate.value,
+              crudType.goalId,
+              crudType.goalTerm,
+              crudType.goalAllocated
+            )
+          }
+
+          /* crudType={crudType.crudType}
+          
+          }*/
+        />
+      ) : null}
     </UserGoalsDiv>
   );
 };

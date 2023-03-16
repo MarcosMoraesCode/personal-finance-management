@@ -66,7 +66,7 @@ export const CrudContentContainer = styled.div`
   width: fit-content;
   min-width: 300px;
   min-height: 400px;
-  z-index: 100;
+  z-index: 1000;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

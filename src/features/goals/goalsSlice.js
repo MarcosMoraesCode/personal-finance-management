@@ -112,10 +112,12 @@ export const editAGoal = createAsyncThunk(
     try {
       // console.log("payload", action.categoryId);
       await set(ref(db, `users/${userId}/goals/${action.goalId}`), {
-        categoryName: action.categoryName,
+        allocated: action.goalAllocated,
         date: action.newDate,
         id: action.goalId,
-        name: action.newExpenseName,
+        name: action.newName,
+        term: action.goalTerm,
+        value: action.newValue,
         //O VALUE NÃO SERÁ MODIFICADO NA EDIÇÃO, SERÁ NA PÁGINA DE APORTES
       });
     } catch (err) {
