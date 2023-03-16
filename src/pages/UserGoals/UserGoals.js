@@ -36,6 +36,7 @@ import {
   SpanMoneyTitle,
   GoalListContainer,
   GoalsExpandedDiv,
+  ExpandButton,
 } from "./UserGoalsStyle";
 
 const UserGoals = (props) => {
@@ -581,8 +582,18 @@ const UserGoals = (props) => {
       </>
     );
   }
-
-  let GoalListContent = <GoalListTitle>Goals List</GoalListTitle>;
+  console.log(openList);
+  let GoalListContent = (
+    <>
+      <GoalListTitle>Goals List</GoalListTitle>
+      <ExpandButton
+        onClick={() => {
+          setOpenList(true);
+          setStartListAnimation(true);
+        }}
+      />
+    </>
+  );
   if (openList) {
     let goalsList = "Nothing to show yet.";
 
@@ -607,7 +618,7 @@ const UserGoals = (props) => {
         <GoalListTitle>Goals List</GoalListTitle>
         <GoalListContainer>{goalsList}</GoalListContainer>
         <ButtonDiv>
-          <BackButton>Go Back</BackButton>
+          <BackButton onClick={() => setOpenList(false)}>Go Back</BackButton>
         </ButtonDiv>
       </GoalsExpandedDiv>
     );
@@ -656,14 +667,7 @@ const UserGoals = (props) => {
             </AllocatedMoneyTitle>
             <EditButton />
           </AllocatedMoneyDiv>
-          <GoalsDiv
-            open={openList}
-            animations={startListAnimations}
-            onClick={() => {
-              setOpenList(!openList);
-              setStartListAnimation(true);
-            }}
-          >
+          <GoalsDiv open={openList} animations={startListAnimations}>
             {GoalListContent}
           </GoalsDiv>
           <AchievementDiv

@@ -2,6 +2,7 @@ import styled, { css, keyframes } from "styled-components";
 import createIcon from "../../images/createIcon.png";
 import pig from "../../images/pig.png";
 import babyPig from "../../images/formPig.png";
+import expandIcon from "../../images/expandIcon.png";
 
 const scaleUpRight = keyframes`
  0% {
@@ -561,10 +562,25 @@ export const GoalsDiv = styled.div`
   // animation: ${scaleUpTop} 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   background-color: black;
   :hover {
-    cursor: pointer;
-
     transition: 0.4s ease-in-out;
     box-shadow: 2px 2px 20px 2px white;
+  }
+`;
+
+export const ExpandButton = styled.button`
+  margin-left: 20px;
+  align-self: center;
+  justify-self: flex-end;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  background-image: url(${expandIcon});
+  background-size: cover;
+  border: none;
+  :hover {
+    cursor: pointer;
+    transform: scale(1.5);
+    transition: 0.4s ease-in-out;
   }
 `;
 
@@ -573,11 +589,6 @@ export const GoalListTitle = styled.h1`
   font-family: "Roboto";
   font-weight: 600;
   font-size: 25px;
-
-  :hover {
-    transform: scale(1.1);
-    transition: 0.4s ease-in-out;
-  }
 `;
 
 export const AllocatedMoneyDiv = styled.div`
