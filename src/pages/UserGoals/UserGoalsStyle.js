@@ -764,11 +764,54 @@ export const SpanText = styled.span`
   font-size: 10px;
 `;
 
-export const AdvicesContent = styled.div`
+export const AdvicesContainer = styled.div`
+  //background-color: black;
+  //opacity: 0.9;
   display: flex;
+  justify-content: center;
+  align-items: center;
   margin: auto;
   border: 1px solid white;
   min-width: 70%;
   max-width: 70%;
   min-height: 35%;
+`;
+
+export const AdvicesContent = styled.div`
+  display: flex;
+  padding-bottom: 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  border-radius: 10px;
+  border: 1px solid gold;
+  width: 90%;
+  height: 95%;
+`;
+
+export const AdvicesTitle = styled.div`
+  margin-right: auto;
+  margin-left: auto;
+
+  max-width: 90%;
+  min-width: 90%;
+  text-align: start;
+  font-size: 25px;
+  color: #51d289;
+  font-weight: 600;
+  padding-top: 10px;
+  padding-bottom: 10px;
+`;
+export const StyledParagraph = styled.p`
+  margin: 5px;
+  text-indent: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 90%;
+  min-width: 90%;
+  text-align: start;
+  font-size: 16px;
+  font-weight: 300;
+  color: white;
 `;

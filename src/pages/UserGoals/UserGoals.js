@@ -49,6 +49,9 @@ import {
   SecondTextContent,
   ThirdTextContent,
   SpanText,
+  AdvicesContainer,
+  AdvicesTitle,
+  StyledParagraph,
   AdvicesContent,
 } from "./UserGoalsStyle";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
@@ -1033,7 +1036,36 @@ const UserGoals = (props) => {
             {longTermContent}
           </LongGoalExample>
         </UserGoalsContainer>
-        <AdvicesContent></AdvicesContent>
+        <AdvicesContainer>
+          <AdvicesContent>
+            <AdvicesTitle>Some Advices</AdvicesTitle>
+            <StyledParagraph>
+              Setting goals is crucial for achieving financial success. By
+              having a clear plan of action, you can make meaningful progress
+              towards your financial goals. It's important to identify your
+              short, medium, and long-term financial goals such as building an
+              emergency fund, saving for a down payment, investing for
+              retirement, or paying off debt.
+            </StyledParagraph>
+            <StyledParagraph>
+              Once you've identified your goals, make sure they are SMART:
+              specific, measurable, achievable, relevant, and time-bound. This
+              means setting clear targets, tracking your progress, and making
+              sure that your goals are realistic given your current financial
+              situation. To stay motivated, break your goals down into smaller,
+              more manageable tasks, and celebrate your progress along the way.
+            </StyledParagraph>
+            <StyledParagraph>
+              To achieve your financial goals, you need discipline and focus.
+              Avoid getting sidetracked by distractions or temptations along the
+              way. Say "no" to certain purchases or activities to stay focused
+              on your goals. Take control of your finances and achieve the
+              financial freedom and security you deserve. With a little effort
+              and planning, you can create a roadmap to achieve your financial
+              goals and live the life you want.
+            </StyledParagraph>
+          </AdvicesContent>
+        </AdvicesContainer>
       </UserContentWrapper>
       {showCrud ? (
         <Crud
