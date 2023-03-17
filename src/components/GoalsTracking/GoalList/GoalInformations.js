@@ -74,7 +74,7 @@ const GoalInformation = (props) => {
           <SpanInfo
             onClick={percentage === "100.00" ? props.finishTask : () => {}}
           >
-            {percentage === "100.00" ? "click to complete!" : ""}
+            {percentage === "100.00" ? "Click to complete!" : ""}
           </SpanInfo>
         </ProgressBarDiv>
         <ButtonsDiv>

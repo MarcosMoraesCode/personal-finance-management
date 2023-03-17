@@ -11,6 +11,7 @@ const userId = "Marcos";
 
 const initialState = {
   userGoals: null,
+  userAchievements: null,
   dynamicId: 0,
 };
 
@@ -42,6 +43,27 @@ export const fetchGoalsData = createAsyncThunk(
     try {
       const dbResponse = await get(
         child(ref(db), `users/${userId}/goals`)
+      ).then((snapshot) => {
+        // console.log("categorias carregadas: ", snapshot.val());
+        return snapshot.val();
+      });
+      return dbResponse;
+      //ANTES DO FIREBASE
+      //const response = await axiosInstance.get("/category.json");
+      //console.log("resposta axios", response.data);
+      //return response.data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+);
+export const fetchAchievementsData = createAsyncThunk(
+  "usergoals/fetchAchievementsData",
+  async (action) => {
+    try {
+      const dbResponse = await get(
+        child(ref(db), `users/${userId}/achievements`)
       ).then((snapshot) => {
         // console.log("categorias carregadas: ", snapshot.val());
         return snapshot.val();
@@ -215,6 +237,9 @@ export const goalDataSlice = createSlice({
     addGoals: (state, action) => {
       state.userGoals = action.payload;
     },
+    addAchievements: (state, action) => {
+      state.userAchievements = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchGoalsData.fulfilled, (state, action) => {
@@ -264,9 +289,17 @@ export const goalDataSlice = createSlice({
       //console.log("Rejected", action.error.message);
       //console.log(action.error);
     });
+    builder.addCase(fetchAchievementsData.fulfilled, (state, action) => {
+      //console.log("payload", action.payload);
+      //console.log("Novo id dinamico: ", state.dynamicId);
+    });
+    builder.addCase(fetchAchievementsData.rejected, (state, action) => {
+      //console.log("Rejected", action.error.message);
+      //console.log(action.error);
+    });
   },
 });
 
-export const { addGoals } = goalDataSlice.actions;
+export const { addGoals, addAchievements } = goalDataSlice.actions;
 
 export default goalDataSlice.reducer;

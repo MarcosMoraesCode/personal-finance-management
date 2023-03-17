@@ -209,6 +209,34 @@ const scaleDownTopLeft = keyframes`
 
 `;
 
+const TextFocus = keyframes`
+0% {
+    -webkit-filter: blur(12px);
+            filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+            filter: blur(0px);
+    opacity: 1;
+  }
+
+`;
+
+const TrackingInContract = keyframes`
+0% {
+    letter-spacing: 1em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    letter-spacing: normal;
+    opacity: 1;
+  }
+`;
+
 export const UserContentWrapper = styled.div`
   width: 100%;
   min-height: 100%;
@@ -678,4 +706,69 @@ export const GoalsExpandedDiv = styled.div`
   :hover {
     cursor: auto;
   }
+`;
+
+export const AchievementsExpandedDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  width: 80%;
+  height: 90%;
+  color: gold;
+  //background-color: red;
+`;
+
+export const AchievementWarning = styled.h1`
+  color: gold;
+  font-size: 15px;
+
+  -webkit-animation: ${TextFocus} 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+    both;
+  animation: ${TextFocus} 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+`;
+
+export const ExpandedTitle = styled.h1`
+  font-size: 12px;
+  color: gold;
+
+  -webkit-animation: ${TextFocus} 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+    both;
+  animation: ${TextFocus} 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+`;
+
+export const FirstTextContent = styled.p`
+  color: white;
+  font-size: 10px;
+  -webkit-animation: ${TextFocus} 1.8s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+    both;
+  animation: ${TextFocus} 1.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+`;
+export const SecondTextContent = styled.p`
+  color: white;
+  font-size: 10px;
+  -webkit-animation: ${TextFocus} 2.8s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+    both;
+  animation: ${TextFocus} 2.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+`;
+export const ThirdTextContent = styled.p`
+  color: white;
+  font-size: 10px;
+  -webkit-animation: ${TextFocus} 3.8s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+    both;
+  animation: ${TextFocus} 3.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+`;
+
+export const SpanText = styled.span`
+  color: #51d289;
+  font-size: 10px;
+`;
+
+export const AdvicesContent = styled.div`
+  display: flex;
+  margin: auto;
+  border: 1px solid white;
+  min-width: 70%;
+  max-width: 70%;
+  min-height: 35%;
 `;

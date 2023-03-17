@@ -6,8 +6,10 @@ import GoalInformation from "../../components/GoalsTracking/GoalList/GoalInforma
 import InputContainer from "../../components/UI/Input/Input";
 import { fetchDynamicId } from "../../features/expenses/expensesSlice";
 import {
+  addAchievements,
   addGoals,
   editAGoal,
+  fetchAchievementsData,
   fetchGoalsData,
   postNewGoal,
   removeAGoal,
@@ -40,6 +42,14 @@ import {
   GoalListContainer,
   GoalsExpandedDiv,
   ExpandButton,
+  AchievementsExpandedDiv,
+  AchievementWarning,
+  ExpandedTitle,
+  FirstTextContent,
+  SecondTextContent,
+  ThirdTextContent,
+  SpanText,
+  AdvicesContent,
 } from "./UserGoalsStyle";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
 import CongratulationsModal from "../../components/UI/Modal/CongratulationsModal/CongratulationsModal";
@@ -108,6 +118,9 @@ const UserGoals = (props) => {
 
   const dispatch = useDispatch();
   const userGoals = useSelector((state) => state.goalsData.userGoals);
+  const userAchievements = useSelector(
+    (state) => state.goalsData.userAchievements
+  );
 
   useEffect(() => {
     getGoals();
@@ -656,7 +669,7 @@ const UserGoals = (props) => {
     };
 
     dispatch(editAGoal(newGoalObj)).then((res) => {
-      if (res !== null) {
+      if (res.meta.requestStatus === "fulfilled") {
         setCrudType({
           ...crudType,
           crudType: "",
@@ -687,19 +700,21 @@ const UserGoals = (props) => {
 
   const confirmRemoveGoal = async (goalId) => {
     await dispatch(removeAGoal(goalId)).then((res) => {
-      setCrudType({
-        ...crudType,
-        crudType: "",
-        goalTerm: "",
-        goalName: "",
-        goalId: "",
-        goalAllocated: "",
-        goalDate: "",
-        goalValue: "",
-      });
+      if (res.meta.requestStatus === "fulfilled") {
+        setCrudType({
+          ...crudType,
+          crudType: "",
+          goalTerm: "",
+          goalName: "",
+          goalId: "",
+          goalAllocated: "",
+          goalDate: "",
+          goalValue: "",
+        });
+        setShowCrud(false);
+        getGoals();
+      }
     });
-    setShowCrud(false);
-    getGoals();
   };
 
   const BackdropCrudHandler = () => {
@@ -716,6 +731,122 @@ const UserGoals = (props) => {
     });
   };
 
+  let achievementContent = <AchievementTitle>Achievements</AchievementTitle>;
+
+  if (openAchiev) {
+    userGoals !== null
+      ? (achievementContent = (
+          <AchievementWarning>
+            You didn't achieve a goal yet, don't give up!
+          </AchievementWarning>
+        ))
+      : (achievementContent = (
+          <AchievementWarning>
+            You must start creating your first goal!
+          </AchievementWarning>
+        ));
+
+    if (userAchievements !== null) {
+      let shortTerm = { achievs: 0, totalAllocated: 0 };
+      let mediumTerm = { achievs: 0, totalAllocated: 0 };
+      let longTerm = { achievs: 0, totalAllocated: 0 };
+
+      let allAchiev = Object.values(userAchievements);
+      allAchiev.forEach((achiev) => {
+        let initialValue = [...achiev.value];
+        let commaIndex = initialValue.findIndex((element) => element === ",");
+        initialValue.splice(commaIndex, 1, ".");
+        let replacedValue = initialValue.join("");
+        let convertedValue = Number(replacedValue).toFixed(2);
+
+        if (achiev.term === "Short") {
+          let oldAchievs = shortTerm.achievs;
+          shortTerm.achievs = oldAchievs + 1;
+          let oldTotal = shortTerm.totalAllocated;
+          shortTerm.totalAllocated = (
+            Number(oldTotal) + Number(convertedValue)
+          ).toFixed(2);
+        }
+        if (achiev.term === "Medium") {
+          let oldAchievs = mediumTerm.achievs;
+          mediumTerm.achievs = oldAchievs + 1;
+          let oldTotal = mediumTerm.totalAllocated;
+          mediumTerm.totalAllocated = (
+            Number(oldTotal) + Number(convertedValue)
+          ).toFixed(2);
+        }
+        if (achiev.term === "Long") {
+          let oldAchievs = longTerm.achievs;
+          longTerm.achievs = oldAchievs + 1;
+          let oldTotal = longTerm.totalAllocated;
+          longTerm.totalAllocated = (
+            Number(oldTotal) + Number(convertedValue)
+          ).toFixed(2);
+        }
+      });
+      let totalAchievements =
+        shortTerm.achievs + mediumTerm.achievs + longTerm.achievs;
+      console.log(userAchievements);
+      console.log(totalAchievements);
+
+      let firstText =
+        shortTerm.achievs === 0 ? null : shortTerm.achievs > 1 ? (
+          <FirstTextContent>
+            You already achieve <SpanText>{shortTerm.achievs}</SpanText> short
+            term goals and allocated a total of{" "}
+            <SpanText>$ {shortTerm.totalAllocated}</SpanText>
+          </FirstTextContent>
+        ) : (
+          <FirstTextContent>
+            {" "}
+            You achieve your first short term goal and invested a total of
+            <SpanText> $ {shortTerm.totalAllocated}</SpanText>{" "}
+          </FirstTextContent>
+        );
+      let secondText =
+        mediumTerm.achievs === 0 ? null : mediumTerm.achievs > 1 ? (
+          <SecondTextContent>
+            You already achieve <SpanText>{mediumTerm.achievs}</SpanText> medium
+            term goals and allocated a total of{" "}
+            <SpanText>$ {mediumTerm.totalAllocated}</SpanText>
+          </SecondTextContent>
+        ) : (
+          <SecondTextContent>
+            {" "}
+            You achieve your first medium term goal and invested a total of
+            <SpanText> $ {mediumTerm.totalAllocated} </SpanText>{" "}
+          </SecondTextContent>
+        );
+      let thirdText =
+        longTerm.achievs === 0 ? null : longTerm.achievs > 1 ? (
+          <ThirdTextContent>
+            You already achieve <SpanText>{longTerm.achievs}</SpanText> long
+            term goals and allocated a total of{" "}
+            <SpanText>$ {longTerm.totalAllocated}</SpanText>
+          </ThirdTextContent>
+        ) : (
+          <ThirdTextContent>
+            {" "}
+            You achieve your first long term goal and invested a total of
+            <SpanText> $ {longTerm.totalAllocated}</SpanText>{" "}
+          </ThirdTextContent>
+        );
+
+      achievementContent = (
+        <AchievementsExpandedDiv>
+          <ExpandedTitle>
+            {totalAchievements > 1
+              ? `You already achieve ${totalAchievements} goals!`
+              : `You already achieve your first goal!`}
+          </ExpandedTitle>
+          {firstText}
+          {secondText}
+          {thirdText}
+        </AchievementsExpandedDiv>
+      );
+    }
+  }
+
   let GoalListContent = (
     <>
       <GoalListTitle>Goals List</GoalListTitle>
@@ -727,8 +858,9 @@ const UserGoals = (props) => {
       />
     </>
   );
-  if (openList && userGoals !== null) {
-    let goalsList = "Nothing to show yet.";
+
+  if (openList) {
+    let goalsList = "Create your goal and come back!";
 
     if (userGoals !== null) {
       let goalsArr = Object.values(userGoals);
@@ -799,10 +931,13 @@ const UserGoals = (props) => {
     dispatch(fetchDynamicId());
 
     await dispatch(fetchGoalsData()).then((res) => {
-      console.log(res);
-      if (res.payload !== null) {
+      if (res.meta.requestStatus === "fulfilled") {
         dispatch(addGoals(res.payload));
-        //console.log("aq", userGoals);
+      }
+    });
+    await dispatch(fetchAchievementsData()).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        dispatch(addAchievements(res.payload));
       }
     });
   };
@@ -838,7 +973,7 @@ const UserGoals = (props) => {
       term: crudType.goalTerm,
     };
     await dispatch(transferGoalToAchievement(goal)).then((res) => {
-      if (res !== null) {
+      if (res.meta.requestStatus === "fulfilled") {
         dispatch(removeAGoal(goal.id));
         getGoals();
         setShowCongratulation(false);
@@ -878,7 +1013,7 @@ const UserGoals = (props) => {
               setStartAchievAnimation(true);
             }}
           >
-            <AchievementTitle>Achievements</AchievementTitle>
+            {achievementContent}
           </AchievementDiv>
         </GoalsInfoContainer>
         <UserGoalsContainer>
@@ -898,6 +1033,7 @@ const UserGoals = (props) => {
             {longTermContent}
           </LongGoalExample>
         </UserGoalsContainer>
+        <AdvicesContent></AdvicesContent>
       </UserContentWrapper>
       {showCrud ? (
         <Crud
