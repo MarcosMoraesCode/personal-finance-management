@@ -2,12 +2,12 @@ import React from "react";
 import { NavigationUl } from "./NavigationStyles";
 
 import NavigationItem from "./NavigationItem/NavigationItem";
+import DrawerToggle from "../SideDrawer/DrawerToggle/DrawerToggle";
 
 const NavigationItems = () => {
   return (
     <NavigationUl>
-      <NavigationItem link="/">HOME</NavigationItem>
-      <NavigationItem link="/userfinances">User Finances</NavigationItem>
+      <DrawerToggle></DrawerToggle>
       <NavigationItem link="/login">LOGIN</NavigationItem>
     </NavigationUl>
   );

@@ -42,7 +42,6 @@ export const StyledLink = styled(NavLink)`
 //<StyledLink activeClassName="any" />;
 
 export const WrappNavLink = styled.div`
-  background-color: gree;
   width: 100px;
   height: 100%;
 `;

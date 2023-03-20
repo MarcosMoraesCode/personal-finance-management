@@ -562,6 +562,7 @@ export const UserContentWrapper = styled.div`
 export const UserGoalsDiv = styled.div`
   padding-top: 6vh;
   min-height: 94vh;
+  max-height: 94vh;
   display: flex;
   flex-direction: row;
   text-align: center;
