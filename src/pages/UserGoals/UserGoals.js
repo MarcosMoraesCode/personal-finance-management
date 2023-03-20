@@ -511,7 +511,9 @@ const UserGoals = (props) => {
   if (openShortForm) {
     shortTermContent = (
       <>
-        <GoalExampleTitle>Create a new Short Term Goal!</GoalExampleTitle>
+        <GoalExampleTitle fontSize={"15px"} open={openShortForm}>
+          Create a new Short Term Goal!
+        </GoalExampleTitle>
         {defaultForm}
         <ButtonDiv center>
           <AddButton
@@ -560,7 +562,9 @@ const UserGoals = (props) => {
   if (openMediumForm) {
     mediumTermContent = (
       <>
-        <GoalExampleTitle>Create a new Medium Term Goal!</GoalExampleTitle>
+        <GoalExampleTitle fontSize={"15px"}>
+          Create a new Medium Term Goal!
+        </GoalExampleTitle>
         {defaultForm}
         <ButtonDiv center>
           <AddButton
@@ -609,7 +613,9 @@ const UserGoals = (props) => {
   if (openLongForm) {
     longTermContent = (
       <>
-        <GoalExampleTitle>Create a new Long Term Goal!</GoalExampleTitle>
+        <GoalExampleTitle fontSize={"15px"}>
+          Create a new Long Term Goal!
+        </GoalExampleTitle>
         {defaultForm}
         <ButtonDiv center>
           <AddButton
@@ -920,11 +926,18 @@ const UserGoals = (props) => {
     }
 
     GoalListContent = (
-      <GoalsExpandedDiv>
+      <GoalsExpandedDiv open={openList} animations={startListAnimations}>
         <GoalListTitle>Goals List</GoalListTitle>
         <GoalListContainer>{goalsList}</GoalListContainer>
         <ButtonDiv>
-          <BackButton onClick={() => setOpenList(false)}>Go Back</BackButton>
+          <BackButton
+            onClick={() => {
+              setOpenList(false);
+              setStartAchievAnimation(false);
+            }}
+          >
+            Go Back
+          </BackButton>
         </ButtonDiv>
       </GoalsExpandedDiv>
     );
@@ -999,7 +1012,7 @@ const UserGoals = (props) => {
     <UserGoalsDiv>
       <UserContentWrapper>
         <GoalsInfoContainer>
-          <AllocatedMoneyDiv>
+          <AllocatedMoneyDiv listIsOpen={openList}>
             <AllocatedMoneyTitle>
               <SpanMoneyTitle> Allocated income</SpanMoneyTitle> $ 156500.00
             </AllocatedMoneyTitle>
@@ -1009,6 +1022,7 @@ const UserGoals = (props) => {
             {GoalListContent}
           </GoalsDiv>
           <AchievementDiv
+            listIsOpen={openList}
             open={openAchiev}
             animations={startAchievAnimation}
             onClick={() => {

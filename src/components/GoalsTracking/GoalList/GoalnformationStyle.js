@@ -48,11 +48,21 @@ export const GoalContainer = styled.div`
   border: 1px solid white;
   margin-top: 10px;
   //background-color: red;
+  @media (max-width: 1030px) {
+    flex-direction: column;
+  }
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 `;
 export const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 60%;
+  @media (max-width: 1030px) {
+    width: 100%;
+    padding-bottom: 5px;
+  }
 `;
 
 export const GoalSubtitleDiv = styled.div`
@@ -85,6 +95,9 @@ export const GoalContentBlock = styled.div`
   //  background-color: white;
   width: ${(props) => props.width};
   height: fit-content;
+  @media (max-width: 430px) {
+    font-size: 8px;
+  } ;
 `;
 
 export const SecondaryContainer = styled.div`
@@ -93,6 +106,12 @@ export const SecondaryContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 40%;
+  @media (max-width: 1030px) {
+    width: 100%;
+    margin: auto;
+    padding-top: 5px;
+    border-top: 1px solid gold;
+  }
   //border: 1px solid red;
 `;
 
@@ -104,6 +123,10 @@ export const ProgressBarDiv = styled.div`
   width: 65%;
   height: 100%;
   padding-bottom: 5px;
+  @media (max-width: 1030px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
   //border: 1px solid green;
 `;
 
@@ -132,12 +155,13 @@ export const StatusBar = styled.div`
 
 export const ButtonsDiv = styled.div`
   //background-color: ghostwhite;
-  padding-right: 10px;
-  padding-left: 20px;
+  padding-right: 5px;
+  padding-left: 5px;
   display: flex;
   justify-content: space-around;
   max-width: 35%;
   width: 35%;
+  // border: 1px solid red;
 `;
 
 export const EditButton = styled.button`
@@ -176,6 +200,7 @@ export const ProgressTitle = styled.h1`
 `;
 
 export const SpanInfo = styled.span`
+  padding-top: 2px;
   font-size: 10px;
   color: gold;
   width: 100%;
@@ -185,6 +210,9 @@ export const SpanInfo = styled.span`
 
   :hover {
     cursor: pointer;
+  }
+  @media (max-width: 430px) {
+    font-size: 8px;
   }
   // background-color: blue;
 `;
