@@ -1637,6 +1637,12 @@ const UserExpenses = () => {
             realPercentage={calculateRealPercentage(item.expensesList).toFixed(
               2
             )}
+            color={
+              Number(calculateExpectedPercentage(item.spendLimit)).toFixed(2) <
+              Number(calculateRealPercentage(item.expensesList)).toFixed(2)
+                ? "red"
+                : "#51d289"
+            }
             percentageExpected={calculateExpectedPercentage(item.spendLimit)}
             clicked={() => {
               expandBtnHandler(currentBtnIndex);
@@ -2275,10 +2281,14 @@ const UserExpenses = () => {
                         <SpendingInfoSpan>
                           bugder lasting for this month
                         </SpendingInfoSpan>{" "}
-                        {totalSpendLimit === undefined ? "" : "$"}
-                        {
-                          spendInfo /*(totalSpendLimit - totalSpent).toFixed(2)*/
-                        }
+                        {totalSpendLimit === undefined
+                          ? ""
+                          : spendInfo > 0
+                          ? " $ "
+                          : " - $ "}
+                        {spendInfo >= 0
+                          ? (spendInfo * 1).toFixed(2)
+                          : (spendInfo * -1).toFixed(2)}
                       </SpendingInfoTitle>
                       <SpendingBar>
                         <SpendingBarValue

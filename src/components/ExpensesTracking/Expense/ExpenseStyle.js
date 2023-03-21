@@ -113,6 +113,7 @@ export const DefaultContentBlock = styled.div`
   width: ${(props) => props.width};
   margin-top: 5px;
   margin-bottom: 5px;
+
   // border: 1px solid white;
   @media (max-width: 1300px) {
     font-size: 12px;
@@ -122,6 +123,11 @@ export const DefaultContentBlock = styled.div`
     width: ${(props) => (props.width === "15%" ? "15%" : "40%")};
     font-size: 10px;
   }
+`;
+
+export const SpecialP = styled.p`
+  color: ${(props) => props.color};
+  // font-weight: ${(props) => (props.color === "red" ? 600 : 200)};
 `;
 export const ExtraContentBlock = styled.div`
   display: flex;

@@ -17,6 +17,7 @@ import {
   EditButton,
   RemoveButton,
   ButtonsDiv,
+  SpecialP,
 } from "./ExpenseStyle";
 
 const Expense = (props) => {
@@ -88,7 +89,10 @@ const Expense = (props) => {
                 <p> {props.showValues ? `$ ${props.expenseTotal}` : `--`} </p>
               </DefaultContentBlock>
               <DefaultContentBlock width={"25%"}>
-                <p> {props.showValues ? `${props.realPercentage}%` : `--`} </p>
+                <SpecialP color={props.color}>
+                  {" "}
+                  {props.showValues ? `${props.realPercentage}%` : `--`}{" "}
+                </SpecialP>
                 <p>{props.percentageExpected}%</p>
               </DefaultContentBlock>
               <DefaultContentBlock width={"15%"}>
