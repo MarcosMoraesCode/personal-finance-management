@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EditButton } from "../../components/ExpensesTracking/Expense/ExpenseStyle";
 import GoalInformation from "../../components/GoalsTracking/GoalList/GoalInformations";
-
+import { FadeLoader } from "react-spinners";
 import InputContainer from "../../components/UI/Input/Input";
 import { fetchDynamicId } from "../../features/expenses/expensesSlice";
 import {
@@ -53,6 +53,7 @@ import {
   AdvicesTitle,
   StyledParagraph,
   AdvicesContent,
+  SpinnerDiv,
 } from "./UserGoalsStyle";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
 import CongratulationsModal from "../../components/UI/Modal/CongratulationsModal/CongratulationsModal";
@@ -119,6 +120,7 @@ const UserGoals = (props) => {
   const [startListAnimations, setStartListAnimation] = useState(false);
   const [openAchiev, setOpenAchiev] = useState(false);
   const [startAchievAnimation, setStartAchievAnimation] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
 
   const dispatch = useDispatch();
   const userGoals = useSelector((state) => state.goalsData.userGoals);
@@ -505,6 +507,14 @@ const UserGoals = (props) => {
       </FormContainer>
     </>
   );
+
+  if (loadingSubmit) {
+    defaultForm = (
+      <SpinnerDiv>
+        <FadeLoader color="#51d289"></FadeLoader>
+      </SpinnerDiv>
+    );
+  }
 
   let shortTermContent = (
     <>
@@ -980,14 +990,14 @@ const UserGoals = (props) => {
   };
 
   const submitGoal = async () => {
-    // setLoadingSubmit(true);
+    setLoadingSubmit(true);
     await dispatch(postNewGoal(userInputs))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           refreshInputs();
           getGoals();
           setSubmitPermission(false);
-          //   setLoadingSubmit(false);
+          setLoadingSubmit(false);
         }
       })
       .catch((err) => {

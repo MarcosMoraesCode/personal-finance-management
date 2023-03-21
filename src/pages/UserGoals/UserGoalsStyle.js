@@ -1056,6 +1056,13 @@ export const AchievementDiv = styled.div`
           `};
   }
 `;
+export const SpinnerDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const AchievementTitle = styled.h1`
   color: gold;

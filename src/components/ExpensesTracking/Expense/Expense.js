@@ -89,7 +89,9 @@ const Expense = (props) => {
                 <p> {props.showValues ? `$ ${props.expenseTotal}` : `--`} </p>
               </DefaultContentBlock>
               <DefaultContentBlock width={"25%"}>
-                <SpecialP color={props.color}>
+                <SpecialP
+                  color={props.showValues === true ? props.color : null}
+                >
                   {" "}
                   {props.showValues ? `${props.realPercentage}%` : `--`}{" "}
                 </SpecialP>

@@ -1,7 +1,32 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import formPig from "../../images/formPig.png";
 import pig from "../../images/pig.png";
 import check from "../../images/checkIcon.svg";
+
+const FadeInLeft = keyframes`
+0% {
+    -webkit-transform: translateX(-50px);
+            transform: translateX(-50px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    opacity: 1;
+  }
+`;
+const FadeInRight = keyframes`
+ 0% {
+    -webkit-transform: translateX(50px);
+            transform: translateX(50px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    opacity: 1;
+  }
+`;
 
 export const LoadingDiv = styled.div`
   display: flex;
@@ -147,9 +172,9 @@ export const SwitchListsButton = styled.button`
   font-family: "Roboto";
   :hover {
     //background-color: #51d289;
-    transition: 0.1s;
+    transition: 0.4s ease-in-out;
     box-shadow: 0px 5px 5px 0 white;
-    border-top: 1px solid gold;
+    border-top: 1px solid white;
   }
 `;
 //FORM
@@ -316,6 +341,26 @@ export const NewCategoryFormDiv = styled.div`
 
 export const DefaultTitle = styled.h1`
   color: #51d289;
+`;
+export const DefaultAnimatedTitle = styled.h1`
+  color: #51d289;
+  -webkit-animation: ${(props) =>
+    props.children === "Month Expenses"
+      ? css`
+          ${FadeInLeft} 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both
+        `
+      : css`
+          ${FadeInRight} 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both
+        `};
+
+  animation: ${(props) =>
+    props.children === "Month Expenses"
+      ? css`
+          ${FadeInLeft} 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both
+        `
+      : css`
+          ${FadeInRight} 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both
+        `};
 `;
 
 export const NewExpenseTitleDiv = styled.div`

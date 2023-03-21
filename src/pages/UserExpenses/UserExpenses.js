@@ -41,6 +41,7 @@ import {
   AuxContainerDivOne,
   AuxContainerDivTwo,
   SwitchListsButton,
+  DefaultAnimatedTitle,
 } from "./UserExpensesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import SelectContainer from "../../components/UI/Select/Select";
@@ -2212,13 +2213,13 @@ const UserExpenses = () => {
           </FormDiv>
           <ExpensesDiv>
             <ListTitleDiv>
-              <DefaultTitle>
+              <DefaultAnimatedTitle checkAnimation={showEditCategories}>
                 {showEditCategories
                   ? "Categories List"
                   : showMonthExpenses
                   ? "Month Expenses"
                   : "All Expenses"}
-              </DefaultTitle>
+              </DefaultAnimatedTitle>
               <SwitchListsButton onClick={changeCategoryDivHandler}>
                 {showEditCategories ? "Expenses List" : "Edit Category"}
               </SwitchListsButton>

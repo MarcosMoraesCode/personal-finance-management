@@ -10,6 +10,7 @@ export const BudgetTrackingDiv = styled.div`
   justify-content: space-between;
   font-family: "Roboto";
   background-color: black;
+  background: linear-gradient(to right top, grey, grey 20%, black, black 80%);
   //background-image: url(${pig});
   @media (max-width: 1100px) {
     flex-direction: column;
