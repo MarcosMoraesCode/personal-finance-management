@@ -1,28 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { MainContent, MainDiv } from "./LayoutStyle";
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import Footer from "../../components/Footer/Footer";
 import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
 
 const Layout = (props) => {
+  const [openSideDrawer, setOpenSideDrawer] = useState(false);
+  const [startAnimation, setStartAnimation] = useState(false);
+
+  const sideDrawerHandler = () => {
+    setOpenSideDrawer(!openSideDrawer);
+    setStartAnimation(true);
+  };
+
   return (
     <>
       <MainDiv>
-        <Toolbar></Toolbar>
-        <SideDrawer></SideDrawer>
-        <MainContent>
-          {/* <div
-            style={{
-              display: "flex",
-              position: "absolute",
-              width: "10%",
-              height: "88vh",
-              backgroundColor: "red",
-              marginTop: "6vh",
-            }}
-          ></div>*/}
-          {props.children}
-        </MainContent>
+        <Toolbar
+          //show={openSideDrawer}
+          changeSideDrawer={sideDrawerHandler}
+        ></Toolbar>
+        <SideDrawer
+          back={sideDrawerHandler}
+          open={openSideDrawer}
+          animation={startAnimation}
+        ></SideDrawer>
+        <MainContent>{props.children}</MainContent>
         <Footer></Footer>
       </MainDiv>
     </>

@@ -16,9 +16,9 @@ import {
 
 const SideDrawer = (props) => {
   return (
-    <SideDrawerDiv>
+    <SideDrawerDiv clicked={props.open} animations={props.animation}>
       <ButtonDiv>
-        <BackButton></BackButton>
+        <BackButton onClick={props.back}></BackButton>
       </ButtonDiv>
       <UserProfileDiv>
         <ProfileImageDiv />
@@ -35,11 +35,11 @@ const SideDrawer = (props) => {
         </ProfileInfoDiv>
       </UserProfileDiv>
       <NavigationDiv>
-        <NavItem>Home</NavItem>
-        <NavItem>Expenses</NavItem>
-        <NavItem>Goals</NavItem>
-        <NavItem>Profile</NavItem>
-        <NavItem>Logout</NavItem>
+        <NavItem to="/userfinances">Home</NavItem>
+        <NavItem to="/userexpenses">Expenses</NavItem>
+        <NavItem to="/usergoals">Goals</NavItem>
+        <NavItem to="/userprofile">Profile</NavItem>
+        <NavItem to="/logout">Logout</NavItem>
       </NavigationDiv>
     </SideDrawerDiv>
   );

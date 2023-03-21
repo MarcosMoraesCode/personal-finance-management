@@ -2,10 +2,13 @@ import React from "react";
 import NavigationItems from "../NavigationItems/NavigationItems";
 import { StyledToolbar } from "./ToolbarStyle";
 
-const Toolbar = () => {
+const Toolbar = (props) => {
   return (
     <StyledToolbar>
-      <NavigationItems />
+      <NavigationItems
+        showSideDrawer={props.show}
+        change={props.changeSideDrawer}
+      />
     </StyledToolbar>
   );
 };

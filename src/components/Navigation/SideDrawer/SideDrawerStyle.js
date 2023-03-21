@@ -1,6 +1,32 @@
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import pig from "../../../images/formPig.png";
 import back from "../../../images/backArrow.png";
+import { NavLink } from "react-router-dom";
+
+const SlideToRight = keyframes`
+
+0% {
+    -webkit-transform: translateX(-230px);
+            transform: translateX(-230px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+
+
+`;
+
+const SlideToLeft = keyframes`
+0% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+  100% {
+    -webkit-transform: translateX(-230px);
+            transform: translateX(-230px);
+  }
+`;
 
 export const SideDrawerDiv = styled.div`
   display: flex;
@@ -11,6 +37,30 @@ export const SideDrawerDiv = styled.div`
   position: absolute;
   border-bottom: 1px solid gold;
   z-index: 999;
+  transform: ${(props) =>
+    props.clicked === false ? "translateX(-230px)" : "translateX(0)"};
+
+  -webkit-animation: ${(props) =>
+    props.clicked === true
+      ? css`
+          ${SlideToRight} 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
+        `
+      : props.animations === false
+      ? "none"
+      : css`
+          ${SlideToLeft} 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
+        `};
+
+  animation: ${(props) =>
+    props.clicked === true
+      ? css`
+          ${SlideToRight} 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
+        `
+      : props.animations === false
+      ? "none"
+      : css`
+          ${SlideToLeft} 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
+        `};
 `;
 export const ButtonDiv = styled.div`
   display: flex;
@@ -114,24 +164,29 @@ export const NavigationDiv = styled.nav`
   max-height: 100%;
   min-height: calc(88vh - 307px);
   margin-bottom: 6vh;
-  //min-height: 63.5%;
-  //max-height: 580px;
   overflow-y: auto;
+  border-bottom: 1px solid gold;
 `;
 
-export const NavItem = styled.div`
+export const NavItem = styled(NavLink)`
   width: 210px;
-  //background-color: black;
+  text-decoration: none;
   border-bottom: 1px solid white;
+  color: white;
 
   padding: 5px;
   font-family: "Roboto";
   margin: 5px;
+  color: ${(props) => props.color};
   :hover {
     width: 230px;
     padding: 10px;
     transition: 0.2s ease-in-out;
     opacity: 1;
     // min-height: 100%;
+  }
+  &.active {
+    color: #51d289;
+    font-weight: 600;
   }
 `;

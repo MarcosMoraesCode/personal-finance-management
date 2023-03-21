@@ -3,7 +3,7 @@ import { DrawerContainer, DrawerContent, DrawerDiv } from "./DrawerToggleStyle";
 
 const DrawerToggle = (props) => {
   return (
-    <DrawerDiv>
+    <DrawerDiv onClick={props.change}>
       <DrawerContainer>
         <DrawerContent></DrawerContent>
         <DrawerContent></DrawerContent>

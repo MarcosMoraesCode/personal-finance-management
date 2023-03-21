@@ -4,10 +4,10 @@ import { NavigationUl } from "./NavigationStyles";
 import NavigationItem from "./NavigationItem/NavigationItem";
 import DrawerToggle from "../SideDrawer/DrawerToggle/DrawerToggle";
 
-const NavigationItems = () => {
+const NavigationItems = (props) => {
   return (
     <NavigationUl>
-      <DrawerToggle></DrawerToggle>
+      <DrawerToggle change={props.change}></DrawerToggle>
       <NavigationItem link="/login">LOGIN</NavigationItem>
     </NavigationUl>
   );
