@@ -1,17 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MainContent, MainDiv } from "./LayoutStyle";
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import Footer from "../../components/Footer/Footer";
 import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addAchievements,
+  fetchAchievementsData,
+} from "../../features/goals/goalsSlice";
 
 const Layout = (props) => {
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
   const [startAnimation, setStartAnimation] = useState(false);
+  const userAchievements = useSelector(
+    (state) => state.goalsData.userAchievements
+  );
+
+  const dispatch = useDispatch();
+
+  const getData = async () => {
+    let achievData = await dispatch(fetchAchievementsData()).then(
+      (res) => res.payload
+    );
+    dispatch(addAchievements(achievData));
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+  //console.log(userAchievements);
 
   const sideDrawerHandler = () => {
     setOpenSideDrawer(!openSideDrawer);
     setStartAnimation(true);
   };
+  let arr = undefined;
+  if (userAchievements !== null) {
+    arr = Object.values(userAchievements);
+  }
 
   return (
     <>
@@ -24,6 +50,7 @@ const Layout = (props) => {
           back={sideDrawerHandler}
           open={openSideDrawer}
           animation={startAnimation}
+          achievements={arr !== undefined ? arr.length : null}
         ></SideDrawer>
         <MainContent>{props.children}</MainContent>
         <Footer></Footer>

@@ -7,7 +7,7 @@ export const DrawerDiv = styled.div`
   //background-color: red;
   height: 100%;
   width: 100px;
-  padding-top: 15px;
+  //padding-top: 15px;
   padding-left: 15px;
 
   :hover {
@@ -21,10 +21,10 @@ export const DrawerContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  min-width: 40px;
-  max-width: 40px;
-  min-height: 35px;
-  max-height: 35px;
+  min-width: 30px;
+  max-width: 30px;
+  min-height: 25px;
+  max-height: 25px;
   border: 2px solid white;
   border-radius: 5px;
   padding: 2px;

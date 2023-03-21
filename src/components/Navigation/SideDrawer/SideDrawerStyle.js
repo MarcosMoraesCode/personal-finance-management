@@ -37,6 +37,7 @@ export const SideDrawerDiv = styled.div`
   position: absolute;
   border-bottom: 1px solid gold;
   z-index: 999;
+
   transform: ${(props) =>
     props.clicked === false ? "translateX(-230px)" : "translateX(0)"};
 
@@ -141,6 +142,7 @@ export const ProfileInfoContent = styled.div`
   font-size: 14px;
   padding-left: 10px;
   font-weight: 400;
+  margin-top: 3px;
 
   //border: 1px solid white;
 `;
@@ -173,20 +175,20 @@ export const NavItem = styled(NavLink)`
   text-decoration: none;
   border-bottom: 1px solid white;
   color: white;
-
   padding: 5px;
   font-family: "Roboto";
   margin: 5px;
   color: ${(props) => props.color};
   :hover {
-    width: 230px;
-    padding: 10px;
+    width: 220px;
+    padding: 8px;
     transition: 0.2s ease-in-out;
     opacity: 1;
     // min-height: 100%;
   }
   &.active {
-    color: #51d289;
+    color: gold;
     font-weight: 600;
+    border-bottom: 1px solid gold;
   }
 `;

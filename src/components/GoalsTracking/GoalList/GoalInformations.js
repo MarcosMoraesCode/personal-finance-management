@@ -66,15 +66,15 @@ const GoalInformation = (props) => {
       <SecondaryContainer>
         <ProgressBarDiv>
           <ProgressTitle percentage={percentage}>
-            {percentage === "100.00" ? "YOU MADE IT!" : "Progress"}
+            {Number(percentage) >= 100.0 ? "YOU MADE IT!" : "Progress"}
           </ProgressTitle>
           <EmptyBar percentage={percentage}>
             <StatusBar width={`${percentage}%`} />
           </EmptyBar>
           <SpanInfo
-            onClick={percentage === "100.00" ? props.finishTask : () => {}}
+            onClick={Number(percentage) >= 100.0 ? props.finishTask : () => {}}
           >
-            {percentage === "100.00" ? "Click to complete!" : ""}
+            {Number(percentage) >= 100.0 ? "Click to complete!" : ""}
           </SpanInfo>
         </ProgressBarDiv>
         <ButtonsDiv>

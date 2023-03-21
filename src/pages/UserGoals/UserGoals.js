@@ -56,6 +56,7 @@ import {
 } from "./UserGoalsStyle";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
 import CongratulationsModal from "../../components/UI/Modal/CongratulationsModal/CongratulationsModal";
+import { useNavigate } from "react-router-dom";
 
 const UserGoals = (props) => {
   const [userInputs, setUserInputs] = useState({
@@ -124,6 +125,7 @@ const UserGoals = (props) => {
   const userAchievements = useSelector(
     (state) => state.goalsData.userAchievements
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     getGoals();
@@ -196,10 +198,26 @@ const UserGoals = (props) => {
       /^([0-9]{4})\-(0[1-9]|1[0-2])\-(0[1-9]|[1-2][0-9]|3[0-1])$/.test(
         expenseDate
       );
-    //console.log(value);
+
+    const convertNumber = (stringValue) => {
+      if (stringValue !== "") {
+        let initialValue = [...stringValue];
+        let commaIndex = initialValue.findIndex((element) => element === ",");
+        initialValue.splice(commaIndex, 1, ".");
+        let replacedValue = initialValue.join("");
+        let convertedValue = Number(replacedValue).toFixed(2);
+
+        return convertedValue;
+      } else {
+        return 0;
+      }
+    };
+
     const validation1 = isValidName(value);
     const validation2 = isValidValue(value);
-    // const validation3 = isValidPercentage(value);
+    const validation3 =
+      Number(convertNumber(value)) <=
+      Number(convertNumber(userInputs.inputValue.value));
     const validation4 = "1"; //VERIFICAR SE O VALOR ALOCADO CORRESPONDE AO SALDO
     const validation5 = isValidDate(value);
 
@@ -213,7 +231,7 @@ const UserGoals = (props) => {
         validation2 ? (result = true) : (result = false);
         break;
       case "Goal Percentage":
-        validation2 ? (result = true) : (result = false); //VALIDATION 4 TOO
+        validation2 && validation3 ? (result = true) : (result = false); //VALIDATION 4 TOO
         break;
       case "Goal Date":
         //   console.log(value);
@@ -530,6 +548,7 @@ const UserGoals = (props) => {
             onClick={() => {
               setOpenShortForm(!openShortForm);
               refreshInputs();
+              setSubmitPermission(false);
             }}
           >
             Back
@@ -581,6 +600,7 @@ const UserGoals = (props) => {
             onClick={() => {
               setOpenMediumForm(!openMediumForm);
               refreshInputs();
+              setSubmitPermission(false);
             }}
           >
             Back
@@ -632,6 +652,7 @@ const UserGoals = (props) => {
             onClick={() => {
               setOpenLongForm(!openLongForm);
               refreshInputs();
+              setSubmitPermission(false);
             }}
           >
             Back
@@ -1016,7 +1037,7 @@ const UserGoals = (props) => {
             <AllocatedMoneyTitle>
               <SpanMoneyTitle> Allocated income</SpanMoneyTitle> $ 156500.00
             </AllocatedMoneyTitle>
-            <EditButton />
+            <EditButton onClick={() => navigate("/userfinances")} />
           </AllocatedMoneyDiv>
           <GoalsDiv open={openList} animations={startListAnimations}>
             {GoalListContent}
