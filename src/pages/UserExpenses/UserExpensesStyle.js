@@ -138,7 +138,7 @@ export const UserDefaultButton = styled.button`
   margin: 10px;
   font-family: "Roboto";
   width: fit-content;
-  height: 35px;
+  height: ${(props) => (props.height ? props.height : "35px")};
   background-color: ${(props) =>
     props.disabled === "disabled" ? "grey" : "black"};
   padding: 4px 8px 4px 8px;

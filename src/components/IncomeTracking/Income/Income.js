@@ -23,8 +23,8 @@ const Income = (props) => {
         </IncomeSubtitlesDiv>
         <IncomeContentDiv>
           <IncomeContentBlock>Renda</IncomeContentBlock>
-          <IncomeContentBlock>$ 6200,00</IncomeContentBlock>
-          <IncomeContentBlock> 40%</IncomeContentBlock>
+          <IncomeContentBlock>$ 6200.00</IncomeContentBlock>
+          <IncomeContentBlock>40%</IncomeContentBlock>
         </IncomeContentDiv>
       </IncomeInfoDiv>
       <IncomeButtonsDiv>

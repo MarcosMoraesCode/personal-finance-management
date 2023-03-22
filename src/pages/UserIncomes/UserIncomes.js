@@ -18,9 +18,14 @@ import {
   ManageInfoDiv,
   ManageInfoContent,
   ManageIncomesList,
+  ManageListContent,
+  ManageListTitleDiv,
+  ManageListTitle,
+  ManageSpan,
 } from "./UserIncomesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import Income from "../../components/IncomeTracking/Income/Income";
+import { UserDefaultButton } from "../UserExpenses/UserExpensesStyle";
 
 const UserIncomes = (props) => {
   const [optionOneSelected, setOptionOneSelected] = useState(false);
@@ -74,10 +79,10 @@ const UserIncomes = (props) => {
             <DefaultTitle>Incomes</DefaultTitle>
           </DefaultTitleDiv>
           <ManageInfoDiv>
-            <ManageInfoContent justify={"flex-end"}>
-              Balance: $ 4500,00
+            <ManageInfoContent justify={"flex-end"} fontSize={"14px"}>
+              Balance <ManageSpan> $ 4500.00</ManageSpan>
             </ManageInfoContent>
-            <ManageInfoContent justify={"center"}>
+            <ManageInfoContent justify={"center"} fontSize={"15px"}>
               <p>
                 Here you can create or edit your incomes, and add money to an
                 existing income.
@@ -89,11 +94,22 @@ const UserIncomes = (props) => {
               <ManageFormTitle>Add a new Rent</ManageFormTitle>
             </ManageFormTitleDiv>
             <ManageFormContainer>
-              <InputContainer>Rent Name</InputContainer> <button>oLÁ</button>
+              <InputContainer>Rent Name</InputContainer>{" "}
+              <UserDefaultButton height={"25px"}>Add Income</UserDefaultButton>
             </ManageFormContainer>
           </ManageFormDiv>
           <ManageIncomesList>
-            <Income>oi</Income>
+            <ManageListTitleDiv>
+              <ManageListTitle>Incomes List</ManageListTitle>
+            </ManageListTitleDiv>
+            <ManageListContent>
+              <Income />
+              <Income />
+              <Income />
+              <Income />
+              <Income />
+              <Income />
+            </ManageListContent>
           </ManageIncomesList>
         </ManageIncomeDiv>
       );

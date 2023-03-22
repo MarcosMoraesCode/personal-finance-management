@@ -6,9 +6,12 @@ import moneyIcon from "../../../images/moneyIcon.svg";
 export const IncomeDiv = styled.div`
   display: flex;
   width: 90%;
-  height: 10%;
+  height: 15%;
   min-height: 35px;
-  border: 1px solid blue;
+  border-radius: 5px;
+  border: 1px solid white;
+  padding-top: 3px;
+  margin: 5px;
 `;
 
 export const IncomeInfoDiv = styled.div`
@@ -16,7 +19,7 @@ export const IncomeInfoDiv = styled.div`
   flex-direction: column;
   width: 70%;
   height: 100%;
-  border: 1px solid pink;
+  // border-right: 1px solid green;
 `;
 
 export const IncomeButtonsDiv = styled.div`
@@ -25,14 +28,13 @@ export const IncomeButtonsDiv = styled.div`
   align-items: center;
   width: 30%;
   height: 100%;
-  border: 1px solid purple;
+  //border: 1px solid white;
 `;
 
 export const IncomeSubtitlesDiv = styled.div`
   display: flex;
   width: 100%;
   height: fit-content;
-  border: 1px solid green;
 `;
 
 export const IncomeSubtitleBlock = styled.div`
@@ -66,14 +68,15 @@ export const EditButton = styled.button`
   border: none;
   background-color: transparent;
   width: 30%;
-  max-width: 25px;
+  max-width: 20px;
   height: 80%;
-  max-height: 25px;
+  max-height: 20px;
   background-size: cover;
   background-image: url(${editIcon});
   transform: scale(1);
   transition: 0.4s ease-in-out;
   :hover {
+    cursor: pointer;
     transform: scale(1.2);
     transition: 0.4s ease-in-out;
   }
@@ -82,14 +85,15 @@ export const RemoveButton = styled.button`
   border: none;
   background-color: transparent;
   width: 30%;
-  max-width: 25px;
+  max-width: 20px;
   height: 80%;
-  max-height: 25px;
+  max-height: 20px;
   background-size: cover;
   background-image: url(${removeIcon});
   transform: scale(1);
   transition: 0.4s ease-in-out;
   :hover {
+    cursor: pointer;
     transform: scale(1.2);
     transition: 0.4s ease-in-out;
   }
@@ -98,15 +102,16 @@ export const AddButton = styled.button`
   border: none;
   background-color: transparent;
   width: 30%;
-  max-width: 25px;
+  max-width: 20px;
   height: 80%;
-  max-height: 25px;
+  max-height: 20px;
   background-size: cover;
   background-image: url(${moneyIcon});
-  transform: scale(1.1);
+  transform: scale(1.2);
   transition: 0.4s ease-in-out;
   :hover {
-    transform: scale(1.3);
+    cursor: pointer;
+    transform: scale(1.4);
     transition: 0.4s ease-in-out;
   }
 `;
