@@ -20,6 +20,7 @@ import {
   ManageIncomesList,
 } from "./UserIncomesStyle";
 import InputContainer from "../../components/UI/Input/Input";
+import Income from "../../components/IncomeTracking/Income/Income";
 
 const UserIncomes = (props) => {
   const [optionOneSelected, setOptionOneSelected] = useState(false);
@@ -91,7 +92,9 @@ const UserIncomes = (props) => {
               <InputContainer>Rent Name</InputContainer> <button>oLÁ</button>
             </ManageFormContainer>
           </ManageFormDiv>
-          <ManageIncomesList>Lista</ManageIncomesList>
+          <ManageIncomesList>
+            <Income>oi</Income>
+          </ManageIncomesList>
         </ManageIncomeDiv>
       );
       break;
