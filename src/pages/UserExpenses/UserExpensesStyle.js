@@ -42,16 +42,11 @@ export const UserExpensesDiv = styled.div`
   display: flex;
   flex-direction: row;
   text-align: center;
-
   border-bottom: 1px solid gold;
   font-family: "Roboto";
   background-color: black;
-  // background-image: url(${pig});
-  //background-repeat: no-repeat;
-  //background-size: auto;
   background: linear-gradient(to right top, grey, grey 20%, black, black 80%);
   overflow-y: auto;
-  //justify-content: space-around;
 `;
 export const AuxContainerDivOne = styled.div`
   display: flex;

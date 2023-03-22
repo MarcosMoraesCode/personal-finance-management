@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import pig from "../../images/pig.png";
 
 export const BudgetTrackingDiv = styled.div`
   padding-top: 6vh;
@@ -11,26 +10,11 @@ export const BudgetTrackingDiv = styled.div`
   font-family: "Roboto";
   background-color: black;
   background: linear-gradient(to right top, grey, grey 20%, black, black 80%);
-  //background-image: url(${pig});
-  @media (max-width: 1100px) {
-    flex-direction: column;
-    height: 172vh;
-  }
-  @media (max-width: 700px) {
-    height: 285vh;
-  }
+  overflow-y: auto;
 `;
 
 export const AuxDiv = styled.div`
   display: flex;
   width: ${(props) => props.width};
   height: 88vh;
-  @media (max-width: 1100px) {
-    width: ${(props) => (props.width ? "100%" : "auto")};
-    height: ${(props) => (props.defaultHeight ? "94vh" : "106vh")};
-  }
-  @media (max-width: 700px) {
-    flex-direction: column-reverse;
-    height: ${(props) => (props.defaultHeight ? "88vh" : "200vh")};
-  }
 `;

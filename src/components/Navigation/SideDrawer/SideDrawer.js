@@ -41,6 +41,7 @@ const SideDrawer = (props) => {
       </UserProfileDiv>
       <NavigationDiv>
         <NavItem to="/userfinances">Home</NavItem>
+        <NavItem to="/userincomes">Incomes</NavItem>
         <NavItem to="/userexpenses">Expenses</NavItem>
         <NavItem to="/usergoals">Goals</NavItem>
         <NavItem to="/userprofile">Profile</NavItem>

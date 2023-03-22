@@ -7,6 +7,7 @@ import Home from "./pages/Home/Home";
 import BudgetTracking from "./pages/BudgetTracking/BudgetTracking";
 import UserExpenses from "./pages/UserExpenses/UserExpenses";
 import UserGoals from "./pages/UserGoals/UserGoals";
+import UserIncomes from "./pages/UserIncomes/UserIncomes";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/login" exact element={<Login />} />
           <Route path="/" exact element={<Home />} />
+          <Route path="/userincomes" exact element={<UserIncomes />} />
           <Route path="/userfinances" exact element={<BudgetTracking />} />
           <Route path="/userexpenses" exact element={<UserExpenses />} />
           <Route path="/usergoals" exact element={<UserGoals />} />
