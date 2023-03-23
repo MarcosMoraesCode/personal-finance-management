@@ -6,6 +6,8 @@ export const HistoryDiv = styled.div`
   width: 90%;
   height: 15%;
   border: 1px solid white;
+  border-radius: 5px;
+  margin-bottom: 10px;
 `;
 
 export const HistorySubtitlesDiv = styled.div`
@@ -19,7 +21,7 @@ export const HistorySubtitlesDiv = styled.div`
 export const HistorySubtitleBlock = styled.div`
   display: flex;
   justify-content: flex-start;
-  padding-left: 4px;
+  padding-left: 6px;
   width: 25%;
   height: 100%;
   font-size: 10px;
@@ -38,7 +40,7 @@ export const HistoryContentDiv = styled.div`
 export const HistoryContentBlock = styled.div`
   display: flex;
   justify-content: flex-start;
-  padding-left: 4px;
+  padding-left: 6px;
   width: 25%;
   height: 100%;
   font-family: "Roboto";

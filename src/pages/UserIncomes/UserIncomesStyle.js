@@ -306,6 +306,21 @@ export const AccountHistoryDiv = styled.div`
   animation: ${FlipInLeft} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
 
+export const AccountFilterDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  //background-color: violet;
+  width: 100%;
+  height: 15%;
+  p {
+    font-family: "Roboto";
+    color: #51d289;
+    padding-right: 15px;
+    font-size: 12px;
+  }
+`;
+
 export const DefaultTitleDiv = styled.div`
   display: flex;
   justify-content: center;

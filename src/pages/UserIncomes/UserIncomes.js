@@ -22,6 +22,7 @@ import {
   DefaultListTitleDiv,
   DefaultListTitle,
   ManageSpan,
+  AccountFilterDiv,
 } from "./UserIncomesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import Income from "../../components/IncomeTracking/Income/Income";
@@ -30,6 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addGoals, fetchGoalsData } from "../../features/goals/goalsSlice";
 import GoalInformation from "../../components/GoalsTracking/GoalList/GoalInformations";
 import History from "../../components/History/History";
+import SelectContainer from "../../components/UI/Select/Select";
 
 const UserIncomes = (props) => {
   const [optionOneSelected, setOptionOneSelected] = useState(false);
@@ -217,11 +219,32 @@ const UserIncomes = (props) => {
               </p>
             </DefaultInfoContent>
           </DefaultInfoDiv>
+          <AccountFilterDiv>
+            <p>View the complete history or filter by a type.</p>
+            <SelectContainer
+              options={[
+                { name: "All" },
+                { name: "Deposits" },
+                { name: "Investments" },
+                { name: "Withdraws" },
+                { name: "Payments" },
+              ]}
+              // changed={(event) => FilterChangeHandler(event)}
+              //border={"no-left-border"}
+              width={"110px"}
+              noMargin
+            />
+          </AccountFilterDiv>
           <DefaultList>
             <DefaultListTitleDiv>
               <DefaultListTitle>History List</DefaultListTitle>
             </DefaultListTitleDiv>
+
             <DefaultListContent>
+              <History />
+              <History />
+              <History />
+              <History />
               <History />
             </DefaultListContent>
           </DefaultList>
