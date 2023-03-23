@@ -45,10 +45,12 @@ const scaleUpLeft = keyframes`
 export const GoalContainer = styled.div`
   display: flex;
   padding: 2px;
-  width: 80%;
+  padding-left: 5px;
+  width: ${(props) => (props.incomePage ? "90%" : "80%")}; //80%;
   height: fit-content;
   border: 1px solid white;
   margin-top: 10px;
+  border-radius: 5px;
   //background-color: red;
   @media (max-width: 1030px) {
     flex-direction: column;
@@ -78,7 +80,7 @@ export const GoalSubtitleBlock = styled.div`
   // background-color: pink;
   text-align: start;
   color: #51d289;
-  font-size: 7px;
+  font-size: ${(props) => (props.incomePage ? "10px" : "7px")};
   width: ${(props) => props.width};
   height: fit-content;
 `;
@@ -93,7 +95,7 @@ export const GoalContentBlock = styled.div`
   padding-top: 2px;
   padding-bottom: 2px;
   text-align: start;
-  font-size: 10px;
+  font-size: ${(props) => (props.incomePage ? "10px" : "13px")};
   //  background-color: white;
   width: ${(props) => props.width};
   height: fit-content;
@@ -192,8 +194,8 @@ export const RemoveButton = styled.button`
 `;
 
 export const AddButton = styled.button`
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   background-color: transparent;
   background-image: url(${moneyIcon});
   background-size: cover;
@@ -205,8 +207,8 @@ export const AddButton = styled.button`
 `;
 
 export const WithdrawButton = styled.button`
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   background-color: transparent;
   background-image: url(${redMoneyIcon});
   background-size: cover;
@@ -223,7 +225,7 @@ export const ProgressTitle = styled.h1`
   width: 100%;
   text-align: start;
   color: ${(props) => (props.percentage === "100.00" ? "gold" : "#51d289")};
-  font-size: 8px;
+  font-size: ${(props) => (props.incomePage ? "8px" : "11px")};
   font-weight: ${(props) => (props.percentage === "100.00" ? "600" : "200")};
 `;
 

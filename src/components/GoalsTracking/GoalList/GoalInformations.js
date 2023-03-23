@@ -40,12 +40,18 @@ const GoalInformation = (props) => {
 
   console.log("props", props);
   return (
-    <GoalContainer>
+    <GoalContainer {...props}>
       <InfoContainer>
         <GoalSubtitleDiv>
-          <GoalSubtitleBlock width={"33%"}>Term</GoalSubtitleBlock>
-          <GoalSubtitleBlock width={"33%"}>Goal</GoalSubtitleBlock>
-          <GoalSubtitleBlock width={"33%"}>Percentage</GoalSubtitleBlock>
+          <GoalSubtitleBlock {...props} width={"33%"}>
+            Term
+          </GoalSubtitleBlock>
+          <GoalSubtitleBlock {...props} width={"33%"}>
+            Goal
+          </GoalSubtitleBlock>
+          <GoalSubtitleBlock {...props} width={"33%"}>
+            Percentage
+          </GoalSubtitleBlock>
         </GoalSubtitleDiv>
         <GoalContentInfo>
           <GoalContentBlock width={"33%"}>{props.term}</GoalContentBlock>
@@ -53,9 +59,15 @@ const GoalInformation = (props) => {
           <GoalContentBlock width={"33%"}>{percentage} %</GoalContentBlock>
         </GoalContentInfo>
         <GoalSubtitleDiv>
-          <GoalSubtitleBlock width={"33%"}>Allocated</GoalSubtitleBlock>
-          <GoalSubtitleBlock width={"33%"}>Target</GoalSubtitleBlock>
-          <GoalSubtitleBlock width={"33%"}>Limit Date</GoalSubtitleBlock>
+          <GoalSubtitleBlock {...props} width={"33%"}>
+            Allocated
+          </GoalSubtitleBlock>
+          <GoalSubtitleBlock {...props} width={"33%"}>
+            Target
+          </GoalSubtitleBlock>
+          <GoalSubtitleBlock {...props} width={"33%"}>
+            Limit Date
+          </GoalSubtitleBlock>
         </GoalSubtitleDiv>
         <GoalContentInfo>
           <GoalContentBlock width={"33%"}>

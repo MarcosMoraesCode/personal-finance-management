@@ -29,6 +29,7 @@ import { UserDefaultButton } from "../UserExpenses/UserExpensesStyle";
 import { useDispatch, useSelector } from "react-redux";
 import { addGoals, fetchGoalsData } from "../../features/goals/goalsSlice";
 import GoalInformation from "../../components/GoalsTracking/GoalList/GoalInformations";
+import History from "../../components/History/History";
 
 const UserIncomes = (props) => {
   const [optionOneSelected, setOptionOneSelected] = useState(false);
@@ -159,10 +160,6 @@ const UserIncomes = (props) => {
             <DefaultListContent>
               <Income />
               <Income />
-              <Income />
-              <Income />
-              <Income />
-              <Income />
             </DefaultListContent>
           </DefaultList>
         </ManageIncomeDiv>
@@ -209,6 +206,25 @@ const UserIncomes = (props) => {
           <DefaultTitleDiv>
             <DefaultTitle>Account History</DefaultTitle>
           </DefaultTitleDiv>
+          <DefaultInfoDiv>
+            <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
+              Balance <ManageSpan> $ 4500.00</ManageSpan>
+            </DefaultInfoContent>
+            <DefaultInfoContent justify={"center"} fontSize={"15px"}>
+              <p>
+                Here you can view the complete history of deposits and expenses
+                in your account.
+              </p>
+            </DefaultInfoContent>
+          </DefaultInfoDiv>
+          <DefaultList>
+            <DefaultListTitleDiv>
+              <DefaultListTitle>History List</DefaultListTitle>
+            </DefaultListTitleDiv>
+            <DefaultListContent>
+              <History />
+            </DefaultListContent>
+          </DefaultList>
         </AccountHistoryDiv>
       );
       break;
