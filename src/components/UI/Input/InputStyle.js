@@ -37,6 +37,11 @@ export const StyledMessage = styled.p`
   cursor: ${(props) => (props.cursor ? "pointer" : "unset")};
   text-decoration: ${(props) => (props.underline ? "underline white" : "none")};
 `;
+
+export const StyledWarning = styled.p`
+  color: ${(props) => props.color};
+  font-family: "Roboto";
+`;
 export const StyledMessageScaled = styled.p`
   color: #fc2469;
   padding: 1px;
@@ -71,22 +76,10 @@ export const StyledCheckboxLabel = styled.label`
 `;
 
 export const StyledCheckBoxInput = styled.input`
-  opacity: 0;
-  z-index: 1;
-  border-radius: 15px;
-  height: 15px;
-  width: 30px;
-  &:checked + ${StyledCheckboxLabel} {
-    background-color: #4fbe79;
-    &::after {
-      content: "";
-      display: block;
-      border-radius: 50%;
-      width: 12px;
-      height: 12px;
-      margin-left: 19px;
-      transition: 0.2s;
-    }
+  :checked::after {
+    border-radius: 50%;
+    border: solid 2px grey;
+    background-color: #06aa48;
   }
 `;
 
@@ -111,4 +104,31 @@ export const WrappPasswordComponent = styled.div`
   flex-direction: row;
   width: 230px;
   height: 29px;
+`;
+
+export const SpecialWrappComponent = styled.div`
+  //background-color: red;
+  flex-direction: column;
+  align-items: center;
+  width: ${(props) => (props.width ? props.width : "230px")};
+  margin: ${(props) => (props.noMargin ? "0px" : "10px")};
+  margin-top: 0px;
+  display: flex;
+  justify-content: center;
+  font-family: "Roboto";
+  font-size: 12px;
+`;
+
+export const FirstDiv = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+`;
+
+export const AuxDiv = styled.div`
+  width: 80px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+
+  //background-color: red;
 `;

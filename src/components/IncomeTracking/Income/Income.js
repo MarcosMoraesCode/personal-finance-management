@@ -22,15 +22,15 @@ const Income = (props) => {
           <IncomeSubtitleBlock>Percentage</IncomeSubtitleBlock>
         </IncomeSubtitlesDiv>
         <IncomeContentDiv>
-          <IncomeContentBlock>Renda</IncomeContentBlock>
-          <IncomeContentBlock>$ 6200.00</IncomeContentBlock>
-          <IncomeContentBlock>40%</IncomeContentBlock>
+          <IncomeContentBlock>{props.name}</IncomeContentBlock>
+          <IncomeContentBlock>$ {props.value}</IncomeContentBlock>
+          <IncomeContentBlock>{props.percentage}%</IncomeContentBlock>
         </IncomeContentDiv>
       </IncomeInfoDiv>
       <IncomeButtonsDiv>
-        <AddButton />
-        <EditButton />
-        <RemoveButton />
+        <AddButton onClick={props.addAction} />
+        <EditButton onClick={props.editAction} />
+        <RemoveButton onClick={props.removeAction} />
       </IncomeButtonsDiv>
     </IncomeDiv>
   );

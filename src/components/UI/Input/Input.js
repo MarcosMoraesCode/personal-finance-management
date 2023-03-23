@@ -1,11 +1,15 @@
 import React from "react";
 import {
+  AuxDiv,
   CheckBoxWrapper,
+  FirstDiv,
+  SpecialWrappComponent,
   StyledCheckBoxInput,
   StyledCheckboxLabel,
   StyledInput,
   StyledLabel,
   StyledMessageScaled,
+  StyledWarning,
   WrappComponent,
   WrappPasswordComponent,
 } from "./InputStyle";
@@ -173,6 +177,45 @@ const InputContainer = (props) => {
             {props.invalidMessage}
           </StyledMessageScaled>
         </WrappComponent>
+      );
+      break;
+    case "radio":
+      inputElement = (
+        <>
+          <SpecialWrappComponent width={props.width}>
+            <FirstDiv>
+              <AuxDiv>
+                <input
+                  style={{ marginRight: "5px" }}
+                  type="radio"
+                  value="Deposit"
+                  checked={props.currentValue === "Withdraw" ? false : true}
+                  onChange={props.changed}
+                ></input>
+                <label>Deposit</label>
+              </AuxDiv>
+              <AuxDiv>
+                <input
+                  style={{ marginRight: "5px" }}
+                  type="radio"
+                  value="Withdraw"
+                  checked={props.currentValue === "Withdraw"}
+                  onChange={props.changed}
+                ></input>
+                <label>Withdraw</label>
+              </AuxDiv>
+            </FirstDiv>
+            <div>
+              <StyledWarning
+                color={props.currentValue === "Withdraw" ? "red" : "#51d289"}
+              >
+                {props.currentValue === "Withdraw"
+                  ? "The current value will be removed from your balance"
+                  : "The current value will be add to your balance"}
+              </StyledWarning>
+            </div>
+          </SpecialWrappComponent>
+        </>
       );
       break;
 

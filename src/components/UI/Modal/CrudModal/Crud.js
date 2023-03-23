@@ -236,6 +236,97 @@ const Crud = (props) => {
           </ModalButtonDiv>
         </>
       );
+    case "edit-income":
+      crudContent = (
+        <>
+          <CrudStyleTitle>Edit "{props.incomeName} income"</CrudStyleTitle>
+          <InputsDiv>
+            <InputContainer
+              placeholder={props.incomeNameInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.incomeNameInputConfig.isValid
+                  ? ""
+                  : props.incomeNameInputConfig.invalidMessage
+              }
+              value={props.incomeNameInputConfig.value}
+              blur={props.incomeNameBlur}
+              changed={props.incomeNameChanged}
+            >
+              Income Name
+            </InputContainer>
+          </InputsDiv>
+
+          <ModalButtonDiv>
+            <ContinueBtn
+              onClick={props.editIncome}
+              disabled={props.continueDisabled}
+              {...props}
+            >
+              CONTINUE
+            </ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+          </ModalButtonDiv>
+        </>
+      );
+      break;
+    case "remove-income":
+      crudContent = (
+        <>
+          <CrudStyleTitle>Remove "{props.incomeName}"</CrudStyleTitle>
+          <CrudStatusDescription>
+            Do you really want to remove {props.incomeName} income? All the
+            money invested from this income source will be removed.
+          </CrudStatusDescription>
+          <ModalButtonDiv>
+            <ContinueBtn onClick={props.removeIncome}>CONTINUE</ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+          </ModalButtonDiv>
+        </>
+      );
+      break;
+    case "transfer-income":
+      crudContent = (
+        <>
+          <CrudStyleTitle>
+            New transaction for "{props.incomeName} income"
+          </CrudStyleTitle>
+          <InputsDiv>
+            <InputContainer
+              placeholder={props.incomeValueInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.incomeValueInputConfig.isValid
+                  ? ""
+                  : props.incomeValueInputConfig.invalidMessage
+              }
+              value={props.incomeValueInputConfig.value}
+              blur={props.incomeValueBlur}
+              changed={props.incomeValueChanged}
+            >
+              Income Value
+            </InputContainer>
+            <InputContainer
+              width={"200px"}
+              elementType={"radio"}
+              changed={props.incomeRadioChanged}
+              currentValue={props.incomeRadioValue}
+            />
+          </InputsDiv>
+
+          <ModalButtonDiv>
+            <ContinueBtn
+              onClick={props.transferIncomeValue}
+              disabled={props.continueDisabled}
+              {...props}
+            >
+              CONTINUE
+            </ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+          </ModalButtonDiv>
+        </>
+      );
+      break;
     default:
       break;
   }

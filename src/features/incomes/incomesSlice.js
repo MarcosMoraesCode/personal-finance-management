@@ -53,7 +53,9 @@ export const postNewIncome = createAsyncThunk(
   "userincomes/postNewIncome",
   async (action, state) => {
     try {
-      let idValue = state.getState().expensesData.dynamicId;
+      let idValue = state.getState().incomesData.dynamicId;
+      //SETTING TODAY DATE
+
       await get(child(ref(db), `users/${userId}/incomes`)).then((snapshot) => {
         if (snapshot.exists() === true) {
           let oldIncomes = snapshot.val();
@@ -93,6 +95,23 @@ export const editAnIncome = createAsyncThunk(
         id: action.incomeId,
         name: action.newName,
         value: action.oldValue,
+
+        //O VALUE NÃO SERÁ MODIFICADO NA EDIÇÃO, SERÁ NA PÁGINA DE APORTES
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+export const addMoneyToAnIncome = createAsyncThunk(
+  "userincomes/addMoneyToAnIncome",
+  async (action, state) => {
+    try {
+      // console.log("payload", action.categoryId);
+      await set(ref(db, `users/${userId}/incomes/${action.incomeId}`), {
+        id: action.incomeId,
+        name: action.name,
+        value: action.newValue,
 
         //O VALUE NÃO SERÁ MODIFICADO NA EDIÇÃO, SERÁ NA PÁGINA DE APORTES
       });
@@ -150,6 +169,22 @@ export const incomeDataSlice = createSlice({
       //teste
     });
     builder.addCase(removeAnIncome.rejected, (state, action) => {
+      //console.log("Rejected", action.error.message);
+      // console.log(action.error);
+    });
+    builder.addCase(fetchDynamicId.fulfilled, (state, action) => {
+      //console.log("payload", action.payload);
+      state.dynamicId = action.payload;
+      //console.log("Novo id dinamico: ", state.dynamicId);
+    });
+    builder.addCase(fetchDynamicId.rejected, (state, action) => {
+      //console.log("Rejected", action.error.message);
+      //console.log(action.error);
+    });
+    builder.addCase(addMoneyToAnIncome.fulfilled, (state, action) => {
+      //teste
+    });
+    builder.addCase(addMoneyToAnIncome.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);
       // console.log(action.error);
     });
