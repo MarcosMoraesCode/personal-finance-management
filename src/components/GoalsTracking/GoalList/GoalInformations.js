@@ -100,7 +100,6 @@ const GoalInformation = (props) => {
           {props.incomePage ? (
             <>
               <AddButton onClick={props.addAction} />{" "}
-              <WithdrawButton onClick={props.withdrawAction} />{" "}
             </>
           ) : (
             <>

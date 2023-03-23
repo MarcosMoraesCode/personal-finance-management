@@ -16,7 +16,7 @@ const initialState = {
 };
 
 export const fetchDynamicId = createAsyncThunk(
-  "userexpenses/fetchDynamicId",
+  "usergoals/fetchDynamicId",
   async (action) => {
     try {
       const dbId = await get(child(ref(db), `users/${userId}/dynamicId`)).then(

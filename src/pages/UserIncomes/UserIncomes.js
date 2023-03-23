@@ -34,6 +34,41 @@ import History from "../../components/History/History";
 import SelectContainer from "../../components/UI/Select/Select";
 
 const UserIncomes = (props) => {
+  const [userInputs, setUserInputs] = useState({
+    id: "income",
+    inputName: {
+      value: "",
+      isValid: false,
+      isTouched: false,
+      id: "Income Name",
+      placeholder: "Income Name",
+      invalidMessage: "",
+    },
+    inputValue: {
+      value: "",
+      isValid: false,
+      isTouched: false,
+      id: "Deposit Value",
+      placeholder: "Ex 250,00",
+      invalidMessage: "",
+    },
+    inputTransaction: {
+      value: "",
+      isValid: false,
+      isTouched: false,
+      id: "Income Transaction",
+      //placeholder: "Ex: 100,00",
+      //invalidMessage: "",
+    },
+    inputDate: {
+      value: "",
+      isValid: false,
+      isTouched: false,
+      id: "Goal Date",
+      invalidMessage: "",
+    },
+  });
+
   const [optionOneSelected, setOptionOneSelected] = useState(false);
   const [optionTwoSelected, setOptionTwoSelected] = useState(false);
   const [optionThreeSelected, setOptionThreeSelected] = useState(false);
@@ -91,7 +126,6 @@ const UserIncomes = (props) => {
   };
 
   let selectedContent = <div>Select an option</div>;
-  console.log("Aqui", userGoals);
 
   let goalsList = "Create your goal and come back!";
 
