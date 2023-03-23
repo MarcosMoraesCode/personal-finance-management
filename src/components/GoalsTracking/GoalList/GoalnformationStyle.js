@@ -1,6 +1,8 @@
 import styled, { keyframes } from "styled-components";
 import editIcon from "../../../images/editIcon.svg";
 import removeIcon from "../../../images/removeIcon.svg";
+import moneyIcon from "../../../images/moneyIcon.svg";
+import redMoneyIcon from "../../../images/redMoneyIcon.svg";
 
 const FocusInExpand = keyframes`
 
@@ -181,6 +183,32 @@ export const RemoveButton = styled.button`
   height: 15px;
   background-color: transparent;
   background-image: url(${removeIcon});
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: none;
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+export const AddButton = styled.button`
+  width: 15px;
+  height: 15px;
+  background-color: transparent;
+  background-image: url(${moneyIcon});
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: none;
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+export const WithdrawButton = styled.button`
+  width: 15px;
+  height: 15px;
+  background-color: transparent;
+  background-image: url(${redMoneyIcon});
   background-size: cover;
   background-repeat: no-repeat;
   border: none;

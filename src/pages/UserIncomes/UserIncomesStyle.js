@@ -145,7 +145,7 @@ export const ManageIncomeDiv = styled.div`
     both;
   animation: ${FlipInBottom} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
-export const ManageInfoDiv = styled.div`
+export const DefaultInfoDiv = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -159,7 +159,7 @@ export const ManageSpan = styled.span`
   padding-left: 10px;
   font-weight: 600;
 `;
-export const ManageInfoContent = styled.div`
+export const DefaultInfoContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: ${(props) => props.justify};
@@ -209,7 +209,7 @@ export const ManageFormContainer = styled.div`
   width: 100%;
   //background-color: purple;
 `;
-export const ManageIncomesList = styled.div`
+export const DefaultList = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -219,7 +219,7 @@ export const ManageIncomesList = styled.div`
   width: 100%;
   //background-color: red;
 `;
-export const ManageListContent = styled.div`
+export const DefaultListContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -253,11 +253,11 @@ export const ManageListContent = styled.div`
     background: grey;
   }
 `;
-export const ManageListTitleDiv = styled.div`
+export const DefaultListTitleDiv = styled.div`
   width: 100%;
   height: 20%;
 `;
-export const ManageListTitle = styled.div`
+export const DefaultListTitle = styled.div`
   color: #51d289;
   font-family: "Roboto";
   font-weight: 600;
@@ -321,4 +321,5 @@ export const DefaultTitle = styled.h1`
   font-family: "Roboto";
   font-weight: 600;
   padding: 5px;
+  margin-top: 15px;
 `;

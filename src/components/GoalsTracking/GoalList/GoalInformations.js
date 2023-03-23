@@ -16,6 +16,8 @@ import {
   SecondaryContainer,
   ProgressTitle,
   SpanInfo,
+  AddButton,
+  WithdrawButton,
 } from "./GoalnformationStyle";
 
 const GoalInformation = (props) => {
@@ -64,22 +66,36 @@ const GoalInformation = (props) => {
         </GoalContentInfo>
       </InfoContainer>
       <SecondaryContainer>
-        <ProgressBarDiv>
+        <ProgressBarDiv {...props}>
           <ProgressTitle percentage={percentage}>
             {Number(percentage) >= 100.0 ? "YOU MADE IT!" : "Progress"}
           </ProgressTitle>
           <EmptyBar percentage={percentage}>
             <StatusBar width={`${percentage}%`} />
           </EmptyBar>
+
           <SpanInfo
             onClick={Number(percentage) >= 100.0 ? props.finishTask : () => {}}
           >
-            {Number(percentage) >= 100.0 ? "Click to complete!" : ""}
+            {Number(percentage) >= 100.0
+              ? props.incomePage
+                ? "Go to goals page to finish it!"
+                : "Click to complete!"
+              : ""}
           </SpanInfo>
         </ProgressBarDiv>
         <ButtonsDiv>
-          <EditButton onClick={props.editAction} />{" "}
-          <RemoveButton onClick={props.removeAction} />
+          {props.incomePage ? (
+            <>
+              <AddButton onClick={props.addAction} />{" "}
+              <WithdrawButton onClick={props.withdrawAction} />{" "}
+            </>
+          ) : (
+            <>
+              <EditButton onClick={props.editAction} />
+              <RemoveButton onClick={props.removeAction} />{" "}
+            </>
+          )}
         </ButtonsDiv>
       </SecondaryContainer>
     </GoalContainer>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   UserIncomesContainer,
   UserIncomesDiv,
@@ -15,17 +15,20 @@ import {
   ManageFormTitleDiv,
   ManageFormTitle,
   ManageFormContainer,
-  ManageInfoDiv,
-  ManageInfoContent,
-  ManageIncomesList,
-  ManageListContent,
-  ManageListTitleDiv,
-  ManageListTitle,
+  DefaultInfoDiv,
+  DefaultInfoContent,
+  DefaultList,
+  DefaultListContent,
+  DefaultListTitleDiv,
+  DefaultListTitle,
   ManageSpan,
 } from "./UserIncomesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import Income from "../../components/IncomeTracking/Income/Income";
 import { UserDefaultButton } from "../UserExpenses/UserExpensesStyle";
+import { useDispatch, useSelector } from "react-redux";
+import { addGoals, fetchGoalsData } from "../../features/goals/goalsSlice";
+import GoalInformation from "../../components/GoalsTracking/GoalList/GoalInformations";
 
 const UserIncomes = (props) => {
   const [optionOneSelected, setOptionOneSelected] = useState(false);
@@ -33,6 +36,21 @@ const UserIncomes = (props) => {
   const [optionThreeSelected, setOptionThreeSelected] = useState(false);
   const [optionFourSelected, setOptionFourSelected] = useState(false);
   const [optionName, setOptionName] = useState("");
+  const userGoals = useSelector((state) => state.goalsData.userGoals);
+
+  const dispatch = useDispatch();
+
+  const getGoals = async () => {
+    await dispatch(fetchGoalsData()).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        dispatch(addGoals(res.payload));
+      }
+    });
+  };
+
+  useEffect(() => {
+    getGoals();
+  }, []);
 
   const selectionHandler = (option) => {
     switch (option) {
@@ -70,6 +88,42 @@ const UserIncomes = (props) => {
   };
 
   let selectedContent = <div>Select an option</div>;
+  console.log("Aqui", userGoals);
+
+  let goalsList = "Create your goal and come back!";
+
+  if (userGoals !== null) {
+    let goalsArr = Object.values(userGoals);
+    let newArr = goalsArr.map((goal) => {
+      console.log("aqui", goal);
+      return {
+        name: goal.name,
+        date: goal.date,
+        value: goal.value,
+        id: goal.id,
+        allocated: goal.allocated,
+        term: goal.term,
+
+        // addAction: () => addMoneyHandler(goal.name, goal.id),
+        //withdrawAction: () => withdrawMoneyHandler(goal.name, goal.id),
+      };
+    });
+
+    goalsList = newArr.map((goal, index) => {
+      // console.log("a", goal);
+      return (
+        <GoalInformation
+          incomePage
+          key={`goal-${index}`}
+          name={goal.name}
+          date={goal.date}
+          allocated={goal.allocated}
+          term={goal.term}
+          value={goal.value}
+        />
+      );
+    });
+  }
 
   switch (optionName) {
     case "manage-income":
@@ -78,39 +132,39 @@ const UserIncomes = (props) => {
           <DefaultTitleDiv>
             <DefaultTitle>Incomes</DefaultTitle>
           </DefaultTitleDiv>
-          <ManageInfoDiv>
-            <ManageInfoContent justify={"flex-end"} fontSize={"14px"}>
+          <DefaultInfoDiv>
+            <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
               Balance <ManageSpan> $ 4500.00</ManageSpan>
-            </ManageInfoContent>
-            <ManageInfoContent justify={"center"} fontSize={"15px"}>
+            </DefaultInfoContent>
+            <DefaultInfoContent justify={"center"} fontSize={"15px"}>
               <p>
                 Here you can create or edit your incomes, and add money to an
                 existing income.
               </p>
-            </ManageInfoContent>
-          </ManageInfoDiv>
+            </DefaultInfoContent>
+          </DefaultInfoDiv>
           <ManageFormDiv>
             <ManageFormTitleDiv>
-              <ManageFormTitle>Add a new Rent</ManageFormTitle>
+              <ManageFormTitle>Add a new Income</ManageFormTitle>
             </ManageFormTitleDiv>
             <ManageFormContainer>
               <InputContainer>Rent Name</InputContainer>{" "}
               <UserDefaultButton height={"25px"}>Add Income</UserDefaultButton>
             </ManageFormContainer>
           </ManageFormDiv>
-          <ManageIncomesList>
-            <ManageListTitleDiv>
-              <ManageListTitle>Incomes List</ManageListTitle>
-            </ManageListTitleDiv>
-            <ManageListContent>
+          <DefaultList>
+            <DefaultListTitleDiv>
+              <DefaultListTitle>Incomes List</DefaultListTitle>
+            </DefaultListTitleDiv>
+            <DefaultListContent>
               <Income />
               <Income />
               <Income />
               <Income />
               <Income />
               <Income />
-            </ManageListContent>
-          </ManageIncomesList>
+            </DefaultListContent>
+          </DefaultList>
         </ManageIncomeDiv>
       );
       break;
@@ -127,8 +181,25 @@ const UserIncomes = (props) => {
       selectedContent = (
         <AllocateIncomeDiv>
           <DefaultTitleDiv>
-            <DefaultTitle>Allocate</DefaultTitle>
+            <DefaultTitle>Investments</DefaultTitle>
           </DefaultTitleDiv>
+          <DefaultInfoDiv>
+            <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
+              Balance <ManageSpan> $ 4500.00</ManageSpan>
+            </DefaultInfoContent>
+            <DefaultInfoContent justify={"center"} fontSize={"15px"}>
+              <p>
+                Here you can make a deposit or withdrawal of money from a
+                specific goal.
+              </p>
+            </DefaultInfoContent>
+          </DefaultInfoDiv>
+          <DefaultList>
+            <DefaultListTitleDiv>
+              <DefaultListTitle>Goals List</DefaultListTitle>
+            </DefaultListTitleDiv>
+            <DefaultListContent>{goalsList}</DefaultListContent>
+          </DefaultList>
         </AllocateIncomeDiv>
       );
       break;
@@ -157,13 +228,13 @@ const UserIncomes = (props) => {
             clicked={optionTwoSelected}
             onClick={() => selectionHandler(2)}
           >
-            Allocate Income
+            Investments
           </UserOption>
           <UserOption
             clicked={optionThreeSelected}
             onClick={() => selectionHandler(3)}
           >
-            Income Analysis
+            Analysis
           </UserOption>
           <UserOption
             clicked={optionFourSelected}
