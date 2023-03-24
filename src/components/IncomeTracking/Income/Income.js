@@ -23,7 +23,7 @@ const Income = (props) => {
         </IncomeSubtitlesDiv>
         <IncomeContentDiv>
           <IncomeContentBlock>{props.name}</IncomeContentBlock>
-          <IncomeContentBlock>$ {props.value}</IncomeContentBlock>
+          <IncomeContentBlock>$ {props.value.toFixed(2)}</IncomeContentBlock>
           <IncomeContentBlock>{props.percentage}%</IncomeContentBlock>
         </IncomeContentDiv>
       </IncomeInfoDiv>

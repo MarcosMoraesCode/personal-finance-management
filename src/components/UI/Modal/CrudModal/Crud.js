@@ -291,6 +291,10 @@ const Crud = (props) => {
           <CrudStyleTitle>
             New transaction for "{props.incomeName} income"
           </CrudStyleTitle>
+          <CrudStatusDescription>
+            The current balance of this income source is
+            {` $ ` + props.incomeValue.toFixed(2)}.
+          </CrudStatusDescription>
           <InputsDiv>
             <InputContainer
               placeholder={props.incomeValueInputConfig.placeholder}

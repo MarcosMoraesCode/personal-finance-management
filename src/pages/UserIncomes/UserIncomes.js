@@ -33,6 +33,7 @@ import GoalInformation from "../../components/GoalsTracking/GoalList/GoalInforma
 import History from "../../components/History/History";
 import SelectContainer from "../../components/UI/Select/Select";
 import {
+  addBalance,
   addIncomes,
   addMoneyToAnIncome,
   editAnIncome,
@@ -49,6 +50,7 @@ const UserIncomes = (props) => {
     inputRadio: {
       id: "Checked Transition",
       value: "Deposit",
+      isValid: true,
     },
     inputName: {
       value: "",
@@ -103,6 +105,7 @@ const UserIncomes = (props) => {
   const [showCrud, setShowCrud] = useState(true);
   const userGoals = useSelector((state) => state.goalsData.userGoals);
   const userIncomes = useSelector((state) => state.incomesData.userIncomes);
+  const userBalance = useSelector((state) => state.incomesData.balance);
 
   const dispatch = useDispatch();
 
@@ -115,8 +118,18 @@ const UserIncomes = (props) => {
     });
   };
   const getIncomes = async () => {
+    let balance = 0;
     await dispatch(fetchIncomesData()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
+        console.log("aqaau", res.payload);
+        let incomeArr = Object.values(res.payload);
+
+        incomeArr.forEach((income) => {
+          balance += income.value;
+        });
+
+        dispatch(addBalance(balance));
+        console.log("valor final", balance);
         dispatch(addIncomes(res.payload));
       }
     });
@@ -194,8 +207,10 @@ const UserIncomes = (props) => {
           inputRadio: {
             ...userInputs.inputRadio,
             value: event.currentTarget.value,
+            isValid: checkButtonValidation(inputId, event.currentTarget.value),
           },
         });
+        CheckInputValidation(inputId, event.currentTarget.value);
     }
   };
   const verifyFocus = (inputId, elementIsValid) => {
@@ -265,7 +280,7 @@ const UserIncomes = (props) => {
       );
 
     const convertNumber = (stringValue) => {
-      if (stringValue !== "") {
+      if (stringValue !== "" && typeof stringValue !== "number") {
         let initialValue = [...stringValue];
         let commaIndex = initialValue.findIndex((element) => element === ",");
         initialValue.splice(commaIndex, 1, ".");
@@ -274,27 +289,49 @@ const UserIncomes = (props) => {
 
         return convertedValue;
       } else {
-        return 0;
+        return stringValue;
       }
     };
 
+    let number1 = Number(convertNumber(value));
+    let number2 = Number(convertNumber(crudType.incomeOldValue));
+    let number3 = Number(convertNumber(userInputs.inputValue.value));
+    console.log(value);
     const validation1 = isValidName(value);
     const validation2 = isValidValue(value);
     const validation3 =
-      Number(convertNumber(value)) <=
-      Number(convertNumber(userInputs.inputValue.value));
-    const validation4 = "1"; //VERIFICAR SE O VALOR ALOCADO CORRESPONDE AO SALDO
+      userInputs.inputRadio.value === "Deposit" ? true : number1 <= number2;
+    const validation4 = value === "Deposit" ? true : number3 <= number2;
     const validation5 = isValidDate(value);
-
+    const validation6 = isValidValue(userInputs.inputValue.value);
     let result = false;
-    console.log("inputid", inputId);
+
     switch (inputId) {
       case "Income Name":
         validation1 ? (result = true) : (result = false);
         break;
       case "Income Value":
-        validation2 ? (result = true) : (result = false);
+        //  console.log("caso value", value, number1, number2, validation3);
+
+        if (crudType.crudType === "transfer-income") {
+          validation2 && validation3 ? (result = true) : (result = false);
+          //  console.log(
+          //  `Input Value: O valor é valido? ${validation2}, é deposito ou ${number1} <= ${number2}? ${validation3}`
+          //);
+        }
+
         break;
+      case "Checked Transition":
+        //console.log("caso check", value, number2, number3, validation3);
+        if (crudType.crudType === "transfer-income") {
+          validation4 && validation6 ? (result = true) : (result = false);
+          //   console.log(
+          //    `Check: O valor é valido? ${validation6}, é deposito ou ${number3} <= ${number2}? ${validation4}`
+          //  );
+
+          //console.log("é valido", validation4, validation6, result);
+        }
+
       default:
         break;
     }
@@ -308,6 +345,7 @@ const UserIncomes = (props) => {
       inputRadio: {
         id: "Checked Transition",
         value: "Deposit",
+        isValid: true,
       },
       inputName: {
         value: "",
@@ -344,32 +382,68 @@ const UserIncomes = (props) => {
   const checkButtonValidation = (inputId, value) => {
     let validation1 = userInputs.inputName.isValid === true;
     let validation2 = userInputs.inputValue.isValid === true;
-    // let validation3 = userInputs.inputPercentage.isValid === true;
+    let validation3 = userInputs.inputRadio.isValid === true;
     let validation4 = userInputs.inputDate.isValid === true;
+    let validation5 = "";
+
+    const convertNumber = (stringValue) => {
+      if (stringValue !== "" && typeof stringValue !== "number") {
+        let initialValue = [...stringValue];
+        let commaIndex = initialValue.findIndex((element) => element === ",");
+        initialValue.splice(commaIndex, 1, ".");
+        let replacedValue = initialValue.join("");
+        let convertedValue = Number(replacedValue).toFixed(2);
+
+        return convertedValue;
+      } else {
+        return stringValue;
+      }
+    };
 
     switch (inputId) {
       case "Income Name":
         validation1 = CheckInputValidation(inputId, value);
+        if (validation1) {
+          setSubmitPermission(true);
+        } else {
+          setSubmitPermission(false);
+        }
         break;
       case "Income Value":
         validation2 = CheckInputValidation(inputId, value);
-        break;
+        let oldValue = Number(convertNumber(crudType.incomeOldValue));
+        let newValue = Number(convertNumber(value));
+        validation5 =
+          userInputs.inputRadio.value === "Deposit"
+            ? true
+            : Number(newValue) <= Number(oldValue);
+        console.log(
+          ` O valor é valido? ${validation2}, é deposito ou ${newValue} <= ${oldValue}? ${validation5}`
+        );
 
-      case "Goal Date":
-        validation4 = CheckInputValidation(inputId, value);
+        if (crudType.crudType === "transfer-income") {
+          console.log(
+            `BUTTON: Input é valido? ${validation2}, check é valido? ${validation5}`
+          );
+          validation5 && validation2
+            ? setSubmitPermission(true)
+            : setSubmitPermission(false);
+        }
+
+        break;
+      case "Checked Transition":
+        validation3 = CheckInputValidation(inputId, value);
+        if (crudType.crudType === "transfer-income") {
+          console.log(
+            `BUTTON: Input é valido? ${validation2}, check é valido? ${validation3}`
+          );
+          validation3 && validation2
+            ? setSubmitPermission(true)
+            : setSubmitPermission(false);
+        }
         break;
       default:
         break;
-    }
-
-    if (validation1) {
-      setSubmitPermission(true);
-    } else {
-      if (validation2) {
-        setSubmitPermission(true);
-      } else {
-        setSubmitPermission(false);
-      }
     }
   };
 
@@ -567,6 +641,7 @@ const UserIncomes = (props) => {
           key={`income-${index}`}
           name={income.name}
           value={income.value}
+          percentage={((income.value / userBalance) * 100).toFixed(2)}
           addAction={income.addAction}
           editAction={income.editAction}
           removeAction={income.removeAction}
@@ -583,7 +658,7 @@ const UserIncomes = (props) => {
           </DefaultTitleDiv>
           <DefaultInfoDiv>
             <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
-              Balance <ManageSpan> $ 4500.00</ManageSpan>
+              Balance <ManageSpan> $ {userBalance.toFixed(2)}</ManageSpan>
             </DefaultInfoContent>
             <DefaultInfoContent justify={"center"} fontSize={"15px"}>
               <p>
@@ -652,7 +727,7 @@ const UserIncomes = (props) => {
           </DefaultTitleDiv>
           <DefaultInfoDiv>
             <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
-              Balance <ManageSpan> $ 4500.00</ManageSpan>
+              Balance <ManageSpan> $ {userBalance.toFixed(2)}</ManageSpan>
             </DefaultInfoContent>
             <DefaultInfoContent justify={"center"} fontSize={"15px"}>
               <p>
@@ -678,7 +753,7 @@ const UserIncomes = (props) => {
           </DefaultTitleDiv>
           <DefaultInfoDiv>
             <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
-              Balance <ManageSpan> $ 4500.00</ManageSpan>
+              Balance <ManageSpan> $ {userBalance.toFixed(2)}</ManageSpan>
             </DefaultInfoContent>
             <DefaultInfoContent justify={"center"} fontSize={"15px"}>
               <p>
@@ -762,6 +837,7 @@ const UserIncomes = (props) => {
           cancelAction={BackdropCrudHandler}
           removeIncome={() => confirmRemoveIncome(crudType.incomeId)}
           incomeName={crudType.incomeName}
+          incomeValue={crudType.incomeOldValue}
           incomeNameChanged={(event) =>
             InputChangeHandler(event, userInputs.inputName.id)
           }

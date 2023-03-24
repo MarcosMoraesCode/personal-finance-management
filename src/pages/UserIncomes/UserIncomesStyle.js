@@ -170,6 +170,7 @@ export const DefaultInfoContent = styled.div`
   font-size: ${(props) => props.fontSize};
 
   p {
+    color: gold;
     font-weight: 600;
     -webkit-animation: ${FocusIn} 1.8s cubic-bezier(0.55, 0.085, 0.68, 0.53)
       both;
@@ -185,7 +186,7 @@ export const ManageFormDiv = styled.div`
 `;
 export const ManageFormTitleDiv = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   width: 100%;
   height: 25%;
@@ -197,7 +198,7 @@ export const ManageFormTitle = styled.h1`
   font-family: "Roboto";
   font-weight: 600;
   padding: 5px;
-  padding-left: 20px;
+
   font-size: 17px;
 `;
 export const ManageFormContainer = styled.div`

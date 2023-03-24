@@ -12,6 +12,7 @@ const userId = "Marcos";
 const initialState = {
   userIncomes: null,
   dynamicId: 0,
+  balance: 0,
 };
 
 export const fetchDynamicId = createAsyncThunk(
@@ -140,6 +141,9 @@ export const incomeDataSlice = createSlice({
     addIncomes: (state, action) => {
       state.userIncomes = action.payload;
     },
+    addBalance: (state, action) => {
+      state.balance = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchIncomesData.fulfilled, (state, action) => {
@@ -191,6 +195,6 @@ export const incomeDataSlice = createSlice({
   },
 });
 
-export const { addIncomes } = incomeDataSlice.actions;
+export const { addIncomes, addBalance } = incomeDataSlice.actions;
 
 export default incomeDataSlice.reducer;

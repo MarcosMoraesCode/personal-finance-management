@@ -11,6 +11,7 @@ const userId = "Marcos";
 
 const initialState = {
   userExpenses: null,
+
   dynamicId: 0,
 };
 

@@ -27,6 +27,7 @@ export const CrudStyleTitle = styled.h1`
   font-family: "Roboto";
   font-weight: 100;
   color: #51d289;
+  font-size: 16px;
 `;
 
 export const CancelBtn = styled.button`
@@ -49,7 +50,7 @@ export const CrudStatusDescription = styled.p`
   max-width: 300px;
   padding: 5px;
   font-family: "Roboto";
-  font-size: 20px;
+  font-size: 16px;
   color: white;
 `;
 
