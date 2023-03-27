@@ -147,7 +147,7 @@ export const incomeDataSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchIncomesData.fulfilled, (state, action) => {
-      console.log("Success", state.dynamicId);
+      // console.log("Success", state.dynamicId);
     });
     builder.addCase(fetchIncomesData.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);

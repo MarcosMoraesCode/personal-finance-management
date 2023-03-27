@@ -243,7 +243,7 @@ export const goalDataSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchGoalsData.fulfilled, (state, action) => {
-      console.log("Success", state.dynamicId);
+      // console.log("Success", state.dynamicId);
     });
     builder.addCase(fetchGoalsData.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);
@@ -255,6 +255,9 @@ export const goalDataSlice = createSlice({
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     builder.addCase(postNewGoal.rejected, (state, action) => {
+      state.dynamicId += 1;
+      //console.log("Novo id dinamico: ", state.dynamicId);
+      set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
       //console.log("Rejected", action.error.message);
       // console.log(action.error);
     });
@@ -282,6 +285,9 @@ export const goalDataSlice = createSlice({
       //console.log(action.error);
     });
     builder.addCase(transferGoalToAchievement.fulfilled, (state, action) => {
+      state.dynamicId += 1;
+      //console.log("Novo id dinamico: ", state.dynamicId);
+      set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
       //console.log("payload", action.payload);
       //console.log("Novo id dinamico: ", state.dynamicId);
     });

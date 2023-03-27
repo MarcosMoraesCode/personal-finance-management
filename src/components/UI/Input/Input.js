@@ -194,9 +194,7 @@ const InputContainer = (props) => {
                   onBlur={
                     props.blur //? (message = null) : (message = props.invalidMessage)
                   }
-                >
-                  {console.log(props.currentValue)}
-                </input>
+                ></input>
                 <label>Deposit</label>
               </AuxDiv>
               <AuxDiv>

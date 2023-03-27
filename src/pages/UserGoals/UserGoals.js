@@ -4,7 +4,7 @@ import { EditButton } from "../../components/ExpensesTracking/Expense/ExpenseSty
 import GoalInformation from "../../components/GoalsTracking/GoalList/GoalInformations";
 import { FadeLoader } from "react-spinners";
 import InputContainer from "../../components/UI/Input/Input";
-import { fetchDynamicId } from "../../features/expenses/expensesSlice";
+import { fetchDynamicId } from "../../features/goals/goalsSlice";
 import {
   addAchievements,
   addGoals,
@@ -75,7 +75,7 @@ const UserGoals = (props) => {
       isValid: false,
       isTouched: false,
       id: "Goal Value",
-      placeholder: "Ex 3550,00",
+      placeholder: "Ex 3550.00",
       invalidMessage: "",
     },
     inputPercentage: {
@@ -83,7 +83,7 @@ const UserGoals = (props) => {
       isValid: false,
       isTouched: false,
       id: "Goal Percentage",
-      placeholder: "Ex: 100,00",
+      placeholder: "Ex: 100.00",
       invalidMessage: "",
     },
     inputDate: {
