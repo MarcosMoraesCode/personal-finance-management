@@ -404,13 +404,6 @@ export const chartsSlice = createSlice({
         let day = stringDate.slice(8, 10).join("");
         let expenseDate = new Date(year, month - 1, day);
 
-        /*let validIndex = expensesFilter.findIndex(
-          (validDate) =>
-            validDate.month === expenseDate.getMonth() &&
-            validDate.year === expenseDate.getFullYear()
-          //validDate.year >= expenseDate.getFullYear()
-        );*/
-
         if (expenseDate.getFullYear() === actualDate.getFullYear()) {
           thisYearExpenses.push(expense);
         }
@@ -420,13 +413,13 @@ export const chartsSlice = createSlice({
       });
 
       thisYearExpenses.forEach((expense) => {
-        // console.log("roda", expense);
+        console.log("roda", expense);
         //convertendo o numero
-        let initialValue = [...expense.expenseValue];
+        /* let initialValue = [...expense.expenseValue];
         let commaIndex = initialValue.findIndex((element) => element === ",");
         initialValue.splice(commaIndex, 1, ".");
         let replacedValue = initialValue.join("");
-        let convertedValue = Number(replacedValue).toFixed(2);
+        let convertedValue = Number(replacedValue).toFixed(2);*/
 
         //convertendo a data
         let stringDate = [...expense.expenseDate];
@@ -452,14 +445,7 @@ export const chartsSlice = createSlice({
             (category) => category.id === expense.categoryId
           );
 
-          //convertendo numero
-          let initialValue = [...category.spendLimit];
-          let commaIndex = initialValue.findIndex((element) => element === ",");
-          initialValue.splice(commaIndex, 1, ".");
-          let replacedValue = initialValue.join("");
-          let convertedValue = Number(replacedValue).toFixed(2);
-
-          let newSpendLimit = oldSpendLimit + Number(convertedValue);
+          let newSpendLimit = oldSpendLimit + Number(category.spendLimit);
 
           arr[expenseDate.getMonth()].spendLimit = newSpendLimit;
         }
@@ -469,24 +455,24 @@ export const chartsSlice = createSlice({
         let oldValue = arr[expenseDate.getMonth()].value;
         // console.log("old value", oldValue);
 
-        let newValue = oldValue + Number(convertedValue);
+        let newValue = oldValue + Number(expense.expenseValue);
 
         arr[expenseDate.getMonth()].value = newValue;
 
-        /*state.yearSpendingHistory[expenseDate.getMonth()] = {
+        state.yearSpendingHistory[expenseDate.getMonth()] = {
           ...state.yearSpendingHistory[expenseDate.getMonth()],
           totalSpent:
             state.yearSpendingHistory[expenseDate.getMonth()].totalSpent +
-            Number(convertedValue),
-        };*/
+            Number(expense.expenseValue),
+        };
       });
 
       lastYearExpenses.forEach((expense) => {
-        let initialValue = [...expense.expenseValue];
+        /* let initialValue = [...expense.expenseValue];
         let commaIndex = initialValue.findIndex((element) => element === ",");
         initialValue.splice(commaIndex, 1, ".");
         let replacedValue = initialValue.join("");
-        let convertedValue = Number(replacedValue).toFixed(2);
+        let convertedValue = Number(replacedValue).toFixed(2);*/
 
         //convertendo a data
         let stringDate = [...expense.expenseDate];
@@ -515,13 +501,13 @@ export const chartsSlice = createSlice({
           );
 
           //convertendo numero
-          let initialValue = [...category.spendLimit];
+          /*let initialValue = [...category.spendLimit];
           let commaIndex = initialValue.findIndex((element) => element === ",");
           initialValue.splice(commaIndex, 1, ".");
           let replacedValue = initialValue.join("");
-          let convertedValue = Number(replacedValue).toFixed(2);
+          let convertedValue = Number(replacedValue).toFixed(2);*/
 
-          let newSpendLimit = oldSpendLimit + Number(convertedValue);
+          let newSpendLimit = oldSpendLimit + Number(category.spendLimit);
 
           lastYearArr[expenseDate.getMonth()].spendLimit = newSpendLimit;
         }
@@ -531,7 +517,7 @@ export const chartsSlice = createSlice({
         let oldValue = lastYearArr[expenseDate.getMonth()].value;
         // console.log("old value", oldValue);
 
-        let newValue = oldValue + Number(convertedValue);
+        let newValue = oldValue + Number(expense.expenseValue);
 
         lastYearArr[expenseDate.getMonth()].value = newValue;
       });

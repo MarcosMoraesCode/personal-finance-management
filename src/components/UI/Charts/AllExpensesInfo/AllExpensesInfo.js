@@ -13,103 +13,106 @@ import {
 const AllExpensesInfo = (props) => {
   //console.log(allCategories);
 
-  const filteredCategories = props.allCategories.map((category) => {
-    return {
-      categoryId: category.id,
-      categoryName: category.category,
-      mostExpensive: "",
-      numberOfExpenses: 0,
-      value: 0,
-      average: 0,
-      totalSpent: 0,
-    };
-  });
+  let filteredCategories = null;
+  if (props.allCategories !== null) {
+    filteredCategories = props.allCategories.map((category) => {
+      return {
+        categoryId: category.id,
+        categoryName: category.category,
+        mostExpensive: "",
+        numberOfExpenses: 0,
+        value: 0,
+        average: 0,
+        totalSpent: 0,
+      };
+    });
+  }
+  if (props.allExpenses !== null) {
+    props.allExpenses.forEach((expense) => {
+      let filteredIndex = filteredCategories.findIndex(
+        (category) => category.categoryId === expense.categoryId
+      );
+      console.log(expense.expenseValue);
+      let oldTotal = filteredCategories[filteredIndex].totalSpent;
 
-  props.allExpenses.forEach((expense) => {
-    let filteredIndex = filteredCategories.findIndex(
-      (category) => category.categoryId === expense.categoryId
-    );
+      filteredCategories[filteredIndex].totalSpent =
+        oldTotal + Number(expense.expenseValue);
 
-    let initialValue = [...expense.expenseValue];
-    let commaIndex = initialValue.findIndex((element) => element === ",");
-    initialValue.splice(commaIndex, 1, ".");
-    let replacedValue = initialValue.join("");
-    let convertedValue = Number(replacedValue);
+      let oldValue = filteredCategories[filteredIndex].value;
 
-    let oldTotal = filteredCategories[filteredIndex].totalSpent;
+      //let oldNumber = filteredCategories[filteredIndex].numberOfExpenses;
+      if (expense.categoryId === filteredCategories[filteredIndex].categoryId) {
+        filteredCategories[filteredIndex].numberOfExpenses++;
 
-    filteredCategories[filteredIndex].totalSpent =
-      oldTotal + Number(convertedValue);
-
-    let oldValue = filteredCategories[filteredIndex].value;
-
-    //let oldNumber = filteredCategories[filteredIndex].numberOfExpenses;
-    if (expense.categoryId === filteredCategories[filteredIndex].categoryId) {
-      filteredCategories[filteredIndex].numberOfExpenses++;
-
-      if (Number(convertedValue) > oldValue) {
-        filteredCategories[filteredIndex].value = Number(convertedValue);
-        filteredCategories[filteredIndex].mostExpensive = expense.expenseName;
+        if (expense.expenseValue > oldValue) {
+          filteredCategories[filteredIndex].value = Number(
+            expense.expenseValue
+          );
+          filteredCategories[filteredIndex].mostExpensive = expense.expenseName;
+        }
       }
-    }
-  });
-
-  filteredCategories.forEach((item, index) => {
-    item.average =
-      filteredCategories[index].totalSpent /
-      filteredCategories[index].numberOfExpenses;
-  });
-
-  console.log(filteredCategories);
+    });
+  }
 
   let defaultFontSize = "10px";
   let defaultTableHeight = "fit-content";
+  console.log(filteredCategories, "cá");
+  let tableContent = null;
+  if (filteredCategories !== null) {
+    filteredCategories.forEach((item, index) => {
+      item.average =
+        filteredCategories[index].totalSpent /
+        filteredCategories[index].numberOfExpenses;
+    });
+    tableContent = filteredCategories.map((item, index) => {
+      console.log(item);
+      return (
+        <tr key={`tr-${index}`}>
+          <TableData
+            fontSize={defaultFontSize}
+            padding={"6px"}
+            height={defaultTableHeight}
+          >
+            {item.categoryName}
+          </TableData>
+          <TableData
+            fontSize={defaultFontSize}
+            padding={"6px"}
+            height={defaultTableHeight}
+          >
+            {item.mostExpensive}
+          </TableData>
+          <TableData
+            fontSize={defaultFontSize}
+            padding={"6px"}
+            height={defaultTableHeight}
+            alignEnd
+          >
+            $ {item.value.toFixed(2)}
+          </TableData>
+          <TableData
+            fontSize={defaultFontSize}
+            padding={"6px"}
+            height={defaultTableHeight}
+            alignEnd
+          >
+            $ {item.average.toFixed(2)}
+          </TableData>
+          <TableData
+            minWidth={"20%"}
+            fontSize={defaultFontSize}
+            padding={"6px"}
+            height={defaultTableHeight}
+            alignEnd
+          >
+            $ {item.totalSpent.toFixed(2)}
+          </TableData>
+        </tr>
+      );
+    });
+  }
 
-  let tableContent = filteredCategories.map((item, index) => {
-    return (
-      <tr key={`tr-${index}`}>
-        <TableData
-          fontSize={defaultFontSize}
-          padding={"6px"}
-          height={defaultTableHeight}
-        >
-          {item.categoryName}
-        </TableData>
-        <TableData
-          fontSize={defaultFontSize}
-          padding={"6px"}
-          height={defaultTableHeight}
-        >
-          {item.mostExpensive}
-        </TableData>
-        <TableData
-          fontSize={defaultFontSize}
-          padding={"6px"}
-          height={defaultTableHeight}
-          alignEnd
-        >
-          $ {item.value.toFixed(2)}
-        </TableData>
-        <TableData
-          fontSize={defaultFontSize}
-          padding={"6px"}
-          height={defaultTableHeight}
-          alignEnd
-        >
-          $ {item.average.toFixed(2)}
-        </TableData>
-        <TableData
-          minWidth={"20%"}
-          fontSize={defaultFontSize}
-          padding={"6px"}
-          height={defaultTableHeight}
-          alignEnd
-        >
-          $ {item.totalSpent.toFixed(2)}
-        </TableData>
-      </tr>
-    );
-  });
+  console.log(filteredCategories);
 
   let table = (
     <TableWrapper maxHeigth={"100px"}>

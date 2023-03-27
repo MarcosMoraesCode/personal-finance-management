@@ -191,11 +191,19 @@ const InputContainer = (props) => {
                   value="Deposit"
                   checked={props.currentValue === "Withdraw" ? false : true}
                   onChange={props.changed}
-                ></input>
+                  onBlur={
+                    props.blur //? (message = null) : (message = props.invalidMessage)
+                  }
+                >
+                  {console.log(props.currentValue)}
+                </input>
                 <label>Deposit</label>
               </AuxDiv>
               <AuxDiv>
                 <input
+                  onBlur={
+                    props.blur //? (message = null) : (message = props.invalidMessage)
+                  }
                   style={{ marginRight: "5px" }}
                   type="radio"
                   value="Withdraw"
@@ -207,11 +215,23 @@ const InputContainer = (props) => {
             </FirstDiv>
             <div>
               <StyledWarning
-                color={props.currentValue === "Withdraw" ? "red" : "#51d289"}
+                color={
+                  props.transactionType === "income"
+                    ? props.currentValue === "Withdraw"
+                      ? "red"
+                      : "#51d289"
+                    : props.currentValue === "Withdraw"
+                    ? "#51d289"
+                    : "red"
+                }
               >
-                {props.currentValue === "Withdraw"
-                  ? "The current value will be removed from your balance"
-                  : "The current value will be add to your balance"}
+                {props.transactionType === "income"
+                  ? props.currentValue === "Withdraw"
+                    ? "The current value will be removed from your balance"
+                    : "The current value will be add to your balance"
+                  : props.currentValue === "Withdraw"
+                  ? "The current value will be add to your balance"
+                  : "The current value will be removed from your balance"}
               </StyledWarning>
             </div>
           </SpecialWrappComponent>

@@ -233,6 +233,7 @@ const UserGoals = (props) => {
         validation2 ? (result = true) : (result = false);
         break;
       case "Goal Percentage":
+        console.log(value, userInputs.inputValue.value);
         validation2 && validation3 ? (result = true) : (result = false); //VALIDATION 4 TOO
         break;
       case "Goal Date":

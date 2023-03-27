@@ -35,12 +35,7 @@ const PieChart = (props) => {
       let realIndex = 0;
       if (props.categoryList[index].expensesList.length > 0) {
         props.categoryList[index].expensesList.forEach((expense) => {
-          let initialValue = [...expense.value];
-          let commaIndex = initialValue.findIndex((element) => element === ",");
-          initialValue.splice(commaIndex, 1, ".");
-          let replacedValue = initialValue.join("");
-          let convertedValue = Number(replacedValue).toFixed(2);
-          valuesArr.push(Number(convertedValue));
+          valuesArr.push(expense.value);
         });
 
         let totalValue = valuesArr.reduce(

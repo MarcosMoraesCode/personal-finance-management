@@ -26,12 +26,7 @@ const BarTableChart = (props) => {
   //console.log("deu aq", props.expenses);
   if (props.expenses !== null) {
     let auxArr = props.expenses.map((item) => {
-      let initialValue = [...item.value];
-      let commaIndex = initialValue.findIndex((element) => element === ",");
-      initialValue.splice(commaIndex, 1, ".");
-      let replacedValue = initialValue.join("");
-      let convertedValue = Number(replacedValue).toFixed(2);
-      return { name: item.name, value: convertedValue };
+      return { name: item.name, value: item.value };
     });
     let organizedArr = [];
     //console.log("inicialmente", auxArr);

@@ -36,9 +36,7 @@ const GoalInformation = (props) => {
     (Number(convertedAllocated) / Number(convertedValue)) *
     100
   ).toFixed(2);
-  console.log(typeof Number(percentage), percentage);
 
-  console.log("props", props);
   return (
     <GoalContainer {...props}>
       <InfoContainer>
@@ -99,7 +97,7 @@ const GoalInformation = (props) => {
         <ButtonsDiv>
           {props.incomePage ? (
             <>
-              <AddButton onClick={props.addAction} />{" "}
+              <AddButton onClick={props.transactionAction} />{" "}
             </>
           ) : (
             <>

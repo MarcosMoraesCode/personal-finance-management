@@ -50,7 +50,7 @@ export const CrudStatusDescription = styled.p`
   max-width: 300px;
   padding: 5px;
   font-family: "Roboto";
-  font-size: 16px;
+  font-size: 13px;
   color: white;
 `;
 

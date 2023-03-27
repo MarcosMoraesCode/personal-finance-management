@@ -105,7 +105,7 @@ const UserExpenses = () => {
       isValid: false,
       isTouched: false,
       id: "Expense Value",
-      placeholder: "Ex 150,00",
+      placeholder: "Ex 150.00",
       invalidMessage: "",
     },
     inputCategory: {
@@ -135,7 +135,7 @@ const UserExpenses = () => {
       value: "",
       isValid: false,
       isTouched: false,
-      placeholder: "Ex: 1800,00",
+      placeholder: "Ex: 1800.00",
       invalidMessage: "",
     },
   });
@@ -156,7 +156,7 @@ const UserExpenses = () => {
       value: "",
       isValid: false,
       isTouched: false,
-      placeholder: "Ex: 1800,00",
+      placeholder: "Ex: 1800.00",
       invalidMessage: "",
     },
   });
@@ -176,7 +176,7 @@ const UserExpenses = () => {
       isValid: false,
       isTouched: false,
       invalidMessage: "",
-      placeholder: "Ex: 2000,00",
+      placeholder: "Ex: 2000.00",
     },
   });
 
@@ -195,7 +195,7 @@ const UserExpenses = () => {
       isValid: false,
       isTouched: false,
       invalidMessage: "",
-      placeholder: "Ex: 2000,00",
+      placeholder: "Ex: 2000.00",
     },
     inputNewDate: {
       id: "Edit Expense Date",
@@ -391,7 +391,7 @@ const UserExpenses = () => {
       );
 
     const isValidValue = (expenseValue) =>
-      /^[0-9]+\,[0-9]{2,2}$/i.test(expenseValue);
+      /^[0-9]+\.[0-9]{2,2}$/i.test(expenseValue);
 
     const isValidDate = (expenseDate) =>
       /^([0-9]{4})\-(0[1-9]|1[0-2])\-(0[1-9]|[1-2][0-9]|3[0-1])$/.test(
@@ -905,7 +905,7 @@ const UserExpenses = () => {
             isValid: checkInputValidation(expenseId, event.currentTarget.value),
           },
         });
-        console.log("teste", editExpense.inputNewDate);
+        // console.log("teste", editExpense.inputNewDate);
         checkEditExpenseBtnValidation(expenseId, event.currentTarget.value);
         break;
       default:
@@ -927,20 +927,26 @@ const UserExpenses = () => {
     if (!showEditCategories) {
       switch (filterType) {
         case "sort by name":
-          filteredList = fullList.filter((expense) => {
-            if (expense?.props.expenseTopic.includes(filterValue)) {
-              return expense;
-            }
-            return null;
-          });
+          if (fullList !== null) {
+            filteredList = fullList.filter((expense) => {
+              if (expense?.props.expenseTopic.includes(filterValue)) {
+                return expense;
+              }
+              return null;
+            });
+          }
+
           break;
         case "sort by value":
-          filteredList = fullList.filter((expense) => {
-            if (Number(expense?.props.expenseTotal) >= Number(filterValue)) {
-              return expense;
-            }
-            return null;
-          });
+          if (fullList !== null) {
+            filteredList = fullList.filter((expense) => {
+              if (Number(expense?.props.expenseTotal) >= Number(filterValue)) {
+                return expense;
+              }
+              return null;
+            });
+          }
+
           break;
         default:
           break;
@@ -949,20 +955,25 @@ const UserExpenses = () => {
     } else {
       switch (filterType) {
         case "sort by name":
-          filteredList = categoryList.filter((item) => {
-            if (item?.props.categoryName.includes(filterValue)) {
-              return item;
-            }
-            return null;
-          });
+          if (categoryList !== null) {
+            filteredList = categoryList.filter((item) => {
+              if (item?.props.categoryName.includes(filterValue)) {
+                return item;
+              }
+              return null;
+            });
+          }
+
           break;
         case "sort by value":
-          filteredList = categoryList.filter((item) => {
-            if (Number(item.props.spendLimit) >= Number(filterValue)) {
-              return item;
-            }
-            return null;
-          });
+          if (categoryList !== null) {
+            filteredList = categoryList.filter((item) => {
+              if (Number(item.props.spendLimit) >= Number(filterValue)) {
+                return item;
+              }
+              return null;
+            });
+          }
           break;
         default:
           break;
@@ -1253,6 +1264,7 @@ const UserExpenses = () => {
         </InputContainer>
         <InputContainer
           placeholder={userExpense.inputSpend.placeholder}
+          //type={"number"}
           changed={(event) =>
             InputChangeHandler(event, userExpense.inputSpend.id)
           }
@@ -1381,8 +1393,7 @@ const UserExpenses = () => {
               date: expense.date,
               categoryName: expense.categoryName,
               percentage: (
-                (convertToNumber(expense.value) /
-                  convertToNumber(expenseItems[categoryIndex].spendLimit)) *
+                (expense.value / expenseItems[categoryIndex].spendLimit) *
                 100
               ).toFixed(2),
             });
@@ -1404,7 +1415,7 @@ const UserExpenses = () => {
           dispatch(getThisYearHistoric(allExpenses));
 
           const categoryWithExpenses = expenseItems.filter((item) => {
-            console.log("item", item);
+            //console.log("item", item);
             if (item.expensesList.length > 0) {
               return item;
             }
@@ -1450,9 +1461,9 @@ const UserExpenses = () => {
           setFilteredCategories(categoryWithExpenses);
           setMonthlyFilteredCategories(thisCategoriesWithExpenses);
 
-          console.log("categoryWith", categoryWithExpenses);
+          // console.log("categoryWith", categoryWithExpenses);
           setLoading(false);
-          console.log("user", allExpenses);
+          // console.log("user", allExpenses);
         }
       })
       .catch((err) => {
@@ -1489,7 +1500,7 @@ const UserExpenses = () => {
   const calculateExpenses = (list) => {
     let valuesList = [];
     list.forEach((item) => {
-      valuesList.push(convertToNumber(item.value));
+      valuesList.push(Number(item.value));
     });
 
     let totalValue = valuesList.reduce(
@@ -1501,17 +1512,17 @@ const UserExpenses = () => {
   };
 
   const sumTotalSpent = (list) => {
-    console.log(list);
+    // console.log(list);
     let total = 0;
     list.forEach((item) => {
       //  console.log(item.expenseValue);
-      let value = convertToNumber(item.expenseValue);
+      let value = item.expenseValue;
       total += Number(value);
     });
 
     return total;
   };
-  const convertToNumber = (stringValue) => {
+  /*const convertToNumber = (stringValue) => {
     let initialValue = [...stringValue];
     let commaIndex = initialValue.findIndex((element) => element === ",");
     initialValue.splice(commaIndex, 1, ".");
@@ -1519,18 +1530,18 @@ const UserExpenses = () => {
     let convertedValue = Number(replacedValue).toFixed(2);
 
     return convertedValue;
-  };
+  };*/
 
   const calculateExpectedPercentage = (categoryLimit) => {
     //console.log("a", totalSpendLimit);
-    let expectedPercentage = convertToNumber(categoryLimit) / totalSpendLimit;
-    return (expectedPercentage * 100).toFixed(2);
+    let expectedPercentage = categoryLimit / totalSpendLimit;
+    return Number(expectedPercentage * 100).toFixed(2);
   };
 
   const calculateRealPercentage = (list) => {
     let allCategoryExpenses = calculateExpenses(list);
     let realPercentage = allCategoryExpenses / totalSpendLimit;
-    return realPercentage * 100;
+    return Number(realPercentage * 100);
   };
 
   let fullList = null;
@@ -1548,7 +1559,7 @@ const UserExpenses = () => {
     let id = expenseId;
     let catName = categoryName;
     let catId = categoryId;
-    console.log(name, value, date);
+    // console.log(name, value, date);
     setCrudType({
       ...crudType,
       crudType: "edit-expense",
@@ -1598,8 +1609,8 @@ const UserExpenses = () => {
   //if (fetchedExpensesList !== null && infoBtnList !== null) {
 
   if (monthlyCategories !== null && infoBtnList !== null) {
-    console.log("aq", monthlyCategories);
-    console.log("ali", allExpenses);
+    //console.log("aq", monthlyCategories);
+    //console.log("ali", allExpenses);
     let listToBeSet =
       showMonthExpenses === true ? monthlyCategories : allExpenses;
     let btnIndex = 0;
@@ -1626,6 +1637,11 @@ const UserExpenses = () => {
             removeAction: () => removeExpenseHandler(expense.name, expense.id),
           };
         });
+        console.log("ITEM", item);
+
+        let isBiggerThanExpected =
+          Number(calculateExpectedPercentage(item.spendLimit)) <
+          Number(calculateRealPercentage(item.expensesList));
 
         return (
           <Expense
@@ -1638,13 +1654,10 @@ const UserExpenses = () => {
             realPercentage={calculateRealPercentage(item.expensesList).toFixed(
               2
             )}
-            color={
-              Number(calculateExpectedPercentage(item.spendLimit)).toFixed(2) <
-              Number(calculateRealPercentage(item.expensesList)).toFixed(2)
-                ? "red"
-                : "#51d289"
-            }
-            percentageExpected={calculateExpectedPercentage(item.spendLimit)}
+            color={isBiggerThanExpected ? "red" : "#51d289"}
+            percentageExpected={Number(
+              calculateExpectedPercentage(item.spendLimit)
+            ).toFixed(2)}
             clicked={() => {
               expandBtnHandler(currentBtnIndex);
             }}
@@ -1711,7 +1724,7 @@ const UserExpenses = () => {
             ...categoryOptions,
             (categoryOptions[optionIndex] = { name: name, id: id }),
           ]);
-          console.log("dps", categoryOptions);
+          //  console.log("dps", categoryOptions);
           setCrudType({
             ...crudType,
             crudType: "",
@@ -1750,7 +1763,7 @@ const UserExpenses = () => {
 
     setShowCrud(false);
     await getExpenses();
-    console.log(fetchedExpensesList);
+    //console.log(fetchedExpensesList);
   };
 
   const removeCategoryHandler = (categoryName, categoryId) => {
@@ -1798,12 +1811,12 @@ const UserExpenses = () => {
       );
     }
     let optionIndex = categoryOptions.findIndex((item) => item.id === id);
-    console.log(expensesToRemove);
+    //console.log(expensesToRemove);
 
-    console.log("esse", optionIndex);
+    //console.log("esse", optionIndex);
     let newOptions = categoryOptions;
     newOptions.splice(optionIndex, 1);
-    console.log(newOptions);
+    // console.log(newOptions);
 
     await dispatch(removeACategory(id)).then((res) => {
       setCrudType({
@@ -1834,7 +1847,7 @@ const UserExpenses = () => {
           key={index}
           categoryName={item.category}
           expensesNumber={item.expensesList.length}
-          spendLimit={convertToNumber(item.spendLimit)}
+          spendLimit={item.spendLimit}
           realSpend={
             calculateExpenses(item.expensesList) > 0
               ? calculateExpenses(item.expensesList)
@@ -2024,7 +2037,7 @@ const UserExpenses = () => {
     categoriesDiv = (
       <UserItemsList>
         <UserCategoriesListContainer>
-          {fetchedExpensesList
+          {allCategories
             ? filterValue === ""
               ? categoryList
               : verifySelectType()
@@ -2130,7 +2143,7 @@ const UserExpenses = () => {
         );
         break;
       case "This Year":
-        console.log(currentAnalysisOption);
+        // console.log(currentAnalysisOption);
         analisysContent = (
           <TestDiv>
             <LineChart annualExpenses={sliceValues.yearSpendingHistory} />
@@ -2180,7 +2193,9 @@ const UserExpenses = () => {
         analisysContent = null;
     }
   }
-  let spendInfo;
+  let spendInfo = 0.0;
+
+  //(monthlyCategories);
   if (sliceValues.loadingData) {
     spendInfo = (
       <LoadingDiv>
@@ -2188,9 +2203,15 @@ const UserExpenses = () => {
       </LoadingDiv>
     );
   } else {
-    let value =
-      sliceValues.yearSpendingHistory[actualDate.getMonth()].spendLimit;
+    let value = 0;
+    sliceValues.yearSpendingHistory[actualDate.getMonth()].usedCategories
+      .length > 0
+      ? (value =
+          sliceValues.yearSpendingHistory[actualDate.getMonth()].spendLimit)
+      : (value = 0);
+
     spendInfo = Number(value - totalSpent).toFixed(2);
+    // console.log(spendInfo);
   }
 
   return (
@@ -2276,18 +2297,24 @@ const UserExpenses = () => {
                   <AnalysisInfoContainer width={"70%"}>
                     <SpendingInfoDiv>
                       <SpendingInfoTitle
-                        color={(totalSpendLimit - totalSpent).toFixed(2)}
+                        color={
+                          totalSpendLimit === -1
+                            ? 10
+                            : (totalSpendLimit - totalSpent).toFixed(2)
+                        }
                       >
-                        {" "}
+                        {console.log("a", totalSpendLimit, totalSpent)}
                         <SpendingInfoSpan>
-                          bugder lasting for this month
+                          budger lasting for this month
                         </SpendingInfoSpan>{" "}
                         {totalSpendLimit === undefined
                           ? ""
-                          : spendInfo > 0
+                          : spendInfo >= 0
                           ? " $ "
                           : " - $ "}
-                        {spendInfo >= 0
+                        {spendInfo > 0
+                          ? (spendInfo * 1).toFixed(2)
+                          : Number(spendInfo) == 0
                           ? (spendInfo * 1).toFixed(2)
                           : (spendInfo * -1).toFixed(2)}
                       </SpendingInfoTitle>

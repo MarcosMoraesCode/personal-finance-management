@@ -48,7 +48,7 @@ const UserIncomes = (props) => {
   const [userInputs, setUserInputs] = useState({
     id: "income",
     inputRadio: {
-      id: "Checked Transition",
+      id: "Checked Transaction",
       value: "Deposit",
       isValid: true,
     },
@@ -68,12 +68,7 @@ const UserIncomes = (props) => {
       placeholder: "Ex 250,00",
       invalidMessage: "",
     },
-    inputTransaction: {
-      value: "",
-      isValid: false,
-      isTouched: false,
-      id: "Income Transaction",
-    },
+
     inputDate: {
       value: "",
       isValid: false,
@@ -121,7 +116,6 @@ const UserIncomes = (props) => {
     let balance = 0;
     await dispatch(fetchIncomesData()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        console.log("aqaau", res.payload);
         let incomeArr = Object.values(res.payload);
 
         incomeArr.forEach((income) => {
@@ -198,19 +192,35 @@ const UserIncomes = (props) => {
             isTouched: true,
             isValid: CheckInputValidation(inputId, event.currentTarget.value),
           },
+          inputRadio: {
+            ...userInputs.inputRadio,
+            isValid: CheckInputValidation(
+              "Checked Transaction",
+              userInputs.inputRadio.value
+            ),
+          },
         });
         checkButtonValidation(inputId, event.currentTarget.value);
+
         break;
-      case "Checked Transition":
+      case "Checked Transaction":
         setUserInputs({
           ...userInputs,
           inputRadio: {
             ...userInputs.inputRadio,
             value: event.currentTarget.value,
-            isValid: checkButtonValidation(inputId, event.currentTarget.value),
+            isValid: CheckInputValidation(inputId, event.currentTarget.value),
+          },
+          inputValue: {
+            ...userInputs.inputValue,
+            isValid: CheckInputValidation(
+              "Income Value",
+              userInputs.inputValue.value
+            ),
           },
         });
-        CheckInputValidation(inputId, event.currentTarget.value);
+        checkButtonValidation(inputId, event.currentTarget.value);
+      //checkButtonValidation("Income Value", userInputs.inputValue.value);
     }
   };
   const verifyFocus = (inputId, elementIsValid) => {
@@ -240,6 +250,18 @@ const UserIncomes = (props) => {
             },
           });
           break;
+        case "Checked Transaction":
+          setUserInputs({
+            ...userInputs,
+            inputValue: {
+              ...userInputs.inputValue,
+              invalidMessage: userInputs.inputValue.isValid
+                ? ""
+                : userInputs.inputValue.value === ""
+                ? ""
+                : "Invalid value!",
+            },
+          });
       }
     } else {
       switch (inputId) {
@@ -253,6 +275,15 @@ const UserIncomes = (props) => {
           });
           break;
         case "Income Value":
+          setUserInputs({
+            ...userInputs,
+            inputValue: {
+              ...userInputs.inputValue,
+              invalidMessage: "",
+            },
+          });
+          break;
+        case "Checked Transaction":
           setUserInputs({
             ...userInputs,
             inputValue: {
@@ -280,6 +311,7 @@ const UserIncomes = (props) => {
       );
 
     const convertNumber = (stringValue) => {
+      console.log(typeof stringValue);
       if (stringValue !== "" && typeof stringValue !== "number") {
         let initialValue = [...stringValue];
         let commaIndex = initialValue.findIndex((element) => element === ",");
@@ -293,17 +325,38 @@ const UserIncomes = (props) => {
       }
     };
 
-    let number1 = Number(convertNumber(value));
+    let number1 = validation2 ? Number(convertNumber(value)) : 0;
+    console.log("number1");
     let number2 = Number(convertNumber(crudType.incomeOldValue));
+    console.log("number2");
     let number3 = Number(convertNumber(userInputs.inputValue.value));
-    console.log(value);
+    console.log("number3");
+    let allocatedValue = Number(convertNumber(crudType.goalAllocated));
+    console.log("alocado");
+    let goalValue = Number(convertNumber(crudType.goalValue));
+    console.log("total");
+
+    // console.log(value);
     const validation1 = isValidName(value);
     const validation2 = isValidValue(value);
     const validation3 =
       userInputs.inputRadio.value === "Deposit" ? true : number1 <= number2;
     const validation4 = value === "Deposit" ? true : number3 <= number2;
-    const validation5 = isValidDate(value);
-    const validation6 = isValidValue(userInputs.inputValue.value);
+    const validation5 = isValidValue(userInputs.inputValue.value);
+    const validation6 =
+      userInputs.inputRadio.value === "Deposit"
+        ? Number(number1) <= userBalance
+        : Number(number1) <= allocatedValue;
+    const validation7 =
+      userInputs.inputRadio.value === "Deposit"
+        ? Number(number1) <= goalValue &&
+          Number(number1) <= goalValue - allocatedValue
+        : true;
+    const validation8 =
+      value === "Deposit"
+        ? number3 <= goalValue && number3 <= goalValue - allocatedValue
+        : number3 <= allocatedValue;
+
     let result = false;
 
     switch (inputId) {
@@ -311,27 +364,46 @@ const UserIncomes = (props) => {
         validation1 ? (result = true) : (result = false);
         break;
       case "Income Value":
-        //  console.log("caso value", value, number1, number2, validation3);
-
         if (crudType.crudType === "transfer-income") {
           validation2 && validation3 ? (result = true) : (result = false);
-          //  console.log(
-          //  `Input Value: O valor é valido? ${validation2}, é deposito ou ${number1} <= ${number2}? ${validation3}`
-          //);
+          //NÃO HÁ PROBLEMAS
+          console.log(
+            `O valor do input é válido? ${validation2}, opção de depósito ou ${number1} < ${number2} ? ${validation3}`
+          );
         }
 
+        if (crudType.crudType === "transfer-goal") {
+          validation2 && validation6 && validation7
+            ? (result = true)
+            : (result = false);
+          // console.log("é valido?", result);
+
+          /*console.log(
+            allocatedValue,
+            goalValue,
+            number1,
+            "é menor ou igual?",
+            validation6
+          );
+          console.log(
+            `${number1} é menor que ${goalValue} e menor que ${
+              goalValue - allocatedValue
+            }? ${validation7}`
+          );*/
+        }
         break;
-      case "Checked Transition":
-        //console.log("caso check", value, number2, number3, validation3);
+      case "Checked Transaction":
         if (crudType.crudType === "transfer-income") {
-          validation4 && validation6 ? (result = true) : (result = false);
-          //   console.log(
-          //    `Check: O valor é valido? ${validation6}, é deposito ou ${number3} <= ${number2}? ${validation4}`
-          //  );
-
-          //console.log("é valido", validation4, validation6, result);
+          validation4 && validation5 ? (result = true) : (result = false);
+          console
+            .log
+            //  `O valor do input é válido? ${validation5}, opção de depósito ou ${number3} < ${number2} ? ${validation4}`
+            ();
         }
-
+        if (crudType.crudType === "transfer-goal") {
+          validation5 && validation8 ? (result = true) : (result = false);
+          console.log("é valido?", result);
+        }
       default:
         break;
     }
@@ -343,7 +415,7 @@ const UserIncomes = (props) => {
       ...userInputs,
       id: "income",
       inputRadio: {
-        id: "Checked Transition",
+        id: "Checked Transaction",
         value: "Deposit",
         isValid: true,
       },
@@ -385,6 +457,7 @@ const UserIncomes = (props) => {
     let validation3 = userInputs.inputRadio.isValid === true;
     let validation4 = userInputs.inputDate.isValid === true;
     let validation5 = "";
+    let validation6 = "";
 
     const convertNumber = (stringValue) => {
       if (stringValue !== "" && typeof stringValue !== "number") {
@@ -413,30 +486,42 @@ const UserIncomes = (props) => {
         validation2 = CheckInputValidation(inputId, value);
         let oldValue = Number(convertNumber(crudType.incomeOldValue));
         let newValue = Number(convertNumber(value));
+        let allocatedValue = Number(convertNumber(crudType.goalAllocated));
+
         validation5 =
           userInputs.inputRadio.value === "Deposit"
             ? true
             : Number(newValue) <= Number(oldValue);
-        console.log(
-          ` O valor é valido? ${validation2}, é deposito ou ${newValue} <= ${oldValue}? ${validation5}`
-        );
+        validation6 =
+          userInputs.inputRadio.value === "Deposit"
+            ? true
+            : Number(newValue) <= Number(allocatedValue);
 
         if (crudType.crudType === "transfer-income") {
-          console.log(
+          /* console.log(
             `BUTTON: Input é valido? ${validation2}, check é valido? ${validation5}`
-          );
+          );*/
           validation5 && validation2
+            ? setSubmitPermission(true)
+            : setSubmitPermission(false);
+        }
+        if (crudType.crudType === "transfer-goal") {
+          //já confere o valor do input
+
+          validation2 && validation6
             ? setSubmitPermission(true)
             : setSubmitPermission(false);
         }
 
         break;
-      case "Checked Transition":
+      case "Checked Transaction":
         validation3 = CheckInputValidation(inputId, value);
         if (crudType.crudType === "transfer-income") {
-          console.log(
-            `BUTTON: Input é valido? ${validation2}, check é valido? ${validation3}`
-          );
+          validation3 && validation2
+            ? setSubmitPermission(true)
+            : setSubmitPermission(false);
+        }
+        if (crudType.crudType === "transfer-goal") {
           validation3 && validation2
             ? setSubmitPermission(true)
             : setSubmitPermission(false);
@@ -582,6 +667,27 @@ const UserIncomes = (props) => {
     });
   };
 
+  const goalsTransactionHandler = (
+    goalName,
+    goalId,
+    goalDate,
+    goalValue,
+    goalAllocated,
+    goalTerm
+  ) => {
+    setCrudType({
+      ...crudType,
+      crudType: "transfer-goal",
+      goalName: goalName,
+      goalValue: goalValue,
+      goalId: goalId,
+      goalAllocated: goalAllocated,
+      goalDate: goalDate,
+      goalTerm: goalTerm,
+    });
+    setShowCrud(true);
+  };
+
   let selectedContent = <div>Select an option</div>;
 
   let goalsList = "Create your goal and come back!";
@@ -597,8 +703,15 @@ const UserIncomes = (props) => {
         id: goal.id,
         allocated: goal.allocated,
         term: goal.term,
-
-        // addAction: () => addMoneyHandler(goal.name, goal.id),
+        transactionAction: () =>
+          goalsTransactionHandler(
+            goal.name,
+            goal.id,
+            goal.date,
+            goal.value,
+            goal.allocated,
+            goal.term
+          ),
         //withdrawAction: () => withdrawMoneyHandler(goal.name, goal.id),
       };
     });
@@ -614,6 +727,7 @@ const UserIncomes = (props) => {
           allocated={goal.allocated}
           term={goal.term}
           value={goal.value}
+          transactionAction={goal.transactionAction}
         />
       );
     });
@@ -716,6 +830,7 @@ const UserIncomes = (props) => {
           <DefaultTitleDiv>
             <DefaultTitle>Analysis</DefaultTitle>
           </DefaultTitleDiv>
+          <InputContainer type={"number"}>teste</InputContainer>
         </AnalysisIncomeDiv>
       );
       break;
@@ -833,11 +948,15 @@ const UserIncomes = (props) => {
           continueDisabled={submitPermission ? "" : "disabled"}
           incomeNameInputConfig={userInputs.inputName}
           incomeValueInputConfig={userInputs.inputValue}
+          goalValueInputConfig={userInputs.inputValue}
           clicked={BackdropCrudHandler}
           cancelAction={BackdropCrudHandler}
           removeIncome={() => confirmRemoveIncome(crudType.incomeId)}
           incomeName={crudType.incomeName}
           incomeValue={crudType.incomeOldValue}
+          goalName={crudType.goalName}
+          goalValue={crudType.goalValue}
+          goalAllocated={crudType.goalAllocated}
           incomeNameChanged={(event) =>
             InputChangeHandler(event, userInputs.inputName.id)
           }
@@ -850,6 +969,18 @@ const UserIncomes = (props) => {
           incomeValueBlur={() =>
             verifyFocus(userInputs.inputValue.id, userInputs.inputValue.isValid)
           }
+          goalValueChanged={(event) =>
+            InputChangeHandler(event, userInputs.inputValue.id)
+          }
+          goalValueBlur={() =>
+            verifyFocus(userInputs.inputValue.id, userInputs.inputValue.isValid)
+          }
+          goalRadioBlur={() =>
+            verifyFocus(userInputs.inputRadio.id, userInputs.inputRadio.isValid)
+          }
+          incomeRadioBlur={() =>
+            verifyFocus(userInputs.inputRadio.id, userInputs.inputRadio.isValid)
+          }
           editIncome={() =>
             confirmEditIncome(
               userInputs.inputName.value,
@@ -861,6 +992,10 @@ const UserIncomes = (props) => {
             InputChangeHandler(event, userInputs.inputRadio.id)
           }
           incomeRadioValue={userInputs.inputRadio.value}
+          goalRadioChanged={(event) =>
+            InputChangeHandler(event, userInputs.inputRadio.id)
+          }
+          goalRadioValue={userInputs.inputRadio.value}
           transferIncomeValue={() =>
             confirmTransferIncome(
               userInputs.inputValue.value,

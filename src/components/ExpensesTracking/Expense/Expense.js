@@ -37,20 +37,14 @@ const Expense = (props) => {
         </ButtonsDiv>
       );
     }
-    // console.log(subTopic.value);
-
-    let initialValue = [...subTopic.value];
-    let commaIndex = initialValue.findIndex((element) => element === ",");
-    initialValue.splice(commaIndex, 1, ".");
-    let replacedValue = initialValue.join("");
-    let convertedValue = Number(replacedValue).toFixed(2);
+    console.log(subTopic.value);
 
     return (
       <ExtraContentWrapper key={`${props.expenseTopic}-sub-${index}`}>
         {" "}
         <ExtraContentBlock width={"48%"}>
           <ExtraText> {subTopic.name}</ExtraText>
-          <ExtraText>{`$ ${convertedValue}`}</ExtraText>
+          <ExtraText>{`$ ${Number(subTopic.value).toFixed(2)}`}</ExtraText>
         </ExtraContentBlock>
         <ExtraContentBlock width={"25%"}>
           <ExtraText>

@@ -51,26 +51,20 @@ const CompletePieChart = (props) => {
 
   console.log(props.allExpenses);
 
-  let newData = props.allExpenses.map((expense) => {
-    // console.log("ex", expense);
-    let categoryIndex = props.allCategories.findIndex(
-      (category) => category.id === expense.categoryId
-    );
+  let newData = null;
+  if (props.allExpenses !== null) {
+    newData = props.allExpenses.map((expense) => {
+      // console.log("ex", expense);
+      let categoryIndex = props.allCategories.findIndex(
+        (category) => category.id === expense.categoryId
+      );
 
-    let initialExpenseValue = [...expense.expenseValue];
-    let commaExpenseIndex = initialExpenseValue.findIndex(
-      (element) => element === ","
-    );
-    initialExpenseValue.splice(commaExpenseIndex, 1, ".");
-    let replacedExpenseValue = initialExpenseValue.join("");
-    let convertedExpenseValue = Number(replacedExpenseValue).toFixed(2);
+      if (Number(expense.expenseValue) > biggerValue) {
+        biggerValue = Number(expense.expenseValue);
+      }
 
-    if (Number(convertedExpenseValue) > biggerValue) {
-      biggerValue = Number(convertedExpenseValue);
-    }
-
-    //transformando o valor do limite da categoria em numero
-    /* let initialCategoryValue = [
+      //transformando o valor do limite da categoria em numero
+      /* let initialCategoryValue = [
       ...props.allCategories[categoryIndex].spendLimit,
     ];
     let commaCategoryIndex = initialCategoryValue.findIndex(
@@ -78,15 +72,16 @@ const CompletePieChart = (props) => {
     );
     initialCategoryValue.splice(commaCategoryIndex, 1, ".");
     let replacedCategoryValue = initialCategoryValue.join("");*/
-    //let convertedCategoryValue = Number(replacedCategoryValue).toFixed(2);
+      //let convertedCategoryValue = Number(replacedCategoryValue).toFixed(2);
 
-    return [
-      expense.expenseName,
-      props.allCategories[categoryIndex].name,
-      Number(convertedExpenseValue),
-      Number(convertedExpenseValue),
-    ];
-  });
+      return [
+        expense.expenseName,
+        props.allCategories[categoryIndex].name,
+        Number(expense.expenseValue),
+        Number(expense.expenseValue),
+      ];
+    });
+  }
 
   let finalData = data.concat(newData);
 

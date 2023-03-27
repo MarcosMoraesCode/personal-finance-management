@@ -310,11 +310,63 @@ const Crud = (props) => {
             >
               Income Value
             </InputContainer>
+
             <InputContainer
               width={"200px"}
               elementType={"radio"}
               changed={props.incomeRadioChanged}
               currentValue={props.incomeRadioValue}
+              transactionType={"income"}
+              blur={props.incomeRadioBlur}
+            />
+          </InputsDiv>
+
+          <ModalButtonDiv>
+            <ContinueBtn
+              onClick={props.transferIncomeValue}
+              disabled={props.continueDisabled}
+              {...props}
+            >
+              CONTINUE
+            </ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+          </ModalButtonDiv>
+        </>
+      );
+      break;
+    case "transfer-goal":
+      crudContent = (
+        <>
+          <CrudStyleTitle>
+            New transaction for "{props.goalName}" goal
+          </CrudStyleTitle>
+          <CrudStatusDescription>
+            Value to achieve {` the ` + props.goalName + ` goal `}is
+            {` $ ` + props.goalValue}, and the amount allocated so far is{" "}
+            {` $ ` + props.goalAllocated}.
+          </CrudStatusDescription>
+
+          <InputsDiv>
+            <InputContainer
+              placeholder={props.goalValueInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.goalValueInputConfig.isValid
+                  ? ""
+                  : props.goalValueInputConfig.invalidMessage
+              }
+              value={props.goalValueInputConfig.value}
+              blur={props.goalValueBlur}
+              changed={props.goalValueChanged}
+            >
+              Income Value
+            </InputContainer>
+            <InputContainer
+              width={"200px"}
+              elementType={"radio"}
+              changed={props.goalRadioChanged}
+              currentValue={props.goalRadioValue}
+              blur={props.goalRadioBlur}
             />
           </InputsDiv>
 
