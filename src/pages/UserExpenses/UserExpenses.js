@@ -1600,6 +1600,30 @@ const UserExpenses = () => {
         categoryName: "",
         categoryId: "",
       });
+      setEditExpense({
+        ...editExpense,
+        inputNewExpenseName: {
+          ...editExpense.inputNewExpenseName,
+          isTouched: false,
+          isValid: false,
+          value: "",
+          invalidMessage: "",
+        },
+        inputNewDate: {
+          ...editExpense.inputNewDate,
+          isTouched: false,
+          isValid: false,
+          value: "",
+          invalidMessage: "",
+        },
+        inputNewValue: {
+          ...editExpense.inputNewValue,
+          isTouched: false,
+          isValid: false,
+          value: "",
+          invalidMessage: "",
+        },
+      });
     });
 
     setShowCrud(false);

@@ -236,6 +236,7 @@ const Crud = (props) => {
           </ModalButtonDiv>
         </>
       );
+      break;
     case "edit-income":
       crudContent = (
         <>

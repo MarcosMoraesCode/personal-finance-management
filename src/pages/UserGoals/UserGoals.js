@@ -194,32 +194,16 @@ const UserGoals = (props) => {
         goalName
       );
 
-    const isValidValue = (goalValue) => /^[0-9]+\,[0-9]{2,2}$/i.test(goalValue);
+    const isValidValue = (goalValue) => /^[0-9]+\.[0-9]{2,2}$/i.test(goalValue);
 
     const isValidDate = (expenseDate) =>
       /^([0-9]{4})\-(0[1-9]|1[0-2])\-(0[1-9]|[1-2][0-9]|3[0-1])$/.test(
         expenseDate
       );
 
-    const convertNumber = (stringValue) => {
-      if (stringValue !== "") {
-        let initialValue = [...stringValue];
-        let commaIndex = initialValue.findIndex((element) => element === ",");
-        initialValue.splice(commaIndex, 1, ".");
-        let replacedValue = initialValue.join("");
-        let convertedValue = Number(replacedValue).toFixed(2);
-
-        return convertedValue;
-      } else {
-        return 0;
-      }
-    };
-
     const validation1 = isValidName(value);
     const validation2 = isValidValue(value);
-    const validation3 =
-      Number(convertNumber(value)) <=
-      Number(convertNumber(userInputs.inputValue.value));
+    const validation3 = Number(value) <= Number(userInputs.inputValue.value);
     const validation4 = "1"; //VERIFICAR SE O VALOR ALOCADO CORRESPONDE AO SALDO
     const validation5 = isValidDate(value);
 
@@ -794,18 +778,12 @@ const UserGoals = (props) => {
 
       let allAchiev = Object.values(userAchievements);
       allAchiev.forEach((achiev) => {
-        let initialValue = [...achiev.value];
-        let commaIndex = initialValue.findIndex((element) => element === ",");
-        initialValue.splice(commaIndex, 1, ".");
-        let replacedValue = initialValue.join("");
-        let convertedValue = Number(replacedValue).toFixed(2);
-
         if (achiev.term === "Short") {
           let oldAchievs = shortTerm.achievs;
           shortTerm.achievs = oldAchievs + 1;
           let oldTotal = shortTerm.totalAllocated;
           shortTerm.totalAllocated = (
-            Number(oldTotal) + Number(convertedValue)
+            Number(oldTotal) + Number(achiev.value)
           ).toFixed(2);
         }
         if (achiev.term === "Medium") {
@@ -813,7 +791,7 @@ const UserGoals = (props) => {
           mediumTerm.achievs = oldAchievs + 1;
           let oldTotal = mediumTerm.totalAllocated;
           mediumTerm.totalAllocated = (
-            Number(oldTotal) + Number(convertedValue)
+            Number(oldTotal) + Number(achiev.value)
           ).toFixed(2);
         }
         if (achiev.term === "Long") {
@@ -821,7 +799,7 @@ const UserGoals = (props) => {
           longTerm.achievs = oldAchievs + 1;
           let oldTotal = longTerm.totalAllocated;
           longTerm.totalAllocated = (
-            Number(oldTotal) + Number(convertedValue)
+            Number(oldTotal) + Number(achiev.value)
           ).toFixed(2);
         }
       });

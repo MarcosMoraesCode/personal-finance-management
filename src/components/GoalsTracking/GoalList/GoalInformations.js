@@ -21,19 +21,8 @@ import {
 } from "./GoalnformationStyle";
 
 const GoalInformation = (props) => {
-  let initialAllocated = [...props.allocated];
-  let commaIndex = initialAllocated.findIndex((element) => element === ",");
-  initialAllocated.splice(commaIndex, 1, ".");
-  let replacedAllocated = initialAllocated.join("");
-  let convertedAllocated = Number(replacedAllocated).toFixed(2);
-  let initialValue = [...props.value];
-  commaIndex = initialValue.findIndex((element) => element === ",");
-  initialValue.splice(commaIndex, 1, ".");
-  let replacedValue = initialValue.join("");
-  let convertedValue = Number(replacedValue).toFixed(2);
-
   let percentage = (
-    (Number(convertedAllocated) / Number(convertedValue)) *
+    (Number(props.allocated) / Number(props.value)) *
     100
   ).toFixed(2);
 
@@ -68,10 +57,8 @@ const GoalInformation = (props) => {
           </GoalSubtitleBlock>
         </GoalSubtitleDiv>
         <GoalContentInfo>
-          <GoalContentBlock width={"33%"}>
-            $ {convertedAllocated}
-          </GoalContentBlock>
-          <GoalContentBlock width={"33%"}>$ {convertedValue}</GoalContentBlock>
+          <GoalContentBlock width={"33%"}>$ {props.allocated}</GoalContentBlock>
+          <GoalContentBlock width={"33%"}>$ {props.value}</GoalContentBlock>
           <GoalContentBlock width={"33%"}>{props.date}</GoalContentBlock>
         </GoalContentInfo>
       </InfoContainer>
