@@ -57,7 +57,9 @@ const GoalInformation = (props) => {
           </GoalSubtitleBlock>
         </GoalSubtitleDiv>
         <GoalContentInfo>
-          <GoalContentBlock width={"33%"}>$ {props.allocated}</GoalContentBlock>
+          <GoalContentBlock width={"33%"}>
+            $ {props.allocated.toFixed(2)}
+          </GoalContentBlock>
           <GoalContentBlock width={"33%"}>$ {props.value}</GoalContentBlock>
           <GoalContentBlock width={"33%"}>{props.date}</GoalContentBlock>
         </GoalContentInfo>

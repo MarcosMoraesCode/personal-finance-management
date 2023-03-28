@@ -152,7 +152,7 @@ export const DefaultInfoDiv = styled.div`
   height: 20%;
 `;
 export const ManageSpan = styled.span`
-  color: #51d289;
+  color: ${(props) => props.color};
   font-size: 13px;
   align-items: flex-end;
   padding: 1px;

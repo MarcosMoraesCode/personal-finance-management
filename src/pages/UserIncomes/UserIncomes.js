@@ -683,12 +683,8 @@ const UserIncomes = (props) => {
     };
     console.log(newGoalObj);
     await dispatch(goalTransaction(newGoalObj)).then((res) => {
-      let moneyToBalance =
-        userInputs.inputRadio.value === "Withdraw"
-          ? Number(modifiedValue)
-          : Number(modifiedValue) * -1;
-      let newBalance = userBalance + Number(moneyToBalance);
-
+      let newBalance = userBalance + Number(modifiedValue * -1);
+      console.log("new Balance", newBalance, "modified", modifiedValue);
       dispatch(addBalance(newBalance));
       if (res.meta.requestStatus === "fulfilled") {
         setCrudType({
@@ -703,11 +699,14 @@ const UserIncomes = (props) => {
         });
 
         setShowCrud(false);
-        getGoals();
-        getIncomes();
+
         setSubmitPermission(false);
         refreshInputs();
       }
+      dispatch(updateBalance(newBalance)).then((res) => {
+        getGoals();
+        getIncomes();
+      });
     });
   };
 
@@ -761,6 +760,12 @@ const UserIncomes = (props) => {
   //console.log(userIncomes, "aqui");
   if (userIncomes !== null) {
     let incomesArr = Object.values(userIncomes);
+
+    let totalBalance = 0;
+    incomesArr.forEach((income) => {
+      totalBalance += Number(income.value);
+    });
+
     let newArr = incomesArr.map((income) => {
       return {
         name: income.name,
@@ -783,7 +788,7 @@ const UserIncomes = (props) => {
           percentage={
             income.value === 0
               ? 0
-              : ((income.value / userBalance) * 100).toFixed(2)
+              : ((income.value / totalBalance) * 100).toFixed(2)
           }
           addAction={income.addAction}
           editAction={income.editAction}
@@ -802,7 +807,12 @@ const UserIncomes = (props) => {
           <DefaultInfoDiv>
             <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
               Balance{" "}
-              <ManageSpan> $ {Number(userBalance).toFixed(2)}</ManageSpan>
+              <ManageSpan color={userBalance >= 0 ? "#51d289" : "red"}>
+                {" "}
+                {userBalance >= 0
+                  ? `$ ${userBalance.toFixed(2)}`
+                  : ` - $ ${(userBalance * -1).toFixed(2)}`}
+              </ManageSpan>
             </DefaultInfoContent>
             <DefaultInfoContent justify={"center"} fontSize={"15px"}>
               <p>
@@ -872,7 +882,13 @@ const UserIncomes = (props) => {
           </DefaultTitleDiv>
           <DefaultInfoDiv>
             <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
-              Balance <ManageSpan> $ {userBalance.toFixed(2)}</ManageSpan>
+              Balance{" "}
+              <ManageSpan color={userBalance >= 0 ? "#51d289" : "red"}>
+                {" "}
+                {userBalance >= 0
+                  ? `$ ${userBalance.toFixed(2)}`
+                  : ` - $ ${(userBalance * -1).toFixed(2)}`}
+              </ManageSpan>
             </DefaultInfoContent>
             <DefaultInfoContent justify={"center"} fontSize={"15px"}>
               <p>
@@ -898,7 +914,13 @@ const UserIncomes = (props) => {
           </DefaultTitleDiv>
           <DefaultInfoDiv>
             <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
-              Balance <ManageSpan> $ {userBalance.toFixed(2)}</ManageSpan>
+              Balance{" "}
+              <ManageSpan color={userBalance >= 0 ? "#51d289" : "red"}>
+                {" "}
+                {userBalance >= 0
+                  ? `$ ${userBalance.toFixed(2)}`
+                  : ` - $ ${(userBalance * -1).toFixed(2)}`}
+              </ManageSpan>
             </DefaultInfoContent>
             <DefaultInfoContent justify={"center"} fontSize={"15px"}>
               <p>
