@@ -8,6 +8,7 @@ import {
   addAchievements,
   fetchAchievementsData,
 } from "../../features/goals/goalsSlice";
+import { fetchBalance } from "../../features/incomes/incomesSlice";
 
 const Layout = (props) => {
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
@@ -15,6 +16,7 @@ const Layout = (props) => {
   const userAchievements = useSelector(
     (state) => state.goalsData.userAchievements
   );
+  const userBalance = useSelector((state) => state.incomesData.balance);
 
   const dispatch = useDispatch();
 
@@ -23,10 +25,12 @@ const Layout = (props) => {
       (res) => res.payload
     );
     dispatch(addAchievements(achievData));
+    dispatch(fetchBalance());
   };
 
   useEffect(() => {
     getData();
+    console.log("carregou");
   }, []);
   //console.log(userAchievements);
 
@@ -47,6 +51,7 @@ const Layout = (props) => {
           changeSideDrawer={sideDrawerHandler}
         ></Toolbar>
         <SideDrawer
+          balance={userBalance !== null ? userBalance : 0}
           back={sideDrawerHandler}
           open={openSideDrawer}
           animation={startAnimation}

@@ -148,7 +148,7 @@ export const ProfileInfoContent = styled.div`
 `;
 
 export const SpanInfo = styled.span`
-  color: #51d289;
+  color: ${(props) => props.color};
   font-size: 13px;
   //font-weight: 600;
   font-family: "Roboto";

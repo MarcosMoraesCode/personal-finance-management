@@ -149,6 +149,18 @@ export const removeAnIncome = createAsyncThunk(
   }
 );
 
+export const updateBalance = createAsyncThunk(
+  "userincomes/updateBalance",
+  async (action, state) => {
+    try {
+      console.log("payload", action);
+      await set(ref(db, `users/${userId}/balance`), action);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const incomeDataSlice = createSlice({
   name: "incomesData",
   initialState,
@@ -202,7 +214,6 @@ export const incomeDataSlice = createSlice({
     });
     builder.addCase(addMoneyToAnIncome.fulfilled, (state, action) => {
       console.log("passou aqui", state.balance);
-      set(ref(db, `users/${userId}/balance`), state.balance);
     });
     builder.addCase(addMoneyToAnIncome.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);
@@ -216,6 +227,13 @@ export const incomeDataSlice = createSlice({
     builder.addCase(fetchBalance.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);
       //console.log(action.error);
+    });
+    builder.addCase(updateBalance.fulfilled, (state, action) => {
+      console.log("passou aqui", state.balance);
+    });
+    builder.addCase(updateBalance.rejected, (state, action) => {
+      //console.log("Rejected", action.error.message);
+      // console.log(action.error);
     });
   },
 });

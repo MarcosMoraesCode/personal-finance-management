@@ -46,6 +46,7 @@ import {
   fetchIncomesData,
   postNewIncome,
   removeAnIncome,
+  updateBalance,
 } from "../../features/incomes/incomesSlice";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
 
@@ -111,6 +112,7 @@ const UserIncomes = (props) => {
 
   const getGoals = async () => {
     dispatch(fetchDynamicId());
+    dispatch(fetchBalance());
     await dispatch(fetchGoalsData()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         dispatch(addGoals(res.payload));
@@ -118,12 +120,9 @@ const UserIncomes = (props) => {
     });
   };
   const getIncomes = async () => {
-    dispatch(fetchBalance());
     await dispatch(fetchIncomesData()).then((res) => {
-      if (res.meta.requestStatus === "fulfilled" && res.payload !== null) {
-        let incomeArr = Object.values(res.payload);
-
-        //dispatch(addBalance(balance));
+      if (res.meta.requestStatus === "fulfilled") {
+        console.log("chegou", res.payload);
 
         dispatch(addIncomes(res.payload));
       }
@@ -508,7 +507,7 @@ const UserIncomes = (props) => {
           getGoals();
           getIncomes();
           setSubmitPermission(false);
-          //setLoadingSubmit(false);
+          refreshInputs();
         }
       })
       .catch((err) => {
@@ -516,18 +515,22 @@ const UserIncomes = (props) => {
       });
   };
 
-  const removeIncomeHandler = (incomeName, incomeId) => {
+  const removeIncomeHandler = (incomeName, incomeId, incomeValue) => {
     console.log("clicou", incomeName, incomeId);
     setCrudType({
       ...crudType,
       crudType: "remove-income",
       incomeName: incomeName,
       incomeId: incomeId,
+      incomeOldValue: incomeValue,
     });
     setShowCrud(true);
   };
 
   const confirmRemoveIncome = async (incomeId) => {
+    let newBalance = userBalance + Number(crudType.incomeOldValue) * -1;
+    dispatch(addBalance(newBalance));
+
     await dispatch(removeAnIncome(incomeId)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         setCrudType({
@@ -535,10 +538,13 @@ const UserIncomes = (props) => {
           crudType: "",
           incomeName: "",
           incomeId: "",
+          incomeValue: "",
         });
-        setShowCrud(false);
-        getGoals();
-        getIncomes();
+        dispatch(updateBalance(newBalance)).then((res) => {
+          setShowCrud(false);
+          getGoals();
+          getIncomes();
+        });
       }
     });
   };
@@ -619,11 +625,14 @@ const UserIncomes = (props) => {
           incomeOldValue: "",
         });
         setShowCrud(false);
-        getGoals();
-        getIncomes();
+
         setSubmitPermission(false);
         refreshInputs();
       }
+    });
+    await dispatch(updateBalance(newBalance)).then((res) => {
+      getGoals();
+      getIncomes();
     });
   };
 
@@ -749,6 +758,7 @@ const UserIncomes = (props) => {
 
   let incomesList = "When you add your first income, it'll appear right here.";
 
+  //console.log(userIncomes, "aqui");
   if (userIncomes !== null) {
     let incomesArr = Object.values(userIncomes);
     let newArr = incomesArr.map((income) => {
@@ -759,7 +769,8 @@ const UserIncomes = (props) => {
         addAction: () => addIncomeHandler(income.name, income.id, income.value),
         editAction: () =>
           editIncomeHandler(income.name, income.id, income.value),
-        removeAction: () => removeIncomeHandler(income.name, income.id),
+        removeAction: () =>
+          removeIncomeHandler(income.name, income.id, income.value),
       };
     });
 

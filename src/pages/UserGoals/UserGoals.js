@@ -4,7 +4,7 @@ import { EditButton } from "../../components/ExpensesTracking/Expense/ExpenseSty
 import GoalInformation from "../../components/GoalsTracking/GoalList/GoalInformations";
 import { FadeLoader } from "react-spinners";
 import InputContainer from "../../components/UI/Input/Input";
-import { fetchDynamicId } from "../../features/goals/goalsSlice";
+import { fetchDynamicId, addBalance } from "../../features/goals/goalsSlice";
 import {
   addAchievements,
   addGoals,
@@ -58,8 +58,11 @@ import {
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
 import CongratulationsModal from "../../components/UI/Modal/CongratulationsModal/CongratulationsModal";
 import { useNavigate } from "react-router-dom";
+import { fetchBalance } from "../../features/goals/goalsSlice";
+import { updateBalance } from "../../features/incomes/incomesSlice";
 
 const UserGoals = (props) => {
+  const userBalance = useSelector((state) => state.goalsData.balance);
   const [userInputs, setUserInputs] = useState({
     id: "expense",
     inputName: {
@@ -83,7 +86,7 @@ const UserGoals = (props) => {
       isValid: false,
       isTouched: false,
       id: "Goal Percentage",
-      placeholder: "Ex: 100.00",
+      placeholder: "Ex 150.00",
       invalidMessage: "",
     },
     inputDate: {
@@ -127,6 +130,7 @@ const UserGoals = (props) => {
   const userAchievements = useSelector(
     (state) => state.goalsData.userAchievements
   );
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -204,7 +208,7 @@ const UserGoals = (props) => {
     const validation1 = isValidName(value);
     const validation2 = isValidValue(value);
     const validation3 = Number(value) <= Number(userInputs.inputValue.value);
-    const validation4 = "1"; //VERIFICAR SE O VALOR ALOCADO CORRESPONDE AO SALDO
+    const validation4 = Number(value) <= Number(userBalance);
     const validation5 = isValidDate(value);
 
     let result = false;
@@ -218,7 +222,9 @@ const UserGoals = (props) => {
         break;
       case "Goal Percentage":
         console.log(value, userInputs.inputValue.value);
-        validation2 && validation3 ? (result = true) : (result = false); //VALIDATION 4 TOO
+        validation2 && validation3 && validation4
+          ? (result = true)
+          : (result = false); //VALIDATION 4 TOO
         break;
       case "Goal Date":
         //   console.log(value);
@@ -232,12 +238,12 @@ const UserGoals = (props) => {
 
   const verifyFocus = (inputId, elementIsValid) => {
     //let exists = false;
-    let message = "Valor inválido!";
+    let message = "Invalid value!";
     if (!elementIsValid) {
       switch (inputId) {
         case "Goal Percentage":
           //hasLimit? checkPercentageLimit() retorna true ou falso
-          //hasLimit ? message = "Invalid value!" : message = "Percentage will exceed your limit!"
+
           setUserInputs({
             ...userInputs,
             inputPercentage: {
@@ -342,16 +348,19 @@ const UserGoals = (props) => {
         break;
     }
 
-    if (validation1 && validation2 && validation3 && validation4) {
-      setSubmitPermission(true);
-    } else {
-      if (crudType.crudType !== "") {
-        if (validation1 && validation2 && validation4) {
-          setSubmitPermission(true);
-        } else {
-          setSubmitPermission(false);
-        }
-      }
+    if (crudType.crudType === "") {
+      validation1 === true &&
+      validation2 === true &&
+      validation3 === true &&
+      validation4 === true
+        ? setSubmitPermission(true)
+        : setSubmitPermission(false);
+    }
+
+    if (crudType.crudType !== "") {
+      validation1 === true && validation2 === true && validation4 === true
+        ? setSubmitPermission(true)
+        : setSubmitPermission(false);
     }
   };
 
@@ -955,6 +964,7 @@ const UserGoals = (props) => {
 
   const getGoals = async () => {
     dispatch(fetchDynamicId());
+    dispatch(fetchBalance());
 
     await dispatch(fetchGoalsData()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
@@ -970,11 +980,14 @@ const UserGoals = (props) => {
 
   const submitGoal = async () => {
     setLoadingSubmit(true);
+    let newBalance =
+      Number(userInputs.inputPercentage.value) * -1 + userBalance;
+    dispatch(addBalance(newBalance));
     await dispatch(postNewGoal(userInputs))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           refreshInputs();
-          getGoals();
+
           setSubmitPermission(false);
           setLoadingSubmit(false);
         }
@@ -987,6 +1000,9 @@ const UserGoals = (props) => {
           message: err.message,
         });*/
       });
+    dispatch(updateBalance(newBalance)).then((res) => {
+      getGoals();
+    });
   };
 
   const thanksButtonHandler = async () => {

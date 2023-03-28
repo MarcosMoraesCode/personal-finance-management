@@ -14,8 +14,6 @@ import {
   UserProfileDiv,
 } from "./SideDrawerStyle";
 
-import { SyncLoader } from "react-spinners";
-
 const SideDrawer = (props) => {
   return (
     <SideDrawerDiv clicked={props.open} animations={props.animation}>
@@ -29,12 +27,17 @@ const SideDrawer = (props) => {
         </ProfileNicknameDiv>
         <ProfileInfoDiv>
           <ProfileInfoContent>
-            Balance <SpanInfo>$ 4550.00</SpanInfo>
+            Balance{" "}
+            <SpanInfo color={props.balance >= 0 ? "#51d289" : "red"}>
+              {props.balance >= 0
+                ? `$ ${props.balance}`
+                : `- $ ${props.balance * -1}`}
+            </SpanInfo>
           </ProfileInfoContent>
           <ProfileInfoContent>
             Achievements{" "}
             <SpanInfo>
-              {props.achievements !== null ? props.achievements : "loading..."}
+              {props.achievements !== null ? props.achievements : "0"}
             </SpanInfo>{" "}
           </ProfileInfoContent>
         </ProfileInfoDiv>
