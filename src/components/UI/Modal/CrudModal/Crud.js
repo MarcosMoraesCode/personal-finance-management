@@ -373,7 +373,7 @@ const Crud = (props) => {
 
           <ModalButtonDiv>
             <ContinueBtn
-              onClick={props.transferIncomeValue}
+              onClick={props.transferGoalValue}
               disabled={props.continueDisabled}
               {...props}
             >

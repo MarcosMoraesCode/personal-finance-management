@@ -28,7 +28,11 @@ import InputContainer from "../../components/UI/Input/Input";
 import Income from "../../components/IncomeTracking/Income/Income";
 import { UserDefaultButton } from "../UserExpenses/UserExpensesStyle";
 import { useDispatch, useSelector } from "react-redux";
-import { addGoals, fetchGoalsData } from "../../features/goals/goalsSlice";
+import {
+  addGoals,
+  fetchGoalsData,
+  goalTransaction,
+} from "../../features/goals/goalsSlice";
 import GoalInformation from "../../components/GoalsTracking/GoalList/GoalInformations";
 import History from "../../components/History/History";
 import SelectContainer from "../../components/UI/Select/Select";
@@ -37,6 +41,7 @@ import {
   addIncomes,
   addMoneyToAnIncome,
   editAnIncome,
+  fetchBalance,
   fetchDynamicId,
   fetchIncomesData,
   postNewIncome,
@@ -113,16 +118,12 @@ const UserIncomes = (props) => {
     });
   };
   const getIncomes = async () => {
-    let balance = 0;
+    dispatch(fetchBalance());
     await dispatch(fetchIncomesData()).then((res) => {
       if (res.meta.requestStatus === "fulfilled" && res.payload !== null) {
         let incomeArr = Object.values(res.payload);
 
-        incomeArr.forEach((income) => {
-          balance += income.value;
-        });
-
-        dispatch(addBalance(balance));
+        //dispatch(addBalance(balance));
 
         dispatch(addIncomes(res.payload));
       }
@@ -366,34 +367,6 @@ const UserIncomes = (props) => {
           validation2 && validation6 && validation7
             ? (result = true)
             : (result = false);
-
-          /* console.log(
-            `VALUE O valor do input é válido? ${validation2},
-             Deposit ? ${
-               userInputs.inputRadio.value
-             }, (se deposit valor é menor que o balanço? (${number1} < ${userBalance} ) ? ${validation6} (se Withdraw valor é menor que falor alocado (${number1} > ${allocatedValue}))
-              ${validation6},
-             Deposit ? ${
-               userInputs.inputRadio.value
-             }, (se deposit valor é menor que a meta e menor que o valor restante?  meta: ${goalValue} restante ${
-              goalValue - allocatedValue
-            }), (se false, true), ${validation7})             
-               . Logo o VALOR é valido? ${result}\n`
-          );*/
-          // console.log("é valido?", result);
-
-          /*console.log(
-            allocatedValue,
-            goalValue,
-            number1,
-            "é menor ou igual?",
-            validation6
-          );
-          console.log(
-            `${number1} é menor que ${goalValue} e menor que ${
-              goalValue - allocatedValue
-            }? ${validation7}`
-          );*/
         }
         break;
       case "Checked Transaction":
@@ -565,7 +538,6 @@ const UserIncomes = (props) => {
         });
         setShowCrud(false);
         getGoals();
-
         getIncomes();
       }
     });
@@ -628,6 +600,10 @@ const UserIncomes = (props) => {
 
     let finalValue = incomeOldValue + Number(modifiedValue);
 
+    let newBalance = userBalance + Number(modifiedValue);
+
+    dispatch(addBalance(newBalance));
+
     const newIncomeObj = {
       name: incomeName,
       newValue: finalValue,
@@ -670,6 +646,60 @@ const UserIncomes = (props) => {
       goalTerm: goalTerm,
     });
     setShowCrud(true);
+  };
+
+  const confirmGoalTransaction = async (
+    newValue,
+    goalName,
+    goalId,
+    goalDate,
+    goalValue,
+    goalAllocated,
+    goalTerm
+  ) => {
+    let modifiedValue =
+      userInputs.inputRadio.value === "Withdraw"
+        ? (Number(newValue) * -1).toFixed(2)
+        : Number(newValue).toFixed(2);
+
+    let finalAllocated = Number(goalAllocated) + Number(modifiedValue);
+
+    const newGoalObj = {
+      name: goalName,
+      date: goalDate,
+      goalId: goalId,
+      value: goalValue,
+      term: goalTerm,
+      newValue: finalAllocated,
+    };
+    console.log(newGoalObj);
+    await dispatch(goalTransaction(newGoalObj)).then((res) => {
+      let moneyToBalance =
+        userInputs.inputRadio.value === "Withdraw"
+          ? Number(modifiedValue)
+          : Number(modifiedValue) * -1;
+      let newBalance = userBalance + Number(moneyToBalance);
+
+      dispatch(addBalance(newBalance));
+      if (res.meta.requestStatus === "fulfilled") {
+        setCrudType({
+          ...crudType,
+          crudType: "",
+          goalName: "",
+          goalId: "",
+          goalValue: "",
+          goalAllocated: "",
+          goalDate: "",
+          goalTerm: "",
+        });
+
+        setShowCrud(false);
+        getGoals();
+        getIncomes();
+        setSubmitPermission(false);
+        refreshInputs();
+      }
+    });
   };
 
   let selectedContent = <div>Select an option</div>;
@@ -991,6 +1021,17 @@ const UserIncomes = (props) => {
               crudType.incomeName,
               crudType.incomeId,
               crudType.incomeOldValue
+            )
+          }
+          transferGoalValue={() =>
+            confirmGoalTransaction(
+              userInputs.inputValue.value,
+              crudType.goalName,
+              crudType.goalId,
+              crudType.goalDate,
+              crudType.goalValue,
+              crudType.goalAllocated,
+              crudType.goalTerm
             )
           }
         />

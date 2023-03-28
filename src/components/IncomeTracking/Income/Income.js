@@ -19,7 +19,7 @@ const Income = (props) => {
       <IncomeInfoDiv>
         <IncomeSubtitlesDiv>
           <IncomeSubtitleBlock>Name</IncomeSubtitleBlock>
-          <IncomeSubtitleBlock>Total value</IncomeSubtitleBlock>
+          <IncomeSubtitleBlock>Total deposited</IncomeSubtitleBlock>
           <IncomeSubtitleBlock>Percentage</IncomeSubtitleBlock>
         </IncomeSubtitlesDiv>
         <IncomeContentDiv>

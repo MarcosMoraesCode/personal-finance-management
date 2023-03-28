@@ -32,6 +32,23 @@ export const fetchDynamicId = createAsyncThunk(
     }
   }
 );
+export const fetchBalance = createAsyncThunk(
+  "userincomes/fetchBalance",
+  async (action) => {
+    try {
+      const dbId = await get(child(ref(db), `users/${userId}/balance`)).then(
+        (snapshot) => {
+          //console.log("id dinamico", snapshot.val());
+          return snapshot.val();
+        }
+      );
+      return dbId;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+);
 
 export const fetchIncomesData = createAsyncThunk(
   "userincomes/fetchIncomesData",
@@ -113,8 +130,6 @@ export const addMoneyToAnIncome = createAsyncThunk(
         id: action.incomeId,
         name: action.name,
         value: action.newValue,
-
-        //O VALUE NÃO SERÁ MODIFICADO NA EDIÇÃO, SERÁ NA PÁGINA DE APORTES
       });
     } catch (err) {
       console.log(err);
@@ -186,11 +201,21 @@ export const incomeDataSlice = createSlice({
       //console.log(action.error);
     });
     builder.addCase(addMoneyToAnIncome.fulfilled, (state, action) => {
-      //teste
+      console.log("passou aqui", state.balance);
+      set(ref(db, `users/${userId}/balance`), state.balance);
     });
     builder.addCase(addMoneyToAnIncome.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);
       // console.log(action.error);
+    });
+    builder.addCase(fetchBalance.fulfilled, (state, action) => {
+      console.log("payload", action.payload);
+      state.balance = action.payload;
+      //console.log("Novo id dinamico: ", state.dynamicId);
+    });
+    builder.addCase(fetchBalance.rejected, (state, action) => {
+      //console.log("Rejected", action.error.message);
+      //console.log(action.error);
     });
   },
 });

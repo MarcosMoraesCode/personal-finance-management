@@ -148,6 +148,25 @@ export const editAGoal = createAsyncThunk(
   }
 );
 
+export const goalTransaction = createAsyncThunk(
+  "usergoals/goalTransaction",
+  async (action, state) => {
+    try {
+      // console.log("payload", action.categoryId);
+      await set(ref(db, `users/${userId}/goals/${action.goalId}`), {
+        allocated: action.newValue,
+        date: action.date,
+        id: action.goalId,
+        name: action.name,
+        term: action.term,
+        value: action.value,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const removeAGoal = createAsyncThunk(
   "usergoals/removeAGoal",
   async (action, state) => {
@@ -300,6 +319,15 @@ export const goalDataSlice = createSlice({
       //console.log("Novo id dinamico: ", state.dynamicId);
     });
     builder.addCase(fetchAchievementsData.rejected, (state, action) => {
+      //console.log("Rejected", action.error.message);
+      //console.log(action.error);
+    });
+
+    builder.addCase(goalTransaction.fulfilled, (state, action) => {
+      //console.log("payload", action.payload);
+      //console.log("Novo id dinamico: ", state.dynamicId);
+    });
+    builder.addCase(goalTransaction.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);
       //console.log(action.error);
     });
