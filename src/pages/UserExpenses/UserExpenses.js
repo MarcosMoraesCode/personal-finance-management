@@ -1188,6 +1188,7 @@ const UserExpenses = () => {
           if (res.meta.requestStatus === "fulfilled") {
             setCategoryOptions([...categoryOptions, { name: categoryValue }]);
           }
+          dispatch(updateBalance(newBalance));
         })
         .catch((err) => {
           setShowModal(true);
@@ -1942,11 +1943,13 @@ const UserExpenses = () => {
             totalValue += Number(expense.expenseValue);
             dispatch(removeAnExpense(expense.expenseId));
             //console.log(expense.expenseId, "removido com sucesso");
+            console.log("no looping", totalValue);
           });
         }
+        console.log("fora", totalValue);
         const historyObj = {
           name: crudType.categoryName,
-          value: Number(totalValue),
+          value: totalValue,
           date: today,
           type: crudType.historyType,
         };
