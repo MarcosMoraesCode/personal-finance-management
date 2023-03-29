@@ -58,8 +58,8 @@ import {
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
 import CongratulationsModal from "../../components/UI/Modal/CongratulationsModal/CongratulationsModal";
 import { useNavigate } from "react-router-dom";
-import { fetchBalance } from "../../features/goals/goalsSlice";
-import { updateBalance } from "../../features/incomes/incomesSlice";
+import { fetchBalance, updateBalance } from "../../features/goals/goalsSlice";
+//import { updateBalance } from "../../features/incomes/incomesSlice";
 
 const UserGoals = (props) => {
   const userBalance = useSelector((state) => state.goalsData.balance);

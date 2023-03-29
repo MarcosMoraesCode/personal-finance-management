@@ -53,9 +53,11 @@ import PieChart from "../../components/UI/Charts/PieChart";
 import { useDispatch, useSelector } from "react-redux";
 import BarTableChart from "../../components/UI/Charts/BarTableChart/BarTableChart";
 import {
+  addBalance,
   addExpenses,
   editACategory,
   editAnExpense,
+  fetchBalance,
   fetchCategoriesData,
   fetchDynamicId,
   fetchExpensesData,
@@ -74,12 +76,14 @@ import {
 } from "../../features/charts/chartsSlice";
 import CompletePieChart from "../../components/UI/Charts/CompletePieChart/CompletePieChart";
 import AllExpensesInfo from "../../components/UI/Charts/AllExpensesInfo/AllExpensesInfo";
+import { updateBalance } from "../../features/incomes/incomesSlice";
 
 const UserExpenses = () => {
   //Store
   const fetchedExpensesList = useSelector(
     (state) => state.expensesData.userExpenses
   );
+  const userBalance = useSelector((state) => state.expensesData.balance);
 
   /*const postRequestStatus = useSelector(
     (state) => state.expensesData.postRequest
@@ -1147,6 +1151,8 @@ const UserExpenses = () => {
     event.preventDefault();
     setLoadingOnSubmitExpense(true);
     setInfoBtnList(null);
+    let expenseValue = Number(userExpense.inputValue.value);
+    let newBalance = userBalance - expenseValue;
 
     //utilizando post do firebase
 
@@ -1154,9 +1160,11 @@ const UserExpenses = () => {
     if (userExpense.inputCategory.value === "New Category") {
       await dispatch(postNewCategory(userExpense))
         .then((res) => {
+          dispatch(addBalance(newBalance));
           if (res.meta.requestStatus === "fulfilled") {
             setCategoryOptions([...categoryOptions, { name: categoryValue }]);
           }
+          dispatch(updateBalance(newBalance));
         })
         .catch((err) => {
           setShowModal(true);
@@ -1171,6 +1179,8 @@ const UserExpenses = () => {
     //VOLTAR AQUI
     await dispatch(postNewExpense(userExpense))
       .then((res) => {
+        dispatch(addBalance(newBalance));
+
         if (res.meta.requestStatus === "fulfilled") {
           setLoadingOnSubmitExpense(false);
           getExpenses();
@@ -1215,6 +1225,7 @@ const UserExpenses = () => {
             },
           });
         }
+        dispatch(updateBalance(newBalance));
       })
       .catch((err) => {
         setShowModal(true);
@@ -1293,6 +1304,7 @@ const UserExpenses = () => {
     let uniqueCategories = [];
     setLoading(true);
     dispatch(fetchDynamicId());
+    dispatch(fetchBalance());
 
     await dispatch(fetchCategoriesData())
       .unwrap()
@@ -1364,106 +1376,115 @@ const UserExpenses = () => {
     //console.log("category finalizada");
     let allExpenses = [];
     await dispatch(fetchExpensesData())
-      .unwrap()
+      //.unwrap()
       .then((res) => {
-        if (res !== null) {
-          let fetchedExpenses = Object.values(res);
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAA", res);
 
-          // console.log(fetchedExpenses);
+        if (res.meta.requestStatus === "fulfilled") {
+          if (res.payload !== null) {
+            let fetchedExpenses = Object.values(res.payload);
+            fetchedExpenses.forEach((expense) => {
+              let categoryIndex = expenseItems.findIndex(
+                (item) => expense.categoryId === item.id
+              );
 
-          fetchedExpenses.forEach((expense) => {
-            let categoryIndex = expenseItems.findIndex(
-              (item) => expense.categoryId === item.id
-            );
+              allExpenses.push({
+                categoryId: expense.categoryId,
+                expenseId: expense.id,
+                expenseValue: expense.value,
+                expenseName: expense.name,
+                expenseDate: expense.date,
+              });
 
-            allExpenses.push({
-              categoryId: expense.categoryId,
-              expenseId: expense.id,
-              expenseValue: expense.value,
-              expenseName: expense.name,
-              expenseDate: expense.date,
+              // console.log("ex", expense);
+
+              expenseItems[categoryIndex]?.expensesList.push({
+                id: expense.id,
+                name: expense.name,
+                value: expense.value,
+                date: expense.date,
+                categoryName: expense.categoryName,
+                percentage: (
+                  (expense.value / expenseItems[categoryIndex].spendLimit) *
+                  100
+                ).toFixed(2),
+              });
             });
 
-            // console.log("ex", expense);
+            //console.log("aq", allExpenses);
+            expenseItems
+              .filter((expense) => expense.expensesList.length > 0)
+              .forEach((expense) => {
+                // console.log("novo", expense);
+                buttons.push({ isOpen: false });
+              });
 
-            expenseItems[categoryIndex]?.expensesList.push({
-              id: expense.id,
-              name: expense.name,
-              value: expense.value,
-              date: expense.date,
-              categoryName: expense.categoryName,
-              percentage: (
-                (expense.value / expenseItems[categoryIndex].spendLimit) *
-                100
-              ).toFixed(2),
-            });
-          });
+            let filteredBtns = buttons.slice(0, uniqueCategories.length - 1);
 
-          //console.log("aq", allExpenses);
-          expenseItems
-            .filter((expense) => expense.expensesList.length > 0)
-            .forEach((expense) => {
-              // console.log("novo", expense);
-              buttons.push({ isOpen: false });
-            });
+            setInfoBtnList({ buttons: filteredBtns });
+            setAllExpensesList(allExpenses);
+            //TROCAR ALL EXPENSES POR LAST 12 MONTHS EXPENSES
+            dispatch(getThisYearHistoric(allExpenses));
 
-          let filteredBtns = buttons.slice(0, uniqueCategories.length - 1);
-
-          setInfoBtnList({ buttons: filteredBtns });
-          setAllExpensesList(allExpenses);
-          //TROCAR ALL EXPENSES POR LAST 12 MONTHS EXPENSES
-          dispatch(getThisYearHistoric(allExpenses));
-
-          const categoryWithExpenses = expenseItems.filter((item) => {
-            //console.log("item", item);
-            if (item.expensesList.length > 0) {
-              return item;
-            }
-          });
-          //console.log("aq", categoryWithExpenses);
-          let monthExpensesValues = [];
-          const thisMonthExpenses = expenseItems.map((item) => {
-            let monthlyList = item.expensesList.filter((expense) => {
-              let stringDate = [...expense.date];
-              let year = stringDate.slice(0, 4).join("");
-              let month = stringDate.slice(5, 7).join("");
-              let day = stringDate.slice(8, 10).join("");
-              let expenseDate = new Date(year, month - 1, day);
-
-              if (
-                Number(expenseDate.getMonth()) ===
-                  Number(actualDate.getMonth()) &&
-                Number(expenseDate.getFullYear()) ===
-                  Number(actualDate.getFullYear())
-              ) {
-                //console.log(expense);
-                monthExpensesValues.push({ expenseValue: expense.value });
-                return expense;
-              }
-            });
-            // console.log("lista mensal", monthlyList);
-            return { ...item, expensesList: monthlyList };
-          });
-
-          const thisCategoriesWithExpenses = thisMonthExpenses.filter(
-            (item) => {
+            const categoryWithExpenses = expenseItems.filter((item) => {
+              //console.log("item", item);
               if (item.expensesList.length > 0) {
                 return item;
               }
-            }
-          );
+            });
+            //console.log("aq", categoryWithExpenses);
+            let monthExpensesValues = [];
+            const thisMonthExpenses = expenseItems.map((item) => {
+              let monthlyList = item.expensesList.filter((expense) => {
+                let stringDate = [...expense.date];
+                let year = stringDate.slice(0, 4).join("");
+                let month = stringDate.slice(5, 7).join("");
+                let day = stringDate.slice(8, 10).join("");
+                let expenseDate = new Date(year, month - 1, day);
 
-          // console.log(thisCategoriesWithExpenses);
-          // console.log("Mensal", thisMonthExpenses);
-          // console.log("Completa", categoryWithExpenses);
-          setTotalSpent(sumTotalSpent(monthExpensesValues));
-          setMonthlyCategories(thisMonthExpenses);
-          setFilteredCategories(categoryWithExpenses);
-          setMonthlyFilteredCategories(thisCategoriesWithExpenses);
+                if (
+                  Number(expenseDate.getMonth()) ===
+                    Number(actualDate.getMonth()) &&
+                  Number(expenseDate.getFullYear()) ===
+                    Number(actualDate.getFullYear())
+                ) {
+                  //console.log(expense);
+                  monthExpensesValues.push({ expenseValue: expense.value });
+                  return expense;
+                }
+              });
+              // console.log("lista mensal", monthlyList);
+              return { ...item, expensesList: monthlyList };
+            });
+
+            const thisCategoriesWithExpenses = thisMonthExpenses.filter(
+              (item) => {
+                if (item.expensesList.length > 0) {
+                  return item;
+                }
+              }
+            );
+
+            // console.log(thisCategoriesWithExpenses);
+            // console.log("Mensal", thisMonthExpenses);
+            // console.log("Completa", categoryWithExpenses);
+            setTotalSpent(sumTotalSpent(monthExpensesValues));
+            setMonthlyCategories(thisMonthExpenses);
+            setFilteredCategories(categoryWithExpenses);
+            setMonthlyFilteredCategories(thisCategoriesWithExpenses);
+          } else {
+            setTotalSpent(0);
+            setMonthlyCategories(null);
+            setFilteredCategories(null);
+            setMonthlyFilteredCategories(null);
+          }
+
+          // console.log(fetchedExpenses);
 
           // console.log("categoryWith", categoryWithExpenses);
           setLoading(false);
           // console.log("user", allExpenses);
+          dispatch(addExpenses(expenseItems));
         }
       })
       .catch((err) => {
@@ -1475,7 +1496,6 @@ const UserExpenses = () => {
           message: err.message,
         });
       });
-    dispatch(addExpenses(expenseItems));
 
     //let limit = sliceValues.spendingHistory[actualDate.getMonth()].spendLimit;
 
@@ -1572,6 +1592,23 @@ const UserExpenses = () => {
     });
     setShowCrud(true);
   };
+  const confirmRemoveExpense = (id, value) => {
+    let newBalance = userBalance + Number(value);
+    dispatch(addBalance(newBalance));
+
+    dispatch(removeAnExpense(id)).then((res) => {
+      console.log("removeu");
+      setCrudType({
+        ...crudType,
+        crudType: "",
+        expenseName: "",
+        expenseId: "",
+      });
+    });
+    dispatch(updateBalance(newBalance));
+    getExpenses();
+    setShowCrud(false);
+  };
   const confirmEditExpense = (
     newName,
     newValue,
@@ -1588,6 +1625,12 @@ const UserExpenses = () => {
       newExpenseName: newName,
       newValue: newValue,
     };
+    let expenseDiff = Number(crudType.expenseValue) - Number(newValue);
+
+    console.log("a diferença é", expenseDiff);
+
+    let newBalance = userBalance + expenseDiff;
+    dispatch(addBalance(newBalance));
 
     dispatch(editAnExpense(newExpenseObj)).then((res) => {
       setCrudType({
@@ -1625,7 +1668,7 @@ const UserExpenses = () => {
         },
       });
     });
-
+    dispatch(updateBalance(newBalance));
     setShowCrud(false);
     getExpenses();
   };
@@ -1633,7 +1676,7 @@ const UserExpenses = () => {
   //if (fetchedExpensesList !== null && infoBtnList !== null) {
 
   if (monthlyCategories !== null && infoBtnList !== null) {
-    //console.log("aq", monthlyCategories);
+    console.log("aq", monthlyCategories);
     //console.log("ali", allExpenses);
     let listToBeSet =
       showMonthExpenses === true ? monthlyCategories : allExpenses;
@@ -1658,7 +1701,8 @@ const UserExpenses = () => {
                 item.category,
                 item.id
               ),
-            removeAction: () => removeExpenseHandler(expense.name, expense.id),
+            removeAction: () =>
+              removeExpenseHandler(expense.name, expense.id, expense.value),
           };
         });
         console.log("ITEM", item);
@@ -1804,27 +1848,15 @@ const UserExpenses = () => {
     // console.log("id", categoryId);
   };
 
-  const removeExpenseHandler = (exName, exId) => {
+  const removeExpenseHandler = (exName, exId, exValue) => {
     setShowCrud(true);
     setCrudType({
       ...crudType,
       crudType: "remove-expense",
       expenseName: exName,
       expenseId: exId,
+      expenseValue: exValue,
     });
-  };
-
-  const confirmRemoveExpense = async (id) => {
-    await dispatch(removeAnExpense(id)).then((res) => {
-      setCrudType({
-        ...crudType,
-        crudType: "",
-        expenseName: "",
-        expenseId: "",
-      });
-    });
-    setShowCrud(false);
-    getExpenses();
   };
 
   const confirmRemoveCategory = async (id) => {
@@ -2461,7 +2493,9 @@ const UserExpenses = () => {
                 crudType.categoryId
               )
             }
-            removeExpense={() => confirmRemoveExpense(crudType.expenseId)}
+            removeExpense={() =>
+              confirmRemoveExpense(crudType.expenseId, crudType.expenseValue)
+            }
             editCategory={() =>
               confirmEditCategory(
                 editCategory.inputNewCategoryName.value,

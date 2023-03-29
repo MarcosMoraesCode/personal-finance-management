@@ -26,18 +26,23 @@ const FocusInExpand = keyframes`
 const scaleUpLeft = keyframes`
 
 0% {
-    width:0px ;
-    -webkit-transform: scaleX(1);
+  
+  
+    width:0% ;
+   /* -webkit-transform: scaleX(1);
             transform: scaleX(1);
     -webkit-transform-origin: 0% 0%;
-            transform-origin: 0% 0%;
+            transform-origin: 0% 0%;*/
   }
   100% {
+    
+    
     width: ${(props) => props.width} ;
-    -webkit-transform: scaleX(1);
+   
+   /* -webkit-transform: scaleX(1);
             transform: scaleX(1);
     -webkit-transform-origin: 0% 0%;
-            transform-origin: 0% 0%;
+            transform-origin: 0% 0%;*/
   }
 
 `;
@@ -87,7 +92,7 @@ export const GoalSubtitleBlock = styled.div`
 
 export const GoalContentInfo = styled.div`
   display: flex;
-  // background-color: blue;
+  //background-color: blue;
   width: 100%;
 `;
 
@@ -135,8 +140,10 @@ export const ProgressBarDiv = styled.div`
 `;
 
 export const EmptyBar = styled.div`
+  display: flex;
+  align-items: center;
   border-radius: 4px;
-  height: 5px;
+  min-height: 0.4rem;
   min-width: 100%;
   max-width: 100%;
   background-color: white;
@@ -145,11 +152,14 @@ export const EmptyBar = styled.div`
 `;
 
 export const StatusBar = styled.div`
+  display: flex;
+  align-items: flex-end;
   border-radius: 4px;
-  height: 100%;
+  min-height: 0.4rem;
   min-width: 0%;
   width: ${(props) => props.width};
   max-width: 100%;
+
   background-color: ${(props) =>
     props.percentage === "100.00" ? "gold" : "#51d289"};
   -webkit-animation: ${scaleUpLeft} 2.4s cubic-bezier(0.39, 0.575, 0.565, 1)
@@ -230,9 +240,9 @@ export const ProgressTitle = styled.h1`
 `;
 
 export const SpanInfo = styled.span`
-  padding-top: 2px;
   font-size: 10px;
   color: gold;
+
   width: 100%;
   -webkit-animation: ${FocusInExpand} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
     both;

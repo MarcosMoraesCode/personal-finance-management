@@ -31,18 +31,18 @@ const GoalInformation = (props) => {
       <InfoContainer>
         <GoalSubtitleDiv>
           <GoalSubtitleBlock {...props} width={"33%"}>
-            Term
+            Goal
           </GoalSubtitleBlock>
           <GoalSubtitleBlock {...props} width={"33%"}>
-            Goal
+            Term
           </GoalSubtitleBlock>
           <GoalSubtitleBlock {...props} width={"33%"}>
             Percentage
           </GoalSubtitleBlock>
         </GoalSubtitleDiv>
         <GoalContentInfo>
-          <GoalContentBlock width={"33%"}>{props.term}</GoalContentBlock>
           <GoalContentBlock width={"33%"}>{props.name}</GoalContentBlock>
+          <GoalContentBlock width={"33%"}>{props.term}</GoalContentBlock>
           <GoalContentBlock width={"33%"}>{percentage} %</GoalContentBlock>
         </GoalContentInfo>
         <GoalSubtitleDiv>
@@ -58,7 +58,7 @@ const GoalInformation = (props) => {
         </GoalSubtitleDiv>
         <GoalContentInfo>
           <GoalContentBlock width={"33%"}>
-            $ {props.allocated.toFixed(2)}
+            $ {Number(props.allocated).toFixed(2)}
           </GoalContentBlock>
           <GoalContentBlock width={"33%"}>$ {props.value}</GoalContentBlock>
           <GoalContentBlock width={"33%"}>{props.date}</GoalContentBlock>
@@ -80,7 +80,7 @@ const GoalInformation = (props) => {
               ? props.incomePage
                 ? "Go to goals page to finish it!"
                 : "Click to complete!"
-              : ""}
+              : null}
           </SpanInfo>
         </ProgressBarDiv>
         <ButtonsDiv>

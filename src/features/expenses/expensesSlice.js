@@ -11,7 +11,7 @@ const userId = "Marcos";
 
 const initialState = {
   userExpenses: null,
-
+  balance: 0,
   dynamicId: 0,
 };
 
@@ -30,6 +30,23 @@ export const fetchDynamicId = createAsyncThunk(
       //const response = await axiosInstance.get("/category.json");
       //console.log("resposta axios", response.data);
       //return response.data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+);
+export const fetchBalance = createAsyncThunk(
+  "userexpenses/fetchBalance",
+  async (action) => {
+    try {
+      const dbId = await get(child(ref(db), `users/${userId}/balance`)).then(
+        (snapshot) => {
+          //console.log("id dinamico", snapshot.val());
+          return snapshot.val();
+        }
+      );
+      return dbId;
     } catch (err) {
       console.log(err);
       return err;
@@ -261,6 +278,9 @@ export const expenseDataSlice = createSlice({
     addExpenses: (state, action) => {
       state.userExpenses = action.payload;
     },
+    addBalance: (state, action) => {
+      state.balance = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCategoriesData.fulfilled, (state, action) => {
@@ -331,9 +351,18 @@ export const expenseDataSlice = createSlice({
       // console.log("Rejected", action.error.message);
       console.log(action.error);
     });
+    builder.addCase(fetchBalance.fulfilled, (state, action) => {
+      console.log("payload", action.payload);
+      state.balance = action.payload;
+      //console.log("Novo id dinamico: ", state.dynamicId);
+    });
+    builder.addCase(fetchBalance.rejected, (state, action) => {
+      //console.log("Rejected", action.error.message);
+      //console.log(action.error);
+    });
   },
 });
 
-export const { addExpenses } = expenseDataSlice.actions;
+export const { addExpenses, addBalance } = expenseDataSlice.actions;
 
 export default expenseDataSlice.reducer;
