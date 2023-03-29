@@ -17,10 +17,14 @@ const History = (props) => {
         <HistorySubtitleBlock>Date</HistorySubtitleBlock>
       </HistorySubtitlesDiv>
       <HistoryContentDiv>
-        <HistoryContentBlock>Deposit</HistoryContentBlock>
-        <HistoryContentBlock>Renda</HistoryContentBlock>
-        <HistoryContentBlock>$ 4500</HistoryContentBlock>
-        <HistoryContentBlock>12/05/2023</HistoryContentBlock>
+        <HistoryContentBlock>{props.type}</HistoryContentBlock>
+        <HistoryContentBlock>{props.name}</HistoryContentBlock>
+        <HistoryContentBlock>
+          {Number(props.value) > 0
+            ? `$ ${Number(props.value).toFixed(2)}`
+            : ` $ - ${(Number(props.value) * -1).toFixed(2)}`}
+        </HistoryContentBlock>
+        <HistoryContentBlock>{props.date}</HistoryContentBlock>
       </HistoryContentDiv>
     </HistoryDiv>
   );

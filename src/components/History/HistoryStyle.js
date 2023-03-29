@@ -44,5 +44,5 @@ export const HistoryContentBlock = styled.div`
   width: 25%;
   height: 100%;
   font-family: "Roboto";
-  font-size: 13px;
+  font-size: 11px;
 `;

@@ -50,6 +50,13 @@ import {
 } from "../../features/incomes/incomesSlice";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
 
+import {
+  postNewHistory,
+  fetchHistoryId,
+  addHistories,
+  fetchHistoriesData,
+} from "../../features/history/historySlice";
+
 const UserIncomes = (props) => {
   const [userInputs, setUserInputs] = useState({
     id: "income",
@@ -83,6 +90,21 @@ const UserIncomes = (props) => {
       invalidMessage: "",
     },
   });
+
+  let date = new Date();
+  const year = date.getFullYear();
+  let month = "";
+  let day = "";
+  date.getMonth().toString().length > 1
+    ? (month = date.getMonth() + 1)
+    : (month = `0${date.getMonth() + 1}`);
+
+  date.getDate().toString().length > 1
+    ? (day = date.getDate())
+    : (day = `0${date.getDate()}`);
+
+  console.log(month, day);
+
   const [crudType, setCrudType] = useState({
     crudType: "",
     goalTerm: "",
@@ -95,7 +117,11 @@ const UserIncomes = (props) => {
     incomeOldValue: "",
     incomeAddValue: "",
     incomeId: "",
+    historyType: "",
+    historyDate: `${day}/${month}/${year}`,
   });
+
+  console.log(crudType.historyDate);
 
   const [optionOneSelected, setOptionOneSelected] = useState(false);
   const [optionTwoSelected, setOptionTwoSelected] = useState(false);
@@ -107,11 +133,13 @@ const UserIncomes = (props) => {
   const userGoals = useSelector((state) => state.goalsData.userGoals);
   const userIncomes = useSelector((state) => state.incomesData.userIncomes);
   const userBalance = useSelector((state) => state.incomesData.balance);
+  const userHistory = useSelector((state) => state.historyData.userHistory);
 
   const dispatch = useDispatch();
 
   const getGoals = async () => {
     dispatch(fetchDynamicId());
+    dispatch(fetchHistoryId());
     dispatch(fetchBalance());
     await dispatch(fetchGoalsData()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
@@ -129,10 +157,23 @@ const UserIncomes = (props) => {
     });
   };
 
+  const getHistory = async () => {
+    await dispatch(fetchHistoriesData()).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        console.log("chegou tbm", res.payload);
+
+        dispatch(addHistories(res.payload));
+      }
+    });
+  };
+
   useEffect(() => {
     getGoals();
     getIncomes();
+    getHistory();
   }, []);
+
+  //console.log(userHistory);
 
   const selectionHandler = (option) => {
     switch (option) {
@@ -556,6 +597,7 @@ const UserIncomes = (props) => {
       incomeName: incomeName,
       incomeId: incomeId,
       incomeOldValue: incomeValue,
+      historyType: userInputs.inputRadio.value,
     });
     setShowCrud(true);
   };
@@ -610,6 +652,13 @@ const UserIncomes = (props) => {
 
     dispatch(addBalance(newBalance));
 
+    const historyObj = {
+      name: incomeName,
+      value: Number(modifiedValue),
+      date: crudType.historyDate,
+      type: crudType.historyType,
+    };
+
     const newIncomeObj = {
       name: incomeName,
       newValue: finalValue,
@@ -623,6 +672,7 @@ const UserIncomes = (props) => {
           incomeName: "",
           incomeId: "",
           incomeOldValue: "",
+          historyType: "",
         });
         setShowCrud(false);
 
@@ -633,6 +683,7 @@ const UserIncomes = (props) => {
     await dispatch(updateBalance(newBalance)).then((res) => {
       getGoals();
       getIncomes();
+      dispatch(postNewHistory(historyObj)).then((res) => getHistory());
     });
   };
 
@@ -653,6 +704,7 @@ const UserIncomes = (props) => {
       goalAllocated: goalAllocated,
       goalDate: goalDate,
       goalTerm: goalTerm,
+      historyType: "Investment",
     });
     setShowCrud(true);
   };
@@ -681,7 +733,13 @@ const UserIncomes = (props) => {
       term: goalTerm,
       newValue: finalAllocated,
     };
-    console.log(newGoalObj);
+    const historyObj = {
+      name: goalName,
+      value: modifiedValue,
+      date: crudType.historyDate,
+      type: crudType.historyType,
+    };
+    //console.log(newGoalObj);
     await dispatch(goalTransaction(newGoalObj)).then((res) => {
       let newBalance = userBalance + Number(modifiedValue * -1);
       console.log("new Balance", newBalance, "modified", modifiedValue);
@@ -696,6 +754,7 @@ const UserIncomes = (props) => {
           goalAllocated: "",
           goalDate: "",
           goalTerm: "",
+          historyType: "",
         });
 
         setShowCrud(false);
@@ -706,9 +765,30 @@ const UserIncomes = (props) => {
       dispatch(updateBalance(newBalance)).then((res) => {
         getGoals();
         getIncomes();
+        dispatch(postNewHistory(historyObj)).then((res) => getHistory());
       });
     });
   };
+
+  let historyContent = (
+    <div>You haven't made any changes to your account yet</div>
+  );
+
+  if (userHistory !== null) {
+    let historyArr = Object.values(userHistory);
+
+    historyContent = historyArr.map((history, index) => {
+      return (
+        <History
+          key={`history-${index}`}
+          type={history.type}
+          name={history.name}
+          value={history.value}
+          date={history.date}
+        />
+      );
+    });
+  }
 
   let selectedContent = <div>Select an option</div>;
 
@@ -797,6 +877,7 @@ const UserIncomes = (props) => {
       );
     });
   }
+
   switch (optionName) {
     case "manage-income":
       selectedContent = (
@@ -814,10 +895,19 @@ const UserIncomes = (props) => {
                   : ` - $ ${(userBalance * -1).toFixed(2)}`}
               </ManageSpan>
             </DefaultInfoContent>
-            <DefaultInfoContent justify={"center"} fontSize={"15px"}>
+            <DefaultInfoContent
+              direction={"column"}
+              justify={"center"}
+              fontSize={"15px"}
+            >
               <p>
                 Here you can create or edit your incomes, and add money to an
                 existing income.
+              </p>
+              <p>
+                Every time you add or delete an expense/category, as well as add
+                or withdraw money from a goal, it will affect your account
+                balance.
               </p>
             </DefaultInfoContent>
           </DefaultInfoDiv>
@@ -950,13 +1040,7 @@ const UserIncomes = (props) => {
               <DefaultListTitle>History List</DefaultListTitle>
             </DefaultListTitleDiv>
 
-            <DefaultListContent>
-              <History />
-              <History />
-              <History />
-              <History />
-              <History />
-            </DefaultListContent>
+            <DefaultListContent>{historyContent}</DefaultListContent>
           </DefaultList>
         </AccountHistoryDiv>
       );

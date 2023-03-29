@@ -1883,13 +1883,18 @@ const UserExpenses = () => {
       });
       if (res.meta.requestStatus === "fulfilled") {
         setCategoryOptions(newOptions);
-
+        let totalValue = 0;
         if (expensesToRemove.length > 0) {
           expensesToRemove.forEach((expense) => {
+            totalValue += Number(expense.expenseValue);
             dispatch(removeAnExpense(expense.expenseId));
-            console.log(expense.expenseId, "removido com sucesso");
+            //console.log(expense.expenseId, "removido com sucesso");
           });
         }
+        let newBalance = userBalance + totalValue;
+        console.log("total", totalValue);
+        dispatch(addBalance(newBalance));
+        dispatch(updateBalance(newBalance));
       }
       setShowCrud(false);
       getExpenses();

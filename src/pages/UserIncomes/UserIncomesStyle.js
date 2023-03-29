@@ -161,6 +161,7 @@ export const ManageSpan = styled.span`
 `;
 export const DefaultInfoContent = styled.div`
   display: flex;
+  flex-direction: ${(props) => props.direction};
   align-items: center;
   justify-content: ${(props) => props.justify};
   padding-right: 15px;
@@ -170,8 +171,9 @@ export const DefaultInfoContent = styled.div`
   font-size: ${(props) => props.fontSize};
 
   p {
+    width: 80%;
     color: gold;
-    font-weight: 600;
+    //font-weight: 600;
     -webkit-animation: ${FocusIn} 1.8s cubic-bezier(0.55, 0.085, 0.68, 0.53)
       both;
     animation: ${FocusIn} 1.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
