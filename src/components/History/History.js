@@ -22,7 +22,7 @@ const History = (props) => {
         <HistoryContentBlock>
           {Number(props.value) > 0
             ? `$ ${Number(props.value).toFixed(2)}`
-            : ` $ - ${(Number(props.value) * -1).toFixed(2)}`}
+            : `- $ ${(Number(props.value) * -1).toFixed(2)}`}
         </HistoryContentBlock>
         <HistoryContentBlock>{props.date}</HistoryContentBlock>
       </HistoryContentDiv>

@@ -564,6 +564,7 @@ const UserIncomes = (props) => {
       incomeName: incomeName,
       incomeId: incomeId,
       incomeOldValue: incomeValue,
+      historyType: "Deleted Income",
     });
     setShowCrud(true);
   };
@@ -571,6 +572,13 @@ const UserIncomes = (props) => {
   const confirmRemoveIncome = async (incomeId) => {
     let newBalance = userBalance + Number(crudType.incomeOldValue) * -1;
     dispatch(addBalance(newBalance));
+
+    const historyObj = {
+      name: crudType.incomeName,
+      value: Number(crudType.incomeOldValue) * -1,
+      type: crudType.historyType,
+      date: crudType.historyDate,
+    };
 
     await dispatch(removeAnIncome(incomeId)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
@@ -585,6 +593,7 @@ const UserIncomes = (props) => {
           setShowCrud(false);
           getGoals();
           getIncomes();
+          dispatch(postNewHistory(historyObj)).then((res) => getHistory());
         });
       }
     });
