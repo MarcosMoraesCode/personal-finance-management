@@ -13,6 +13,7 @@ const initialState = {
   userExpenses: null,
   balance: 0,
   dynamicId: 0,
+  historyId: 0,
 };
 
 export const fetchDynamicId = createAsyncThunk(
@@ -53,7 +54,23 @@ export const fetchBalance = createAsyncThunk(
     }
   }
 );
-
+export const fetchHistoryId = createAsyncThunk(
+  "userexpenses/fetchHistoryId",
+  async (action) => {
+    try {
+      const dbId = await get(child(ref(db), `users/${userId}/historyId`)).then(
+        (snapshot) => {
+          //console.log("history dinamico", snapshot.val());
+          return snapshot.val();
+        }
+      );
+      return dbId;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+);
 export const fetchCategoriesData = createAsyncThunk(
   "userexpenses/fetchCategoriesData",
   async (action) => {
@@ -271,6 +288,19 @@ export const editAnExpense = createAsyncThunk(
   }
 );
 
+export const updateHistoryId = createAsyncThunk(
+  "userexpenses/updateHistoryId",
+  async (action, state) => {
+    try {
+      let idValue = state.getState().expensesData.historyId;
+      // console.log("payload", action.categoryId);
+      await set(ref(db, `users/${userId}/historyId`), Number(idValue + 1));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const expenseDataSlice = createSlice({
   name: "expensesData",
   initialState,
@@ -283,6 +313,15 @@ export const expenseDataSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(fetchHistoryId.fulfilled, (state, action) => {
+      //console.log("payload", action.payload);
+      state.historyId = action.payload;
+      //console.log("Novo id dinamico: ", state.historyId);
+    });
+    builder.addCase(fetchHistoryId.rejected, (state, action) => {
+      //console.log("Rejected", action.error.message);
+      //console.log(action.error);
+    });
     builder.addCase(fetchCategoriesData.fulfilled, (state, action) => {
       // console.log("Success", action.payload);
     });
@@ -299,9 +338,12 @@ export const expenseDataSlice = createSlice({
     });
     builder.addCase(postNewExpense.fulfilled, (state, action) => {
       state.dynamicId += 1;
-      //console.log("Novo id dinamico: ", state.dynamicId);
+
+      console.log("Novo id dinamico: ", state.dynamicId);
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
+    // REPETI PRA VER SE FUNCIONA
+
     builder.addCase(postNewExpense.rejected, (state, action) => {
       // console.log("Rejected", action.error.message);
       // console.log(action.error);

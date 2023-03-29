@@ -61,10 +61,12 @@ import {
   fetchCategoriesData,
   fetchDynamicId,
   fetchExpensesData,
+  fetchHistoryId,
   postNewCategory,
   postNewExpense,
   removeACategory,
   removeAnExpense,
+  updateHistoryId,
 } from "../../features/expenses/expensesSlice";
 import startFirebase from "../../services/firebaseConfig";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
@@ -77,6 +79,7 @@ import {
 import CompletePieChart from "../../components/UI/Charts/CompletePieChart/CompletePieChart";
 import AllExpensesInfo from "../../components/UI/Charts/AllExpensesInfo/AllExpensesInfo";
 import { updateBalance } from "../../features/incomes/incomesSlice";
+import { postNewHistory } from "../../features/history/historySlice";
 
 const UserExpenses = () => {
   //Store
@@ -228,6 +231,8 @@ const UserExpenses = () => {
     expenseValue: "",
     expenseDate: "",
     expenseId: "",
+    historyDate: "",
+    historyType: "",
   });
   const [showMonthExpenses, setShowMonthExpenses] = useState(true);
   const [showEditCategories, setShowEditCategories] = useState(false);
@@ -262,6 +267,19 @@ const UserExpenses = () => {
   });
   //Support Arrays and Values
   const actualDate = new Date();
+
+  const year = actualDate.getFullYear();
+  let month = "";
+  let day = "";
+  actualDate.getMonth().toString().length > 1
+    ? (month = actualDate.getMonth() + 1)
+    : (month = `0${actualDate.getMonth() + 1}`);
+
+  actualDate.getDate().toString().length > 1
+    ? (day = actualDate.getDate())
+    : (day = `0${actualDate.getDate()}`);
+  let today = `${day}/${month}/${year}`;
+
   const expenseItems = [];
   const buttons = [];
   const analysisOptions = [
@@ -1155,6 +1173,12 @@ const UserExpenses = () => {
     let newBalance = userBalance - expenseValue;
 
     //utilizando post do firebase
+    const historyObj = {
+      name: userExpense.inputName.value,
+      value: expenseValue * -1,
+      date: userExpense.inputDate.value,
+      type: "Payment",
+    };
 
     //APENAS TESTE DE REQUEST
     if (userExpense.inputCategory.value === "New Category") {
@@ -1164,7 +1188,6 @@ const UserExpenses = () => {
           if (res.meta.requestStatus === "fulfilled") {
             setCategoryOptions([...categoryOptions, { name: categoryValue }]);
           }
-          dispatch(updateBalance(newBalance));
         })
         .catch((err) => {
           setShowModal(true);
@@ -1226,6 +1249,7 @@ const UserExpenses = () => {
           });
         }
         dispatch(updateBalance(newBalance));
+        dispatch(postNewHistory(historyObj)).then(dispatch(updateHistoryId()));
       })
       .catch((err) => {
         setShowModal(true);
@@ -1305,6 +1329,7 @@ const UserExpenses = () => {
     setLoading(true);
     dispatch(fetchDynamicId());
     dispatch(fetchBalance());
+    dispatch(fetchHistoryId());
 
     await dispatch(fetchCategoriesData())
       .unwrap()
@@ -1378,8 +1403,6 @@ const UserExpenses = () => {
     await dispatch(fetchExpensesData())
       //.unwrap()
       .then((res) => {
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAA", res);
-
         if (res.meta.requestStatus === "fulfilled") {
           if (res.payload !== null) {
             let fetchedExpenses = Object.values(res.payload);
@@ -1565,6 +1588,7 @@ const UserExpenses = () => {
   };
 
   let fullList = null;
+
   const editExpenseHandler = (
     expenseName,
     expenseValue,
@@ -1579,7 +1603,9 @@ const UserExpenses = () => {
     let id = expenseId;
     let catName = categoryName;
     let catId = categoryId;
-    // console.log(name, value, date);
+
+    //Modificando data
+
     setCrudType({
       ...crudType,
       crudType: "edit-expense",
@@ -1589,12 +1615,22 @@ const UserExpenses = () => {
       expenseId: id,
       categoryName: catName,
       categoryId: catId,
+      historyType: "Payment Adjusment",
+      historyDate: date,
     });
+
     setShowCrud(true);
   };
-  const confirmRemoveExpense = (id, value) => {
+  const confirmRemoveExpense = (id, value, name) => {
     let newBalance = userBalance + Number(value);
     dispatch(addBalance(newBalance));
+
+    const historyObj = {
+      name: name,
+      value: Number(value),
+      date: today,
+      type: crudType.historyType,
+    };
 
     dispatch(removeAnExpense(id)).then((res) => {
       console.log("removeu");
@@ -1603,7 +1639,10 @@ const UserExpenses = () => {
         crudType: "",
         expenseName: "",
         expenseId: "",
+        historyDate: "",
+        historyType: "",
       });
+      dispatch(postNewHistory(historyObj)).then(dispatch(updateHistoryId()));
     });
     dispatch(updateBalance(newBalance));
     getExpenses();
@@ -1625,50 +1664,61 @@ const UserExpenses = () => {
       newExpenseName: newName,
       newValue: newValue,
     };
+
     let expenseDiff = Number(crudType.expenseValue) - Number(newValue);
 
-    console.log("a diferença é", expenseDiff);
+    const historyObj = {
+      name: newName,
+      value: expenseDiff,
+      date: today,
+      type: crudType.historyType,
+    };
 
     let newBalance = userBalance + expenseDiff;
     dispatch(addBalance(newBalance));
 
     dispatch(editAnExpense(newExpenseObj)).then((res) => {
-      setCrudType({
-        ...crudType,
-        crudType: "",
-        expenseName: "",
-        expenseValue: "",
-        expenseDate: "",
-        expenseId: "",
-        categoryName: "",
-        categoryId: "",
-      });
-      setEditExpense({
-        ...editExpense,
-        inputNewExpenseName: {
-          ...editExpense.inputNewExpenseName,
-          isTouched: false,
-          isValid: false,
-          value: "",
-          invalidMessage: "",
-        },
-        inputNewDate: {
-          ...editExpense.inputNewDate,
-          isTouched: false,
-          isValid: false,
-          value: "",
-          invalidMessage: "",
-        },
-        inputNewValue: {
-          ...editExpense.inputNewValue,
-          isTouched: false,
-          isValid: false,
-          value: "",
-          invalidMessage: "",
-        },
-      });
+      if (res.meta.requestStatus === "fulfilled") {
+        setCrudType({
+          ...crudType,
+          crudType: "",
+          expenseName: "",
+          expenseValue: "",
+          expenseDate: "",
+          expenseId: "",
+          categoryName: "",
+          categoryId: "",
+          historyDate: "",
+          historyType: "",
+        });
+        setEditExpense({
+          ...editExpense,
+          inputNewExpenseName: {
+            ...editExpense.inputNewExpenseName,
+            isTouched: false,
+            isValid: false,
+            value: "",
+            invalidMessage: "",
+          },
+          inputNewDate: {
+            ...editExpense.inputNewDate,
+            isTouched: false,
+            isValid: false,
+            value: "",
+            invalidMessage: "",
+          },
+          inputNewValue: {
+            ...editExpense.inputNewValue,
+            isTouched: false,
+            isValid: false,
+            value: "",
+            invalidMessage: "",
+          },
+        });
+      }
     });
     dispatch(updateBalance(newBalance));
+    dispatch(postNewHistory(historyObj)).then(dispatch(updateHistoryId()));
     setShowCrud(false);
     getExpenses();
   };
@@ -1702,7 +1752,12 @@ const UserExpenses = () => {
                 item.id
               ),
             removeAction: () =>
-              removeExpenseHandler(expense.name, expense.id, expense.value),
+              removeExpenseHandler(
+                expense.name,
+                expense.id,
+                expense.value,
+                expense.date
+              ),
           };
         });
         console.log("ITEM", item);
@@ -1844,11 +1899,13 @@ const UserExpenses = () => {
       crudType: "remove-category",
       categoryName: name,
       categoryId: id,
+      historyDate: today,
+      historyType: "Deleted Payments",
     });
     // console.log("id", categoryId);
   };
 
-  const removeExpenseHandler = (exName, exId, exValue) => {
+  const removeExpenseHandler = (exName, exId, exValue, exDate) => {
     setShowCrud(true);
     setCrudType({
       ...crudType,
@@ -1856,6 +1913,8 @@ const UserExpenses = () => {
       expenseName: exName,
       expenseId: exId,
       expenseValue: exValue,
+      historyDate: exDate,
+      historyType: "Deleted Payment",
     });
   };
 
@@ -1875,12 +1934,6 @@ const UserExpenses = () => {
     // console.log(newOptions);
 
     await dispatch(removeACategory(id)).then((res) => {
-      setCrudType({
-        ...crudType,
-        crudType: "",
-        categoryName: "",
-        categoryId: "",
-      });
       if (res.meta.requestStatus === "fulfilled") {
         setCategoryOptions(newOptions);
         let totalValue = 0;
@@ -1891,13 +1944,29 @@ const UserExpenses = () => {
             //console.log(expense.expenseId, "removido com sucesso");
           });
         }
+        const historyObj = {
+          name: crudType.categoryName,
+          value: Number(totalValue),
+          date: today,
+          type: crudType.historyType,
+        };
+
         let newBalance = userBalance + totalValue;
         console.log("total", totalValue);
         dispatch(addBalance(newBalance));
         dispatch(updateBalance(newBalance));
+        setCrudType({
+          ...crudType,
+          crudType: "",
+          categoryName: "",
+          historyDate: "",
+          historyType: "",
+          categoryId: "",
+        });
+        setShowCrud(false);
+        getExpenses();
+        dispatch(postNewHistory(historyObj)).then(dispatch(updateHistoryId()));
       }
-      setShowCrud(false);
-      getExpenses();
     });
   };
 
@@ -2499,7 +2568,11 @@ const UserExpenses = () => {
               )
             }
             removeExpense={() =>
-              confirmRemoveExpense(crudType.expenseId, crudType.expenseValue)
+              confirmRemoveExpense(
+                crudType.expenseId,
+                crudType.expenseValue,
+                crudType.expenseName
+              )
             }
             editCategory={() =>
               confirmEditCategory(
