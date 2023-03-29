@@ -13,6 +13,7 @@ const initialState = {
   userGoals: null,
   userAchievements: null,
   dynamicId: 0,
+  historyId: 0,
   balance: 0,
 };
 
@@ -31,6 +32,23 @@ export const fetchDynamicId = createAsyncThunk(
       //const response = await axiosInstance.get("/category.json");
       //console.log("resposta axios", response.data);
       //return response.data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+);
+export const fetchHistoryId = createAsyncThunk(
+  "usergoals/fetchHistoryId",
+  async (action) => {
+    try {
+      const dbId = await get(child(ref(db), `users/${userId}/historyId`)).then(
+        (snapshot) => {
+          //console.log("history dinamico", snapshot.val());
+          return snapshot.val();
+        }
+      );
+      return dbId;
     } catch (err) {
       console.log(err);
       return err;
@@ -277,6 +295,18 @@ export const updateBalance = createAsyncThunk(
     }
   }
 );
+export const updateHistoryId = createAsyncThunk(
+  "usergoals/updateHistoryId",
+  async (action, state) => {
+    try {
+      let idValue = state.getState().goalsData.historyId;
+      // console.log("payload", action.categoryId);
+      await set(ref(db, `users/${userId}/historyId`), Number(idValue + 1));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
 
 export const goalDataSlice = createSlice({
   name: "goalsData",
@@ -293,6 +323,15 @@ export const goalDataSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(fetchHistoryId.fulfilled, (state, action) => {
+      //console.log("payload", action.payload);
+      state.historyId = action.payload;
+      //console.log("Novo id dinamico: ", state.historyId);
+    });
+    builder.addCase(fetchHistoryId.rejected, (state, action) => {
+      //console.log("Rejected", action.error.message);
+      //console.log(action.error);
+    });
     builder.addCase(fetchGoalsData.fulfilled, (state, action) => {
       // console.log("Success", state.dynamicId);
     });

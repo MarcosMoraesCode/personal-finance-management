@@ -4,7 +4,12 @@ import { EditButton } from "../../components/ExpensesTracking/Expense/ExpenseSty
 import GoalInformation from "../../components/GoalsTracking/GoalList/GoalInformations";
 import { FadeLoader } from "react-spinners";
 import InputContainer from "../../components/UI/Input/Input";
-import { fetchDynamicId, addBalance } from "../../features/goals/goalsSlice";
+import {
+  fetchDynamicId,
+  addBalance,
+  updateHistoryId,
+  fetchHistoryId,
+} from "../../features/goals/goalsSlice";
 import {
   addAchievements,
   addGoals,
@@ -59,6 +64,7 @@ import Crud from "../../components/UI/Modal/CrudModal/Crud";
 import CongratulationsModal from "../../components/UI/Modal/CongratulationsModal/CongratulationsModal";
 import { useNavigate } from "react-router-dom";
 import { fetchBalance, updateBalance } from "../../features/goals/goalsSlice";
+import { postNewHistory } from "../../features/history/historySlice";
 //import { updateBalance } from "../../features/incomes/incomesSlice";
 
 const UserGoals = (props) => {
@@ -106,6 +112,8 @@ const UserGoals = (props) => {
     goalAllocated: "",
     goalDate: "",
     goalValue: "",
+    historyDate: "",
+    historyType: "",
   });
   const [showCrud, setShowCrud] = useState(false);
 
@@ -130,6 +138,19 @@ const UserGoals = (props) => {
   const userAchievements = useSelector(
     (state) => state.goalsData.userAchievements
   );
+  const actualDate = new Date();
+
+  const year = actualDate.getFullYear();
+  let month = "";
+  let day = "";
+  actualDate.getMonth().toString().length > 1
+    ? (month = actualDate.getMonth() + 1)
+    : (month = `0${actualDate.getMonth() + 1}`);
+
+  actualDate.getDate().toString().length > 1
+    ? (day = actualDate.getDate())
+    : (day = `0${actualDate.getDate()}`);
+  let today = `${day}/${month}/${year}`;
 
   const navigate = useNavigate();
 
@@ -721,20 +742,30 @@ const UserGoals = (props) => {
       }
     });
   };
-  const removeGoalHandler = (goalName, goalId) => {
+  const removeGoalHandler = (goalName, goalId, goalAllocated) => {
     console.log("clicou");
     setCrudType({
       ...crudType,
       crudType: "remove-goal",
       goalName: goalName,
       goalId: goalId,
+      goalAllocated: goalAllocated,
     });
     setShowCrud(true);
   };
 
-  const confirmRemoveGoal = async (goalId) => {
+  const confirmRemoveGoal = async (goalId, goalAllocated) => {
+    const historyObj = {
+      name: crudType.goalName,
+      value: Number(goalAllocated * -1),
+      date: today,
+      type: "Deleted Investment",
+    };
     await dispatch(removeAGoal(goalId)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
+        let newBalance = userBalance + Number(goalAllocated);
+
+        dispatch(addBalance(newBalance));
         setCrudType({
           ...crudType,
           crudType: "",
@@ -745,10 +776,14 @@ const UserGoals = (props) => {
           goalDate: "",
           goalValue: "",
         });
+        dispatch(updateBalance(newBalance));
         setShowCrud(false);
         getGoals();
       }
     });
+    if (goalAllocated !== "0.00") {
+      dispatch(postNewHistory(historyObj)).then(dispatch(updateHistoryId()));
+    }
   };
 
   const BackdropCrudHandler = () => {
@@ -910,7 +945,8 @@ const UserGoals = (props) => {
               goal.id,
               goal.term
             ),
-          removeAction: () => removeGoalHandler(goal.name, goal.id),
+          removeAction: () =>
+            removeGoalHandler(goal.name, goal.id, goal.allocated),
           finishTask: () => {
             setCrudType({
               ...crudType,
@@ -965,6 +1001,7 @@ const UserGoals = (props) => {
   const getGoals = async () => {
     dispatch(fetchDynamicId());
     dispatch(fetchBalance());
+    dispatch(fetchHistoryId());
 
     await dispatch(fetchGoalsData()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
@@ -983,13 +1020,24 @@ const UserGoals = (props) => {
     let newBalance =
       Number(userInputs.inputPercentage.value) * -1 + userBalance;
     dispatch(addBalance(newBalance));
+
+    const historyObj = {
+      name: userInputs.inputName.value,
+      value: Number(userInputs.inputPercentage.value),
+      date: userInputs.inputDate.value,
+      type: "Investment",
+    };
     await dispatch(postNewGoal(userInputs))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           refreshInputs();
-
           setSubmitPermission(false);
           setLoadingSubmit(false);
+          if (userInputs.inputPercentage.value !== "0.00") {
+            dispatch(postNewHistory(historyObj)).then(
+              dispatch(updateHistoryId())
+            );
+          }
         }
       })
       .catch((err) => {
@@ -1145,7 +1193,9 @@ const UserGoals = (props) => {
               crudType.goalAllocated
             )
           }
-          removeGoal={() => confirmRemoveGoal(crudType.goalId)}
+          removeGoal={() =>
+            confirmRemoveGoal(crudType.goalId, crudType.goalAllocated)
+          }
 
           /* crudType={crudType.crudType}
           
