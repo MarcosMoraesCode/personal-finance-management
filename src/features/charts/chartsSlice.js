@@ -1,4 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  isRejectedWithValue,
+} from "@reduxjs/toolkit";
+import startFirebase from "../../services/firebaseConfig";
+import { ref, set, get, update, remove, child, push } from "firebase/database";
 
 const initialState = {
   newValue: -1,
@@ -151,10 +157,34 @@ const initialState = {
       usedCategories: [],
     },
   ],
+  expenses: [],
   categories: [],
   loadingData: false,
   clickedDate: "",
 };
+
+const db = startFirebase();
+const userId = "Marcos";
+
+export const fetchExpensesData = createAsyncThunk(
+  "usercharts/fetchExpensesData",
+  async (action, state) => {
+    try {
+      const dbResponse = await get(
+        child(ref(db), `users/${userId}/expenses`)
+      ).then((snapshot) => {
+        return snapshot.val();
+      });
+      return dbResponse;
+      //ANTES DO FIREBASE
+      //const response = await axiosInstance.get("/expense.json");
+      //return response.data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+);
 
 export const chartsSlice = createSlice({
   name: "initialSlices",
@@ -468,12 +498,6 @@ export const chartsSlice = createSlice({
       });
 
       lastYearExpenses.forEach((expense) => {
-        /* let initialValue = [...expense.expenseValue];
-        let commaIndex = initialValue.findIndex((element) => element === ",");
-        initialValue.splice(commaIndex, 1, ".");
-        let replacedValue = initialValue.join("");
-        let convertedValue = Number(replacedValue).toFixed(2);*/
-
         //convertendo a data
         let stringDate = [...expense.expenseDate];
         let year = stringDate.slice(0, 4).join("");
@@ -499,13 +523,6 @@ export const chartsSlice = createSlice({
           let category = state.categories.find(
             (category) => category.id === expense.categoryId
           );
-
-          //convertendo numero
-          /*let initialValue = [...category.spendLimit];
-          let commaIndex = initialValue.findIndex((element) => element === ",");
-          initialValue.splice(commaIndex, 1, ".");
-          let replacedValue = initialValue.join("");
-          let convertedValue = Number(replacedValue).toFixed(2);*/
 
           let newSpendLimit = oldSpendLimit + Number(category.spendLimit);
 
@@ -548,6 +565,21 @@ export const chartsSlice = createSlice({
     changeClickedDate: (state, action) => {
       state.clickedDate = action.payload;
     },
+    getAllExpenses: (state, action) => {
+      let expensesArr = Object.values(action.payload);
+      expensesArr.forEach((item) => {
+        state.expenses.push(item);
+      });
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchExpensesData.fulfilled, (state, action) => {
+      //console.log("Success", action.payload);
+    });
+    builder.addCase(fetchExpensesData.rejected, (state, action) => {
+      // console.log("Rejected", action.error.message);
+      //console.log(action.error);
+    });
   },
 });
 
@@ -556,6 +588,7 @@ export const {
   getThisYearHistoric,
   getAllCategories,
   changeClickedDate,
+  getAllExpenses,
 } = chartsSlice.actions;
 
 export default chartsSlice.reducer;

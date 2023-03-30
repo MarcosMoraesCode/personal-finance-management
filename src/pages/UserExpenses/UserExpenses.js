@@ -70,7 +70,7 @@ import {
 } from "../../features/expenses/expensesSlice";
 import startFirebase from "../../services/firebaseConfig";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
-import LineChart from "../../components/UI/Charts/LineChart";
+import LineChart from "../../components/UI/Charts/ExpensesLineChart";
 import CalendarChart from "../../components/UI/Charts/CalendarChart/CalendarChart";
 import {
   getThisYearHistoric,

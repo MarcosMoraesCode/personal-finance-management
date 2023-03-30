@@ -25,6 +25,7 @@ import {
   AccountFilterDiv,
   TableTitleDiv,
   TableSubtitleBlock,
+  AnalysisContainer,
 } from "./UserIncomesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import Income from "../../components/IncomeTracking/Income/Income";
@@ -58,6 +59,11 @@ import {
   addHistories,
   fetchHistoriesData,
 } from "../../features/history/historySlice";
+import IncomesLineChart from "../../components/UI/Charts/IncomesLineChart";
+import {
+  fetchExpensesData,
+  getAllExpenses,
+} from "../../features/charts/chartsSlice";
 
 const UserIncomes = (props) => {
   const [userInputs, setUserInputs] = useState({
@@ -129,6 +135,7 @@ const UserIncomes = (props) => {
     { name: "Investment" },
     { name: "Withdraw" },
     { name: "Payment" },
+    { name: "Deleted" },
   ];
 
   console.log(crudType.historyDate);
@@ -145,6 +152,7 @@ const UserIncomes = (props) => {
   const userIncomes = useSelector((state) => state.incomesData.userIncomes);
   const userBalance = useSelector((state) => state.incomesData.balance);
   const userHistory = useSelector((state) => state.historyData.userHistory);
+  const userExpenses = useSelector((state) => state.initialSlices.expenses);
 
   const dispatch = useDispatch();
 
@@ -181,12 +189,22 @@ const UserIncomes = (props) => {
     });
   };
 
+  const getExpenses = async () => {
+    await dispatch(fetchExpensesData()).then((res) => {
+      if (res.meta.requestStatus === "fulfilled" && res.payload !== null) {
+        dispatch(getAllExpenses(res.payload));
+      }
+    });
+  };
+
   useEffect(() => {
     getGoals();
     getIncomes();
     getHistory();
+    getExpenses();
   }, []);
 
+  console.log(userExpenses);
   //console.log(userHistory);
 
   const selectionHandler = (option) => {
@@ -798,8 +816,17 @@ const UserIncomes = (props) => {
 
     let allHistory = Object.values(userHistory);
     console.log(allHistory);
-    if (event.currentTarget.value !== "All") {
-      let filteredHistory = allHistory.filter(
+    let filteredHistory;
+    if (event.currentTarget.value.includes("Deleted")) {
+      filteredHistory = allHistory.filter((history) =>
+        history.type.includes("Deleted")
+      );
+      setFilteredHistory(filteredHistory);
+    } else if (
+      event.currentTarget.value !== "All" &&
+      !event.currentTarget.value.includes("Deleted")
+    ) {
+      filteredHistory = allHistory.filter(
         (history) => history.type === event.currentTarget.value
       );
       setFilteredHistory(filteredHistory);
@@ -1035,7 +1062,23 @@ const UserIncomes = (props) => {
           <DefaultTitleDiv>
             <DefaultTitle>Analysis</DefaultTitle>
           </DefaultTitleDiv>
-          <InputContainer type={"number"}>teste</InputContainer>
+          <DefaultInfoDiv>
+            <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
+              Balance{" "}
+              <ManageSpan color={userBalance >= 0 ? "#51d289" : "red"}>
+                {" "}
+                {userBalance >= 0
+                  ? `$ ${userBalance.toFixed(2)}`
+                  : ` - $ ${(userBalance * -1).toFixed(2)}`}
+              </ManageSpan>
+            </DefaultInfoContent>
+          </DefaultInfoDiv>
+          <AnalysisContainer>
+            <IncomesLineChart
+              expenses={userExpenses}
+              history={userHistory}
+            ></IncomesLineChart>
+          </AnalysisContainer>
         </AnalysisIncomeDiv>
       );
       break;

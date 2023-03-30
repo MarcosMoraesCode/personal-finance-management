@@ -306,6 +306,13 @@ export const AnalysisIncomeDiv = styled.div`
   -webkit-animation: ${FlipInTop} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: ${FlipInTop} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
+export const AnalysisContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+
+  width: 80%;
+`;
 
 export const AllocateIncomeDiv = styled.div`
   background-color: black;
