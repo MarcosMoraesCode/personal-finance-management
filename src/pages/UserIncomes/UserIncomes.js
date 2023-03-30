@@ -23,6 +23,8 @@ import {
   DefaultListTitle,
   ManageSpan,
   AccountFilterDiv,
+  TableTitleDiv,
+  TableSubtitleBlock,
 } from "./UserIncomesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import Income from "../../components/IncomeTracking/Income/Income";
@@ -677,7 +679,7 @@ const UserIncomes = (props) => {
       name: incomeName,
       value: Number(modifiedValue),
       date: crudType.historyDate,
-      type: crudType.historyType,
+      type: userInputs.inputRadio.value,
     };
 
     const newIncomeObj = {
@@ -756,7 +758,7 @@ const UserIncomes = (props) => {
     };
     const historyObj = {
       name: goalName,
-      value: modifiedValue,
+      value: Number(modifiedValue) * -1,
       date: crudType.historyDate,
       type: crudType.historyType,
     };
@@ -1102,9 +1104,22 @@ const UserIncomes = (props) => {
               noMargin
             />
           </AccountFilterDiv>
+
           <DefaultList>
             <DefaultListTitleDiv>
               <DefaultListTitle>History List</DefaultListTitle>
+              <TableTitleDiv>
+                <TableSubtitleBlock justify={"flex-start"}>
+                  Type
+                </TableSubtitleBlock>
+                <TableSubtitleBlock justify={"flex-start"}>
+                  Name
+                </TableSubtitleBlock>
+                <TableSubtitleBlock justify={"flex-end"}>
+                  Value
+                </TableSubtitleBlock>
+                <TableSubtitleBlock justify={"center"}>Date</TableSubtitleBlock>
+              </TableTitleDiv>
             </DefaultListTitleDiv>
 
             <DefaultListContent>{historyContent}</DefaultListContent>

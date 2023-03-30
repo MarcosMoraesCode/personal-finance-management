@@ -10,12 +10,12 @@ import {
 const History = (props) => {
   return (
     <HistoryDiv>
-      <HistorySubtitlesDiv>
+      {/* <HistorySubtitlesDiv>
         <HistorySubtitleBlock>Type</HistorySubtitleBlock>
         <HistorySubtitleBlock>Name</HistorySubtitleBlock>
         <HistorySubtitleBlock>Value</HistorySubtitleBlock>
         <HistorySubtitleBlock>Date</HistorySubtitleBlock>
-      </HistorySubtitlesDiv>
+      </HistorySubtitlesDiv>*/}
       <HistoryContentDiv>
         <HistoryContentBlock
           color={
@@ -27,18 +27,24 @@ const History = (props) => {
               ? `#51d289`
               : `red`
           }
+          justify={"flex-start"}
         >
           {props.type}
         </HistoryContentBlock>
-        <HistoryContentBlock>{props.name}</HistoryContentBlock>
+        <HistoryContentBlock justify={"flex-start"}>
+          {props.name}
+        </HistoryContentBlock>
         <HistoryContentBlock
+          justify={"flex-end"}
           color={Number(props.value) > 0 ? `#51d289` : `red`}
         >
           {Number(props.value) > 0
             ? `$ ${Number(props.value).toFixed(2)}`
             : `- $ ${(Number(props.value) * -1).toFixed(2)}`}
         </HistoryContentBlock>
-        <HistoryContentBlock>{props.date}</HistoryContentBlock>
+        <HistoryContentBlock justify={"center"}>
+          {props.date}
+        </HistoryContentBlock>
       </HistoryContentDiv>
     </HistoryDiv>
   );

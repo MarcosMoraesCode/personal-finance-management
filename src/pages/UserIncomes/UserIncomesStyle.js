@@ -257,8 +257,13 @@ export const DefaultListContent = styled.div`
   }
 `;
 export const DefaultListTitleDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
   height: 20%;
+  min-height: fit-content;
+  //background-color: blue;
 `;
 export const DefaultListTitle = styled.div`
   color: #51d289;
@@ -266,6 +271,27 @@ export const DefaultListTitle = styled.div`
   font-weight: 600;
   padding: 5px;
   font-size: 20px;
+  // background-color: red;
+`;
+export const TableTitleDiv = styled.div`
+  display: flex;
+  height: 100%;
+  //background-color: red;
+  width: 85%;
+  margin: auto;
+  border-bottom: 1px solid #51d289;
+  padding-bottom: 3px;
+  font-weight: 600;
+  color: #51d289;
+`;
+export const TableSubtitleBlock = styled.div`
+  display: flex;
+  justify-content: ${(props) => props.justify};
+  width: 25%;
+  height: 100%;
+  font-size: 12px;
+  align-items: flex-end;
+  padding-left: 5px;
 `;
 
 export const AnalysisIncomeDiv = styled.div`

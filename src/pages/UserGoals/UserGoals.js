@@ -1024,7 +1024,7 @@ const UserGoals = (props) => {
     const historyObj = {
       name: userInputs.inputName.value,
       value: Number(userInputs.inputPercentage.value) * -1,
-      date: userInputs.inputDate.value,
+      date: today,
       type: "Investment",
     };
     await dispatch(postNewGoal(userInputs))
