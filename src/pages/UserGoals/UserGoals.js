@@ -757,7 +757,7 @@ const UserGoals = (props) => {
   const confirmRemoveGoal = async (goalId, goalAllocated) => {
     const historyObj = {
       name: crudType.goalName,
-      value: Number(goalAllocated * -1),
+      value: Number(goalAllocated),
       date: today,
       type: "Deleted Investment",
     };
@@ -1023,7 +1023,7 @@ const UserGoals = (props) => {
 
     const historyObj = {
       name: userInputs.inputName.value,
-      value: Number(userInputs.inputPercentage.value),
+      value: Number(userInputs.inputPercentage.value) * -1,
       date: userInputs.inputDate.value,
       type: "Investment",
     };

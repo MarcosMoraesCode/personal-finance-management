@@ -17,9 +17,23 @@ const History = (props) => {
         <HistorySubtitleBlock>Date</HistorySubtitleBlock>
       </HistorySubtitlesDiv>
       <HistoryContentDiv>
-        <HistoryContentBlock>{props.type}</HistoryContentBlock>
+        <HistoryContentBlock
+          color={
+            props.type === "Investment"
+              ? `gold`
+              : props.type === "Deposit"
+              ? `#51d289`
+              : Number(props.value) > 0
+              ? `#51d289`
+              : `red`
+          }
+        >
+          {props.type}
+        </HistoryContentBlock>
         <HistoryContentBlock>{props.name}</HistoryContentBlock>
-        <HistoryContentBlock>
+        <HistoryContentBlock
+          color={Number(props.value) > 0 ? `#51d289` : `red`}
+        >
           {Number(props.value) > 0
             ? `$ ${Number(props.value).toFixed(2)}`
             : `- $ ${(Number(props.value) * -1).toFixed(2)}`}

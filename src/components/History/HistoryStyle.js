@@ -45,4 +45,6 @@ export const HistoryContentBlock = styled.div`
   height: 100%;
   font-family: "Roboto";
   font-size: 11px;
+  color: ${(props) => props.color};
+  font-weight: ${(props) => (props.color ? "600" : "300")};
 `;

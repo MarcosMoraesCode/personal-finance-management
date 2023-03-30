@@ -2200,7 +2200,7 @@ const UserExpenses = () => {
     </>
   );
 
-  const ChangeAnalisysOptionHandler = (event) => {
+  const ChangeAnalysisOptionHandler = (event) => {
     setCurrentAnalysisOption({ rerender: true, id: event.currentTarget.value });
   };
 
@@ -2463,7 +2463,7 @@ const UserExpenses = () => {
                       paddingTop={"20px"}
                       options={analysisOptions}
                       width={"100px"}
-                      changed={(event) => ChangeAnalisysOptionHandler(event)}
+                      changed={(event) => ChangeAnalysisOptionHandler(event)}
                     />
                   </AnalysisInfoContainer>
                 </AnalysisInfoDiv>

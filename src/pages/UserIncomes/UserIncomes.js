@@ -121,6 +121,14 @@ const UserIncomes = (props) => {
     historyDate: `${day}/${month}/${year}`,
   });
 
+  const historyOptions = [
+    { name: "All" },
+    { name: "Deposit" },
+    { name: "Investment" },
+    { name: "Withdraw" },
+    { name: "Payment" },
+  ];
+
   console.log(crudType.historyDate);
 
   const [optionOneSelected, setOptionOneSelected] = useState(false);
@@ -130,6 +138,7 @@ const UserIncomes = (props) => {
   const [optionName, setOptionName] = useState("");
   const [submitPermission, setSubmitPermission] = useState(false);
   const [showCrud, setShowCrud] = useState(false);
+  const [filteredHistory, setFilteredHistory] = useState(null);
   const userGoals = useSelector((state) => state.goalsData.userGoals);
   const userIncomes = useSelector((state) => state.incomesData.userIncomes);
   const userBalance = useSelector((state) => state.incomesData.balance);
@@ -163,6 +172,9 @@ const UserIncomes = (props) => {
         console.log("chegou tbm", res.payload);
 
         dispatch(addHistories(res.payload));
+        if (res.payload !== null) {
+          setFilteredHistory(Object.values(res.payload));
+        }
       }
     });
   };
@@ -779,14 +791,66 @@ const UserIncomes = (props) => {
     });
   };
 
+  const filterHistory = (event) => {
+    console.log(event.currentTarget.value);
+
+    let allHistory = Object.values(userHistory);
+    console.log(allHistory);
+    if (event.currentTarget.value !== "All") {
+      let filteredHistory = allHistory.filter(
+        (history) => history.type === event.currentTarget.value
+      );
+      setFilteredHistory(filteredHistory);
+    } else {
+      setFilteredHistory(allHistory);
+    }
+  };
+
   let historyContent = (
     <div>You haven't made any changes to your account yet</div>
   );
 
-  if (userHistory !== null) {
-    let historyArr = Object.values(userHistory);
+  if (filteredHistory !== null) {
+    let historyArr = Object.values(filteredHistory);
 
-    historyContent = historyArr.map((history, index) => {
+    let adjustedDateArr = historyArr.map((history) => {
+      let newObj = {};
+      if (history.date.includes("-")) {
+        // console.log("tem", history.id);
+
+        let month = history.date[5] + history.date[6];
+        let day = history.date[8] + history.date[9];
+        let year = history.date.slice(0, 4);
+
+        //let month = history.date.slice(5, 2);
+        console.log(year);
+        console.log(month);
+        console.log(day);
+        let time = new Date(`${month}/${day}/${year}`).getTime();
+        //console.log("aqui", time);
+        newObj = { ...history, date: `${day}/${month}/${year}`, time: time };
+      } else {
+        let year =
+          history.date[6] + history.date[7] + history.date[8] + history.date[9];
+        let day = history.date[0] + history.date[1];
+        let month = history.date[3] + history.date[4];
+
+        let time = new Date(`${month}/${day}/${year}`).getTime();
+        console.log("e aq?", time);
+        newObj = { ...history, time: time };
+      }
+
+      return newObj;
+    });
+
+    function compareNumbers(a, b) {
+      return a.time - b.time;
+    }
+    console.log("antes", adjustedDateArr);
+    adjustedDateArr.sort(compareNumbers);
+    console.log("depois", adjustedDateArr);
+
+    historyContent = adjustedDateArr.map((history, index) => {
       return (
         <History
           key={`history-${index}`}
@@ -1031,14 +1095,8 @@ const UserIncomes = (props) => {
           <AccountFilterDiv>
             <p>View the complete history or filter by a type.</p>
             <SelectContainer
-              options={[
-                { name: "All" },
-                { name: "Deposits" },
-                { name: "Investments" },
-                { name: "Withdraws" },
-                { name: "Payments" },
-              ]}
-              // changed={(event) => FilterChangeHandler(event)}
+              options={historyOptions}
+              changed={(event) => filterHistory(event)}
               //border={"no-left-border"}
               width={"110px"}
               noMargin
