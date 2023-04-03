@@ -138,6 +138,12 @@ const UserIncomes = (props) => {
     { name: "Deleted" },
   ];
 
+  const analysisOptions = [
+    { name: "This Month" },
+    { name: "This Year" },
+    { name: "Last Year" },
+  ];
+
   console.log(crudType.historyDate);
 
   const [optionOneSelected, setOptionOneSelected] = useState(false);
@@ -146,6 +152,7 @@ const UserIncomes = (props) => {
   const [optionFourSelected, setOptionFourSelected] = useState(false);
   const [optionName, setOptionName] = useState("");
   const [submitPermission, setSubmitPermission] = useState(false);
+  const [analysisSelected, setAnalysisSelected] = useState("This Month");
   const [showCrud, setShowCrud] = useState(false);
   const [filteredHistory, setFilteredHistory] = useState(null);
   const userGoals = useSelector((state) => state.goalsData.userGoals);
@@ -835,6 +842,10 @@ const UserIncomes = (props) => {
     }
   };
 
+  const filterAnalysis = (event) => {
+    setAnalysisSelected(event.currentTarget.value);
+  };
+
   let historyContent = (
     <div>You haven't made any changes to your account yet</div>
   );
@@ -980,6 +991,32 @@ const UserIncomes = (props) => {
     });
   }
 
+  let analysisChart = null;
+
+  switch (analysisSelected) {
+    case "This Month":
+      analysisChart = <>oi</>;
+      break;
+    case "This Year":
+      analysisChart = (
+        <IncomesLineChart
+          expenses={userExpenses}
+          history={userHistory}
+          selection={analysisSelected}
+        ></IncomesLineChart>
+      );
+      break;
+    case "Last Year":
+      analysisChart = (
+        <IncomesLineChart
+          expenses={userExpenses}
+          history={userHistory}
+          selection={analysisSelected}
+        ></IncomesLineChart>
+      );
+      break;
+  }
+
   switch (optionName) {
     case "manage-income":
       selectedContent = (
@@ -1072,13 +1109,18 @@ const UserIncomes = (props) => {
                   : ` - $ ${(userBalance * -1).toFixed(2)}`}
               </ManageSpan>
             </DefaultInfoContent>
+            <AccountFilterDiv>
+              <p>Here you can view all transactions over this and last year.</p>
+              <SelectContainer
+                options={analysisOptions}
+                changed={(event) => filterAnalysis(event)}
+                //border={"no-left-border"}
+                width={"110px"}
+                noMargin
+              />
+            </AccountFilterDiv>
           </DefaultInfoDiv>
-          <AnalysisContainer>
-            <IncomesLineChart
-              expenses={userExpenses}
-              history={userHistory}
-            ></IncomesLineChart>
-          </AnalysisContainer>
+          <AnalysisContainer>{analysisChart}</AnalysisContainer>
         </AnalysisIncomeDiv>
       );
       break;

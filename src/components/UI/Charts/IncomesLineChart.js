@@ -102,7 +102,7 @@ const IncomesLineChart = (props) => {
   let lastYearData = [
     {
       name: "Jan",
-      otalExpenses: 0,
+      totalExpenses: 0,
       totalDeposited: 0,
       totalInvested: 0,
     },
@@ -138,7 +138,7 @@ const IncomesLineChart = (props) => {
     },
     {
       name: "Jul",
-      otalExpenses: 0,
+      totalExpenses: 0,
       totalDeposited: 0,
       totalInvested: 0,
     },
@@ -156,7 +156,7 @@ const IncomesLineChart = (props) => {
     },
     {
       name: "Oct",
-      otalExpenses: 0,
+      totalExpenses: 0,
       totalDeposited: 0,
       totalInvested: 0,
     },
@@ -210,14 +210,24 @@ const IncomesLineChart = (props) => {
     });
   }
 
-  console.log("ANTES", thisYearData);
-
   thisYearExpenses.forEach((expense) => {
     let month = expense.date[5] + expense.date[6];
     let oldTotal = Number(thisYearData[Number(month) - 1].totalExpenses);
     let newTotal = oldTotal + Number(expense.value);
     thisYearData[Number(month) - 1].totalExpenses = newTotal;
   });
+
+  lastYearExpenses.forEach((expense) => {
+    console.log(expense.value, "teste");
+    let month = expense.date[5] + expense.date[6];
+    let oldTotal = Number(lastYearData[Number(month) - 1].totalExpenses);
+
+    let newTotal = Number(oldTotal) + Number(expense.value);
+    console.log(typeof newTotal);
+    lastYearData[Number(month) - 1].totalExpenses = Number(newTotal);
+  });
+
+  console.log("aqui", lastYearData);
 
   if (props.history !== null) {
     let history = Object.values(props.history);
@@ -256,7 +266,26 @@ const IncomesLineChart = (props) => {
     }
   });
 
-  let newData = thisYearData.map((item) => {
+  lastYearHistory.forEach((item) => {
+    let month = item.date[3] + item.date[4];
+
+    if (
+      item.type === "Deposit" ||
+      item.type === "Withdraw" ||
+      item.type === "Deleted Income"
+    ) {
+      let oldTotal = Number(lastYearData[Number(month) - 1].totalDeposited);
+      let newTotal = oldTotal + Number(item.value);
+      lastYearData[Number(month) - 1].totalDeposited = newTotal;
+    }
+    if (item.type === "Investment") {
+      let oldTotal = Number(lastYearData[Number(month) - 1].totalInvested);
+      let newTotal = oldTotal + Number(item.value * -1);
+      lastYearData[Number(month) - 1].totalInvested = newTotal;
+    }
+  });
+
+  let newDataCurrentYear = thisYearData.map((item) => {
     return [
       item.name,
       item.totalDeposited,
@@ -264,7 +293,22 @@ const IncomesLineChart = (props) => {
       item.totalInvested,
     ];
   });
-  console.log("TESTE", newData);
+
+  let newDataLastYear = lastYearData.map((item) => {
+    return [
+      item.name,
+      item.totalDeposited,
+      item.totalExpenses,
+      item.totalInvested,
+    ];
+  });
+
+  let newData =
+    props.selection === "This Year"
+      ? newDataCurrentYear
+      : props.selection === "Last Year"
+      ? newDataLastYear
+      : null;
 
   const data = [["Month", "Deposited", "Spent", "Invested"]];
 
