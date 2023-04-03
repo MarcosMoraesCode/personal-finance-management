@@ -49,7 +49,7 @@ import { BarLoader, FadeLoader } from "react-spinners";
 import Expense from "../../components/ExpensesTracking/Expense/Expense";
 import Modal from "../../components/UI/Modal/ConectionModal/Modal";
 import Category from "../../components/ExpensesTracking/Categories/Category";
-import PieChart from "../../components/UI/Charts/PieChart";
+import PieChart from "../../components/UI/Charts/ExpensesPieChart";
 import { useDispatch, useSelector } from "react-redux";
 import BarTableChart from "../../components/UI/Charts/BarTableChart/BarTableChart";
 import {

@@ -138,11 +138,7 @@ const UserIncomes = (props) => {
     { name: "Deleted" },
   ];
 
-  const analysisOptions = [
-    { name: "This Month" },
-    { name: "This Year" },
-    { name: "Last Year" },
-  ];
+  const analysisOptions = [{ name: "This Year" }, { name: "Last Year" }];
 
   console.log(crudType.historyDate);
 
@@ -152,7 +148,7 @@ const UserIncomes = (props) => {
   const [optionFourSelected, setOptionFourSelected] = useState(false);
   const [optionName, setOptionName] = useState("");
   const [submitPermission, setSubmitPermission] = useState(false);
-  const [analysisSelected, setAnalysisSelected] = useState("This Month");
+  const [analysisSelected, setAnalysisSelected] = useState("This Year");
   const [showCrud, setShowCrud] = useState(false);
   const [filteredHistory, setFilteredHistory] = useState(null);
   const userGoals = useSelector((state) => state.goalsData.userGoals);
@@ -790,7 +786,7 @@ const UserIncomes = (props) => {
     //console.log(newGoalObj);
     await dispatch(goalTransaction(newGoalObj)).then((res) => {
       let newBalance = userBalance + Number(modifiedValue * -1);
-      console.log("new Balance", newBalance, "modified", modifiedValue);
+      // console.log("new Balance", newBalance, "modified", modifiedValue);
       dispatch(addBalance(newBalance));
       if (res.meta.requestStatus === "fulfilled") {
         setCrudType({
@@ -822,7 +818,7 @@ const UserIncomes = (props) => {
     console.log(event.currentTarget.value);
 
     let allHistory = Object.values(userHistory);
-    console.log(allHistory);
+    // console.log(allHistory);
     let filteredHistory;
     if (event.currentTarget.value.includes("Deleted")) {
       filteredHistory = allHistory.filter((history) =>
@@ -863,9 +859,9 @@ const UserIncomes = (props) => {
         let year = history.date.slice(0, 4);
 
         //let month = history.date.slice(5, 2);
-        console.log(year);
-        console.log(month);
-        console.log(day);
+        //console.log(year);
+        //console.log(month);
+        //console.log(day);
         let time = new Date(`${month}/${day}/${year}`).getTime();
         //console.log("aqui", time);
         newObj = { ...history, date: `${day}/${month}/${year}`, time: time };
@@ -886,9 +882,9 @@ const UserIncomes = (props) => {
     function compareNumbers(a, b) {
       return a.time - b.time;
     }
-    console.log("antes", adjustedDateArr);
+    //console.log("antes", adjustedDateArr);
     adjustedDateArr.sort(compareNumbers);
-    console.log("depois", adjustedDateArr);
+    // console.log("depois", adjustedDateArr);
 
     historyContent = adjustedDateArr.map((history, index) => {
       return (
@@ -994,9 +990,6 @@ const UserIncomes = (props) => {
   let analysisChart = null;
 
   switch (analysisSelected) {
-    case "This Month":
-      analysisChart = <>oi</>;
-      break;
     case "This Year":
       analysisChart = (
         <IncomesLineChart

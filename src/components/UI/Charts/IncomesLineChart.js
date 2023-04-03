@@ -227,7 +227,7 @@ const IncomesLineChart = (props) => {
     lastYearData[Number(month) - 1].totalExpenses = Number(newTotal);
   });
 
-  console.log("aqui", lastYearData);
+  console.log("aqui", thisYearData);
 
   if (props.history !== null) {
     let history = Object.values(props.history);
