@@ -61,7 +61,6 @@ import {
   fetchCategoriesData,
   fetchDynamicId,
   fetchExpensesData,
-  fetchHistoryId,
   postNewCategory,
   postNewExpense,
   removeACategory,
@@ -79,7 +78,10 @@ import {
 import CompletePieChart from "../../components/UI/Charts/CompletePieChart/CompletePieChart";
 import AllExpensesInfo from "../../components/UI/Charts/AllExpensesInfo/AllExpensesInfo";
 import { updateBalance } from "../../features/incomes/incomesSlice";
-import { postNewHistory } from "../../features/history/historySlice";
+import {
+  postNewHistory,
+  fetchHistoryId,
+} from "../../features/history/historySlice";
 
 const UserExpenses = () => {
   //Store
@@ -239,6 +241,7 @@ const UserExpenses = () => {
   const [filterValue, setFilterValue] = useState("");
   const [filterType, setFilterType] = useState("sort by name");
   const [loading, setLoading] = useState(false);
+  const [historyId, setHistoryId] = useState(0);
   const [loadingOnSubmitExpense, setLoadingOnSubmitExpense] = useState(false);
   const [loadingOnSubmitCategory, setLoadingOnSubmitCategory] = useState(false);
   const [allExpensesList, setAllExpensesList] = useState(null);
@@ -1200,14 +1203,29 @@ const UserExpenses = () => {
           });
         });
     }
-    //VOLTAR AQUI
+
     await dispatch(postNewExpense(userExpense))
       .then((res) => {
         dispatch(addBalance(newBalance));
-
+        let newId = historyId + 1;
+        let upload = false;
         if (res.meta.requestStatus === "fulfilled") {
           setLoadingOnSubmitExpense(false);
-          getExpenses();
+          dispatch(updateBalance(newBalance));
+          dispatch(postNewHistory(historyObj)).then((res) => {
+            if (res.meta.requestStatus === "fulfilled") {
+              console.log("antes de atualizar é" + historyId);
+              upload = true;
+            }
+            dispatch(updateHistoryId(newId)).then((res) => {
+              if (res.meta.requestStatus === "fulfilled" && upload) {
+                console.log("passou aqui");
+                setHistoryId(newId);
+                getExpenses();
+              }
+            });
+          });
+
           setUserExpense({
             ...userExpense,
             inputName: {
@@ -1249,8 +1267,6 @@ const UserExpenses = () => {
             },
           });
         }
-        dispatch(updateBalance(newBalance));
-        dispatch(postNewHistory(historyObj)).then(dispatch(updateHistoryId()));
       })
       .catch((err) => {
         setShowModal(true);
@@ -1330,7 +1346,12 @@ const UserExpenses = () => {
     setLoading(true);
     dispatch(fetchDynamicId());
     dispatch(fetchBalance());
-    dispatch(fetchHistoryId());
+    await dispatch(fetchHistoryId()).then((res) => {
+      if (res.payload !== null) {
+        setHistoryId(res.payload);
+        console.log("do state", res.payload);
+      }
+    });
 
     await dispatch(fetchCategoriesData())
       .unwrap()
@@ -1632,9 +1653,11 @@ const UserExpenses = () => {
       date: today,
       type: crudType.historyType,
     };
-
+    //VOLTAR AQUI
+    let newId = historyId + 1;
+    let upload = false;
     dispatch(removeAnExpense(id)).then((res) => {
-      console.log("removeu");
+      //  console.log("removeu");
       setCrudType({
         ...crudType,
         crudType: "",
@@ -1643,11 +1666,22 @@ const UserExpenses = () => {
         historyDate: "",
         historyType: "",
       });
-      dispatch(postNewHistory(historyObj)).then(dispatch(updateHistoryId()));
+      dispatch(postNewHistory(historyObj)).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          console.log("antes de atualizar é" + historyId);
+          upload = true;
+        }
+        dispatch(updateHistoryId(newId)).then((res) => {
+          if (res.meta.requestStatus === "fulfilled" && upload) {
+            console.log("passou aqui");
+            setHistoryId(newId);
+            getExpenses();
+          }
+        });
+      });
+      setShowCrud(false);
     });
     dispatch(updateBalance(newBalance));
-    getExpenses();
-    setShowCrud(false);
   };
   const confirmEditExpense = (
     newName,
@@ -1716,18 +1750,36 @@ const UserExpenses = () => {
             invalidMessage: "",
           },
         });
+        let newId = historyId + 1;
+        let upload = false;
+        dispatch(updateBalance(newBalance));
+        dispatch(postNewHistory(historyObj)).then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            console.log("antes de atualizar é" + historyId);
+            upload = true;
+          }
+          dispatch(updateHistoryId(newId)).then((res) => {
+            if (res.meta.requestStatus === "fulfilled" && upload) {
+              console.log("passou aqui");
+              setHistoryId(newId);
+              getExpenses();
+            }
+          });
+        });
+        setShowCrud(false);
       }
     });
-    dispatch(updateBalance(newBalance));
+
+    /* dispatch(updateBalance(newBalance));
     dispatch(postNewHistory(historyObj)).then(dispatch(updateHistoryId()));
     setShowCrud(false);
-    getExpenses();
+    getExpenses();*/
   };
 
   //if (fetchedExpensesList !== null && infoBtnList !== null) {
 
   if (monthlyCategories !== null && infoBtnList !== null) {
-    console.log("aq", monthlyCategories);
+    // console.log("aq", monthlyCategories);
     //console.log("ali", allExpenses);
     let listToBeSet =
       showMonthExpenses === true ? monthlyCategories : allExpenses;
@@ -1761,7 +1813,7 @@ const UserExpenses = () => {
               ),
           };
         });
-        console.log("ITEM", item);
+        // console.log("ITEM", item);
 
         let isBiggerThanExpected =
           Number(calculateExpectedPercentage(item.spendLimit)) <
@@ -1943,10 +1995,10 @@ const UserExpenses = () => {
             totalValue += Number(expense.expenseValue);
             dispatch(removeAnExpense(expense.expenseId));
             //console.log(expense.expenseId, "removido com sucesso");
-            console.log("no looping", totalValue);
+            //    console.log("no looping", totalValue);
           });
         }
-        console.log("fora", totalValue);
+        //  console.log("fora", totalValue);
         const historyObj = {
           name: crudType.categoryName,
           value: totalValue,
@@ -1955,7 +2007,9 @@ const UserExpenses = () => {
         };
 
         let newBalance = userBalance + totalValue;
-        console.log("total", totalValue);
+        let newId = historyId + 1;
+        let upload = false;
+        //  console.log("total", totalValue);
         dispatch(addBalance(newBalance));
         dispatch(updateBalance(newBalance));
         setCrudType({
@@ -1966,10 +2020,23 @@ const UserExpenses = () => {
           historyType: "",
           categoryId: "",
         });
+
+        dispatch(postNewHistory(historyObj)).then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            console.log("antes de atualizar é" + historyId);
+            upload = true;
+          }
+          dispatch(updateHistoryId(newId)).then((res) => {
+            if (res.meta.requestStatus === "fulfilled" && upload) {
+              console.log("passou aqui");
+              setHistoryId(newId);
+              getExpenses();
+            }
+          });
+        });
         setShowCrud(false);
-        getExpenses();
-        dispatch(postNewHistory(historyObj)).then(dispatch(updateHistoryId()));
       }
+      //VOLTAR AQUI
     });
   };
 
@@ -2189,8 +2256,9 @@ const UserExpenses = () => {
         sliceValues.newValue !== -1 ? (
           <BarTableChart
             expenses={
-              filteredMonthlyCategories[sliceValues.newValue]
-                .expensesList /*filteredCategories[sliceValues.newValue].expensesList*/
+              filteredMonthlyCategories !== null
+                ? filteredMonthlyCategories[sliceValues.newValue].expensesList
+                : null /*filteredCategories[sliceValues.newValue].expensesList*/
             }
           />
         ) : (
@@ -2436,7 +2504,6 @@ const UserExpenses = () => {
                             : (totalSpendLimit - totalSpent).toFixed(2)
                         }
                       >
-                        {console.log("a", totalSpendLimit, totalSpent)}
                         <SpendingInfoSpan>
                           budger lasting for this month
                         </SpendingInfoSpan>{" "}

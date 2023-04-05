@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import removeIcon from "../../../images/removeIcon.svg";
 import editIcon from "../../../images/editIcon.svg";
 
@@ -85,8 +85,10 @@ export const ExpenseSubtitlesDiv = styled.div`
   height: fit-content;
   font-size: xx-small;
   font-weight: 600;
+
   //background-color: red;
   color: #51d289;
+  padding-right: ${(props) => (props.homePage ? "10px" : "0px")};
   // border: 1px solid gold;
 `;
 
@@ -182,7 +184,7 @@ export const ExpenseDefaultButton = styled.button`
 export const ExtraContentWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  animation: ${DivShowingUp} 0.4s cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: ${DivShowingUp} 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
   height: fit-content;
   margin-bottom: 3px;
 `;
@@ -200,7 +202,9 @@ export const ExtraText = styled.p`
 export const ExpenseListDiv = styled.div`
   overflow-y: auto;
   width: 100%;
-  height: 100%;
+  max-height: ${(props) => (props.homePage ? `500px` : `250px`)};
+  //background-color: red;
+  padding-right: ${(props) => (props.homePage ? `10px` : `0px`)};
 
   /* width */
   ::-webkit-scrollbar {

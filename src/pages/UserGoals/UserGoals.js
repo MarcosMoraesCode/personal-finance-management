@@ -117,6 +117,7 @@ const UserGoals = (props) => {
   });
   const [showCrud, setShowCrud] = useState(false);
 
+  const [totalAllocated, setTotalAllocated] = useState(0);
   const [showCongratulation, setShowCongratulation] = useState(false);
 
   const [submitPermission, setSubmitPermission] = useState(false);
@@ -927,8 +928,8 @@ const UserGoals = (props) => {
 
     if (userGoals !== null) {
       let goalsArr = Object.values(userGoals);
+
       let newArr = goalsArr.map((goal) => {
-        console.log("aqui", goal);
         return {
           name: goal.name,
           date: goal.date,
@@ -1006,6 +1007,19 @@ const UserGoals = (props) => {
     await dispatch(fetchGoalsData()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         dispatch(addGoals(res.payload));
+        if (res.payload !== null) {
+          let goals = Object.values(res.payload);
+          let totalValue = 0;
+          goals.forEach((goal) => {
+            console.log("aqui", goal);
+            let oldValue = totalValue;
+            let newValue = oldValue + Number(goal.allocated);
+            totalValue = newValue;
+            console.log(totalValue);
+          });
+
+          setTotalAllocated(totalValue.toFixed(2));
+        }
       }
     });
     await dispatch(fetchAchievementsData()).then((res) => {
@@ -1088,7 +1102,8 @@ const UserGoals = (props) => {
         <GoalsInfoContainer>
           <AllocatedMoneyDiv listIsOpen={openList}>
             <AllocatedMoneyTitle>
-              <SpanMoneyTitle> Allocated income</SpanMoneyTitle> $ 156500.00
+              <SpanMoneyTitle> Allocated income</SpanMoneyTitle> ${" "}
+              {totalAllocated}
             </AllocatedMoneyTitle>
             <EditButton onClick={() => navigate("/userfinances")} />
           </AllocatedMoneyDiv>

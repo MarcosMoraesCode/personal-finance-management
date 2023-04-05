@@ -21,106 +21,147 @@ import {
 } from "./ExpenseStyle";
 
 const Expense = (props) => {
-  const extraContentList = props.expenseDataList.map((subTopic, index) => {
-    let lastContent = (
-      <>
-        <div></div>
-        <div></div>
-      </>
-    );
-
-    if (props.expensesPage) {
-      lastContent = (
-        <ButtonsDiv>
-          <EditButton onClick={subTopic.editAction}> </EditButton>
-          <RemoveButton onClick={subTopic.removeAction}></RemoveButton>
-        </ButtonsDiv>
+  let extraContentList = null;
+  if (props.expenseDataList) {
+    extraContentList = props.expenseDataList.map((subTopic, index) => {
+      let lastContent = (
+        <>
+          <div></div>
+          <div></div>
+        </>
       );
-    }
-    console.log(subTopic.value);
 
-    return (
-      <ExtraContentWrapper key={`${props.expenseTopic}-sub-${index}`}>
-        {" "}
-        <ExtraContentBlock width={"48%"}>
-          <ExtraText> {subTopic.name}</ExtraText>
-          <ExtraText>{`$ ${Number(subTopic.value).toFixed(2)}`}</ExtraText>
-        </ExtraContentBlock>
-        <ExtraContentBlock width={"25%"}>
-          <ExtraText>
+      let extraContent = (
+        <ExtraContentWrapper
+          {...props}
+          key={`${props.expenseTopic}-sub-${index}`}
+        >
+          {" "}
+          <ExtraContentBlock width={"55%"}>
+            <ExtraText> {subTopic.name}</ExtraText>
+            <ExtraText>{`$ ${Number(subTopic.value).toFixed(2)}`}</ExtraText>
+          </ExtraContentBlock>
+          <ExtraContentBlock width={"35%"}>
+            <ExtraText>{subTopic.percentage}%</ExtraText>
+            <ExtraText>{subTopic.date}</ExtraText>
+          </ExtraContentBlock>
+        </ExtraContentWrapper>
+      );
+
+      if (props.expensesPage) {
+        lastContent = (
+          <ButtonsDiv>
+            <EditButton onClick={subTopic.editAction}> </EditButton>
+            <RemoveButton onClick={subTopic.removeAction}></RemoveButton>
+          </ButtonsDiv>
+        );
+        extraContent = (
+          <ExtraContentWrapper key={`${props.expenseTopic}-sub-${index}`}>
             {" "}
-            {props.showValues ? `${subTopic.percentage}%` : `--`}{" "}
-          </ExtraText>
-          <ExtraText>{subTopic.date}</ExtraText>
-        </ExtraContentBlock>
-        <ExtraContentBlock width={"15%"}>{lastContent}</ExtraContentBlock>
-      </ExtraContentWrapper>
-    );
-  });
+            <ExtraContentBlock width={"48%"}>
+              <ExtraText> {subTopic.name}</ExtraText>
+              <ExtraText>{`$ ${Number(subTopic.value).toFixed(2)}`}</ExtraText>
+            </ExtraContentBlock>
+            <ExtraContentBlock width={"25%"}>
+              <ExtraText>
+                {" "}
+                {props.showValues ? `${subTopic.percentage}%` : `--`}{" "}
+              </ExtraText>
+              <ExtraText>{subTopic.date}</ExtraText>
+            </ExtraContentBlock>
+            <ExtraContentBlock width={"15%"}>{lastContent}</ExtraContentBlock>
+          </ExtraContentWrapper>
+        );
+      }
 
-  return (
-    <WrapExpenseLi {...props}>
-      <ExpenseLi>
-        <ExpenseLiContent>
-          <ExpenseDefaultContent>
-            <ExpenseSubtitlesDiv>
-              <SubtitleBlock width={"48%"}>
-                <p>Category</p>
-                <div />
-                <p>Value</p>
-              </SubtitleBlock>
-              <SubtitleBlock width={"25%"}>
-                <p>Real Percentage</p>
-                <p>Expected</p>
-              </SubtitleBlock>
-              <SubtitleBlock width={"15%"}>
-                <div />
-              </SubtitleBlock>
-            </ExpenseSubtitlesDiv>
-            <ExpenseTextDiv>
-              <DefaultContentBlock width={"48%"}>
-                <p>{props.expenseTopic}</p>
-                <p> {props.showValues ? `$ ${props.expenseTotal}` : `--`} </p>
-              </DefaultContentBlock>
-              <DefaultContentBlock width={"25%"}>
-                <SpecialP
-                  color={props.showValues === true ? props.color : null}
-                >
-                  {" "}
-                  {props.showValues ? `${props.realPercentage}%` : `--`}{" "}
-                </SpecialP>
-                <p>{props.percentageExpected}%</p>
-              </DefaultContentBlock>
-              <DefaultContentBlock width={"15%"}>
-                <div />
-                <ExpenseDefaultButton onClick={props.clicked}>
-                  {props.details}
-                </ExpenseDefaultButton>
-              </DefaultContentBlock>
-            </ExpenseTextDiv>
-          </ExpenseDefaultContent>
+      return extraContent;
+    });
+  }
 
-          <ExpenseExtraContent {...props}>
-            <ExpenseSubtitlesDiv>
-              <SubtitleBlock width={"48%"} color={"gold"}>
-                <p>Expense</p>
-                <div />
-                <p>Value</p>
-              </SubtitleBlock>
-              <SubtitleBlock width={"25%"} color={"gold"}>
-                <p>Percentage</p>
-                <p>Date</p>
-              </SubtitleBlock>
-              <SubtitleBlock width={"15%"}>
-                <div />
-              </SubtitleBlock>
-            </ExpenseSubtitlesDiv>
-            <ExpenseListDiv>{extraContentList}</ExpenseListDiv>
-          </ExpenseExtraContent>
-        </ExpenseLiContent>
-      </ExpenseLi>
-    </WrapExpenseLi>
+  let expenseContent = (
+    <ExpenseExtraContent {...props}>
+      <ExpenseSubtitlesDiv {...props}>
+        <SubtitleBlock width={"55%"} color={"#51d289"}>
+          <p>Expense</p>
+          <div />
+          <p>Value</p>
+        </SubtitleBlock>
+        <SubtitleBlock width={"35%"} color={"#51d289"}>
+          <p>Percentage</p>
+          <p>Date</p>
+        </SubtitleBlock>
+      </ExpenseSubtitlesDiv>
+      <ExpenseListDiv {...props}>{extraContentList}</ExpenseListDiv>
+    </ExpenseExtraContent>
   );
+
+  if (props.expensesPage) {
+    expenseContent = (
+      <WrapExpenseLi {...props}>
+        <ExpenseLi>
+          <ExpenseLiContent>
+            <ExpenseDefaultContent>
+              <ExpenseSubtitlesDiv>
+                <SubtitleBlock width={"48%"}>
+                  <p>Category</p>
+                  <div />
+                  <p>Value</p>
+                </SubtitleBlock>
+                <SubtitleBlock width={"25%"}>
+                  <p>Real Percentage</p>
+                  <p>Expected</p>
+                </SubtitleBlock>
+                <SubtitleBlock width={"15%"}>
+                  <div />
+                </SubtitleBlock>
+              </ExpenseSubtitlesDiv>
+              <ExpenseTextDiv>
+                <DefaultContentBlock width={"48%"}>
+                  <p>{props.expenseTopic}</p>
+                  <p> {props.showValues ? `$ ${props.expenseTotal}` : `--`} </p>
+                </DefaultContentBlock>
+                <DefaultContentBlock width={"25%"}>
+                  <SpecialP
+                    color={props.showValues === true ? props.color : null}
+                  >
+                    {" "}
+                    {props.showValues ? `${props.realPercentage}%` : `--`}{" "}
+                  </SpecialP>
+                  <p>{props.percentageExpected}%</p>
+                </DefaultContentBlock>
+                <DefaultContentBlock width={"15%"}>
+                  <div />
+                  <ExpenseDefaultButton onClick={props.clicked}>
+                    {props.details}
+                  </ExpenseDefaultButton>
+                </DefaultContentBlock>
+              </ExpenseTextDiv>
+            </ExpenseDefaultContent>
+
+            <ExpenseExtraContent {...props}>
+              <ExpenseSubtitlesDiv>
+                <SubtitleBlock width={"48%"} color={"gold"}>
+                  <p>Expense</p>
+                  <div />
+                  <p>Value</p>
+                </SubtitleBlock>
+                <SubtitleBlock width={"25%"} color={"gold"}>
+                  <p>Percentage</p>
+                  <p>Date</p>
+                </SubtitleBlock>
+                <SubtitleBlock width={"15%"}>
+                  <div />
+                </SubtitleBlock>
+              </ExpenseSubtitlesDiv>
+              <ExpenseListDiv>{extraContentList}</ExpenseListDiv>
+            </ExpenseExtraContent>
+          </ExpenseLiContent>
+        </ExpenseLi>
+      </WrapExpenseLi>
+    );
+  }
+
+  return expenseContent;
 };
 
 export default Expense;

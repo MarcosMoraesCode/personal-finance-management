@@ -571,8 +571,8 @@ export const SpendingInfoTitle = styled.h3`
   display: flex;
   justify-content: space-between;
   padding: 5px;
-  color: ${(props) => (props.color > 0 ? "#51d289" : "red")};
-  font-weight: ${(props) => (props.color > 0 ? "500" : "600")};
+  color: ${(props) => (props.color >= 0 ? "#51d289" : "red")};
+  font-weight: ${(props) => (props.color >= 0 ? "500" : "600")};
   font-size: 15px;
   //background-color: rebeccapurple;
 `;

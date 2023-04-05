@@ -1189,7 +1189,7 @@ export const AchievementsExpandedDiv = styled.div`
 
 export const AchievementWarning = styled.h1`
   color: gold;
-  font-size: 15px;
+  font-size: 10px;
 
   -webkit-animation: ${TextFocus} 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53)
     both;

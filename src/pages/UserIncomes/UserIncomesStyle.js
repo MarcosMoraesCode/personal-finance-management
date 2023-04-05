@@ -308,10 +308,33 @@ export const AnalysisIncomeDiv = styled.div`
 `;
 export const AnalysisContainer = styled.div`
   display: flex;
+  justify-content: space-around;
+  align-items: center;
   flex-direction: column;
   margin: auto;
-
+  border: 1px solid white;
+  height: 80%;
   width: 80%;
+`;
+export const AnalysisText = styled.p`
+  text-align: center;
+  width: 80%;
+  font-size: 13px;
+`;
+
+export const TextSpan = styled.span`
+  color: #51d289;
+  font-weight: 600;
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+export const AnalysisTextDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  // background-color: red;
 `;
 
 export const AllocateIncomeDiv = styled.div`

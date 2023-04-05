@@ -15,6 +15,7 @@ const initialState = {
   dynamicId: 0,
   historyId: 0,
 };
+console.log(initialState.historyId);
 
 export const fetchDynamicId = createAsyncThunk(
   "userexpenses/fetchDynamicId",
@@ -54,13 +55,13 @@ export const fetchBalance = createAsyncThunk(
     }
   }
 );
-export const fetchHistoryId = createAsyncThunk(
+/*export const fetchHistoryId = createAsyncThunk(
   "userexpenses/fetchHistoryId",
   async (action) => {
     try {
       const dbId = await get(child(ref(db), `users/${userId}/historyId`)).then(
         (snapshot) => {
-          //console.log("history dinamico", snapshot.val());
+          console.log("history dinamico", snapshot.val());
           return snapshot.val();
         }
       );
@@ -70,7 +71,7 @@ export const fetchHistoryId = createAsyncThunk(
       return err;
     }
   }
-);
+);*/
 export const fetchCategoriesData = createAsyncThunk(
   "userexpenses/fetchCategoriesData",
   async (action) => {
@@ -292,9 +293,8 @@ export const updateHistoryId = createAsyncThunk(
   "userexpenses/updateHistoryId",
   async (action, state) => {
     try {
-      let idValue = state.getState().expensesData.historyId;
-      // console.log("payload", action.categoryId);
-      await set(ref(db, `users/${userId}/historyId`), Number(idValue + 1));
+      console.log("Atualizando", action);
+      await set(ref(db, `users/${userId}/historyId`), action);
     } catch (err) {
       console.log(err);
     }
@@ -313,15 +313,15 @@ export const expenseDataSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchHistoryId.fulfilled, (state, action) => {
+    /* builder.addCase(fetchHistoryId.fulfilled, (state, action) => {
       //console.log("payload", action.payload);
       state.historyId = action.payload;
-      //console.log("Novo id dinamico: ", state.historyId);
+      console.log("Novo id: ", state.historyId);
     });
     builder.addCase(fetchHistoryId.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);
-      //console.log(action.error);
-    });
+      console.log(action.error);
+    });*/
     builder.addCase(fetchCategoriesData.fulfilled, (state, action) => {
       // console.log("Success", action.payload);
     });
@@ -339,7 +339,7 @@ export const expenseDataSlice = createSlice({
     builder.addCase(postNewExpense.fulfilled, (state, action) => {
       state.dynamicId += 1;
 
-      console.log("Novo id dinamico: ", state.dynamicId);
+      //console.log("Novo id dinamico: ", state.dynamicId);
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     // REPETI PRA VER SE FUNCIONA

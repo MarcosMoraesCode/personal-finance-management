@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   UserIncomesContainer,
   UserIncomesDiv,
@@ -26,6 +27,9 @@ import {
   TableTitleDiv,
   TableSubtitleBlock,
   AnalysisContainer,
+  AnalysisTextDiv,
+  AnalysisText,
+  TextSpan,
 } from "./UserIncomesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import Income from "../../components/IncomeTracking/Income/Income";
@@ -139,9 +143,6 @@ const UserIncomes = (props) => {
   ];
 
   const analysisOptions = [{ name: "This Year" }, { name: "Last Year" }];
-
-  console.log(crudType.historyDate);
-
   const [optionOneSelected, setOptionOneSelected] = useState(false);
   const [optionTwoSelected, setOptionTwoSelected] = useState(false);
   const [optionThreeSelected, setOptionThreeSelected] = useState(false);
@@ -157,6 +158,7 @@ const UserIncomes = (props) => {
   const userHistory = useSelector((state) => state.historyData.userHistory);
   const userExpenses = useSelector((state) => state.initialSlices.expenses);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const getGoals = async () => {
@@ -1113,7 +1115,20 @@ const UserIncomes = (props) => {
               />
             </AccountFilterDiv>
           </DefaultInfoDiv>
-          <AnalysisContainer>{analysisChart}</AnalysisContainer>
+          <AnalysisContainer>
+            {analysisChart}
+            <AnalysisTextDiv>
+              <AnalysisText>
+                In the account history, it is possible to filter by investments
+                or deposits for further details. And for more information about
+                expenses, please access the{" "}
+                <TextSpan onClick={() => navigate("/userexpenses")}>
+                  expenses page
+                </TextSpan>
+                .
+              </AnalysisText>
+            </AnalysisTextDiv>
+          </AnalysisContainer>
         </AnalysisIncomeDiv>
       );
       break;
@@ -1149,6 +1164,7 @@ const UserIncomes = (props) => {
         </AllocateIncomeDiv>
       );
       break;
+
     case "acc-history":
       selectedContent = (
         <AccountHistoryDiv>

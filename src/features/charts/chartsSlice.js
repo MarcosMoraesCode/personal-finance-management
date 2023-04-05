@@ -443,7 +443,7 @@ export const chartsSlice = createSlice({
       });
 
       thisYearExpenses.forEach((expense) => {
-        console.log("roda", expense);
+        // console.log("roda", expense);
         //convertendo o numero
         /* let initialValue = [...expense.expenseValue];
         let commaIndex = initialValue.findIndex((element) => element === ",");
