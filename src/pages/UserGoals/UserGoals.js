@@ -8,7 +8,6 @@ import {
   fetchDynamicId,
   addBalance,
   updateHistoryId,
-  fetchHistoryId,
 } from "../../features/goals/goalsSlice";
 import {
   addAchievements,
@@ -64,7 +63,10 @@ import Crud from "../../components/UI/Modal/CrudModal/Crud";
 import CongratulationsModal from "../../components/UI/Modal/CongratulationsModal/CongratulationsModal";
 import { useNavigate } from "react-router-dom";
 import { fetchBalance, updateBalance } from "../../features/goals/goalsSlice";
-import { postNewHistory } from "../../features/history/historySlice";
+import {
+  postNewHistory,
+  fetchHistoryId,
+} from "../../features/history/historySlice";
 //import { updateBalance } from "../../features/incomes/incomesSlice";
 
 const UserGoals = (props) => {
@@ -116,7 +118,7 @@ const UserGoals = (props) => {
     historyType: "",
   });
   const [showCrud, setShowCrud] = useState(false);
-
+  const [historyId, setHistoryId] = useState(0);
   const [totalAllocated, setTotalAllocated] = useState(0);
   const [showCongratulation, setShowCongratulation] = useState(false);
 
@@ -783,7 +785,23 @@ const UserGoals = (props) => {
       }
     });
     if (goalAllocated !== "0.00") {
-      dispatch(postNewHistory(historyObj)).then(dispatch(updateHistoryId()));
+      let newId = historyId + 1;
+      let upload = false;
+      if (userInputs.inputPercentage.value !== "0.00") {
+        dispatch(postNewHistory(historyObj)).then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            console.log("antes de atualizar é" + historyId);
+            upload = true;
+          }
+          dispatch(updateHistoryId(newId)).then((res) => {
+            if (res.meta.requestStatus === "fulfilled" && upload) {
+              console.log("passou aqui");
+              setHistoryId(newId);
+              getGoals();
+            }
+          });
+        });
+      }
     }
   };
 
@@ -1002,7 +1020,12 @@ const UserGoals = (props) => {
   const getGoals = async () => {
     dispatch(fetchDynamicId());
     dispatch(fetchBalance());
-    dispatch(fetchHistoryId());
+    await dispatch(fetchHistoryId()).then((res) => {
+      if (res.payload !== null) {
+        setHistoryId(res.payload);
+        console.log("do state", res.payload);
+      }
+    });
 
     await dispatch(fetchGoalsData()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
@@ -1047,10 +1070,22 @@ const UserGoals = (props) => {
           refreshInputs();
           setSubmitPermission(false);
           setLoadingSubmit(false);
+          let newId = historyId + 1;
+          let upload = false;
           if (userInputs.inputPercentage.value !== "0.00") {
-            dispatch(postNewHistory(historyObj)).then(
-              dispatch(updateHistoryId())
-            );
+            dispatch(postNewHistory(historyObj)).then((res) => {
+              if (res.meta.requestStatus === "fulfilled") {
+                console.log("antes de atualizar é" + historyId);
+                upload = true;
+              }
+              dispatch(updateHistoryId(newId)).then((res) => {
+                if (res.meta.requestStatus === "fulfilled" && upload) {
+                  console.log("passou aqui");
+                  setHistoryId(newId);
+                  getGoals();
+                }
+              });
+            });
           }
         }
       })

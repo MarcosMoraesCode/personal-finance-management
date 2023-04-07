@@ -13,7 +13,6 @@ const initialState = {
   userGoals: null,
   userAchievements: null,
   dynamicId: 0,
-  historyId: 0,
   balance: 0,
 };
 
@@ -38,23 +37,7 @@ export const fetchDynamicId = createAsyncThunk(
     }
   }
 );
-export const fetchHistoryId = createAsyncThunk(
-  "usergoals/fetchHistoryId",
-  async (action) => {
-    try {
-      const dbId = await get(child(ref(db), `users/${userId}/historyId`)).then(
-        (snapshot) => {
-          //console.log("history dinamico", snapshot.val());
-          return snapshot.val();
-        }
-      );
-      return dbId;
-    } catch (err) {
-      console.log(err);
-      return err;
-    }
-  }
-);
+
 export const fetchBalance = createAsyncThunk(
   "usergoals/fetchBalance",
   async (action) => {
@@ -323,15 +306,6 @@ export const goalDataSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchHistoryId.fulfilled, (state, action) => {
-      //console.log("payload", action.payload);
-      state.historyId = action.payload;
-      //console.log("Novo id dinamico: ", state.historyId);
-    });
-    builder.addCase(fetchHistoryId.rejected, (state, action) => {
-      //console.log("Rejected", action.error.message);
-      //console.log(action.error);
-    });
     builder.addCase(fetchGoalsData.fulfilled, (state, action) => {
       // console.log("Success", state.dynamicId);
     });
