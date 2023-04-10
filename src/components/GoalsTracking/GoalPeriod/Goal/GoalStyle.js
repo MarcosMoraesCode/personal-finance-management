@@ -1,5 +1,16 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
+const SlideLeft = keyframes`
+0% {
+    -webkit-transform: translateX(400px);
+            transform: translateX(400px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+
+`;
 export const GoalDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -9,14 +20,23 @@ export const GoalDiv = styled.div`
   min-height: 80%;
   height: 80%;
   margin: 5px;
+  margin-right: 5px;
+  margin-left: 15px;
   min-width: 150px;
   border-radius: 5px;
-  background-color: white;
+  background-color: #0c0a08;
+  border: 1px solid gold;
+  box-shadow: 2px 2px 20px 1px gold;
+  -webkit-animation: ${SlideLeft} 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: ${SlideLeft} 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
 
 export const GoalTitle = styled.h6`
-  padding: 2px;
-  font-size: 10px;
+  color: #51d289;
+  font-size: smaller;
+  font-weight: 700;
+  padding-top: 5px;
+  border-bottom: 1px solid gold;
 `;
 
 export const GoalPercentageDiv = styled.div`
@@ -24,7 +44,7 @@ export const GoalPercentageDiv = styled.div`
   width: 80%;
   margin: 2px;
   height: 50%;
-  border: 1px solid gray;
+  //border: 1px solid gray;
   @media (max-height: 580px) {
     display: none;
   } ;
@@ -49,6 +69,7 @@ export const GoalInformationDiv = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+  padding-bottom: 5px;
   @media (max-height: 580px) {
     flex-direction: column;
     margin: 0px;
@@ -60,6 +81,12 @@ export const StatusInformation = styled.p`
   color: #51d289;
   font-size: smaller;
   font-weight: 700;
+  border: 1px solid gold;
+  border-radius: 5px;
+  background-color: black;
+  padding: 2.2px;
+  padding-right: 5px;
+  padding-left: 5px;
   @media (max-height: 580px) {
     padding: 3px;
     font-size: 11px;
@@ -71,9 +98,12 @@ export const InformationButton = styled.button`
   padding: 2px;
   width: fit-content;
   background-color: black;
-  border-radius: 2px solid gold;
   border: 1px solid gold;
-  box-shadow: 1px 1px gray;
+  border-radius: 3px;
+  padding-right: 4px;
+  padding-left: 4px;
+
+  //box-shadow: 1px 1px gray;
   color: gold;
   :hover {
     cursor: pointer;

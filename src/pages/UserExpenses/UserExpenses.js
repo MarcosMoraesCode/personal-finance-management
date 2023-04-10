@@ -2420,12 +2420,12 @@ const UserExpenses = () => {
       <UserExpensesContainer>
         <AuxContainerDivOne>
           <FormDiv>
-            <NewCategoryDiv>
+            {/*<NewCategoryDiv>
               <NewCategoryTitleDiv>
                 <DefaultTitle>New Category</DefaultTitle>
               </NewCategoryTitleDiv>
               {categoryForm}
-            </NewCategoryDiv>
+            </NewCategoryDiv>*/}
             <NewExpenseDiv>
               <NewExpenseTitleDiv>
                 <DefaultTitle>New Expense</DefaultTitle>

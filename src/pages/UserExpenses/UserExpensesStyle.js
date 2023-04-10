@@ -179,7 +179,7 @@ export const FormDiv = styled.div`
   opacity: 1;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 20%;
 
   min-width: 320px;

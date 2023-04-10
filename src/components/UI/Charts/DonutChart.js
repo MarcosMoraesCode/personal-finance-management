@@ -4,8 +4,8 @@ import { Chart } from "react-google-charts";
 const DonutChart = (props) => {
   const data = [
     ["Balance", "Percentage"],
-    ["", props.income],
-    ["", props.expense],
+    ["", props.allocated],
+    ["", props.total - props.allocated],
   ];
 
   const options = {
@@ -20,7 +20,7 @@ const DonutChart = (props) => {
     },
     slices: {
       0: { color: "#51d289" },
-      1: { color: "b2b2b2" },
+      1: { color: "white" },
     },
     backgroundColor: "transparent",
     chartArea: { width: "80%", height: "80%" },

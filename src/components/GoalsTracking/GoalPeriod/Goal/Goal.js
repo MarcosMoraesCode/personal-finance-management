@@ -16,12 +16,17 @@ const Goal = (props) => {
       <GoalTitle>{props.goalName}</GoalTitle>
       <GoalPercentageDiv>
         {/*PIZZA GRAPHIC Goal value: {props.goalValue} Allocated percentage:{" "}*/}
-        <PercentageTitle>{props.expense / props.income}%</PercentageTitle>
-        <DonutChart income={props.income} expense={props.expense} />
+        <PercentageTitle>
+          {((props.allocated / props.goalValue) * 100).toFixed(2)}%
+        </PercentageTitle>
+        <DonutChart
+          allocated={Number(props.allocated)}
+          total={Number(props.goalValue)}
+        />
         {/*props.allocatedPercentage*/}
       </GoalPercentageDiv>
       <GoalInformationDiv>
-        <StatusInformation>Status: 100%</StatusInformation>
+        <StatusInformation>$ {props.goalValue}</StatusInformation>
         <InformationButton>Info</InformationButton>
       </GoalInformationDiv>
     </GoalDiv>
