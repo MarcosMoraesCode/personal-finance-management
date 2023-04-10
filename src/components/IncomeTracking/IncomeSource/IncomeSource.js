@@ -1,19 +1,22 @@
 import React from "react";
 import {
-  IncomePercentageSpan,
   IncomeSourceDiv,
   IncomeSourceLi,
+  IncomeSpan,
 } from "./IncomeSouceStyle";
 
 const IncomeSource = (props) => {
   return (
     <IncomeSourceDiv>
       <IncomeSourceLi>
-        <div>
-          {props.sourceName} $ {props.sourceValue}
-        </div>
+        <IncomeSpan width={"40%"}>{props.sourceName}</IncomeSpan>
+        <IncomeSpan width={"40%"} justify={"flex-end"} pRight={"35px"}>
+          $ {props.sourceValue}
+        </IncomeSpan>
 
-        <IncomePercentageSpan>{props.percentage}%</IncomePercentageSpan>
+        <IncomeSpan width={"20%"} justify={"flex-end"}>
+          {props.percentage} %
+        </IncomeSpan>
       </IncomeSourceLi>
     </IncomeSourceDiv>
   );

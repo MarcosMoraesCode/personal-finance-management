@@ -12,10 +12,16 @@ export const IncomeSourceLi = styled.li`
   padding-left: 10px;
   color: #51d289;
   margin: 2px;
-  font-weight: 500;
-  background-color: #2b2b2b;
+  font-weight: 600;
+  background-color: black;
+  opacity: 0.85;
   border-radius: 5px;
   border-bottom: 1px solid white;
+  transition: 0.2s ease-in-out;
+  :hover {
+    transition: 0.2s ease-in-out;
+    opacity: 1;
+  }
 `;
 
 export const IncomeSourceDiv = styled.div`
@@ -25,10 +31,14 @@ export const IncomeSourceDiv = styled.div`
   height: 25px;
 `;
 
-export const IncomePercentageSpan = styled.span`
+export const IncomeSpan = styled.div`
   display: flex;
+  width: ${(props) => props.width};
   text-align: end;
-  justify-content: flex-end;
+  justify-content: ${(props) => props.justify};
   color: #51d289;
   padding-right: 5px;
+  font-weight: 600;
+  //border: 1px solid white;
+  padding-right: ${(props) => props.pRight};
 `;

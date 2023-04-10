@@ -1,6 +1,6 @@
 import React from "react";
 import IncomeSource from "./IncomeSource/IncomeSource";
-import DonutChart from "../UI/Charts/DonutChart";
+import DonutChart from "../UI/Charts/BalanceDonutChart";
 import {
   IncomeAvaiableInfo,
   IncomeButton,
@@ -16,19 +16,16 @@ import {
   WrapIncomeButtons,
   IncomeTrackingBalance,
   PercentageTitle,
+  WrapIncomeList,
 } from "./IncomeTrackingStyle";
 
 const IncomeTracking = (props) => {
-  const incomes = [
-    { source: "Salary", value: 1550, percentage: 73.9 },
-    { source: "Rental", value: 150, percentage: 7.3 },
-    { source: "Investiment Returns", value: 400, percentage: 18.8 },
-  ];
-
-  const incomeSourcers = (
-    <>
-      {incomes.map((income, index) => {
-        if (income.value > 0) {
+  let incomeSourcers = null;
+  console.log(props.incomes);
+  if (props.incomes !== null) {
+    incomeSourcers = (
+      <>
+        {props.incomes.map((income, index) => {
           return (
             <IncomeSource
               key={`income-${index}`}
@@ -37,40 +34,59 @@ const IncomeTracking = (props) => {
               percentage={income.percentage}
             />
           );
-        }
-      })}
-    </>
-  );
+        })}
+      </>
+    );
+  }
 
   return (
     <IncomeTrackingContainer>
-      <IncomeTrackingTitle>My Balance</IncomeTrackingTitle>
-      <IncomeTrackingBalance>
+      <IncomeTrackingTitle>Balance</IncomeTrackingTitle>
+      <IncomeTrackingBalance {...props}>
         {" "}
-        $ 5.000 {props.incomeTotal}
+        $ {props.balance}
       </IncomeTrackingBalance>
       <IncomePercentageDiv>
-        <PercentageTitle>32%</PercentageTitle>
-        {<DonutChart main income={0.32} expense={0.68} />}
+        <PercentageTitle>
+          {((props.balance / props.total) * 100).toFixed(2)} %
+        </PercentageTitle>
+        {
+          <DonutChart
+            main
+            allocated={props.investmentsValue}
+            total={props.total}
+            balance={Number(props.balance)}
+            expenses={props.expensesValue}
+          />
+        }
       </IncomePercentageDiv>
       <WrapIncomeInfos>
-        <IncomeAvaiableInfo>
-          <IncomeTrackingInfoTitle>Available</IncomeTrackingInfoTitle>
-          <IncomeTrackingInfoValue>$ 1.600,00</IncomeTrackingInfoValue>
-        </IncomeAvaiableInfo>
-        <IncomeExpensesInfo>
+        <IncomeAvaiableInfo {...props}>
+          <IncomeTrackingInfoTitle>Month Investment</IncomeTrackingInfoTitle>
+          <IncomeTrackingInfoValue color={"gold"}>
+            $ {Number(props.investmentsValue).toFixed(2)}
+          </IncomeTrackingInfoValue>
+        </IncomeAvaiableInfo>{" "}
+        <IncomeExpensesInfo {...props}>
           {" "}
-          <IncomeTrackingInfoTitle>Expenses</IncomeTrackingInfoTitle>
-          <IncomeTrackingInfoValue>$ 3.400,00</IncomeTrackingInfoValue>
+          <IncomeTrackingInfoTitle>Month Expenses</IncomeTrackingInfoTitle>
+          <IncomeTrackingInfoValue color={"red"}>
+            $ {Number(props.expensesValue).toFixed(2)}
+          </IncomeTrackingInfoValue>
         </IncomeExpensesInfo>
       </WrapIncomeInfos>
-      <IncomeTrackingSecondaryTitle>My Incomes</IncomeTrackingSecondaryTitle>
-      <IncomeSourcersDiv>
-        <ul>{incomeSourcers}</ul>
-      </IncomeSourcersDiv>
+      <WrapIncomeList>
+        <IncomeTrackingSecondaryTitle>
+          Month Incomes
+        </IncomeTrackingSecondaryTitle>
+        <IncomeSourcersDiv>
+          <ul>{incomeSourcers}</ul>
+        </IncomeSourcersDiv>
+      </WrapIncomeList>
+
       <WrapIncomeButtons>
-        <IncomeButton>Edit Incomes</IncomeButton>{" "}
-        <IncomeButton>Edit Expenses</IncomeButton>
+        <IncomeButton onClick={props.incomesPage}>Edit Incomes</IncomeButton>
+        <IncomeButton onClick={props.expensesPage}>Edit Expenses</IncomeButton>
       </WrapIncomeButtons>
     </IncomeTrackingContainer>
   );

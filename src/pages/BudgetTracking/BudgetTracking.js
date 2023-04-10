@@ -14,8 +14,9 @@ import {
   GoalMenuTitle,
 } from "./BudgetTrackingStyle";
 import Expense from "../../components/ExpensesTracking/Expense/Expense";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  fetchBalance,
   fetchCategoriesData,
   fetchExpensesData,
 } from "../../features/expenses/expensesSlice";
@@ -23,14 +24,19 @@ import GoalPeriod from "../../components/GoalsTracking/GoalPeriod/GoalPeriod";
 import { GoalsTrackingContainer } from "../../components/GoalsTracking/GoalsTrackingStyles";
 import { fetchGoalsData } from "../../features/goals/goalsSlice";
 import Goal from "../../components/GoalsTracking/GoalPeriod/Goal/Goal";
+import { fetchHistoriesData } from "../../features/history/historySlice";
+import { useNavigate } from "react-router-dom";
 
 const BudgetTracking = () => {
   const dispatch = useDispatch();
   const [expensesList, setExpensesList] = useState(null);
   const [totalExpensesValue, setTotalExpensesValue] = useState(0);
+  const [investmentValue, setInvestmentValue] = useState(0);
+  const [monthDeposits, setMonthDeposits] = useState(null);
   const [longTermGoals, setLongTermGoals] = useState(null);
   const [mediumTermGoals, setMediumTermGoals] = useState(null);
   const [shortTermGoals, setShortTermGoals] = useState(null);
+  const [balance, setBalance] = useState(0);
   const year = new Date().getFullYear();
   const monthNumber = new Date().getMonth() + 1;
   let month = "";
@@ -40,10 +46,22 @@ const BudgetTracking = () => {
   let compareNumbers = (a, b) => {
     return a.percentage - b.percentage;
   };
+  const navigate = useNavigate();
+
+  const selectedSlice = useSelector(
+    (state) => state.initialSlices.selectedSlice
+  );
+  console.log(selectedSlice);
 
   const getInfo = async () => {
     let allCategories;
     let monthExpenses = [];
+    await dispatch(fetchBalance()).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        console.log(res.payload);
+        setBalance(res.payload);
+      }
+    });
     /*await dispatch(fetchCategoriesData()).then((res) => {
       if (res.payload !== null) {
         allCategories = Object.values(res.payload);
@@ -122,6 +140,99 @@ const BudgetTracking = () => {
         }
       }
     });
+
+    await dispatch(fetchHistoriesData()).then((res) => {
+      if (res.meta.requestStatus === "fulfilled" && res.payload !== null) {
+        console.log(res.payload);
+        let investmentsArr = Object.values(res.payload).filter((history) =>
+          history.type.includes("Investment")
+        );
+        console.log(investmentsArr);
+        let monthInvestments = investmentsArr.filter((investment) => {
+          if (
+            Number(
+              investment.date[6] +
+                investment.date[7] +
+                investment.date[8] +
+                investment.date[9]
+            ) === year &&
+            String(investment.date[3] + investment.date[4]) === month
+          ) {
+            return investment;
+          }
+        });
+        let investmentsValue = 0;
+        monthInvestments.forEach((investment) => {
+          let oldValue = investmentsValue;
+          let newValue = oldValue + Number(investment.value);
+          investmentsValue = newValue;
+        });
+        //console.log("Final", investmentsValue);
+        if (investmentsValue < 0) {
+          setInvestmentValue(investmentsValue * -1);
+        }
+
+        let incomesArr = Object.values(res.payload).filter((history) => {
+          if (
+            history.type.includes("Deposit") ||
+            history.type.includes("Withdraw") ||
+            history.type.includes("Deleted Income")
+          ) {
+            return history;
+          }
+        });
+        let monthIncomes = incomesArr.filter((investment) => {
+          if (
+            Number(
+              investment.date[6] +
+                investment.date[7] +
+                investment.date[8] +
+                investment.date[9]
+            ) === year &&
+            String(investment.date[3] + investment.date[4]) === month
+          ) {
+            return investment;
+          }
+        });
+        let uniqueMonthIncomes = [];
+
+        monthIncomes.forEach((income) => {
+          let index = uniqueMonthIncomes.findIndex(
+            (item) => item.name === income.name
+          );
+          if (index === -1) {
+            uniqueMonthIncomes.push(income);
+          } else {
+            let oldValue = Number(uniqueMonthIncomes[index].value);
+            let newValue = oldValue + income.value;
+            uniqueMonthIncomes[index].value = newValue;
+          }
+        });
+
+        let totalDeposited = 0;
+        monthIncomes.forEach((income) => {
+          let oldTotal = totalDeposited;
+          if (income.value > 0) {
+            let newTotal = oldTotal + income.value;
+            totalDeposited = newTotal;
+          }
+        });
+        console.log("new total", totalDeposited);
+        let incomesList = [];
+        monthIncomes.forEach((income) => {
+          if (income.value > 0) {
+            incomesList.push({
+              source: income.name,
+              value: income.value,
+              percentage: ((income.value / totalDeposited) * 100).toFixed(2),
+            });
+          }
+        });
+        if (incomesList.length > 0) {
+          setMonthDeposits(incomesList);
+        }
+      }
+    });
   };
 
   useEffect(() => {
@@ -194,7 +305,16 @@ const BudgetTracking = () => {
           </ExpensesInfoDiv>
         </ExpensesTrackingContainer>
 
-        <IncomeTracking />
+        <IncomeTracking
+          expensesValue={totalExpensesValue}
+          investmentsValue={investmentValue}
+          incomes={monthDeposits}
+          balance={balance.toFixed(2)}
+          total={balance + totalExpensesValue + investmentValue}
+          incomesPage={() => navigate("/userincomes")}
+          expensesPage={() => navigate("/userexpenses")}
+          selectedSlice={selectedSlice}
+        />
       </AuxDiv>
       <AuxDiv width={"40%"} defaultHeight>
         <GoalsTrackingContainer>

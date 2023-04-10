@@ -161,6 +161,7 @@ const initialState = {
   categories: [],
   loadingData: false,
   clickedDate: "",
+  selectedSlice: -1,
 };
 
 const db = startFirebase();
@@ -193,6 +194,9 @@ export const chartsSlice = createSlice({
     changeValue: (state, action) => {
       state.oldValue = state.newValue;
       state.newValue = action.payload;
+    },
+    changeSlice: (state, action) => {
+      state.selectedSlice = action.payload;
     },
     getThisYearHistoric: (state, action) => {
       state.loadingData = true;
@@ -589,6 +593,7 @@ export const {
   getAllCategories,
   changeClickedDate,
   getAllExpenses,
+  changeSlice,
 } = chartsSlice.actions;
 
 export default chartsSlice.reducer;

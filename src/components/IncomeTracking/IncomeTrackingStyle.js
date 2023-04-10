@@ -14,7 +14,8 @@ export const IncomeTrackingContainer = styled.div`
   width: 35%;
   border-radius: 30px;
   margin: auto;
-  border: 1px solid white;
+  //border: 1px solid white;
+  box-shadow: 2px 2px 20px 1px white;
   @media (max-width: 700px) {
     border: none;
     height: 100%;
@@ -28,37 +29,72 @@ export const IncomeTrackingContainer = styled.div`
 `;
 
 export const IncomeTrackingTitle = styled.h1`
-  color: #51d289;
+  color: gold;
+  text-shadow: 2px 2px grey;
   margin: 10px;
+  margin-top: 0px;
 `;
 
-export const IncomeTrackingSecondaryTitle = styled.h2`
-  padding-top: 10px;
+export const IncomeTrackingSecondaryTitle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   font-size: large;
+  width: fit-content;
+  width: 75%;
+  padding: 3px;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-shadow: 1px 1px 20px 1px white;
+  border: 1px solid white;
+  opacity: 0.8;
+  background-color: black;
+  border-radius: 5px;
   color: #51d289;
+  font-weight: 600;
 `;
 
-export const IncomeTrackingBalance = styled.h3`
+export const IncomeTrackingBalance = styled.div`
   color: #51d289;
   font-size: 22px;
+  font-weight: 600;
+  border-radius: 5px;
+  background-color: black;
+  box-shadow: 1px 1px 20px 1px white;
+  width: 50%;
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 0px;
+  opacity: ${(props) => (props.selectedSlice === 1 ? "1" : "0.7")};
+  transition: 0.2s ease-in-out;
+  :hover {
+    transition: 0.2s ease-in-out;
+    opacity: 1;
+  }
 `;
 
 export const IncomeTrackingInfoValue = styled.h4`
-  color: gold;
-  font-weight: 200;
+  color: ${(props) => props.color};
+  font-weight: 600;
   padding: 2px;
 `;
 
 export const IncomeTrackingInfoTitle = styled.h6`
-  color: white;
+  color: gold;
   font-size: 10px;
   font-weight: 200;
+  width: 90%;
+  border-bottom: 1px solid gold;
 `;
 
 export const WrapIncomeInfos = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin-bottom: 10px;
+
   width: 100%;
 `;
 export const WrapIncomeButtons = styled.div`
@@ -75,7 +111,14 @@ export const IncomeExpensesInfo = styled.div`
   width: 40%;
   height: 90%;
   margin: 5px;
-  background-color: #000000;
+  background-color: black;
+  box-shadow: 1px 1px 20px 1px white;
+  opacity: ${(props) => (props.selectedSlice === 2 ? "1" : "0.7")};
+  transition: 0.2s ease-in-out;
+  :hover {
+    transition: 0.2s ease-in-out;
+    opacity: 1;
+  }
 `;
 
 export const IncomeAvaiableInfo = styled.div`
@@ -84,22 +127,29 @@ export const IncomeAvaiableInfo = styled.div`
   justify-content: space-evenly;
   align-items: center;
   border-radius: 5px;
+  box-shadow: 1px 1px 20px 1px white;
   width: 40%;
   height: 90%;
   margin: 5px;
-  background-color: #000000;
+  background-color: black;
+  opacity: ${(props) => (props.selectedSlice === 0 ? "1" : "0.7")};
+  transition: 0.2s ease-in-out;
+  :hover {
+    transition: 0.2s ease-in-out;
+    opacity: 1;
+  }
 `;
 
 export const IncomeSourcersDiv = styled.div`
   width: 75%;
-  height: 10%;
+  height: 80%;
   min-height: 40px;
   padding: 5px;
   overflow-y: auto;
-  border: 1px solid white;
+  //border: 1px solid white;
   border-radius: 3px;
   margin: 10px;
-  background-color: #1b1b1b;
+  // background-color: #1b1b1b;
   /* width */
   ::-webkit-scrollbar {
     width: 7px;
@@ -125,6 +175,7 @@ export const IncomeSourcersDiv = styled.div`
 
 export const IncomePercentageDiv = styled.div`
   position: relative;
+  //background-color: red;
   width: 60%;
   height: 30%;
   margin: 10px;
@@ -141,7 +192,7 @@ export const PercentageTitle = styled.h1`
   align-items: center;
   width: 100%;
   height: 100%;
-  z-index: 2;
+  //z-index: 2;
   color: #51d289;
   @media (max-height: 520px) {
     font-size: 19px;
@@ -150,15 +201,30 @@ export const PercentageTitle = styled.h1`
 
 export const IncomeButton = styled.button`
   margin: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
   font-family: "Roboto";
-  width: fit-content;
+  width: 110px;
   height: 35px;
   background-color: black;
   padding: 4px;
   box-shadow: 2px 2px gray;
   border: 2px solid gold;
   color: gold;
+  transition: 0.4s ease-in-out;
+
   :hover {
+    transform: scale(1.1);
+    transition: 0.4s ease-in-out;
     cursor: pointer;
   }
+`;
+
+export const WrapIncomeList = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  //background-color: red;
 `;
