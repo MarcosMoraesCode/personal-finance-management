@@ -29,8 +29,8 @@ export const IncomeTrackingContainer = styled.div`
 `;
 
 export const IncomeTrackingTitle = styled.h1`
-  color: gold;
-  text-shadow: 2px 2px grey;
+  color: #51d289;
+  text-shadow: 2px 2px green;
   margin: 10px;
   margin-top: 0px;
 `;
@@ -48,7 +48,7 @@ export const IncomeTrackingSecondaryTitle = styled.div`
   padding-right: 10px;
   box-shadow: 1px 1px 20px 1px white;
   border: 1px solid white;
-  opacity: 0.8;
+  opacity: 0.85;
   background-color: black;
   border-radius: 5px;
   color: #51d289;
@@ -67,7 +67,8 @@ export const IncomeTrackingBalance = styled.div`
   padding-left: 15px;
   padding-right: 15px;
   margin: 0px;
-  opacity: ${(props) => (props.selectedSlice === 1 ? "1" : "0.7")};
+  opacity: ${(props) =>
+    props.selectedSlice === 1 || props.selectedSlice === -1 ? "1" : "0.7"};
   transition: 0.2s ease-in-out;
   :hover {
     transition: 0.2s ease-in-out;
@@ -185,15 +186,23 @@ export const IncomePercentageDiv = styled.div`
     height: 25%;
   }
 `;
-export const PercentageTitle = styled.h1`
+export const PercentageTitle = styled.div`
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  right: 20%;
+  top: 20%;
+  width: 60%;
+  height: 60%;
+  margin: auto;
+  background-color: black;
+  opacity: 0.8;
+  border-radius: 50%;
+  font-size: 28px;
+  font-weight: 600;
   //z-index: 2;
-  color: #51d289;
+  color: ${(props) => props.color};
   @media (max-height: 520px) {
     font-size: 19px;
   }

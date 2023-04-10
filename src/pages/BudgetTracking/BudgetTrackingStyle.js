@@ -67,8 +67,13 @@ export const ExpensesInfoDiv = styled.div`
 
 export const Text = styled.p`
   font-size: 13px;
-  color: gold;
-  font-weight: 600;
+  color: white;
+  font-weight: 500;
+`;
+
+export const Span = styled.span`
+  text-decoration: underline;
+  color: #51d289;
 `;
 
 export const GoalMenuDiv = styled.div`

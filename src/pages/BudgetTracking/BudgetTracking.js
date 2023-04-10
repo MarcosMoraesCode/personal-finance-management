@@ -12,6 +12,7 @@ import {
   Text,
   GoalMenuDiv,
   GoalMenuTitle,
+  Span,
 } from "./BudgetTrackingStyle";
 import Expense from "../../components/ExpensesTracking/Expense/Expense";
 import { useDispatch, useSelector } from "react-redux";
@@ -300,7 +301,7 @@ const BudgetTracking = () => {
           <ExpensesInfoDiv>
             <Text>
               If you want further informations about your month expenses click
-              here
+              on <Span>My Expenses</Span> button.
             </Text>
           </ExpensesInfoDiv>
         </ExpensesTrackingContainer>

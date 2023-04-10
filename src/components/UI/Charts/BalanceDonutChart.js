@@ -36,11 +36,11 @@ const DonutChart = (props) => {
     selectionMode: "none",
     pieSliceBorderColor: "transparent",
     pieHole: 0.7,
-    /* tooltip: {
+    tooltip: {
       trigger: "none",
-    },*/
+    },
     slices: {
-      0: { color: "gold" },
+      0: { color: "white" },
       1: { color: "#51d289" },
       2: { color: "red" },
     },

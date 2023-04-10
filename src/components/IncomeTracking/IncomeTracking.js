@@ -47,8 +47,21 @@ const IncomeTracking = (props) => {
         $ {props.balance}
       </IncomeTrackingBalance>
       <IncomePercentageDiv>
-        <PercentageTitle>
-          {((props.balance / props.total) * 100).toFixed(2)} %
+        <PercentageTitle
+          color={
+            props.selectedSlice === 0
+              ? "white"
+              : props.selectedSlice === 2
+              ? "red"
+              : " #51d289"
+          }
+        >
+          {props.selectedSlice === 0
+            ? ((props.investmentsValue / props.total) * 100).toFixed(2)
+            : props.selectedSlice === 2
+            ? ((props.expensesValue / props.total) * 100).toFixed(2)
+            : ((props.balance / props.total) * 100).toFixed(2)}
+          %
         </PercentageTitle>
         {
           <DonutChart
@@ -63,7 +76,7 @@ const IncomeTracking = (props) => {
       <WrapIncomeInfos>
         <IncomeAvaiableInfo {...props}>
           <IncomeTrackingInfoTitle>Month Investment</IncomeTrackingInfoTitle>
-          <IncomeTrackingInfoValue color={"gold"}>
+          <IncomeTrackingInfoValue color={"white"}>
             $ {Number(props.investmentsValue).toFixed(2)}
           </IncomeTrackingInfoValue>
         </IncomeAvaiableInfo>{" "}
@@ -85,8 +98,8 @@ const IncomeTracking = (props) => {
       </WrapIncomeList>
 
       <WrapIncomeButtons>
-        <IncomeButton onClick={props.incomesPage}>Edit Incomes</IncomeButton>
-        <IncomeButton onClick={props.expensesPage}>Edit Expenses</IncomeButton>
+        <IncomeButton onClick={props.incomesPage}>My Incomes</IncomeButton>
+        <IncomeButton onClick={props.expensesPage}>My Expenses</IncomeButton>
       </WrapIncomeButtons>
     </IncomeTrackingContainer>
   );
