@@ -191,16 +191,16 @@ export const PercentageTitle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  right: 20%;
-  top: 20%;
   width: 60%;
   height: 60%;
   margin: auto;
-  background-color: black;
   opacity: 0.8;
-  border-radius: 50%;
   font-size: 28px;
   font-weight: 600;
+  top: 20%;
+  right: 20%;
+  border-radius: 50%;
+  background-color: black;
   //z-index: 2;
   color: ${(props) => props.color};
   @media (max-height: 520px) {

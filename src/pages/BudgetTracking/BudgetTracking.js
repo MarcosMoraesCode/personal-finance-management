@@ -34,6 +34,8 @@ const BudgetTracking = () => {
   const [totalExpensesValue, setTotalExpensesValue] = useState(0);
   const [investmentValue, setInvestmentValue] = useState(0);
   const [monthDeposits, setMonthDeposits] = useState(null);
+  const [allGoals, setAllGoals] = useState(null);
+  const [allInvestments, setAllInvestments] = useState(null);
   const [longTermGoals, setLongTermGoals] = useState(null);
   const [mediumTermGoals, setMediumTermGoals] = useState(null);
   const [shortTermGoals, setShortTermGoals] = useState(null);
@@ -47,6 +49,7 @@ const BudgetTracking = () => {
   let compareNumbers = (a, b) => {
     return a.percentage - b.percentage;
   };
+
   const navigate = useNavigate();
 
   const selectedSlice = useSelector(
@@ -114,22 +117,26 @@ const BudgetTracking = () => {
         let shortTermGoals = [];
 
         const goalsData = Object.values(res.payload);
+        if (goalsData !== null) {
+          setAllGoals(goalsData);
 
-        goalsData.forEach((goal) => {
-          switch (goal.term) {
-            case "Long":
-              longTermGoals.push(goal);
-              break;
-            case "Medium":
-              mediumTermGoals.push(goal);
-              break;
-            case "Short":
-              shortTermGoals.push(goal);
-              break;
-            default:
-              break;
-          }
-        });
+          goalsData.forEach((goal) => {
+            switch (goal.term) {
+              case "Long":
+                longTermGoals.push(goal);
+                break;
+              case "Medium":
+                mediumTermGoals.push(goal);
+                break;
+              case "Short":
+                shortTermGoals.push(goal);
+                break;
+              default:
+                break;
+            }
+          });
+        }
+
         if (longTermGoals.length > 0) {
           setLongTermGoals(longTermGoals);
         }
@@ -148,6 +155,8 @@ const BudgetTracking = () => {
         let investmentsArr = Object.values(res.payload).filter((history) =>
           history.type.includes("Investment")
         );
+
+        setAllInvestments(investmentsArr);
         console.log(investmentsArr);
         let monthInvestments = investmentsArr.filter((investment) => {
           if (
@@ -240,6 +249,90 @@ const BudgetTracking = () => {
     getInfo();
   }, []);
 
+  const goalInformations = (goalId) => {
+    //selecting goal
+    let goal = allGoals.filter((goal) => goal.id === goalId);
+    const dayInMilli = 86400000;
+    //filtering all investments on this goal
+    let goalInfoArr = allInvestments.filter(
+      (history) => history.name === goalName
+    );
+
+    let amountOfContributions = [];
+
+    //creating an array
+    goalInfoArr.forEach((info) => {
+      console.log(info);
+      let index = amountOfContributions.findIndex(
+        (goalInfo) => goalInfo.date === info.date
+      );
+      console.log(index);
+      if (index === -1) {
+        amountOfContributions.push(info);
+      } else {
+        let oldValue = amountOfContributions[index].value;
+        let newValue = oldValue + info.value;
+        amountOfContributions[index].value = newValue;
+      }
+    });
+
+    let finalInfoArr = amountOfContributions.map((info) => {
+      let day = info.date[0] + info.date[1];
+      let month = info.date[3] + info.date[4];
+      let year = info.date[6] + info.date[7] + info.date[8] + info.date[9];
+      let time = new Date(year, month, day).getTime();
+      return { ...info, time: time, value: info.value * -1 };
+    });
+
+    let compare = (a, b) => {
+      return a.time - b.time;
+    };
+
+    //organizing due to its time;
+    finalInfoArr.sort(compare);
+
+    let intervals = [];
+
+    //setting time interval between contributions
+    finalInfoArr.forEach((info, index) => {
+      console.log(info);
+
+      let nextInvestmentTime = finalInfoArr[index + 1]?.time;
+      // let nextInvestementValue = finalInfoArr[index + 1].value;
+      console.log(nextInvestmentTime);
+      if (nextInvestmentTime !== undefined) {
+        let intervalDay = (nextInvestmentTime - info.time) / dayInMilli;
+
+        intervals.push({ intervalDay: intervalDay });
+      }
+      console.log("aqui", intervals);
+    });
+
+    let averageContribution = goal[0].allocated / Number(intervals.length);
+    let allIntervals = 0;
+
+    intervals.forEach((interval) => {
+      let oldValue = allIntervals;
+      let newInterval = oldValue + interval.intervalDay;
+      allIntervals = newInterval;
+    });
+
+    let averageTime = allIntervals / intervals.length;
+    console.log("tempo médio", averageTime);
+    console.log("valor médio", averageContribution);
+
+    let remainingValue = goal[0].value - goal[0].allocated;
+
+    let remainingTime = remainingValue / averageContribution;
+
+    if (remainingTime > 1) {
+      remainingTime = remainingTime * averageTime;
+    } else {
+      remainingTime = "falta pouco";
+    }
+    console.log(remainingTime);
+  };
+
   let expensesListContent = null;
   if (expensesList !== null) {
     console.log(expensesList);
@@ -257,6 +350,7 @@ const BudgetTracking = () => {
           goalValue={goal.value}
           date={goal.date}
           allocated={goal.allocated}
+          showInfo={() => goalInformations(goal.name)}
         />
       );
     });
@@ -271,6 +365,7 @@ const BudgetTracking = () => {
           goalValue={goal.value}
           date={goal.date}
           allocated={goal.allocated}
+          showInfo={() => goalInformations(goal.name)}
         />
       );
     });
@@ -285,6 +380,7 @@ const BudgetTracking = () => {
           date={goal.date}
           goalValue={goal.value}
           allocated={goal.allocated}
+          showInfo={() => goalInformations(goal.name)}
         />
       );
     });

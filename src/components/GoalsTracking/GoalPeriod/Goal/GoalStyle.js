@@ -1,4 +1,5 @@
 import styled, { keyframes } from "styled-components";
+import cardBg from "../../../../images/cardBg.svg";
 
 const SlideLeft = keyframes`
 0% {
@@ -24,7 +25,10 @@ export const GoalDiv = styled.div`
   margin-left: 15px;
   min-width: 150px;
   border-radius: 5px;
-  background-color: #0c0a08;
+  //background-color: #0c0a08;
+  background-image: url(${cardBg});
+  background-size: cover;
+
   border: 1px solid gold;
   box-shadow: 2px 2px 20px 1px gold;
   -webkit-animation: ${SlideLeft} 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
@@ -37,6 +41,7 @@ export const GoalTitle = styled.h6`
   font-weight: 700;
   padding-top: 5px;
   border-bottom: 1px solid gold;
+  text-shadow: 1px 1px black;
 `;
 
 export const GoalPercentageDiv = styled.div`
@@ -44,7 +49,9 @@ export const GoalPercentageDiv = styled.div`
   width: 80%;
   margin: 2px;
   height: 50%;
+  text-shadow: 1px 1px black;
   //border: 1px solid gray;
+
   @media (max-height: 580px) {
     display: none;
   } ;
@@ -55,11 +62,22 @@ export const PercentageTitle = styled.h1`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
+  width: 50%;
+  height: 50%;
+  top: 26%;
+  right: 25%;
+  border-radius: 50%;
+  background-color: black;
   color: #51d289;
   font-size: 11px;
+`;
+
+export const MaskDiv = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  z-index: 5;
 `;
 
 export const GoalInformationDiv = styled.div`

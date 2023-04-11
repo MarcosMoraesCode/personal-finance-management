@@ -5,6 +5,7 @@ import {
   GoalPercentageDiv,
   GoalTitle,
   InformationButton,
+  MaskDiv,
   PercentageTitle,
   StatusInformation,
 } from "./GoalStyle";
@@ -15,6 +16,7 @@ const Goal = (props) => {
     <GoalDiv>
       <GoalTitle>{props.goalName}</GoalTitle>
       <GoalPercentageDiv>
+        <MaskDiv></MaskDiv>
         {/*PIZZA GRAPHIC Goal value: {props.goalValue} Allocated percentage:{" "}*/}
         <PercentageTitle>
           {((props.allocated / props.goalValue) * 100).toFixed(2)}%
@@ -23,11 +25,12 @@ const Goal = (props) => {
           allocated={Number(props.allocated)}
           total={Number(props.goalValue)}
         />
+
         {/*props.allocatedPercentage*/}
       </GoalPercentageDiv>
       <GoalInformationDiv>
         <StatusInformation>$ {props.goalValue}</StatusInformation>
-        <InformationButton>Info</InformationButton>
+        <InformationButton onClick={props.showInfo}>Info</InformationButton>
       </GoalInformationDiv>
     </GoalDiv>
   );

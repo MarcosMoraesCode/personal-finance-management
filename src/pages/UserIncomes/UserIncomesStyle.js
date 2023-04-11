@@ -1,4 +1,5 @@
 import styled, { keyframes, css } from "styled-components";
+import blackBg from "../../images/blackBg.svg";
 
 const FlipInBottom = keyframes`
 0% {
@@ -141,6 +142,9 @@ export const ManageIncomeDiv = styled.div`
   width: 90%;
   border: 1px solid gold;
   border-radius: 10px;
+  background-image: url(${blackBg});
+  background-repeat: no-repeat;
+  background-size: cover;
   -webkit-animation: ${FlipInBottom} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
     both;
   animation: ${FlipInBottom} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
@@ -210,7 +214,6 @@ export const ManageFormContainer = styled.div`
   height: 75%;
   min-height: 120px;
   width: 100%;
-  //background-color: purple;
 `;
 export const DefaultList = styled.div`
   display: flex;
@@ -301,8 +304,11 @@ export const AnalysisIncomeDiv = styled.div`
   flex-direction: column;
   height: 100%;
   width: 90%;
-  border: 1px solid gold;
+  //border: 1px solid gold;
   border-radius: 10px;
+  background-image: url(${blackBg});
+  background-repeat: no-repeat;
+  background-size: cover;
   -webkit-animation: ${FlipInTop} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: ${FlipInTop} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
@@ -312,7 +318,7 @@ export const AnalysisContainer = styled.div`
   align-items: center;
   flex-direction: column;
   margin: auto;
-  border: 1px solid white;
+  //border: 1px solid white;
   height: 80%;
   width: 80%;
 `;
@@ -344,8 +350,11 @@ export const AllocateIncomeDiv = styled.div`
   flex-direction: column;
   height: 100%;
   width: 90%;
-  border: 1px solid gold;
+  // border: 1px solid gold;
   border-radius: 10px;
+  background-image: url(${blackBg});
+  background-repeat: no-repeat;
+  background-size: cover;
   -webkit-animation: ${FlipInRight} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
     both;
   animation: ${FlipInRight} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
@@ -360,6 +369,9 @@ export const AccountHistoryDiv = styled.div`
   width: 90%;
   border: 1px solid gold;
   border-radius: 10px;
+  background-image: url(${blackBg});
+  background-repeat: no-repeat;
+  background-size: cover;
   -webkit-animation: ${FlipInLeft} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
     both;
   animation: ${FlipInLeft} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
