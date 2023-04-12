@@ -12,6 +12,22 @@ const SlideLeft = keyframes`
   }
 
 `;
+
+const FlipRight = keyframes`
+ 0% {
+    -webkit-transform: translateX(0) rotateY(0);
+            transform: translateX(0) rotateY(0);
+    -webkit-transform-origin: 100% 50%;
+            transform-origin: 100% 50%;
+  }
+  100% {
+    -webkit-transform: translateX(100%) rotateY(180deg);
+            transform: translateX(100%) rotateY(180deg);
+    -webkit-transform-origin: 0% 50%;
+            transform-origin: 0% 50%;
+  }
+
+`;
 export const GoalDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -33,6 +49,30 @@ export const GoalDiv = styled.div`
   box-shadow: 2px 2px 20px 1px gold;
   -webkit-animation: ${SlideLeft} 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: ${SlideLeft} 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+`;
+
+export const ClickedGoalDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px;
+  min-height: 80%;
+  height: 80%;
+  margin: 5px;
+  margin-right: 5px;
+  margin-left: 15px;
+  min-width: 150px;
+  border-radius: 5px;
+  background-color: #0c0a08;
+  //background-image: url(${cardBg});
+  background-size: cover;
+  -webkit-animation: ${FlipRight} 0.4s cubic-bezier(0.455, 0.03, 0.515, 0.955)
+    both;
+  animation: ${FlipRight} 0.4s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+
+  border: 1px solid gold;
+  box-shadow: 2px 2px 20px 1px gold;
 `;
 
 export const GoalTitle = styled.h6`

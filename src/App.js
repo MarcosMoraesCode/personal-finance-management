@@ -3,7 +3,7 @@ import React from "react";
 import Layout from "./hoc/Layout/Layout";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Login from "./pages/Login/Login";
-import Home from "./pages/Home/Home";
+import Profile from "./pages/Profile/Profile";
 import BudgetTracking from "./pages/BudgetTracking/BudgetTracking";
 import UserExpenses from "./pages/UserExpenses/UserExpenses";
 import UserGoals from "./pages/UserGoals/UserGoals";
@@ -14,8 +14,8 @@ function App() {
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path="/login" exact element={<Login />} />
-          <Route path="/" exact element={<Home />} />
+          <Route path="/" exact element={<Login />} />
+          <Route path="/userprofile" exact element={<Profile />} />
           <Route path="/userincomes" exact element={<UserIncomes />} />
           <Route path="/userfinances" exact element={<BudgetTracking />} />
           <Route path="/userexpenses" exact element={<UserExpenses />} />

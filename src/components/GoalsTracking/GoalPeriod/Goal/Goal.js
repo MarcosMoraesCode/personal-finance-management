@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  ClickedGoalDiv,
   GoalDiv,
   GoalInformationDiv,
   GoalPercentageDiv,
@@ -34,6 +35,17 @@ const Goal = (props) => {
       </GoalInformationDiv>
     </GoalDiv>
   );
+  console.log("AQUI", props.isClicked);
+  if (props.isClicked === "true") {
+    goalContent = (
+      <ClickedGoalDiv>
+        <div style={{ position: "absolute" }}>
+          {" "}
+          <GoalTitle>{props.goalName}</GoalTitle>
+        </div>
+      </ClickedGoalDiv>
+    );
+  }
 
   if (props.goalExample) {
     goalContent = (

@@ -41,6 +41,7 @@ const BudgetTracking = () => {
   const [shortTermGoals, setShortTermGoals] = useState(null);
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
+  const [infoBtn, setInfoBtn] = useState(null);
   const year = new Date().getFullYear();
   const monthNumber = new Date().getMonth() + 1;
   let month = "";
@@ -56,7 +57,7 @@ const BudgetTracking = () => {
   const selectedSlice = useSelector(
     (state) => state.initialSlices.selectedSlice
   );
-  console.log(selectedSlice);
+  //console.log(selectedSlice);
 
   const getInfo = async () => {
     let allCategories;
@@ -64,7 +65,7 @@ const BudgetTracking = () => {
     setLoading(true);
     await dispatch(fetchBalance()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        console.log(res.payload);
+        //console.log(res.payload);
         setBalance(res.payload);
       }
     });
@@ -72,7 +73,7 @@ const BudgetTracking = () => {
     await dispatch(fetchExpensesData()).then((res) => {
       if (res.payload !== null) {
         let expenses = Object.values(res.payload);
-        console.log("expenses", expenses);
+        //console.log("expenses", expenses);
         let totalValue = 0;
 
         expenses.forEach((expense) => {
@@ -118,6 +119,13 @@ const BudgetTracking = () => {
 
         if (res.payload !== null) {
           const goalsData = Object.values(res.payload);
+
+          let btnArr = [];
+          goalsData.forEach((goal) =>
+            btnArr.push({ id: goal.id, open: false })
+          );
+          setInfoBtn(btnArr);
+
           setAllGoals(goalsData);
 
           goalsData.forEach((goal) => {
@@ -151,13 +159,13 @@ const BudgetTracking = () => {
 
     await dispatch(fetchHistoriesData()).then((res) => {
       if (res.meta.requestStatus === "fulfilled" && res.payload !== null) {
-        console.log(res.payload);
+        //console.log(res.payload);
         let investmentsArr = Object.values(res.payload).filter((history) =>
           history.type.includes("Investment")
         );
 
         setAllInvestments(investmentsArr);
-        console.log(investmentsArr);
+        //console.log(investmentsArr);
         let monthInvestments = investmentsArr.filter((investment) => {
           if (
             Number(
@@ -227,7 +235,7 @@ const BudgetTracking = () => {
             totalDeposited = newTotal;
           }
         });
-        console.log("new total", totalDeposited);
+        //console.log("new total", totalDeposited);
         let incomesList = [];
         monthIncomes.forEach((income) => {
           if (income.value > 0) {
@@ -249,26 +257,32 @@ const BudgetTracking = () => {
 
   useEffect(() => {
     getInfo();
+    //console.log("btn", infoBtn);
   }, []);
 
   const goalInformations = (goalId) => {
     //selecting goal
     let goal = allGoals.filter((goal) => goal.id === goalId);
+    let btnIndex = infoBtn.findIndex((info) => info.id === goalId);
+
+    setInfoBtn([...infoBtn, (infoBtn[btnIndex].open = true)]);
+    // console.log("o goal é", newArr);
     const dayInMilli = 86400000;
     //filtering all investments on this goal
     let goalInfoArr = allInvestments.filter(
       (history) => history.itemId === goalId
     );
 
+    //console.log("todos os investimentos", goalInfoArr);
+
     let amountOfContributions = [];
 
-    //creating an array
+    //creating an array pushing contributions by date
     goalInfoArr.forEach((info) => {
-      console.log(info);
       let index = amountOfContributions.findIndex(
         (goalInfo) => goalInfo.date === info.date
       );
-      console.log(index);
+
       if (index === -1) {
         amountOfContributions.push(info);
       } else {
@@ -295,44 +309,45 @@ const BudgetTracking = () => {
 
     let intervals = [];
 
-    //setting time interval between contributions
-    finalInfoArr.forEach((info, index) => {
-      console.log(info);
+    //console.log("investimentos separados por dia", finalInfoArr);
 
-      let nextInvestmentTime = finalInfoArr[index + 1]?.time;
-      // let nextInvestementValue = finalInfoArr[index + 1].value;
-      console.log(nextInvestmentTime);
-      if (nextInvestmentTime !== undefined) {
-        let intervalDay = (nextInvestmentTime - info.time) / dayInMilli;
+    if (finalInfoArr.length > 1) {
+      //setting time interval between contributions
+      finalInfoArr.forEach((info, index) => {
+        let nextInvestmentTime = finalInfoArr[index + 1]?.time;
+        //defining time interval between two sequential contributions
+        if (nextInvestmentTime !== undefined) {
+          let intervalDay = (nextInvestmentTime - info.time) / dayInMilli;
 
-        intervals.push({ intervalDay: intervalDay });
+          intervals.push({ intervalDay: intervalDay });
+        }
+      });
+      //
+      let averageContribution = goal[0].allocated / Number(finalInfoArr.length);
+      let allIntervals = 0;
+
+      intervals.forEach((interval) => {
+        let oldValue = allIntervals;
+        let newInterval = oldValue + interval.intervalDay;
+        allIntervals = newInterval;
+      });
+
+      let averageTime = allIntervals / intervals.length;
+      // console.log("tempo médio", averageTime);
+      // console.log("valor médio", averageContribution);
+
+      let remainingValue = goal[0].value - goal[0].allocated;
+
+      let remainingTime = remainingValue / averageContribution;
+
+      if (remainingTime > 1) {
+        remainingTime = remainingTime * averageTime;
+      } else {
+        remainingTime = "falta pouco";
       }
-      console.log("aqui", intervals);
-    });
-
-    let averageContribution = goal[0].allocated / Number(intervals.length);
-    let allIntervals = 0;
-
-    intervals.forEach((interval) => {
-      let oldValue = allIntervals;
-      let newInterval = oldValue + interval.intervalDay;
-      allIntervals = newInterval;
-    });
-
-    let averageTime = allIntervals / intervals.length;
-    console.log("tempo médio", averageTime);
-    console.log("valor médio", averageContribution);
-
-    let remainingValue = goal[0].value - goal[0].allocated;
-
-    let remainingTime = remainingValue / averageContribution;
-
-    if (remainingTime > 1) {
-      remainingTime = remainingTime * averageTime;
-    } else {
-      remainingTime = "falta pouco";
+      // console.log(remainingTime);
+      //  console.log(infoBtn);
     }
-    console.log(remainingTime);
   };
 
   let expensesListContent = null;
@@ -345,6 +360,9 @@ const BudgetTracking = () => {
   let longGoals = null;
   if (longTermGoals !== null) {
     longGoals = longTermGoals.map((goal, index) => {
+      let btnIndex = infoBtn.findIndex((info) => info.id === goal.id);
+      //console.log(infoBtn[btnIndex]);
+
       return (
         <Goal
           key={`long-goal-${index}`}
@@ -353,6 +371,7 @@ const BudgetTracking = () => {
           date={goal.date}
           allocated={goal.allocated}
           showInfo={() => goalInformations(goal.id)}
+          isClicked={infoBtn[btnIndex].open ? "true" : "false"}
         />
       );
     });
@@ -360,6 +379,8 @@ const BudgetTracking = () => {
   let mediumGoals = null;
   if (mediumTermGoals !== null) {
     mediumGoals = mediumTermGoals.map((goal, index) => {
+      let btnIndex = infoBtn.findIndex((info) => info.id === goal.id);
+      //console.log(infoBtn[btnIndex]);
       return (
         <Goal
           key={`medium-goal-${index}`}
@@ -368,6 +389,7 @@ const BudgetTracking = () => {
           date={goal.date}
           allocated={goal.allocated}
           showInfo={() => goalInformations(goal.id)}
+          isClicked={infoBtn[btnIndex].open ? "true" : "false"}
         />
       );
     });
@@ -375,6 +397,8 @@ const BudgetTracking = () => {
   let shortGoals = null;
   if (shortTermGoals !== null) {
     shortGoals = shortTermGoals.map((goal, index) => {
+      let btnIndex = infoBtn.findIndex((info) => info.id === goal.id);
+      //console.log(infoBtn[btnIndex]);
       return (
         <Goal
           key={`short-goal-${index}`}
@@ -383,6 +407,7 @@ const BudgetTracking = () => {
           goalValue={goal.value}
           allocated={goal.allocated}
           showInfo={() => goalInformations(goal.id)}
+          isClicked={infoBtn[btnIndex].open ? "true" : "false"}
         />
       );
     });
