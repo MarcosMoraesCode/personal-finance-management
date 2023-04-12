@@ -119,6 +119,7 @@ const UserGoals = (props) => {
   });
   const [showCrud, setShowCrud] = useState(false);
   const [historyId, setHistoryId] = useState(0);
+  const [dynamicId, setDynamicId] = useState(0);
   const [totalAllocated, setTotalAllocated] = useState(0);
   const [showCongratulation, setShowCongratulation] = useState(false);
 
@@ -763,6 +764,7 @@ const UserGoals = (props) => {
       value: Number(goalAllocated),
       date: today,
       type: "Deleted Investment",
+      itemId: goalId,
     };
     await dispatch(removeAGoal(goalId)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
@@ -1018,7 +1020,7 @@ const UserGoals = (props) => {
   }
 
   const getGoals = async () => {
-    dispatch(fetchDynamicId());
+    dispatch(fetchDynamicId()).then((res) => setDynamicId(res.payload));
     dispatch(fetchBalance());
     await dispatch(fetchHistoryId()).then((res) => {
       if (res.payload !== null) {
@@ -1063,6 +1065,7 @@ const UserGoals = (props) => {
       value: Number(userInputs.inputPercentage.value) * -1,
       date: today,
       type: "Investment",
+      itemId: `goal-${dynamicId}`,
     };
     await dispatch(postNewGoal(userInputs))
       .then((res) => {

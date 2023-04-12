@@ -784,6 +784,7 @@ const UserIncomes = (props) => {
       value: Number(modifiedValue) * -1,
       date: crudType.historyDate,
       type: crudType.historyType,
+      itemId: goalId,
     };
     //console.log(newGoalObj);
     await dispatch(goalTransaction(newGoalObj)).then((res) => {

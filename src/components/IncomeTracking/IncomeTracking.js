@@ -17,12 +17,22 @@ import {
   IncomeTrackingBalance,
   PercentageTitle,
   WrapIncomeList,
+  AdviceDiv,
+  LoaderDiv,
 } from "./IncomeTrackingStyle";
+import { BarLoader } from "react-spinners";
 
 const IncomeTracking = (props) => {
+  console.log(props);
   let incomeSourcers = null;
-  console.log(props.incomes);
-  if (props.incomes !== null) {
+
+  if (props.loading === "true") {
+    incomeSourcers = (
+      <LoaderDiv>
+        <BarLoader color={"#51d289"} />
+      </LoaderDiv>
+    );
+  } else if (props.incomes !== null) {
     incomeSourcers = (
       <>
         {props.incomes.map((income, index) => {
@@ -37,16 +47,26 @@ const IncomeTracking = (props) => {
         })}
       </>
     );
+  } else {
+    incomeSourcers = (
+      <AdviceDiv>When you add a month income it'll appear here.</AdviceDiv>
+    );
   }
 
-  return (
-    <IncomeTrackingContainer>
-      <IncomeTrackingTitle>Balance</IncomeTrackingTitle>
-      <IncomeTrackingBalance {...props}>
-        {" "}
-        $ {props.balance}
-      </IncomeTrackingBalance>
-      <IncomePercentageDiv>
+  let percentageDivContent = (
+    <AdviceDiv>
+      Once your balance is positive, you will be able to view the graph.
+    </AdviceDiv>
+  );
+  if (props.loading === "true") {
+    percentageDivContent = (
+      <LoaderDiv>
+        <BarLoader color={"#51d289"} />
+      </LoaderDiv>
+    );
+  } else if (props.total > 0) {
+    percentageDivContent = (
+      <>
         <PercentageTitle
           color={
             props.selectedSlice === 0
@@ -63,16 +83,30 @@ const IncomeTracking = (props) => {
             : ((props.balance / props.total) * 100).toFixed(2)}
           %
         </PercentageTitle>
-        {
-          <DonutChart
-            main
-            allocated={props.investmentsValue}
-            total={props.total}
-            balance={Number(props.balance)}
-            expenses={props.expensesValue}
-          />
-        }
-      </IncomePercentageDiv>
+        <DonutChart
+          main
+          allocated={props.investmentsValue}
+          total={props.total}
+          balance={Number(props.balance)}
+          expenses={props.expensesValue}
+        />
+      </>
+    );
+  } else {
+    percentageDivContent = (
+      <AdviceDiv>
+        Once your balance is positive, you will be able to view the graph.
+      </AdviceDiv>
+    );
+  }
+
+  return (
+    <IncomeTrackingContainer>
+      <IncomeTrackingTitle>Balance</IncomeTrackingTitle>
+      <IncomeTrackingBalance {...props}>
+        {props.balance > 0 ? `$ ${props.balance}` : `$ ${(0).toFixed(2)}`}
+      </IncomeTrackingBalance>
+      <IncomePercentageDiv>{percentageDivContent}</IncomePercentageDiv>
       <WrapIncomeInfos>
         <IncomeAvaiableInfo {...props}>
           <IncomeTrackingInfoTitle>Month Investment</IncomeTrackingInfoTitle>

@@ -207,6 +207,29 @@ export const PercentageTitle = styled.div`
     font-size: 19px;
   }
 `;
+export const AdviceDiv = styled.div`
+  display: flex;
+  height: 50%;
+  border-radius: 10px;
+  background-color: black;
+  opacity: 0.8;
+  padding: 8px;
+  padding-right: 20px;
+  padding-left: 20px;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 2px 2px 20px 1px white;
+  // border: 1px solid white;
+  color: gold;
+  font-weight: 600;
+`;
+export const LoaderDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
 
 export const IncomeButton = styled.button`
   margin: 10px;

@@ -39,6 +39,7 @@ const BudgetTracking = () => {
   const [longTermGoals, setLongTermGoals] = useState(null);
   const [mediumTermGoals, setMediumTermGoals] = useState(null);
   const [shortTermGoals, setShortTermGoals] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
   const year = new Date().getFullYear();
   const monthNumber = new Date().getMonth() + 1;
@@ -60,17 +61,14 @@ const BudgetTracking = () => {
   const getInfo = async () => {
     let allCategories;
     let monthExpenses = [];
+    setLoading(true);
     await dispatch(fetchBalance()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         console.log(res.payload);
         setBalance(res.payload);
       }
     });
-    /*await dispatch(fetchCategoriesData()).then((res) => {
-      if (res.payload !== null) {
-        allCategories = Object.values(res.payload);
-      }
-    });*/
+
     await dispatch(fetchExpensesData()).then((res) => {
       if (res.payload !== null) {
         let expenses = Object.values(res.payload);
@@ -107,6 +105,8 @@ const BudgetTracking = () => {
 
         setTotalExpensesValue(totalValue);
         setExpensesList(monthExpenses.length > 0 ? monthExpenses : null);
+      } else {
+        setTotalExpensesValue(0);
       }
     });
 
@@ -116,8 +116,8 @@ const BudgetTracking = () => {
         let mediumTermGoals = [];
         let shortTermGoals = [];
 
-        const goalsData = Object.values(res.payload);
-        if (goalsData !== null) {
+        if (res.payload !== null) {
+          const goalsData = Object.values(res.payload);
           setAllGoals(goalsData);
 
           goalsData.forEach((goal) => {
@@ -243,6 +243,8 @@ const BudgetTracking = () => {
         }
       }
     });
+
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -255,7 +257,7 @@ const BudgetTracking = () => {
     const dayInMilli = 86400000;
     //filtering all investments on this goal
     let goalInfoArr = allInvestments.filter(
-      (history) => history.name === goalName
+      (history) => history.itemId === goalId
     );
 
     let amountOfContributions = [];
@@ -350,7 +352,7 @@ const BudgetTracking = () => {
           goalValue={goal.value}
           date={goal.date}
           allocated={goal.allocated}
-          showInfo={() => goalInformations(goal.name)}
+          showInfo={() => goalInformations(goal.id)}
         />
       );
     });
@@ -365,7 +367,7 @@ const BudgetTracking = () => {
           goalValue={goal.value}
           date={goal.date}
           allocated={goal.allocated}
-          showInfo={() => goalInformations(goal.name)}
+          showInfo={() => goalInformations(goal.id)}
         />
       );
     });
@@ -380,7 +382,7 @@ const BudgetTracking = () => {
           date={goal.date}
           goalValue={goal.value}
           allocated={goal.allocated}
-          showInfo={() => goalInformations(goal.name)}
+          showInfo={() => goalInformations(goal.id)}
         />
       );
     });
@@ -411,6 +413,7 @@ const BudgetTracking = () => {
           incomesPage={() => navigate("/userincomes")}
           expensesPage={() => navigate("/userexpenses")}
           selectedSlice={selectedSlice}
+          loading={loading === true ? "true" : "false"}
         />
       </AuxDiv>
       <AuxDiv width={"40%"} defaultHeight>

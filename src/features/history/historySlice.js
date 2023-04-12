@@ -53,6 +53,7 @@ export const postNewHistory = createAsyncThunk(
                 name: action.name,
                 value: action.value,
                 date: action.date,
+                itemId: action.itemId !== undefined ? action.itemId : "default",
               },
             };
             update(ref(db), updates).then((res) => res);
@@ -64,6 +65,7 @@ export const postNewHistory = createAsyncThunk(
                 name: action.name,
                 value: action.value,
                 date: action.date,
+                itemId: action.itemId !== undefined ? action.itemId : "default",
               },
             });
           }
