@@ -1,5 +1,6 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import cardBg from "../../../../images/cardBg.svg";
+import back from "../../../../images/backArrow.png";
 
 const SlideLeft = keyframes`
 0% {
@@ -14,17 +15,29 @@ const SlideLeft = keyframes`
 `;
 
 const FlipRight = keyframes`
- 0% {
-    -webkit-transform: translateX(0) rotateY(0);
-            transform: translateX(0) rotateY(0);
-    -webkit-transform-origin: 100% 50%;
-            transform-origin: 100% 50%;
+   0% {
+    -webkit-transform: rotateY(-180deg);
+            transform: rotateY(-180deg);
+    opacity: 0;
   }
   100% {
-    -webkit-transform: translateX(100%) rotateY(180deg);
-            transform: translateX(100%) rotateY(180deg);
-    -webkit-transform-origin: 0% 50%;
-            transform-origin: 0% 50%;
+    -webkit-transform: rotateY(0);
+            transform: rotateY(0);
+    opacity: 1;
+  }
+
+`;
+
+const FlipLeft = keyframes`
+   0% {
+    -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+   opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotateY(0);
+            transform: rotateY(0);
+   opacity: 1;
   }
 
 `;
@@ -33,7 +46,6 @@ export const GoalDiv = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  margin: 10px;
   min-height: 80%;
   height: 80%;
   margin: 5px;
@@ -44,11 +56,26 @@ export const GoalDiv = styled.div`
   //background-color: #0c0a08;
   background-image: url(${cardBg});
   background-size: cover;
-
   border: 1px solid gold;
   box-shadow: 2px 2px 20px 1px gold;
-  -webkit-animation: ${SlideLeft} 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-  animation: ${SlideLeft} 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  -webkit-animation: ${(props) =>
+    props.changeAnimation === true
+      ? css`
+          ${FlipLeft} 0.4s cubic-bezier(0.455, 0.03, 0.515, 0.955)
+    both;
+        `
+      : css`
+          ${SlideLeft} 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        `};
+  animation: ${(props) =>
+    props.changeAnimation === true
+      ? css`
+          ${FlipLeft} 0.4s cubic-bezier(0.455, 0.03, 0.515, 0.955)
+    both;
+        `
+      : css`
+          ${SlideLeft} 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        `};
 `;
 
 export const ClickedGoalDiv = styled.div`
@@ -56,6 +83,7 @@ export const ClickedGoalDiv = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  padding-top: 5px;
   margin: 10px;
   min-height: 80%;
   height: 80%;
@@ -73,6 +101,46 @@ export const ClickedGoalDiv = styled.div`
 
   border: 1px solid gold;
   box-shadow: 2px 2px 20px 1px gold;
+`;
+
+export const ButtonDiv = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  //background-color: red;
+  height: 15%;
+`;
+
+export const BackButton = styled.button`
+  width: 25px;
+  height: 25px;
+  background-color: transparent;
+  border: none;
+  background-image: url(${back});
+  background-size: cover;
+  :hover {
+    cursor: pointer;
+  }
+`;
+export const InfoDiv = styled.div`
+  display: flex;
+  align-items: center;
+  padding-left: 5px;
+  padding-right: 5px;
+  width: 100%;
+  max-width: 150px;
+  height: ${(props) => props.height};
+  // background-color: red;
+  //border: 1px solid white;
+  color: white;
+  font-size: 12px;
+`;
+
+export const TextSpan = styled.div`
+  text-align: ${(props) => props.align};
+  color: ${(props) => props.color};
+  width: ${(props) => props.width};
+  font-weight: ${(props) => props.weight};
 `;
 
 export const GoalTitle = styled.h6`

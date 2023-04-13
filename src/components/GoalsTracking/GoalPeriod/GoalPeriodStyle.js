@@ -45,8 +45,9 @@ export const GoalsContainer = styled.div`
   //background-color: white;
   height: 100%;
   //border: 2px solid white;
+  //padding-bottom: 10px;
   margin: auto;
-  margin-top: 5px;
+  //margin-bottom: 5px;
   color: black;
   /* width */
   ::-webkit-scrollbar {

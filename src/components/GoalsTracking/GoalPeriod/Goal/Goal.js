@@ -1,20 +1,73 @@
 import React from "react";
 import {
+  BackButton,
+  ButtonDiv,
   ClickedGoalDiv,
   GoalDiv,
   GoalInformationDiv,
   GoalPercentageDiv,
   GoalTitle,
+  InfoDiv,
   InformationButton,
   MaskDiv,
   PercentageTitle,
   StatusInformation,
+  TextSpan,
 } from "./GoalStyle";
 import DonutChart from "../../../UI/Charts/DonutChart";
 
 const Goal = (props) => {
+  console.log(props);
+  let days = 0;
+  let months = 0;
+  let years = 0;
+  let message = "";
+  let situation = "";
+
+  if (props.hasParam) {
+    console.log("passou aqui");
+    console.log(props.remainingTime);
+
+    if (props.remainingTime > 365) {
+      situation = "year";
+    } else if (props.remainingTime < 30) {
+      situation = "day";
+    } else {
+      situation = "month";
+    }
+    switch (situation) {
+      case "day":
+        message = `Remaining time estimate due to your frequency contribution is ${Math.trunc(
+          props.remainingTime
+        )} days.`;
+        console.log(message);
+
+        break;
+      case "month":
+        months = Math.trunc(props.remainingTime / 30);
+        days = Math.trunc(props.remainingTime - months * 30);
+        message = `Remaining time estimate due to your frequency contribution is ${months} months and ${days} days.`;
+        console.log(message);
+        break;
+      case "year":
+        years = Math.trunc(props.remainingTime / 365);
+        let daysLeft = props.remainingTime - 365 * years;
+        months = daysLeft > 30 ? Math.trunc(daysLeft / 30) : 0;
+        days =
+          daysLeft < 30
+            ? Math.trunc(daysLeft)
+            : Math.trunc(daysLeft - months * 30);
+
+        message = `Remaining time estimate due to your frequency contribution is ${years} years, ${months} months and ${days} days.`;
+        console.log(message);
+        break;
+      default:
+        break;
+    }
+  }
+
   let goalContent = (
-    <GoalDiv>
+    <GoalDiv {...props}>
       <GoalTitle>{props.goalName}</GoalTitle>
       <GoalPercentageDiv>
         <MaskDiv></MaskDiv>
@@ -35,14 +88,56 @@ const Goal = (props) => {
       </GoalInformationDiv>
     </GoalDiv>
   );
-  console.log("AQUI", props.isClicked);
+
   if (props.isClicked === "true") {
     goalContent = (
       <ClickedGoalDiv>
-        <div style={{ position: "absolute" }}>
-          {" "}
-          <GoalTitle>{props.goalName}</GoalTitle>
-        </div>
+        <InfoDiv height={"12%"}>
+          <TextSpan width={"60px"} align={"start"}>
+            Term
+          </TextSpan>
+          <TextSpan width={"90px"} align={"end"}>
+            {props.date}
+          </TextSpan>
+        </InfoDiv>
+
+        <InfoDiv height={"12%"}>
+          <TextSpan width={"60px"} align={"start"}>
+            Allocated
+          </TextSpan>
+          <TextSpan width={"90px"} align={"end"} color={"#51d289"} weight={600}>
+            $ {Number(props.allocated).toFixed(2)}
+          </TextSpan>
+        </InfoDiv>
+
+        <InfoDiv height={"12%"}>
+          <TextSpan width={"60px"} align={"start"}>
+            Target
+          </TextSpan>
+          <TextSpan width={"90px"} align={"end"} color={"#51d289"} weight={600}>
+            $ {Number(props.goalValue).toFixed(2)}
+          </TextSpan>
+        </InfoDiv>
+        <InfoDiv height={"12%"}>
+          <TextSpan width={"60px"} align={"start"}>
+            Avg.
+          </TextSpan>
+          <TextSpan width={"90px"} align={"end"} color={"#51d289"} weight={600}>
+            $ {Number(props.avgContribution).toFixed(2)}
+          </TextSpan>
+        </InfoDiv>
+
+        <InfoDiv height={"37%"}>
+          <TextSpan width={"150px"} align={"justify"} color={"gold"}>
+            {props.hasParam
+              ? message
+              : `You need to make deposits on at least two different days to get an estimate.`}
+          </TextSpan>
+        </InfoDiv>
+
+        <ButtonDiv>
+          <BackButton onClick={props.hideInfo} />
+        </ButtonDiv>
       </ClickedGoalDiv>
     );
   }

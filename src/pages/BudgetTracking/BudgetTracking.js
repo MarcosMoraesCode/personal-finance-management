@@ -27,6 +27,7 @@ import { fetchGoalsData } from "../../features/goals/goalsSlice";
 import Goal from "../../components/GoalsTracking/GoalPeriod/Goal/Goal";
 import { fetchHistoriesData } from "../../features/history/historySlice";
 import { useNavigate } from "react-router-dom";
+import { InfoDiv } from "../../components/GoalsTracking/GoalPeriod/Goal/GoalStyle";
 
 const BudgetTracking = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const BudgetTracking = () => {
   const [monthDeposits, setMonthDeposits] = useState(null);
   const [allGoals, setAllGoals] = useState(null);
   const [allInvestments, setAllInvestments] = useState(null);
+  const [goalArr, setGoalArr] = useState(null);
   const [longTermGoals, setLongTermGoals] = useState(null);
   const [mediumTermGoals, setMediumTermGoals] = useState(null);
   const [shortTermGoals, setShortTermGoals] = useState(null);
@@ -121,10 +123,18 @@ const BudgetTracking = () => {
           const goalsData = Object.values(res.payload);
 
           let btnArr = [];
-          goalsData.forEach((goal) =>
-            btnArr.push({ id: goal.id, open: false })
-          );
+          let infoArr = [];
+          goalsData.forEach((goal) => {
+            infoArr.push({
+              id: goal.id,
+              hasParam: false,
+              remainingTime: 0,
+              avgContribution: 0,
+            });
+            btnArr.push({ id: goal.id, open: false, changeAnimation: false });
+          });
           setInfoBtn(btnArr);
+          setGoalArr(infoArr);
 
           setAllGoals(goalsData);
 
@@ -263,9 +273,15 @@ const BudgetTracking = () => {
   const goalInformations = (goalId) => {
     //selecting goal
     let goal = allGoals.filter((goal) => goal.id === goalId);
+    console.log(goal);
     let btnIndex = infoBtn.findIndex((info) => info.id === goalId);
+    console.log(infoBtn);
 
-    setInfoBtn([...infoBtn, (infoBtn[btnIndex].open = true)]);
+    let newArr = [...infoBtn];
+    newArr[btnIndex] = { id: goalId, open: true, changeAnimation: true };
+
+    setInfoBtn(newArr);
+
     // console.log("o goal é", newArr);
     const dayInMilli = 86400000;
     //filtering all investments on this goal
@@ -333,21 +349,64 @@ const BudgetTracking = () => {
       });
 
       let averageTime = allIntervals / intervals.length;
-      // console.log("tempo médio", averageTime);
-      // console.log("valor médio", averageContribution);
+      console.log("tempo médio", averageTime);
+      console.log("valor médio", averageContribution);
 
       let remainingValue = goal[0].value - goal[0].allocated;
 
-      let remainingTime = remainingValue / averageContribution;
+      let remainingContributionTime = remainingValue / averageContribution;
 
-      if (remainingTime > 1) {
-        remainingTime = remainingTime * averageTime;
+      let today = new Date().getTime();
+      let lastContribuition = finalInfoArr.pop().time;
+      console.log("array", finalInfoArr);
+      console.log("contribuições faltantes", remainingContributionTime);
+      console.log("tempo médio em dias", averageTime);
+      console.log(
+        "dias do ultimo aporte",
+        ((today - lastContribuition) / dayInMilli).toFixed(0)
+      );
+
+      console.log("hj", today);
+      if (remainingContributionTime > 1) {
+        remainingContributionTime =
+          remainingContributionTime * averageTime +
+          (today - lastContribuition) / dayInMilli;
       } else {
-        remainingTime = "falta pouco";
+        remainingContributionTime = "falta pouco";
       }
-      // console.log(remainingTime);
-      //  console.log(infoBtn);
+
+      let goalIndex = goalArr.findIndex((info) => info.id === goalId);
+      let newArr = [...goalArr];
+      newArr[goalIndex] = {
+        id: goalId,
+        hasParam: true,
+        remainingTime: remainingContributionTime,
+        avgContribution: averageContribution,
+      };
+
+      setGoalArr(newArr);
+      //console.log(infoBtn);
+    } else {
+      console.log("nao tem conteudo ainda");
+      let goalIndex = goalArr.findIndex((info) => info.id === goalId);
+      let newArr = [...goalArr];
+      console.log("olha o goal aq", goal);
+
+      newArr[goalIndex] = {
+        id: goalId,
+        hasParam: false,
+        remainingTime: 0,
+        avgContribution: goal[0].allocated,
+      };
+      setGoalArr(newArr);
     }
+  };
+  const hideInformations = (goalId) => {
+    let btnIndex = infoBtn.findIndex((info) => info.id === goalId);
+    let newArr = [...infoBtn];
+    newArr[btnIndex] = { id: goalId, open: false, changeAnimation: true };
+
+    setInfoBtn(newArr);
   };
 
   let expensesListContent = null;
@@ -361,6 +420,7 @@ const BudgetTracking = () => {
   if (longTermGoals !== null) {
     longGoals = longTermGoals.map((goal, index) => {
       let btnIndex = infoBtn.findIndex((info) => info.id === goal.id);
+      let goalIndex = goalArr.findIndex((info) => info.id === goal.id);
       //console.log(infoBtn[btnIndex]);
 
       return (
@@ -369,9 +429,14 @@ const BudgetTracking = () => {
           goalName={goal.name}
           goalValue={goal.value}
           date={goal.date}
+          hasParam={goalArr[goalIndex].hasParam}
+          remainingTime={goalArr[goalIndex].remainingTime}
+          avgContribution={goalArr[goalIndex].avgContribution}
           allocated={goal.allocated}
           showInfo={() => goalInformations(goal.id)}
+          hideInfo={() => hideInformations(goal.id)}
           isClicked={infoBtn[btnIndex].open ? "true" : "false"}
+          changeAnimation={infoBtn[btnIndex].changeAnimation}
         />
       );
     });
@@ -380,6 +445,7 @@ const BudgetTracking = () => {
   if (mediumTermGoals !== null) {
     mediumGoals = mediumTermGoals.map((goal, index) => {
       let btnIndex = infoBtn.findIndex((info) => info.id === goal.id);
+      let goalIndex = goalArr.findIndex((info) => info.id === goal.id);
       //console.log(infoBtn[btnIndex]);
       return (
         <Goal
@@ -387,9 +453,14 @@ const BudgetTracking = () => {
           goalName={goal.name}
           goalValue={goal.value}
           date={goal.date}
+          hasParam={goalArr[goalIndex].hasParam}
+          remainingTime={goalArr[goalIndex].remainingTime}
+          avgContribution={goalArr[goalIndex].avgContribution}
           allocated={goal.allocated}
           showInfo={() => goalInformations(goal.id)}
+          hideInfo={() => hideInformations(goal.id)}
           isClicked={infoBtn[btnIndex].open ? "true" : "false"}
+          changeAnimation={infoBtn[btnIndex].changeAnimation}
         />
       );
     });
@@ -398,16 +469,22 @@ const BudgetTracking = () => {
   if (shortTermGoals !== null) {
     shortGoals = shortTermGoals.map((goal, index) => {
       let btnIndex = infoBtn.findIndex((info) => info.id === goal.id);
+      let goalIndex = goalArr.findIndex((info) => info.id === goal.id);
       //console.log(infoBtn[btnIndex]);
       return (
         <Goal
           key={`short-goal-${index}`}
           goalName={goal.name}
           date={goal.date}
+          hasParam={goalArr[goalIndex].hasParam}
+          remainingTime={goalArr[goalIndex].remainingTime}
+          avgContribution={goalArr[goalIndex].avgContribution}
           goalValue={goal.value}
           allocated={goal.allocated}
           showInfo={() => goalInformations(goal.id)}
+          hideInfo={() => hideInformations(goal.id)}
           isClicked={infoBtn[btnIndex].open ? "true" : "false"}
+          changeAnimation={infoBtn[btnIndex].changeAnimation}
         />
       );
     });
