@@ -235,6 +235,7 @@ const UserGoals = (props) => {
     const validation3 = Number(value) <= Number(userInputs.inputValue.value);
     const validation4 = Number(value) <= Number(userBalance);
     const validation5 = isValidDate(value);
+    const validation6 = Number(value) >= Number(crudType.goalAllocated);
 
     let result = false;
 
@@ -243,13 +244,26 @@ const UserGoals = (props) => {
         validation1 ? (result = true) : (result = false);
         break;
       case "Goal Value":
-        validation2 ? (result = true) : (result = false);
+        if (crudType.crudType === "edit-goal") {
+          validation6 && validation2 ? (result = true) : (result = false);
+        } else {
+          validation2 ? (result = true) : (result = false);
+        }
+        console.log(
+          "O valor é  ",
+          value,
+          "e o alocado é ",
+          Number(crudType.goalAllocated),
+          validation6
+        );
+
         break;
       case "Goal Percentage":
         console.log(value, userInputs.inputValue.value);
         validation2 && validation3 && validation4
           ? (result = true)
           : (result = false); //VALIDATION 4 TOO
+
         break;
       case "Goal Date":
         //   console.log(value);
@@ -742,6 +756,7 @@ const UserGoals = (props) => {
         refreshInputs();
         setShowCrud(false);
         getGoals();
+
         setSubmitPermission(false);
       }
     });

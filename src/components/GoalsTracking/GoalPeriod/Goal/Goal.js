@@ -65,7 +65,7 @@ const Goal = (props) => {
         break;
     }
   }
-
+  let percentageNumber = ((props.allocated / props.goalValue) * 100).toFixed(2);
   let goalContent = (
     <GoalDiv {...props}>
       <GoalTitle>{props.goalName}</GoalTitle>
@@ -73,7 +73,7 @@ const Goal = (props) => {
         <MaskDiv></MaskDiv>
         {/*PIZZA GRAPHIC Goal value: {props.goalValue} Allocated percentage:{" "}*/}
         <PercentageTitle>
-          {((props.allocated / props.goalValue) * 100).toFixed(2)}%
+          {percentageNumber >= 100.0 ? 100.0 : percentageNumber}%
         </PercentageTitle>
         <DonutChart
           allocated={Number(props.allocated)}
