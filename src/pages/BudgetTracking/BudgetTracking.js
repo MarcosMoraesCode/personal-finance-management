@@ -371,8 +371,6 @@ const BudgetTracking = () => {
         remainingContributionTime =
           remainingContributionTime * averageTime +
           (today - lastContribuition) / dayInMilli;
-      } else {
-        remainingContributionTime = "falta pouco";
       }
 
       let goalIndex = goalArr.findIndex((info) => info.id === goalId);

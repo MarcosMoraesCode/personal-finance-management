@@ -4,6 +4,7 @@ import { EditButton } from "../../components/ExpensesTracking/Expense/ExpenseSty
 import GoalInformation from "../../components/GoalsTracking/GoalList/GoalInformations";
 import { FadeLoader } from "react-spinners";
 import InputContainer from "../../components/UI/Input/Input";
+
 import {
   fetchDynamicId,
   addBalance,

@@ -33,7 +33,7 @@ export const ProfileTitleDiv = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 20%;
+  height: 12%;
 `;
 
 export const ProfileTitle = styled.h1`
@@ -47,7 +47,7 @@ export const ProfileContentDiv = styled.div`
   align-items: center;
   width: 100%;
   //border: 1px solid white;
-  height: 80%;
+  height: 88%;
 
   border-radius: 10px;
 `;
@@ -65,7 +65,7 @@ export const SecondaryContent = styled.div`
 
   padding-top: 20px;
   padding-bottom: 20px;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 80%;
   height: 70%;
   font-size: 14px;
@@ -121,7 +121,7 @@ export const SecondaryInfoContentDiv = styled.div`
   display: flex;
   //justify-content: center;
   align-items: center;
-  height: 30%;
+  height: 20%;
   width: 100%;
   border-radius: 5px;
   padding-left: 25px;

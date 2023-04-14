@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import fullImg from "../../images/test.png";
 import img from "../../images/sign-in.jpg";
+import logoBig from "../../images/finplannLogoBig.svg";
 
 export const LoginDiv = styled.div`
-  background-image: url(${fullImg});
+  background-image: url(${logoBig});
   display: flex;
   height: 94vh;
   background-position: center;
@@ -12,7 +13,7 @@ export const LoginDiv = styled.div`
   font-family: "Roboto";
   //opacity: 0.9;
   @media (max-width: 1000px) {
-    background-image: url(${img});
+    //background-image: url(${img});
   }
   @media (max-width: 700px) {
     height: 85vh;

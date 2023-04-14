@@ -2,6 +2,7 @@ import styled, { keyframes, css } from "styled-components";
 import formPig from "../../images/formPig.png";
 import pig from "../../images/pig.png";
 import check from "../../images/checkIcon.svg";
+import styledBg from "../../images/analysisBg.svg";
 
 const FadeInLeft = keyframes`
 0% {
@@ -266,7 +267,10 @@ export const AnalysisDiv = styled.div`
   height: 100%;
   border-radius: 50px;
   box-shadow: 2px 2px 20px 1px white;
-  background-color: black;
+  //background-color: black;
+  background-image: url(${styledBg});
+  background-size: cover;
+
   :hover {
     //border: 1px solid gold;
     opacity: 1;

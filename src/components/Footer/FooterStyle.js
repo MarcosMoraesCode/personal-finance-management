@@ -43,6 +43,11 @@ export const FooterContentWrapper = styled.div`
   }
 `;
 
+export const Logo = styled.img`
+  margin-right: ${(props) => props.marginR};
+  height: 6vh;
+`;
+
 export const SocialGit = styled.img`
   width: 45px;
   margin-right: 25px;

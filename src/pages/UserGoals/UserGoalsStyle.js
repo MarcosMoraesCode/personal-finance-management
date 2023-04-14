@@ -3,10 +3,12 @@ import createIcon from "../../images/createIcon.png";
 import pig from "../../images/pig.png";
 import babyPig from "../../images/formPig.png";
 import expandIcon from "../../images/expandIcon.png";
+import formBg from "../../images/formBg.svg";
 
 const scaleUpRight = keyframes`
  0% {
-    
+    background-image: url(${formBg});
+    background-color: black ;
     -webkit-transform: scale(1);
             transform: scale(1);
     -webkit-transform-origin: 100% 50%;
@@ -16,7 +18,8 @@ const scaleUpRight = keyframes`
     min-width: 50%;
     //min-height: 500px ;
     z-index: 100;
-    
+    background-image: url(${formBg});
+    background-color: black ;
     
     -webkit-transform: scale(2);
             transform: scale(2);
@@ -58,10 +61,14 @@ const scaleUpCenter = keyframes`
   0% {
     -webkit-transform: scale(1);
             transform: scale(1);
+            background-image: url(${formBg});
+    background-color: black ;
   }
   100% {
     min-width: 50%;
     z-index: 100;
+    background-image: url(${formBg});
+    background-color: black ;
    
     -webkit-transform: scale(2);
             transform: scale(2);
@@ -74,6 +81,7 @@ const scaleDownCenter = keyframes`
     z-index: 100;
     -webkit-transform: scale(2);
             transform: scale(2);
+
   }
   100% {
     
@@ -88,10 +96,14 @@ const scaleUpLeft = keyframes`
             transform: scale(1);
     -webkit-transform-origin: 0% 50%;
             transform-origin: 0% 50%;
+            background-image: url(${formBg});
+    background-color: black ;
   }
   100% {
    min-width: 50%;
    max-width:50%;
+   background-image: url(${formBg});
+    background-color: black ;
    
      //   width: 1000px;
     z-index: 100;
@@ -287,8 +299,8 @@ const scaleUpMediaShortForm = keyframes`
   z-index: 250;
 max-width: 50%;
 min-width: 50%;
-min-height: 35vh;
-max-height: 35vh;
+min-height: fit-content;
+max-height: 50vh;
 -webkit-transform: scale(2);
         transform: scale(2);
 -webkit-transform-origin: 50% 0%;
@@ -300,8 +312,8 @@ const scaleDownMediaShortForm = keyframes`
     z-index: 250;
 max-width: 50%;
 min-width: 50%;
-min-height: 35vh;
-max-height: 35vh;
+min-height: fit-content;
+max-height: 50vh;
     -webkit-transform: scale(2);
             transform: scale(2);
     -webkit-transform-origin: 50% 0%;
@@ -319,15 +331,16 @@ max-height: 35vh;
 const scaleUpMediaMediumForm = keyframes`
 
 0% {
-    -webkit-transform: scale(1)
+    -webkit-transform: scale(1);
             transform:  scale(1);
+            
   }
   100% {
     z-index: 250;
 max-width: 50%;
 min-width: 50%;
-min-height: 35vh;
-max-height: 35vh;
+min-height: fit-content;
+max-height: 50vh;
     -webkit-transform: scale(2);
             transform: scale(2);
   }
@@ -338,8 +351,8 @@ const scaleDownMediaMediumForm = keyframes`
     z-index: 250;
 max-width: 50%;
 min-width: 50%;
-min-height: 35vh;
-max-height: 35vh;
+min-height: fit-content;
+max-height: 50vh;
     -webkit-transform: scale(2);
             transform: scale(2);
   }
@@ -362,8 +375,8 @@ const scaleUpMediaLongForm = keyframes`
     z-index: 250;
 max-width: 50%;
 min-width: 50%;
-min-height: 35vh;
-max-height: 35vh;
+min-height: fit-content;
+max-height: 50vh;
     -webkit-transform: scale(2);
             transform: scale(2);
     -webkit-transform-origin: 50% 100%;
@@ -377,8 +390,8 @@ const scaleDownMediaLongForm = keyframes`
   z-index: 250;
 max-width: 50%;
 min-width: 50%;
-min-height: 35vh;
-max-height: 35vh;
+min-height: fit-content;
+max-height: 50vh;
     -webkit-transform: scale(2);
             transform: scale(2);
     -webkit-transform-origin: 50% 100%;
@@ -472,7 +485,7 @@ export const GoalsDiv = styled.div`
       : css`
           ${scaleDownTop} 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
-
+  transition: 0.4s ease-in-out;
   background-color: black;
   :hover {
     transition: 0.4s ease-in-out;
@@ -618,6 +631,7 @@ export const LongGoalExample = styled.div`
   min-height: 280px;
   font-family: "Roboto";
   box-shadow: 2px 2px 20px 1px white;
+  transition: 0.2s ease-in-out;
   -webkit-animation: ${(props) =>
     props.open === true
       ? css`
@@ -723,6 +737,7 @@ export const MediumGoalExample = styled.div`
       : css`
           ${scaleDownCenter} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
+  transition: 0.2s ease-in-out;
   :hover {
     cursor: pointer;
     transform: scale(1.05);
@@ -782,7 +797,7 @@ export const ShortGoalExample = styled.div`
   background-size: cover;
   font-family: "Roboto";
   box-shadow: 2px 2px 20px 1px white;
-
+  transition: 0.2s ease-in-out;
   -webkit-animation: ${(props) =>
     props.open === true
       ? css`
@@ -896,7 +911,7 @@ export const CreateButton = styled.button`
   color: white;
   background-image: url(${createIcon});
   background-size: cover;
-
+  transition: 0.2s;
   :hover {
     cursor: pointer;
     transform: scale(1.3);
@@ -1019,7 +1034,7 @@ export const AchievementDiv = styled.div`
       : css`
           ${scaleDownTopLeft} 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
-
+  transition: 0.4s ease-in-out;
   :hover {
     cursor: pointer;
     transform: scale(1.1);
@@ -1081,6 +1096,7 @@ export const ExpandButton = styled.button`
   background-image: url(${expandIcon});
   background-size: cover;
   border: none;
+  transition: 0.4s ease-in-out;
   :hover {
     cursor: pointer;
     transform: scale(1.5);
@@ -1110,6 +1126,7 @@ export const AllocatedMoneyDiv = styled.div`
   max-height: 50px;
   //border: none;
   //box-shadow: 2px 2px 20px 2px white;
+  transition: 0.4s ease-in-out;
   :hover {
     //cursor: pointer;
 

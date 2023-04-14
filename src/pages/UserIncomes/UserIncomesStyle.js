@@ -70,6 +70,77 @@ const FocusIn = keyframes`
   }
 
 `;
+const SlideInTop = keyframes`
+ 0% {
+    -webkit-transform: translateY(-600px) rotateX(-30deg) scale(0);
+            transform: translateY(-600px) rotateX(-30deg) scale(0);
+    -webkit-transform-origin: 50% 100%;
+            transform-origin: 50% 100%;
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0) rotateX(0) scale(1);
+            transform: translateY(0) rotateX(0) scale(1);
+    -webkit-transform-origin: 50% 1400px;
+            transform-origin: 50% 1400px;
+    opacity: 1;
+  }`;
+const SlideInLeftBack = keyframes`
+0% {
+    -webkit-transform: translateX(-800px) rotateY(30deg) scale(0);
+            transform: translateX(-800px) rotateY(30deg) scale(0);
+    -webkit-transform-origin: -100% 50%;
+            transform-origin: -100% 50%;
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0) rotateY(0) scale(1);
+            transform: translateX(0) rotateY(0) scale(1);
+    -webkit-transform-origin: 1800px 50%;
+            transform-origin: 1800px 50%;
+    opacity: 1;
+  }
+`;
+const SlideInRight = keyframes`
+0% {
+    -webkit-transform: translateX(800px) rotateY(-30deg) scale(0);
+            transform: translateX(800px) rotateY(-30deg) scale(0);
+    -webkit-transform-origin: -100% 50%;
+            transform-origin: -100% 50%;
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0) rotateY(0) scale(1);
+            transform: translateX(0) rotateY(0) scale(1);
+    -webkit-transform-origin: -1800px 50%;
+            transform-origin: -1800px 50%;
+    opacity: 1;
+  }`;
+const SlideInBottom = keyframes`
+
+0% {
+    -webkit-transform: translateY(600px) rotateX(30deg) scale(0);
+            transform: translateY(600px) rotateX(30deg) scale(0);
+    -webkit-transform-origin: 50% 100%;
+            transform-origin: 50% 100%;
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0) rotateX(0) scale(1);
+            transform: translateY(0) rotateX(0) scale(1);
+    -webkit-transform-origin: 50% -1400px;
+            transform-origin: 50% -1400px;
+    opacity: 1;
+  }`;
+
+const FadeIn = keyframes`
+0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
 
 export const UserIncomesDiv = styled.div`
   padding-top: 6vh;
@@ -100,7 +171,7 @@ export const UserOptions = styled.div`
   align-items: center;
   height: 90%;
   width: 25%;
-  border: 1px solid white;
+  //border: 1px solid white;
   margin-top: auto;
   margin-bottom: auto;
   margin-left: 35px;
@@ -112,14 +183,26 @@ export const UserOption = styled.div`
   min-height: 120px;
   border-radius: 10px;
   box-shadow: 2px 2px 20px 1px black;
+  background-image: url(${(props) => props.number});
+  background-size: cover;
   border: 1px solid gold;
   transform: ${(props) => (props.clicked === true ? "scale(1.1)" : "scale(1)")};
   transition: 0.4s ease-in-out;
+  //justify-content: flex-end;
 
   :hover {
     transform: scale(1.1);
     transition: 0.4s ease-in-out;
   }
+`;
+export const OptionTitleDiv = styled.div`
+  display: flex;
+  color: #51d289;
+  text-shadow: 1px 1px black;
+  font-weight: 600;
+  justify-content: flex-end;
+  font-size: 22px;
+  padding-right: 15px;
 `;
 
 export const SelectedOption = styled.div`
@@ -128,14 +211,14 @@ export const SelectedOption = styled.div`
   align-items: center;
   width: 45%;
   height: 90%;
-  border: 1px solid blue;
+  //border: 1px solid blue;
   margin-top: auto;
   margin-bottom: auto;
 `;
 
 export const ManageIncomeDiv = styled.div`
   background-color: black;
-  box-shadow: 2px 2px 20px 1px white;
+  box-shadow: 2px 2px 20px 1px gold;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -145,9 +228,10 @@ export const ManageIncomeDiv = styled.div`
   background-image: url(${blackBg});
   background-repeat: no-repeat;
   background-size: cover;
-  -webkit-animation: ${FlipInBottom} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+
+  -webkit-animation: ${SlideInTop} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
     both;
-  animation: ${FlipInBottom} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: ${SlideInTop} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
 export const DefaultInfoDiv = styled.div`
   display: flex;
@@ -235,7 +319,7 @@ export const DefaultListContent = styled.div`
   max-height: 80%;
   min-height: 120px;
   overflow-y: auto;
-  // background-color: red;
+  background-color: ${(props) => (props.background ? "black" : "transparent")};
   padding: 10px;
   /* width */
   ::-webkit-scrollbar {
@@ -297,9 +381,9 @@ export const TableSubtitleBlock = styled.div`
   padding-left: 5px;
 `;
 
-export const AnalysisIncomeDiv = styled.div`
+export const InitialIncomeDiv = styled.div`
   background-color: black;
-  box-shadow: 2px 2px 20px 1px white;
+  box-shadow: 2px 2px 20px 1px gold;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -309,8 +393,25 @@ export const AnalysisIncomeDiv = styled.div`
   background-image: url(${blackBg});
   background-repeat: no-repeat;
   background-size: cover;
-  -webkit-animation: ${FlipInTop} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-  animation: ${FlipInTop} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  -webkit-animation: ${FadeIn} 2.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: ${FadeIn} 2.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+`;
+
+export const AnalysisIncomeDiv = styled.div`
+  background-color: black;
+  box-shadow: 2px 2px 20px 1px gold;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 90%;
+  //border: 1px solid gold;
+  border-radius: 10px;
+  background-image: url(${blackBg});
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-animation: ${SlideInRight} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: ${SlideInRight} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
 export const AnalysisContainer = styled.div`
   display: flex;
@@ -345,7 +446,7 @@ export const AnalysisTextDiv = styled.div`
 
 export const AllocateIncomeDiv = styled.div`
   background-color: black;
-  box-shadow: 2px 2px 20px 1px white;
+  box-shadow: 2px 2px 20px 1px gold;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -355,14 +456,14 @@ export const AllocateIncomeDiv = styled.div`
   background-image: url(${blackBg});
   background-repeat: no-repeat;
   background-size: cover;
-  -webkit-animation: ${FlipInRight} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-    both;
-  animation: ${FlipInRight} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  -webkit-animation: ${SlideInLeftBack} 1.5s
+    cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: ${SlideInLeftBack} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
 
 export const AccountHistoryDiv = styled.div`
   background-color: black;
-  box-shadow: 2px 2px 20px 1px white;
+  box-shadow: 2px 2px 20px 1px gold;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -372,9 +473,16 @@ export const AccountHistoryDiv = styled.div`
   background-image: url(${blackBg});
   background-repeat: no-repeat;
   background-size: cover;
-  -webkit-animation: ${FlipInLeft} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+  -webkit-animation: ${SlideInBottom} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
     both;
-  animation: ${FlipInLeft} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: ${SlideInBottom} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+`;
+
+export const Logo = styled.img`
+  border: 1px solid white;
+
+  min-width: 50%;
+  min-height: 40%;
 `;
 
 export const AccountFilterDiv = styled.div`

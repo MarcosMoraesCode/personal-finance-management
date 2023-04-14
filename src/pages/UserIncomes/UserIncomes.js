@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "../../images/finplannLogo.svg";
+import option1 from "../../images/optionBg1.svg";
+import option2 from "../../images/optionBg2.svg";
 import {
   UserIncomesContainer,
   UserIncomesDiv,
@@ -30,6 +33,9 @@ import {
   AnalysisTextDiv,
   AnalysisText,
   TextSpan,
+  InitialIncomeDiv,
+  Logo,
+  OptionTitleDiv,
 } from "./UserIncomesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import Income from "../../components/IncomeTracking/Income/Income";
@@ -143,11 +149,11 @@ const UserIncomes = (props) => {
   ];
 
   const analysisOptions = [{ name: "This Year" }, { name: "Last Year" }];
-  const [optionOneSelected, setOptionOneSelected] = useState(false);
+  const [optionOneSelected, setOptionOneSelected] = useState(true);
   const [optionTwoSelected, setOptionTwoSelected] = useState(false);
   const [optionThreeSelected, setOptionThreeSelected] = useState(false);
   const [optionFourSelected, setOptionFourSelected] = useState(false);
-  const [optionName, setOptionName] = useState("");
+  const [optionName, setOptionName] = useState("manage-income");
   const [submitPermission, setSubmitPermission] = useState(false);
   const [analysisSelected, setAnalysisSelected] = useState("This Year");
   const [showCrud, setShowCrud] = useState(false);
@@ -594,7 +600,6 @@ const UserIncomes = (props) => {
   };
 
   const removeIncomeHandler = (incomeName, incomeId, incomeValue) => {
-    console.log("clicou", incomeName, incomeId);
     setCrudType({
       ...crudType,
       crudType: "remove-income",
@@ -902,7 +907,13 @@ const UserIncomes = (props) => {
     });
   }
 
-  let selectedContent = <div>Select an option</div>;
+  let selectedContent = (
+    <InitialIncomeDiv>
+      <DefaultTitleDiv>
+        <DefaultTitle>Loading...</DefaultTitle>
+      </DefaultTitleDiv>
+    </InitialIncomeDiv>
+  );
 
   let goalsList = "Create your goal and come back!";
 
@@ -1217,7 +1228,7 @@ const UserIncomes = (props) => {
               </TableTitleDiv>
             </DefaultListTitleDiv>
 
-            <DefaultListContent>{historyContent}</DefaultListContent>
+            <DefaultListContent background>{historyContent}</DefaultListContent>
           </DefaultList>
         </AccountHistoryDiv>
       );
@@ -1229,28 +1240,30 @@ const UserIncomes = (props) => {
       <UserIncomesContainer>
         <UserOptions>
           <UserOption
+            number={option1}
             clicked={optionOneSelected}
             onClick={() => selectionHandler(1)}
           >
-            Incomes
+            <OptionTitleDiv>Incomes</OptionTitleDiv>
           </UserOption>
           <UserOption
+            number={option2}
             clicked={optionTwoSelected}
             onClick={() => selectionHandler(2)}
           >
-            Investments
+            <OptionTitleDiv>Investments</OptionTitleDiv>
           </UserOption>
           <UserOption
             clicked={optionThreeSelected}
             onClick={() => selectionHandler(3)}
           >
-            Analysis
+            <OptionTitleDiv> Analysis</OptionTitleDiv>
           </UserOption>
           <UserOption
             clicked={optionFourSelected}
             onClick={() => selectionHandler(4)}
           >
-            Account History
+            <OptionTitleDiv> Account History</OptionTitleDiv>
           </UserOption>
         </UserOptions>
         <SelectedOption>{selectedContent}</SelectedOption>

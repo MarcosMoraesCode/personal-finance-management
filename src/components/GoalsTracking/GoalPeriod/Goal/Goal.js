@@ -40,14 +40,13 @@ const Goal = (props) => {
         message = `Remaining time estimate due to your frequency contribution is ${Math.trunc(
           props.remainingTime
         )} days.`;
-        console.log(message);
 
         break;
       case "month":
         months = Math.trunc(props.remainingTime / 30);
         days = Math.trunc(props.remainingTime - months * 30);
         message = `Remaining time estimate due to your frequency contribution is ${months} months and ${days} days.`;
-        console.log(message);
+
         break;
       case "year":
         years = Math.trunc(props.remainingTime / 365);
@@ -59,12 +58,13 @@ const Goal = (props) => {
             : Math.trunc(daysLeft - months * 30);
 
         message = `Remaining time estimate due to your frequency contribution is ${years} years, ${months} months and ${days} days.`;
-        console.log(message);
+
         break;
       default:
         break;
     }
   }
+
   let percentageNumber = ((props.allocated / props.goalValue) * 100).toFixed(2);
   let goalContent = (
     <GoalDiv {...props}>
@@ -103,6 +103,15 @@ const Goal = (props) => {
 
         <InfoDiv height={"12%"}>
           <TextSpan width={"60px"} align={"start"}>
+            Target
+          </TextSpan>
+          <TextSpan width={"90px"} align={"end"} color={"#51d289"} weight={600}>
+            $ {Number(props.goalValue).toFixed(2)}
+          </TextSpan>
+        </InfoDiv>
+
+        <InfoDiv height={"12%"}>
+          <TextSpan width={"60px"} align={"start"}>
             Allocated
           </TextSpan>
           <TextSpan width={"90px"} align={"end"} color={"#51d289"} weight={600}>
@@ -110,14 +119,6 @@ const Goal = (props) => {
           </TextSpan>
         </InfoDiv>
 
-        <InfoDiv height={"12%"}>
-          <TextSpan width={"60px"} align={"start"}>
-            Target
-          </TextSpan>
-          <TextSpan width={"90px"} align={"end"} color={"#51d289"} weight={600}>
-            $ {Number(props.goalValue).toFixed(2)}
-          </TextSpan>
-        </InfoDiv>
         <InfoDiv height={"12%"}>
           <TextSpan width={"60px"} align={"start"}>
             Avg.
