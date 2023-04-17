@@ -28,6 +28,7 @@ import Goal from "../../components/GoalsTracking/GoalPeriod/Goal/Goal";
 import { fetchHistoriesData } from "../../features/history/historySlice";
 import { useNavigate } from "react-router-dom";
 import { InfoDiv } from "../../components/GoalsTracking/GoalPeriod/Goal/GoalStyle";
+import { fetchIncomesData } from "../../features/incomes/incomesSlice";
 
 const BudgetTracking = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ const BudgetTracking = () => {
   const [monthDeposits, setMonthDeposits] = useState(null);
   const [allGoals, setAllGoals] = useState(null);
   const [allInvestments, setAllInvestments] = useState(null);
+
   const [goalArr, setGoalArr] = useState(null);
   const [longTermGoals, setLongTermGoals] = useState(null);
   const [mediumTermGoals, setMediumTermGoals] = useState(null);
@@ -64,6 +66,7 @@ const BudgetTracking = () => {
   const getInfo = async () => {
     let allCategories;
     let monthExpenses = [];
+    let allIncomes = [];
     setLoading(true);
     await dispatch(fetchBalance()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
@@ -167,6 +170,15 @@ const BudgetTracking = () => {
       }
     });
 
+    await dispatch(fetchIncomesData()).then((res) => {
+      if (res.meta.requestStatus === "fulfilled" && res.payload !== null) {
+        let incomesArr = Object.values(res.payload);
+        incomesArr.forEach((income) => {
+          allIncomes.push(income);
+        });
+      }
+    });
+
     await dispatch(fetchHistoriesData()).then((res) => {
       if (res.meta.requestStatus === "fulfilled" && res.payload !== null) {
         //console.log(res.payload);
@@ -226,7 +238,7 @@ const BudgetTracking = () => {
 
         monthIncomes.forEach((income) => {
           let index = uniqueMonthIncomes.findIndex(
-            (item) => item.name === income.name
+            (item) => item.itemId === income.itemId
           );
           if (index === -1) {
             uniqueMonthIncomes.push(income);
@@ -236,9 +248,10 @@ const BudgetTracking = () => {
             uniqueMonthIncomes[index].value = newValue;
           }
         });
+        console.log("AQUI", uniqueMonthIncomes);
 
         let totalDeposited = 0;
-        monthIncomes.forEach((income) => {
+        uniqueMonthIncomes.forEach((income) => {
           let oldTotal = totalDeposited;
           if (income.value > 0) {
             let newTotal = oldTotal + income.value;
@@ -247,10 +260,15 @@ const BudgetTracking = () => {
         });
         //console.log("new total", totalDeposited);
         let incomesList = [];
-        monthIncomes.forEach((income) => {
-          if (income.value > 0) {
+        uniqueMonthIncomes.forEach((income) => {
+          if (income.value > 0 && allIncomes.length > 0) {
+            console.log("TA PASSANDO AQUI");
+            let incomeIndex = allIncomes.findIndex(
+              (item) => item.id === income.itemId
+            );
+
             incomesList.push({
-              source: income.name,
+              source: allIncomes[incomeIndex].name,
               value: income.value,
               percentage: ((income.value / totalDeposited) * 100).toFixed(2),
             });
@@ -358,15 +376,7 @@ const BudgetTracking = () => {
 
       let today = new Date().getTime();
       let lastContribuition = finalInfoArr.pop().time;
-      console.log("array", finalInfoArr);
-      console.log("contribuições faltantes", remainingContributionTime);
-      console.log("tempo médio em dias", averageTime);
-      console.log(
-        "dias do ultimo aporte",
-        ((today - lastContribuition) / dayInMilli).toFixed(0)
-      );
 
-      console.log("hj", today);
       if (remainingContributionTime > 1) {
         remainingContributionTime =
           remainingContributionTime * averageTime +

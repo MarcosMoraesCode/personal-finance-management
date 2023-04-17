@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../images/finplannLogo.svg";
 import option1 from "../../images/optionBg1.svg";
 import option2 from "../../images/optionBg2.svg";
+import option4 from "../../images/optionBg4.svg";
+
 import {
   UserIncomesContainer,
   UserIncomesDiv,
@@ -620,6 +622,7 @@ const UserIncomes = (props) => {
       value: Number(crudType.incomeOldValue) * -1,
       type: crudType.historyType,
       date: crudType.historyDate,
+      itemId: incomeId,
     };
 
     await dispatch(removeAnIncome(incomeId)).then((res) => {
@@ -708,6 +711,7 @@ const UserIncomes = (props) => {
       value: Number(modifiedValue),
       date: crudType.historyDate,
       type: userInputs.inputRadio.value,
+      itemId: crudType.incomeId,
     };
 
     const newIncomeObj = {
@@ -1260,10 +1264,11 @@ const UserIncomes = (props) => {
             <OptionTitleDiv> Analysis</OptionTitleDiv>
           </UserOption>
           <UserOption
+            number={option4}
             clicked={optionFourSelected}
             onClick={() => selectionHandler(4)}
           >
-            <OptionTitleDiv> Account History</OptionTitleDiv>
+            <OptionTitleDiv> History</OptionTitleDiv>
           </UserOption>
         </UserOptions>
         <SelectedOption>{selectedContent}</SelectedOption>
