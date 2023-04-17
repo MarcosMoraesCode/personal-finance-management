@@ -395,10 +395,8 @@ const BudgetTracking = () => {
       setGoalArr(newArr);
       //console.log(infoBtn);
     } else {
-      console.log("nao tem conteudo ainda");
       let goalIndex = goalArr.findIndex((info) => info.id === goalId);
       let newArr = [...goalArr];
-      console.log("olha o goal aq", goal);
 
       newArr[goalIndex] = {
         id: goalId,

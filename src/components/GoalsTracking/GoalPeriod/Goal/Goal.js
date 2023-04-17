@@ -64,6 +64,11 @@ const Goal = (props) => {
         break;
     }
   }
+  let day = props.date[8] + props.date[9];
+  let month = props.date[5] + props.date[6];
+  let year = props.date.toString().slice(0, 4);
+
+  let condition = new Date().getTime() <= new Date(props.date);
 
   let percentageNumber = ((props.allocated / props.goalValue) * 100).toFixed(2);
   let goalContent = (
@@ -96,8 +101,13 @@ const Goal = (props) => {
           <TextSpan width={"60px"} align={"start"}>
             Term
           </TextSpan>
-          <TextSpan width={"90px"} align={"end"}>
-            {props.date}
+          <TextSpan
+            width={"90px"}
+            align={"end"}
+            weight={600}
+            color={condition ? "#51d289" : "red"}
+          >
+            {`${day}/${month}/${year}`}
           </TextSpan>
         </InfoDiv>
 

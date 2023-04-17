@@ -23,7 +23,18 @@ import {
 const Expense = (props) => {
   let extraContentList = null;
   if (props.expenseDataList) {
-    extraContentList = props.expenseDataList.map((subTopic, index) => {
+    let initialList = props.expenseDataList.map((item) => {
+      let time = new Date(item.date).getTime();
+      return { ...item, time: time };
+    });
+
+    let compare = (a, b) => {
+      return a.time - b.time;
+    };
+
+    initialList.sort(compare);
+
+    extraContentList = initialList.map((subTopic, index) => {
       let lastContent = (
         <>
           <div></div>
