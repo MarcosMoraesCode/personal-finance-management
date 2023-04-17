@@ -925,6 +925,7 @@ const UserIncomes = (props) => {
     let goalsArr = Object.values(userGoals);
     let newArr = goalsArr.map((goal) => {
       // console.log("aqui", goal);
+
       return {
         name: goal.name,
         date: goal.date,
@@ -947,12 +948,15 @@ const UserIncomes = (props) => {
 
     goalsList = newArr.map((goal, index) => {
       // console.log("a", goal);
+      let day = goal.date[8] + goal.date[9];
+      let month = goal.date[5] + goal.date[6];
+      let year = goal.date.toString().slice(0, 4);
       return (
         <GoalInformation
           incomePage
           key={`goal-${index}`}
           name={goal.name}
-          date={goal.date}
+          date={`${day}/${month}/${year}`}
           allocated={goal.allocated}
           term={goal.term}
           value={goal.value}

@@ -2297,6 +2297,10 @@ const UserExpenses = () => {
       let categoryIndex = allCategories.findIndex(
         (category) => category.id === expense.categoryId
       );
+      console.log("ERRO", expense);
+      let day = expense.expenseDate[8] + expense.expenseDate[9];
+      let month = expense.expenseDate[5] + expense.expenseDate[6];
+      let year = expense.expenseDate.toString().slice(0, 4);
 
       return (
         <CalendarInformationDiv key={`selected-expense-${index}`}>
@@ -2312,7 +2316,8 @@ const UserExpenses = () => {
             {allCategories[categoryIndex].name}
           </div>
           <div>
-            <CalendarInfoSpan>Date:</CalendarInfoSpan> {expense.expenseDate}
+            <CalendarInfoSpan>Date:</CalendarInfoSpan>{" "}
+            {`${day}/${month}/${year}`}
           </div>
         </CalendarInformationDiv>
       );

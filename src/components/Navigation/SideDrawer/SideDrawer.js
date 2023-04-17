@@ -30,8 +30,8 @@ const SideDrawer = (props) => {
             Balance{" "}
             <SpanInfo color={props.balance >= 0 ? "#51d289" : "red"}>
               {props.balance >= 0
-                ? `$ ${props.balance}`
-                : `- $ ${props.balance * -1}`}
+                ? `$ ${props.balance.toFixed(2)}`
+                : `- $ ${(props.balance * -1).toFixed(2)}`}
             </SpanInfo>
           </ProfileInfoContent>
           <ProfileInfoContent>
