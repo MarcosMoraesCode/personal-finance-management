@@ -160,6 +160,7 @@ const UserIncomes = (props) => {
   const [analysisSelected, setAnalysisSelected] = useState("This Year");
   const [showCrud, setShowCrud] = useState(false);
   const [filteredHistory, setFilteredHistory] = useState(null);
+  const [monthIncomes, setMonthIncomes] = useState(null);
   const userGoals = useSelector((state) => state.goalsData.userGoals);
   const userIncomes = useSelector((state) => state.incomesData.userIncomes);
   const userBalance = useSelector((state) => state.incomesData.balance);
@@ -168,6 +169,7 @@ const UserIncomes = (props) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let uniqueIncomes = [];
 
   const getGoals = async () => {
     dispatch(fetchDynamicId());
@@ -198,6 +200,45 @@ const UserIncomes = (props) => {
         if (res.payload !== null) {
           setFilteredHistory(Object.values(res.payload));
         }
+        let incomes = Object.values(res.payload).filter((item) => {
+          if (
+            item.type.includes("Deposit") ||
+            item.type.includes("Withdraw") ||
+            item.type.includes("Income")
+          ) {
+            return item;
+          }
+        });
+
+        let filteredIncomes = incomes.filter((income) => {
+          console.log(income.date);
+          if (
+            Number(
+              income.date[6] + income.date[7] + income.date[8] + income.date[9]
+            ) === year &&
+            String(income.date[3] + income.date[4]) === String(month)
+          ) {
+            return income;
+          }
+        });
+
+        filteredIncomes.forEach((income) => {
+          let index = uniqueIncomes.findIndex(
+            (item) => income.itemId === item.itemId
+          );
+
+          if (index === -1) {
+            uniqueIncomes.push(income);
+          } else {
+            let oldValue = Number(uniqueIncomes[index].value);
+            let newValue = oldValue + income.value;
+            uniqueIncomes[index] = { ...income, value: newValue };
+          }
+
+          console.log(uniqueIncomes);
+        });
+
+        setMonthIncomes(uniqueIncomes);
       }
     });
   };
@@ -858,6 +899,8 @@ const UserIncomes = (props) => {
     <div>You haven't made any changes to your account yet</div>
   );
 
+  //let monthIncomes = null;
+
   if (filteredHistory !== null) {
     let historyArr = Object.values(filteredHistory);
 
@@ -967,6 +1010,7 @@ const UserIncomes = (props) => {
   }
 
   let incomesList = "When you add your first income, it'll appear right here.";
+  let monthIncomesList = "You didn't deposit this month yet.";
 
   //console.log(userIncomes, "aqui");
   if (userIncomes !== null) {
@@ -1008,6 +1052,61 @@ const UserIncomes = (props) => {
       );
     });
   }
+
+  if (monthIncomes !== null) {
+    let incomesArr = Object.values(userIncomes);
+    console.log(incomesArr);
+    console.log(monthIncomes);
+
+    let adjustedIncomes = [];
+    monthIncomes.map((income) => {
+      if (income.value > 0) {
+        let index = incomesArr.findIndex((item) => income.itemId === item.id);
+
+        console.log("aq", index);
+        adjustedIncomes.push({
+          name: incomesArr[index].name,
+          value: income.value,
+          id: incomesArr[index].id,
+          filtered: true,
+        });
+      }
+    });
+
+    let totalBalance = 0;
+    adjustedIncomes.forEach((income) => {
+      totalBalance += Number(income.value);
+    });
+    monthIncomesList = adjustedIncomes.map((income, index) => {
+      return (
+        <Income
+          key={`income-${index}`}
+          name={income.name}
+          value={income.value}
+          percentage={
+            income.value === 0
+              ? 0
+              : ((income.value / totalBalance) * 100).toFixed(2)
+          }
+          filtered={income.filtered}
+        />
+      );
+    });
+  }
+
+  /*const filteredIncomes = (incomes)=>{
+
+  let filteredItems = null;
+
+  switch (incomeOptions) {
+    case "all-incomes":
+      filteredItems = incomes;
+      break;
+    case "month-incomes":
+      filt;
+  }
+
+  }*/
 
   let analysisChart = null;
 
