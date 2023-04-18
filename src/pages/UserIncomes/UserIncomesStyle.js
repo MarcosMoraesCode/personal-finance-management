@@ -1,5 +1,6 @@
 import styled, { keyframes, css } from "styled-components";
 import blackBg from "../../images/blackBg.svg";
+import checkIcon from "../../images/checkIcon.svg";
 
 const FlipInBottom = keyframes`
 0% {
@@ -214,6 +215,41 @@ export const SelectedOption = styled.div`
   //border: 1px solid blue;
   margin-top: auto;
   margin-bottom: auto;
+`;
+
+export const ChooseListDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  // background-color: red;
+`;
+export const ChooseListContent = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-size: 12px;
+  justify-content: center;
+  align-items: center;
+  font-family: "Roboto";
+`;
+
+export const CheckButton = styled.div`
+  width: 12px;
+  height: 12px;
+  border: ${(props) =>
+    props.clicked ? " 1px solid #51d289" : "1px solid white"};
+  border-radius: 3px;
+
+  background-image: ${(props) =>
+    props.clicked ? `url(${checkIcon})` : "none"};
+  background-size: cover;
+
+  margin-left: 5px;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 export const ManageIncomeDiv = styled.div`

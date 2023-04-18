@@ -17,7 +17,7 @@ export const IncomeDiv = styled.div`
 export const IncomeInfoDiv = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: ${(props) => props.width};
   height: 100%;
   // border-right: 1px solid green;
 `;
@@ -39,8 +39,9 @@ export const IncomeSubtitlesDiv = styled.div`
 
 export const IncomeSubtitleBlock = styled.div`
   display: flex;
-  justify-content: flex-start;
-  padding-left: 5px;
+  justify-content: ${(props) => props.justify};
+  padding-left: ${(props) => (props.paddingL ? "15px" : "5px")};
+  padding-right: ${(props) => (props.paddingR ? "15px" : "0px")};
   width: 33%;
   height: 100%;
   color: #51d289;
@@ -55,10 +56,11 @@ export const IncomeContentDiv = styled.div`
 
 export const IncomeContentBlock = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: ${(props) => props.justify};
   font-family: "Roboto";
   align-items: center;
-  padding-left: 5px;
+  padding-left: ${(props) => (props.paddingL ? "15px" : "5px")};
+  padding-right: ${(props) => (props.paddingR ? "15px" : "0px")};
   width: 33%;
   height: 100%;
   font-size: 13px;

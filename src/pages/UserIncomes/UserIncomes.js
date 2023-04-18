@@ -38,6 +38,9 @@ import {
   InitialIncomeDiv,
   Logo,
   OptionTitleDiv,
+  ChooseListDiv,
+  CheckButton,
+  ChooseListContent,
 } from "./UserIncomesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import Income from "../../components/IncomeTracking/Income/Income";
@@ -158,6 +161,7 @@ const UserIncomes = (props) => {
   const [optionName, setOptionName] = useState("manage-income");
   const [submitPermission, setSubmitPermission] = useState(false);
   const [analysisSelected, setAnalysisSelected] = useState("This Year");
+  const [showMonthIncomesOnly, setShowMonthIncomesOnly] = useState(false);
   const [showCrud, setShowCrud] = useState(false);
   const [filteredHistory, setFilteredHistory] = useState(null);
   const [monthIncomes, setMonthIncomes] = useState(null);
@@ -1201,8 +1205,23 @@ const UserIncomes = (props) => {
           <DefaultList>
             <DefaultListTitleDiv>
               <DefaultListTitle>Incomes List</DefaultListTitle>
+              <DefaultInfoContent justify={"center"}>
+                <ChooseListDiv>
+                  <ChooseListContent>
+                    Show month deposits only{" "}
+                    <CheckButton
+                      clicked={showMonthIncomesOnly}
+                      onClick={() =>
+                        setShowMonthIncomesOnly(!showMonthIncomesOnly)
+                      }
+                    ></CheckButton>
+                  </ChooseListContent>
+                </ChooseListDiv>
+              </DefaultInfoContent>
             </DefaultListTitleDiv>
-            <DefaultListContent>{incomesList}</DefaultListContent>
+            <DefaultListContent>
+              {showMonthIncomesOnly ? monthIncomesList : incomesList}
+            </DefaultListContent>
           </DefaultList>
         </ManageIncomeDiv>
       );

@@ -14,9 +14,9 @@ import {
 
 const Income = (props) => {
   //console.log(props);
-  return (
+  let content = (
     <IncomeDiv>
-      <IncomeInfoDiv>
+      <IncomeInfoDiv width={"70%"}>
         <IncomeSubtitlesDiv>
           <IncomeSubtitleBlock>Name</IncomeSubtitleBlock>
           <IncomeSubtitleBlock>Total deposited</IncomeSubtitleBlock>
@@ -37,6 +37,35 @@ const Income = (props) => {
       </IncomeButtonsDiv>
     </IncomeDiv>
   );
+
+  if (props.filtered) {
+    content = (
+      <IncomeDiv>
+        <IncomeInfoDiv width={"100%"}>
+          <IncomeSubtitlesDiv>
+            <IncomeSubtitleBlock paddingL>Name</IncomeSubtitleBlock>
+            <IncomeSubtitleBlock justify={"center"}>
+              Month Deposit
+            </IncomeSubtitleBlock>
+            <IncomeSubtitleBlock justify={"flex-end"} paddingR>
+              Percentage
+            </IncomeSubtitleBlock>
+          </IncomeSubtitlesDiv>
+          <IncomeContentDiv>
+            <IncomeContentBlock paddingL>{props.name}</IncomeContentBlock>
+            <IncomeContentBlock justify={"center"}>
+              $ {Number(props.value).toFixed(2)}
+            </IncomeContentBlock>
+            <IncomeContentBlock justify={"flex-end"} paddingR>
+              {props.percentage}%
+            </IncomeContentBlock>
+          </IncomeContentDiv>
+        </IncomeInfoDiv>
+      </IncomeDiv>
+    );
+  }
+
+  return content;
 };
 
 export default Income;
