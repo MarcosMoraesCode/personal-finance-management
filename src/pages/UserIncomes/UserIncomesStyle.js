@@ -405,6 +405,7 @@ export const TableTitleDiv = styled.div`
   border-bottom: 1px solid #51d289;
   padding-bottom: 3px;
   font-weight: 600;
+
   color: #51d289;
 `;
 export const TableSubtitleBlock = styled.div`

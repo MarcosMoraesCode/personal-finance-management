@@ -153,6 +153,12 @@ const UserIncomes = (props) => {
     { name: "Deleted" },
   ];
 
+  const periodOptions = [
+    { name: "All Time" },
+    { name: "This Year" },
+    { name: "This Month" },
+  ];
+
   const analysisOptions = [{ name: "This Year" }, { name: "Last Year" }];
   const [optionOneSelected, setOptionOneSelected] = useState(true);
   const [optionTwoSelected, setOptionTwoSelected] = useState(false);
@@ -162,6 +168,8 @@ const UserIncomes = (props) => {
   const [submitPermission, setSubmitPermission] = useState(false);
   const [analysisSelected, setAnalysisSelected] = useState("This Year");
   const [showMonthIncomesOnly, setShowMonthIncomesOnly] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState("All Time");
+  const [selectedFilter, setSelectedFilter] = useState("All");
   const [showCrud, setShowCrud] = useState(false);
   const [filteredHistory, setFilteredHistory] = useState(null);
   const [monthIncomes, setMonthIncomes] = useState(null);
@@ -873,26 +881,202 @@ const UserIncomes = (props) => {
 
   const filterHistory = (event) => {
     console.log(event.currentTarget.value);
+    let selectedTime = selectedPeriod;
+    let selectedType = selectedFilter;
+    if (
+      event.currentTarget.value.includes("Time") ||
+      event.currentTarget.value.includes("This")
+    ) {
+      selectedTime = event.currentTarget.value;
+      setSelectedPeriod(event.currentTarget.value);
+    } else {
+      selectedType = event.currentTarget.value;
+      setSelectedFilter(event.currentTarget.value);
+    }
 
     let allHistory = Object.values(userHistory);
     // console.log(allHistory);
     let filteredHistory;
-    if (event.currentTarget.value.includes("Deleted")) {
-      filteredHistory = allHistory.filter((history) =>
-        history.type.includes("Deleted")
-      );
-      setFilteredHistory(filteredHistory);
-    } else if (
-      event.currentTarget.value !== "All" &&
-      !event.currentTarget.value.includes("Deleted")
-    ) {
-      filteredHistory = allHistory.filter(
-        (history) => history.type === event.currentTarget.value
-      );
-      setFilteredHistory(filteredHistory);
-    } else {
-      setFilteredHistory(allHistory);
+    let adjustedHistory;
+    let finalHistory;
+    console.log(selectedPeriod);
+    console.log("selected Time", selectedTime);
+    console.log("selected Type", selectedType);
+
+    switch (selectedTime) {
+      case "All Time":
+        if (selectedType.includes("Deleted")) {
+          finalHistory = allHistory.filter((history) =>
+            history.type.includes("Deleted")
+          );
+
+          setFilteredHistory(finalHistory);
+        } else if (
+          selectedType !== "All" &&
+          !selectedType.includes("Deleted")
+        ) {
+          finalHistory = allHistory.filter(
+            (history) => history.type === selectedType
+          );
+
+          setFilteredHistory(finalHistory);
+        } else {
+          setFilteredHistory(allHistory);
+        }
+        break;
+      case "This Year":
+        adjustedHistory = allHistory.map((history) => {
+          if (history.date.includes("-")) {
+            let historyYear = history.date.slice(0, 4);
+            let historyMonth = history.date[5] + history.date[6];
+            let historyDay = history.date[8] + history.date[9];
+
+            return {
+              ...history,
+              date: `${historyDay}/${historyMonth}/${historyYear}`,
+            };
+          } else {
+            return history;
+          }
+        });
+        console.log("passa aqui", adjustedHistory);
+
+        filteredHistory = adjustedHistory.filter(
+          (history) =>
+            Number(
+              history.date[6] +
+                history.date[7] +
+                history.date[8] +
+                history.date[9]
+            ) === year
+        );
+
+        console.log("filtrado", filteredHistory);
+        if (selectedType.includes("Deleted")) {
+          finalHistory = filteredHistory.filter((history) =>
+            history.type.includes("Deleted")
+          );
+
+          setFilteredHistory(finalHistory);
+        } else if (
+          selectedType !== "All" &&
+          !selectedType.includes("Deleted")
+        ) {
+          finalHistory = filteredHistory.filter(
+            (history) => history.type === selectedType
+          );
+
+          setFilteredHistory(finalHistory);
+        } else {
+          setFilteredHistory(filteredHistory);
+        }
+        break;
+      case "This Month":
+        adjustedHistory = allHistory.map((history) => {
+          if (history.date.includes("-")) {
+            let historyYear = history.date.slice(0, 4);
+            let historyMonth = history.date[5] + history.date[6];
+            let historyDay = history.date[8] + history.date[9];
+
+            return {
+              ...history,
+              date: `${historyDay}/${historyMonth}/${historyYear}`,
+            };
+          } else {
+            return history;
+          }
+        });
+        console.log("passa aqui", adjustedHistory);
+
+        filteredHistory = adjustedHistory.filter(
+          (history) =>
+            Number(
+              history.date[6] +
+                history.date[7] +
+                history.date[8] +
+                history.date[9]
+            ) === year &&
+            String(history.date[3] + history.date[4]) === String(month)
+        );
+
+        console.log("filtrado", filteredHistory);
+        if (selectedType.includes("Deleted")) {
+          finalHistory = filteredHistory.filter((history) =>
+            history.type.includes("Deleted")
+          );
+
+          setFilteredHistory(finalHistory);
+        } else if (
+          selectedType !== "All" &&
+          !selectedType.includes("Deleted")
+        ) {
+          finalHistory = filteredHistory.filter(
+            (history) => history.type === selectedType
+          );
+
+          setFilteredHistory(finalHistory);
+        } else {
+          setFilteredHistory(filteredHistory);
+        }
+        break;
     }
+  };
+
+  const filterPeriod = (event) => {
+    let historyList =
+      filteredHistory !== null ? filteredHistory : Object.values(userHistory);
+    console.log(historyList);
+
+    let adjustedHistory = historyList.map((history) => {
+      if (history.date.includes("-")) {
+        let historyYear = history.date.slice(0, 4);
+        let historyMonth = history.date[5] + history.date[6];
+        let historyDay = history.date[8] + history.date[9];
+
+        return {
+          ...history,
+          date: `${historyDay}/${historyMonth}/${historyYear}`,
+        };
+      } else {
+        return history;
+      }
+    });
+    console.log(adjustedHistory);
+    let finalHistory;
+
+    switch (event.currentTarget.value) {
+      case "This Month":
+        finalHistory = adjustedHistory.filter(
+          (history) =>
+            Number(
+              history.date[6] +
+                history.date[7] +
+                history.date[8] +
+                history.date[9]
+            ) === year &&
+            String(history.date[3] + history.date[4]) === String(month)
+        );
+        setFilteredHistory(finalHistory);
+        break;
+      case "This Year":
+        finalHistory = adjustedHistory.filter(
+          (history) =>
+            Number(
+              history.date[6] +
+                history.date[7] +
+                history.date[8] +
+                history.date[9]
+            ) === year
+        );
+        setFilteredHistory(finalHistory);
+        break;
+      case "All time":
+        setFilteredHistory(adjustedHistory);
+        break;
+      default:
+        break;
+    }
+    console.log(finalHistory);
   };
 
   const filterAnalysis = (event) => {
@@ -1332,7 +1516,19 @@ const UserIncomes = (props) => {
               options={historyOptions}
               changed={(event) => filterHistory(event)}
               //border={"no-left-border"}
-              width={"110px"}
+              marginR={"10px"}
+              reduce
+              width={"100px"}
+              noMargin
+            />
+            <p>And period.</p>
+            <SelectContainer
+              options={periodOptions}
+              changed={(event) => filterHistory(event)}
+              //border={"no-left-border"}
+              marginR={"10px"}
+              reduce
+              width={"100px"}
               noMargin
             />
           </AccountFilterDiv>
@@ -1340,6 +1536,7 @@ const UserIncomes = (props) => {
           <DefaultList>
             <DefaultListTitleDiv>
               <DefaultListTitle>History List</DefaultListTitle>
+
               <TableTitleDiv>
                 <TableSubtitleBlock justify={"flex-start"}>
                   Type

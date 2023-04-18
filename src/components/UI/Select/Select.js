@@ -36,6 +36,8 @@ const SelectContainer = (props) => {
         name={props.categoryName}
         onChange={props.changed}
         border={props.border}
+        reduceH={props.reduce}
+        marginR={props.marginR}
       >
         {defaultOption}
         {optionsList}

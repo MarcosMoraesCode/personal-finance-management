@@ -8,12 +8,13 @@ export const StyledLabel = styled.label`
 `;
 
 export const StyledSelect = styled.select`
-  height: 25px;
+  height: ${(props) => (props.reduceH ? "20px" : "25px")};
   border-radius: 5px;
   border-radius: ${(props) =>
     `${props.border === "no-left-border" ? "0px 5px 5px 0px" : "5px"}`};
   font-family: "Roboto";
   border: 1px solid black;
+  margin-right: ${(props) => (props.marginR ? props.marginR : "0px")};
   margin-bottom: 2px;
 `;
 
