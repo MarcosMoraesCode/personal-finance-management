@@ -9,6 +9,7 @@ import {
   StyledInput,
   StyledLabel,
   StyledMessageScaled,
+  StyledTextArea,
   StyledWarning,
   WrappComponent,
   WrappPasswordComponent,
@@ -179,6 +180,44 @@ const InputContainer = (props) => {
         </WrappComponent>
       );
       break;
+    case "textarea":
+      inputElement = (
+        <WrappComponent
+          key={props.id}
+          noMargin={props.noMargin}
+          width={props.width}
+        >
+          <StyledLabel {...props} key={props.id}>
+            {props.children}
+          </StyledLabel>
+
+          <StyledTextArea
+            rows={8}
+            key={props.id}
+            value={props.value}
+            onChange={props.changed}
+            placeholder={props.placeholder}
+            onBlur={
+              props.blur //? (message = null) : (message = props.invalidMessage)
+            }
+            border={props.border}
+            height={props.height}
+            fontSize={props.fontSize}
+            outline={props.outline}
+          />
+
+          <StyledMessage
+            key={`message-1-${props.id}`}
+            color={"#fc2462"}
+            margin={2}
+            fontWeight={600}
+          >
+            {props.invalidMessage}
+          </StyledMessage>
+        </WrappComponent>
+      );
+      break;
+
     case "radio":
       inputElement = (
         <>

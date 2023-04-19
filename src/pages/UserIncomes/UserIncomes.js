@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../images/finplannLogo.svg";
 import option1 from "../../images/optionBg1.svg";
 import option2 from "../../images/optionBg2.svg";
+import option3 from "../../images/optionBg3.svg";
 import option4 from "../../images/optionBg4.svg";
 
 import {
@@ -1577,6 +1578,7 @@ const UserIncomes = (props) => {
             <OptionTitleDiv>Investments</OptionTitleDiv>
           </UserOption>
           <UserOption
+            number={option3}
             clicked={optionThreeSelected}
             onClick={() => selectionHandler(3)}
           >

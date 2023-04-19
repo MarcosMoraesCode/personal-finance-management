@@ -384,6 +384,186 @@ const Crud = (props) => {
         </>
       );
       break;
+    case "edit-username":
+      crudContent = (
+        <>
+          <CrudStyleTitle>Current Name: "{props.userName} "</CrudStyleTitle>
+          <InputsDiv>
+            <InputContainer
+              placeholder={props.userNameInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.userNameInputConfig.isValid
+                  ? ""
+                  : props.userNameInputConfig.invalidMessage
+              }
+              value={props.userNameInputConfig.value}
+              blur={props.userNameBlur}
+              changed={props.userNameChanged}
+            >
+              New Username
+            </InputContainer>
+          </InputsDiv>
+
+          <ModalButtonDiv>
+            <ContinueBtn
+              onClick={props.editUsername}
+              disabled={props.continueDisabled}
+              {...props}
+            >
+              CONTINUE
+            </ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+          </ModalButtonDiv>
+        </>
+      );
+      break;
+    case "edit-useraddress":
+      crudContent = (
+        <>
+          <CrudStyleTitle>
+            Current Address: "{props.userAddress} "
+          </CrudStyleTitle>
+          <InputsDiv>
+            <InputContainer
+              placeholder={props.userAddressInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.userAddressInputConfig.isValid
+                  ? ""
+                  : props.userAddressInputConfig.invalidMessage
+              }
+              value={props.userAddressInputConfig.value}
+              blur={props.userAddressBlur}
+              changed={props.userAddressChanged}
+            >
+              New Address
+            </InputContainer>
+          </InputsDiv>
+
+          <ModalButtonDiv>
+            <ContinueBtn
+              onClick={props.editUserAddress}
+              disabled={props.continueDisabled}
+              {...props}
+            >
+              CONTINUE
+            </ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+          </ModalButtonDiv>
+        </>
+      );
+      break;
+    case "edit-userpassword":
+      crudContent = (
+        <>
+          <CrudStyleTitle>Change Password</CrudStyleTitle>
+          <InputsDiv>
+            <InputContainer
+              elementType={"new-password"}
+              type={props.hideOldPassword === true ? "password" : "text"}
+              placeholder={props.oldPasswordInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.oldPasswordInputConfig.isValid
+                  ? ""
+                  : props.oldPasswordInputConfig.invalidMessage
+              }
+              value={props.oldPasswordInputConfig.value}
+              blur={props.oldPasswordBlur}
+              changed={props.oldPasswordChanged}
+              switchHide={props.switchHideOldPassword}
+              hideImg={props.hideOldPassword}
+              border={"no-right-border"}
+              height={"29px"}
+            >
+              Current Password
+            </InputContainer>
+            <InputContainer
+              elementType={"new-password"}
+              type={props.hideNewPassword === true ? "password" : "text"}
+              placeholder={props.newPasswordInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.newPasswordInputConfig.isValid
+                  ? ""
+                  : props.newPasswordInputConfig.invalidMessage
+              }
+              value={props.newPasswordInputConfig.value}
+              blur={props.newPasswordBlur}
+              changed={props.newPasswordChanged}
+              switchHide={props.switchHideNewPassword}
+              hideImg={props.hideNewPassword}
+              border={"no-right-border"}
+              height={"29px"}
+            >
+              Current Password
+            </InputContainer>
+
+            <InputContainer
+              placeholder={props.newPasswordConfirmationInputConfig.placeholder}
+              type={props.hideNewPassword === true ? "password" : "text"}
+              invalidMessage={
+                props.newPasswordConfirmationInputConfig.isValid
+                  ? ""
+                  : props.newPasswordConfirmationInputConfig.invalidMessage
+              }
+              value={props.newPasswordConfirmationInputConfig.value}
+              blur={props.newPasswordConfirmationBlur}
+              changed={props.newPasswordConfirmationChanged}
+              height={"29px"}
+            >
+              Confirm Password
+            </InputContainer>
+          </InputsDiv>
+
+          <ModalButtonDiv>
+            <ContinueBtn
+              onClick={props.editUserAddress}
+              disabled={props.continueDisabled}
+              {...props}
+            >
+              CONTINUE
+            </ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+          </ModalButtonDiv>
+        </>
+      );
+      break;
+    case "repport":
+      crudContent = (
+        <>
+          <CrudStyleTitle>Send a Repport</CrudStyleTitle>
+          <InputsDiv>
+            <InputContainer
+              placeholder={props.repportInputConfig.placeholder}
+              elementType={"textarea"}
+              invalidMessage={
+                props.repportInputConfig.isValid
+                  ? ""
+                  : props.repportInputConfig.invalidMessage
+              }
+              value={props.repportInputConfig.value}
+              blur={props.repportBlur}
+              changed={props.repportChanged}
+            >
+              Repport Area
+            </InputContainer>
+          </InputsDiv>
+
+          <ModalButtonDiv>
+            <ContinueBtn
+              onClick={props.editIncome}
+              disabled={props.continueDisabled}
+              {...props}
+            >
+              CONTINUE
+            </ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+          </ModalButtonDiv>
+        </>
+      );
+
     default:
       break;
   }

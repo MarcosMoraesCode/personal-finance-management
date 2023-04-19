@@ -186,6 +186,7 @@ export const UserOption = styled.div`
   box-shadow: 2px 2px 20px 1px black;
   background-image: url(${(props) => props.number});
   background-size: cover;
+  background-repeat: no-repeat;
   border: 1px solid gold;
   transform: ${(props) => (props.clicked === true ? "scale(1.1)" : "scale(1)")};
   transition: 0.4s ease-in-out;

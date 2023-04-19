@@ -1,6 +1,19 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import fullImg from "../../images/test.png";
 import pig from "../../images/formPig.png";
+
+const ScaleIn = keyframes`
+
+0% {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    opacity: 1;
+  }`;
 
 export const ProfileDiv = styled.div`
   //background-image: url(${fullImg});
@@ -72,6 +85,20 @@ export const SecondaryContent = styled.div`
 
   //background-color: pink;
 `;
+
+export const ProfileManagerDiv = styled.div`
+  display: ${(props) => (props.open ? "flex" : "none")};
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  z-index: 200;
+  // border: 1px solid white;
+  -webkit-animation: ${ScaleIn} 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: ${ScaleIn} 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+`;
 export const ButtonDiv = styled.div`
   display: flex;
   justify-content: center;
@@ -99,6 +126,28 @@ export const ProfileBtn = styled.button`
   }
 `;
 
+export const OptionBtn = styled.button`
+  width: 130px;
+  height: 40px;
+  font-family: "Roboto";
+  font-size: 16px;
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  transition: 0.4s ease-in-out;
+  border-radius: 5px;
+
+  :hover {
+    transform: scale(1.1);
+    transition: 0.4s ease-in-out;
+    cursor: pointer;
+  }
+`;
+export const ManagerTitleDiv = styled.div`
+  font-size: 20px;
+  color: gold;
+`;
+
 export const MainInfoDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -118,7 +167,8 @@ export const MainInfoContent = styled.div`
   // background-color: black;
 `;
 export const SecondaryInfoContentDiv = styled.div`
-  display: flex;
+  display: ${(props) => (props.open ? "none" : "flex")};
+  z-index: 1;
   //justify-content: center;
   align-items: center;
   height: 20%;

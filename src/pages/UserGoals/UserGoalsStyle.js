@@ -4,6 +4,8 @@ import pig from "../../images/pig.png";
 import babyPig from "../../images/formPig.png";
 import expandIcon from "../../images/expandIcon.png";
 import formBg from "../../images/formBg.svg";
+import shortTerm from "../../images/shortTermBg.svg";
+import mediumTerm from "../../images/mediumTermBg.svg";
 
 const scaleUpRight = keyframes`
  0% {
@@ -704,7 +706,7 @@ export const MediumGoalExample = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-image: url(${babyPig});
+  background-image: url(${mediumTerm});
   background-size: cover;
   border-radius: 10px;
   max-width: 100%;
@@ -793,7 +795,7 @@ export const ShortGoalExample = styled.div`
   min-width: 250px;
   height: 280px;
 
-  background-image: url(${pig});
+  background-image: url(${shortTerm});
   background-size: cover;
   font-family: "Roboto";
   box-shadow: 2px 2px 20px 1px white;
@@ -872,6 +874,7 @@ export const GoalExampleTitle = styled.h1`
   color: #51d289;
   font-family: "Roboto";
   height: 20%;
+  text-shadow: 1px 1px black;
 
   @media (max-width: 450px) {
     font-size: ${(props) => (props.fontSize ? "10px" : "")};
@@ -890,6 +893,7 @@ export const GoalExampleDescription = styled.p`
   padding-top: 8px;
   font-size: 12px;
   font-weight: 600;
+  text-shadow: 1px 1px black;
   color: gold;
 `;
 

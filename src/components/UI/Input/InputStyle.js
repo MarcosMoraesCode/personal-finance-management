@@ -75,6 +75,13 @@ export const StyledCheckboxLabel = styled.label`
   }
 `;
 
+export const StyledTextArea = styled.textarea`
+  font-family: "Roboto";
+  padding: 3px;
+  border-radius: 5px;
+  margin: 5px;
+`;
+
 export const StyledCheckBoxInput = styled.input`
   :checked::after {
     border-radius: 50%;
