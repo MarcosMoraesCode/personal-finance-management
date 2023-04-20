@@ -22,6 +22,12 @@ import {
 } from "./ProfileStyle";
 import { SpanText } from "../UserGoals/UserGoalsStyle";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
+import { useDispatch } from "react-redux";
+import {
+  editProfile,
+  fetchUserInformation,
+} from "../../features/user/userSlice";
+import { useEffect } from "react";
 
 const Profile = () => {
   const [showCrud, setShowCrud] = useState(false);
@@ -29,7 +35,15 @@ const Profile = () => {
   const [openOption, setOpenOptions] = useState(false);
   const [hideOldPassword, setHideOldPassword] = useState(true);
   const [hideNewPassword, setHideNewPassword] = useState(true);
-
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    street: "",
+    district: "",
+    city: "",
+    email: "",
+  });
+  const [completeAddress, setCompleteAddress] = useState("");
+  const dispatch = useDispatch();
   const [crudType, setCrudType] = useState({
     crudType: "",
     userName: "",
@@ -50,14 +64,38 @@ const Profile = () => {
       placeholder: "User Name",
       invalidMessage: "",
     },
-    inputAddress: {
+    inputStreet: {
       value: "",
       isValid: false,
       isTouched: false,
-      id: "User Address",
-      placeholder: "User Address",
+      id: "Street",
+      placeholder: "Ex: Licoln Avenue, 461",
       invalidMessage: "",
     },
+    inputDistrict: {
+      value: "",
+      isValid: false,
+      isTouched: false,
+      id: "District",
+      placeholder: "Your District",
+      invalidMessage: "",
+    },
+    inputCity: {
+      value: "",
+      isValid: false,
+      isTouched: false,
+      id: "City",
+      placeholder: "Your City",
+      invalidMessage: "",
+    },
+    /*inputState: {
+      value: "",
+      isValid: false,
+      isTouched: false,
+      id: "State",
+      placeholder: "Your State",
+      invalidMessage: "",
+    },*/
     inputOldPassword: {
       value: "",
       isValid: false,
@@ -90,6 +128,31 @@ const Profile = () => {
       placeholder: "Must have at least 50 characters.",
       invalidMessage: "",
     },
+  });
+
+  const getUser = async () => {
+    await dispatch(fetchUserInformation()).then((res) => {
+      if (res.meta.requestStatus === "fulfilled" && res.payload !== null) {
+        let info = res.payload;
+        let streetName = info.address.street;
+        let districtName = info.address.district;
+        let cityName = info.address.city;
+
+        setUserInfo({
+          name: info.name,
+          street: streetName,
+          district: districtName,
+          city: cityName,
+          email: info.email,
+        });
+
+        setCompleteAddress(`${streetName}, ${districtName}, ${cityName}.`);
+      }
+    });
+  };
+
+  useEffect(() => {
+    getUser();
   });
 
   const switchHideNewPassword = () => {
@@ -149,11 +212,47 @@ const Profile = () => {
         });
         checkButtonValidation(inputId, event.currentTarget.value);
         break;
-      case "User Address":
+      case "Street":
         setUserInputs({
           ...userInputs,
-          inputAddress: {
-            ...userInputs.inputAddress,
+          inputStreet: {
+            ...userInputs.inputStreet,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: CheckInputValidation(inputId, event.currentTarget.value),
+          },
+        });
+        checkButtonValidation(inputId, event.currentTarget.value);
+        break;
+      case "District":
+        setUserInputs({
+          ...userInputs,
+          inputDistrict: {
+            ...userInputs.inputDistrict,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: CheckInputValidation(inputId, event.currentTarget.value),
+          },
+        });
+        checkButtonValidation(inputId, event.currentTarget.value);
+        break;
+      case "City":
+        setUserInputs({
+          ...userInputs,
+          inputCity: {
+            ...userInputs.inputCity,
+            value: event.currentTarget.value,
+            isTouched: true,
+            isValid: CheckInputValidation(inputId, event.currentTarget.value),
+          },
+        });
+        checkButtonValidation(inputId, event.currentTarget.value);
+        break;
+      case "State":
+        setUserInputs({
+          ...userInputs,
+          inputState: {
+            ...userInputs.inputState,
             value: event.currentTarget.value,
             isTouched: true,
             isValid: CheckInputValidation(inputId, event.currentTarget.value),
@@ -178,21 +277,62 @@ const Profile = () => {
     }
   };
 
+  const confirmProfileChange = async () => {
+    let userObj = {
+      name: "",
+      email: "",
+      street: "",
+      district: "",
+      city: "",
+    };
+    switch (crudType.crudType) {
+      case "edit-username":
+        userObj.name = userInputs.inputName.value;
+        userObj.email = userInfo.email;
+        userObj.street = userInfo.street;
+        userObj.district = userInfo.district;
+        userObj.city = userInfo.city;
+        await dispatch(editProfile(userObj)).then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            BackdropCrudHandler();
+          }
+        });
+        break;
+      case "edit-useraddress":
+        userObj.name = userInfo.name;
+        userObj.email = userInfo.email;
+        userObj.street = userInputs.inputStreet.value;
+        userObj.district = userInputs.inputDistrict.value;
+        userObj.city = userInputs.inputCity.value;
+        await dispatch(editProfile(userObj)).then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            BackdropCrudHandler();
+          }
+        });
+        break;
+    }
+  };
+
   const CheckInputValidation = (inputId, value) => {
     const isValidName = (goalName) =>
       /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,15}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?$/.test(
         goalName
       );
-
-    const isValidValue = (goalValue) => /^[0-9]+\.[0-9]{2,2}$/i.test(goalValue);
-
-    const isValidDate = (expenseDate) =>
-      /^([0-9]{4})\-(0[1-9]|1[0-2])\-(0[1-9]|[1-2][0-9]|3[0-1])$/.test(
-        expenseDate
+    const isStrongPassword = (password) =>
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/.test(
+        password
       );
 
     const validation1 = isValidName(value);
-    //const validation2 = isValidValue(value);
+    const validation2 = value !== userInfo.name;
+    const validation3 = value.trim() !== "" && value.length > 8;
+    //const validation4 = value !== userInfo.address;
+    const validation5 = isStrongPassword(value);
+    const validation6 = userInputs.inputNewPassword.value === value;
+    const validation7 = value !== userInfo.street;
+    const validation8 = value !== userInfo.district;
+    const validation9 = value !== userInfo.city;
+
     //const validation3 = Number(value) <= Number(userInputs.inputValue.value);
     //const validation4 = Number(value) <= Number(userBalance);
     //const validation5 = isValidDate(value);
@@ -202,20 +342,29 @@ const Profile = () => {
 
     switch (inputId) {
       case "User Name":
-        validation1 ? (result = true) : (result = false);
+        validation1 && validation2 ? (result = true) : (result = false);
         break;
       case "Old Password":
         validation1 ? (result = true) : (result = false);
         break;
       case "New Password":
-        validation1 ? (result = true) : (result = false);
+        validation5 ? (result = true) : (result = false);
         break;
       case "New Password Confirmation":
-        validation1 ? (result = true) : (result = false);
+        validation6 ? (result = true) : (result = false);
         break;
-      case "User Address":
-        validation1 ? (result = true) : (result = false);
+      case "Street":
+        validation3 && validation7 ? (result = true) : (result = false);
         break;
+      case "District":
+        validation1 && validation8 ? (result = true) : (result = false);
+        break;
+      case "City":
+        validation1 && validation9 ? (result = true) : (result = false);
+        break;
+      /*case "State":
+        validation1 && validation10 ? (result = true) : (result = false);
+        break;*/
       case "Repport":
         validation1 ? (result = true) : (result = false);
         break;
@@ -230,8 +379,11 @@ const Profile = () => {
     let validation2 = userInputs.inputOldPassword.isValid === true;
     let validation3 = userInputs.inputNewPassword.isValid === true;
     let validation4 = userInputs.inputNewPasswordConfirmation.isValid === true;
-    let validation5 = userInputs.inputAddress.isValid === true;
-    let validation6 = userInputs.inputRepport.isValid === true;
+    let validation5 = userInputs.inputStreet.isValid === true;
+    let validation6 = userInputs.inputDistrict.isValid === true;
+    let validation7 = userInputs.inputCity.isValid === true;
+    //let validation8 = userInputs.inputState.isValid === true;
+    let validation9 = userInputs.inputRepport.isValid === true;
 
     switch (inputId) {
       case "User Name":
@@ -246,11 +398,20 @@ const Profile = () => {
       case "New Password Confirmation":
         validation4 = CheckInputValidation(inputId, value);
         break;
-      case "User Address":
+      case "Street":
         validation5 = CheckInputValidation(inputId, value);
         break;
-      case "Repport":
+      case "District":
         validation6 = CheckInputValidation(inputId, value);
+        break;
+      case "City":
+        validation7 = CheckInputValidation(inputId, value);
+        break;
+      /*case "State":
+        validation8 = CheckInputValidation(inputId, value);
+        break;*/
+      case "Repport":
+        validation9 = CheckInputValidation(inputId, value);
         break;
       default:
         break;
@@ -263,8 +424,9 @@ const Profile = () => {
           : setSubmitPermission(false);
         break;
       case "edit-useraddress":
-        validation1 === true
-          ? setSubmitPermission(true)
+        validation5 === true && validation6 === true && validation7 === true
+          ? //validation8 === true
+            setSubmitPermission(true)
           : setSubmitPermission(false);
         break;
       case "edit-userpassword":
@@ -302,6 +464,82 @@ const Profile = () => {
               ...userInputs.inputName,
               invalidMessage:
                 userInputs.inputName.value === "" ? "" : "Invalid name!",
+            },
+          });
+          break;
+        case "Old Password":
+          setUserInputs({
+            ...userInputs,
+            inputOldPassword: {
+              ...userInputs.inputOldPassword,
+              invalidMessage:
+                userInputs.inputOldPassword.value === ""
+                  ? ""
+                  : "Wrong Password!",
+            },
+          });
+          break;
+        case "Street":
+          setUserInputs({
+            ...userInputs,
+            inputStreet: {
+              ...userInputs.inputStreet,
+              invalidMessage:
+                userInputs.inputStreet.value === "" ? "" : "Invalid Name!",
+            },
+          });
+          break;
+        case "District":
+          setUserInputs({
+            ...userInputs,
+            inputDistrict: {
+              ...userInputs.inputDistrict,
+              invalidMessage:
+                userInputs.inputDistrict.value === "" ? "" : "Invalid Name!",
+            },
+          });
+          break;
+        case "City":
+          setUserInputs({
+            ...userInputs,
+            inputCity: {
+              ...userInputs.inputCity,
+              invalidMessage:
+                userInputs.inputCity.value === "" ? "" : "Invalid Name!",
+            },
+          });
+          break;
+        case "State":
+          setUserInputs({
+            ...userInputs,
+            inputState: {
+              ...userInputs.inputState,
+              invalidMessage:
+                userInputs.inputState.value === "" ? "" : "Invalid Name!",
+            },
+          });
+          break;
+        case "New Password":
+          setUserInputs({
+            ...userInputs,
+            inputNewPassword: {
+              ...userInputs.inputNewPassword,
+              invalidMessage:
+                userInputs.inputNewPassword.value === ""
+                  ? ""
+                  : "Min 8 characters, at least one of each: #, 1, a, A",
+            },
+          });
+          break;
+        case "New Password Confirmation":
+          setUserInputs({
+            ...userInputs,
+            inputNewPasswordConfirmation: {
+              ...userInputs.inputNewPasswordConfirmation,
+              invalidMessage:
+                userInputs.inputNewPasswordConfirmation.value === ""
+                  ? ""
+                  : "Password doesn't match!",
             },
           });
           break;
@@ -349,6 +587,33 @@ const Profile = () => {
             },
           });
           break;
+        case "Old Password":
+          setUserInputs({
+            ...userInputs,
+            inputOldPassword: {
+              ...userInputs.inputOldPassword,
+              invalidMessage: "",
+            },
+          });
+          break;
+        case "New Password":
+          setUserInputs({
+            ...userInputs,
+            inputNewPassword: {
+              ...userInputs.inputNewPassword,
+              invalidMessage: "",
+            },
+          });
+          break;
+        case "New Password Confirmation":
+          setUserInputs({
+            ...userInputs,
+            inputNewPasswordConfirmation: {
+              ...userInputs.inputNewPasswordConfirmation,
+              invalidMessage: "",
+            },
+          });
+          break;
         case "User Email":
           setUserInputs({
             ...userInputs,
@@ -376,6 +641,42 @@ const Profile = () => {
             },
           });
           break;
+        case "Street":
+          setUserInputs({
+            ...userInputs,
+            inputStreet: {
+              ...userInputs.inputStreet,
+              invalidMessage: "",
+            },
+          });
+          break;
+        case "District":
+          setUserInputs({
+            ...userInputs,
+            inputDistrict: {
+              ...userInputs.inputDistrict,
+              invalidMessage: "",
+            },
+          });
+          break;
+        case "City":
+          setUserInputs({
+            ...userInputs,
+            inputCity: {
+              ...userInputs.inputCity,
+              invalidMessage: "",
+            },
+          });
+          break;
+        case "State":
+          setUserInputs({
+            ...userInputs,
+            inputState: {
+              ...userInputs.inputState,
+              invalidMessage: "",
+            },
+          });
+          break;
         default:
           break;
       }
@@ -392,12 +693,36 @@ const Profile = () => {
         placeholder: "User Name",
         invalidMessage: "",
       },
-      inputAddress: {
+      inputStreet: {
         value: "",
         isValid: false,
         isTouched: false,
-        id: "User Address",
-        placeholder: "User Address",
+        id: "Street",
+        placeholder: "Ex: Licoln Avenue, 461",
+        invalidMessage: "",
+      },
+      inputDistrict: {
+        value: "",
+        isValid: false,
+        isTouched: false,
+        id: "District",
+        placeholder: "Your District",
+        invalidMessage: "",
+      },
+      inputCity: {
+        value: "",
+        isValid: false,
+        isTouched: false,
+        id: "City",
+        placeholder: "Your City",
+        invalidMessage: "",
+      },
+      inputState: {
+        value: "",
+        isValid: false,
+        isTouched: false,
+        id: "State",
+        placeholder: "Your State",
         invalidMessage: "",
       },
       inputOldPassword: {
@@ -446,6 +771,8 @@ const Profile = () => {
       userAddress: "",
       repport: "",
     });
+    setHideNewPassword(true);
+    setHideOldPassword(true);
     refreshInputs();
   };
 
@@ -459,13 +786,13 @@ const Profile = () => {
           <MainContent>
             <MainInfoDiv>
               <MainInfoContent>
-                <TextSpan>Username: </TextSpan> Marcos Moraes
+                <TextSpan>Username: </TextSpan> {userInfo.name}
               </MainInfoContent>
               <MainInfoContent>
-                <TextSpan>Email: </TextSpan> marcos@gmail.com
+                <TextSpan>Email: </TextSpan> {userInfo.email}
               </MainInfoContent>
               <MainInfoContent>
-                <TextSpan>Address:</TextSpan> Rua fulano de tal, 45
+                <TextSpan>Address:</TextSpan> {completeAddress}
               </MainInfoContent>
             </MainInfoDiv>
             <ImageDiv>
@@ -482,11 +809,6 @@ const Profile = () => {
                 <ProfileBtn
                   onClick={() => {
                     setOpenOptions(true);
-                    /*setShowCrud(true);
-                    setCrudType({
-                      ...crudType,
-                      crudType: "edit-username",
-                    });*/
                   }}
                 >
                   Edit Profile
@@ -529,6 +851,7 @@ const Profile = () => {
                   setCrudType({
                     ...crudType,
                     crudType: "edit-username",
+                    userName: userInfo.name,
                   });
                 }}
               >
@@ -540,6 +863,7 @@ const Profile = () => {
                   setCrudType({
                     ...crudType,
                     crudType: "edit-useraddress",
+                    userAddress: userInfo.address,
                   });
                 }}
               >
@@ -570,7 +894,8 @@ const Profile = () => {
       {showCrud ? (
         <Crud
           crudType={crudType.crudType}
-          userName={crudType.goalName}
+          userName={crudType.userName}
+          userAddress={crudType.userAddress}
           hideOldPassword={hideOldPassword}
           hideNewPassword={hideNewPassword}
           switchHideNewPassword={switchHideNewPassword}
@@ -579,6 +904,16 @@ const Profile = () => {
           userAddressInputConfig={userInputs.inputAddress}
           oldPasswordInputConfig={userInputs.inputOldPassword}
           newPasswordInputConfig={userInputs.inputNewPassword}
+          streetInputConfig={userInputs.inputStreet}
+          districtInputConfig={userInputs.inputDistrict}
+          cityInputConfig={userInputs.inputCity}
+          editUsername={() => {
+            confirmProfileChange();
+          }}
+          editUserAddress={() => {
+            confirmProfileChange();
+          }}
+          //stateInputConfig={userInputs.inputState}
           repportInputConfig={userInputs.inputRepport}
           newPasswordConfirmationInputConfig={
             userInputs.inputNewPasswordConfirmation
@@ -589,6 +924,36 @@ const Profile = () => {
           userNameBlur={() =>
             verifyFocus(userInputs.inputName.id, userInputs.inputName.isValid)
           }
+          streetChanged={(event) =>
+            InputChangeHandler(event, userInputs.inputStreet.id)
+          }
+          streetBlur={() =>
+            verifyFocus(
+              userInputs.inputStreet.id,
+              userInputs.inputStreet.isValid
+            )
+          }
+          districtChanged={(event) =>
+            InputChangeHandler(event, userInputs.inputDistrict.id)
+          }
+          districtBlur={() =>
+            verifyFocus(
+              userInputs.inputDistrict.id,
+              userInputs.inputDistrict.isValid
+            )
+          }
+          cityChanged={(event) =>
+            InputChangeHandler(event, userInputs.inputCity.id)
+          }
+          cityBlur={() =>
+            verifyFocus(userInputs.inputCity.id, userInputs.inputCity.isValid)
+          }
+          /* stateChanged={(event) =>
+            InputChangeHandler(event, userInputs.inputState.id)
+          }
+          stateBlur={() =>
+            verifyFocus(userInputs.inputState.id, userInputs.inputState.isValid)
+          }*/
           repportChanged={(event) =>
             InputChangeHandler(event, userInputs.inputRepport.id)
           }

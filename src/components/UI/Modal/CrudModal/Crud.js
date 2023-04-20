@@ -426,19 +426,61 @@ const Crud = (props) => {
           </CrudStyleTitle>
           <InputsDiv>
             <InputContainer
-              placeholder={props.userAddressInputConfig.placeholder}
+              placeholder={props.streetInputConfig.placeholder}
               width={"200px"}
               invalidMessage={
-                props.userAddressInputConfig.isValid
+                props.streetInputConfig.isValid
                   ? ""
-                  : props.userAddressInputConfig.invalidMessage
+                  : props.streetInputConfig.invalidMessage
               }
-              value={props.userAddressInputConfig.value}
-              blur={props.userAddressBlur}
-              changed={props.userAddressChanged}
+              value={props.streetInputConfig.value}
+              blur={props.streetBlur}
+              changed={props.streetChanged}
             >
-              New Address
+              Street and Number
             </InputContainer>
+            <InputContainer
+              placeholder={props.districtInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.districtInputConfig.isValid
+                  ? ""
+                  : props.districtInputConfig.invalidMessage
+              }
+              value={props.districtInputConfig.value}
+              blur={props.districtBlur}
+              changed={props.districtChanged}
+            >
+              Distric
+            </InputContainer>
+            <InputContainer
+              placeholder={props.cityInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.cityInputConfig.isValid
+                  ? ""
+                  : props.cityInputConfig.invalidMessage
+              }
+              value={props.cityInputConfig.value}
+              blur={props.cityBlur}
+              changed={props.cityChanged}
+            >
+              City
+            </InputContainer>
+            {/*<InputContainer
+              placeholder={props.stateInputConfig.placeholder}
+              width={"200px"}
+              invalidMessage={
+                props.stateInputConfig.isValid
+                  ? ""
+                  : props.stateInputConfig.invalidMessage
+              }
+              value={props.stateInputConfig.value}
+              blur={props.stateBlur}
+              changed={props.stateChanged}
+            >
+              State
+            </InputContainer>*/}
           </InputsDiv>
 
           <ModalButtonDiv>
@@ -497,7 +539,7 @@ const Crud = (props) => {
               border={"no-right-border"}
               height={"29px"}
             >
-              Current Password
+              New Password
             </InputContainer>
 
             <InputContainer
@@ -519,7 +561,7 @@ const Crud = (props) => {
 
           <ModalButtonDiv>
             <ContinueBtn
-              onClick={props.editUserAddress}
+              onClick={props.editUsername}
               disabled={props.continueDisabled}
               {...props}
             >

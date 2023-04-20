@@ -152,6 +152,7 @@ export const MainInfoDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start;
   width: 50%;
   height: 100%;
   //border: 1px solid white;
@@ -159,12 +160,14 @@ export const MainInfoDiv = styled.div`
 
 export const MainInfoContent = styled.div`
   display: flex;
+  font-size: 16px;
   //justify-content: center;
   align-items: center;
   height: 25%;
   width: 100%;
-  padding-left: 20%;
-  // background-color: black;
+  max-width: 135%;
+  padding-left: 50px;
+  //background-color: red;
 `;
 export const SecondaryInfoContentDiv = styled.div`
   display: ${(props) => (props.open ? "none" : "flex")};
