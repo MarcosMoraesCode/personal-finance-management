@@ -792,7 +792,9 @@ const Profile = () => {
                 <TextSpan>Email: </TextSpan> {userInfo.email}
               </MainInfoContent>
               <MainInfoContent>
-                <TextSpan>Address:</TextSpan> {completeAddress}
+                <p>
+                  <TextSpan>Address:</TextSpan> {completeAddress}
+                </p>
               </MainInfoContent>
             </MainInfoDiv>
             <ImageDiv>

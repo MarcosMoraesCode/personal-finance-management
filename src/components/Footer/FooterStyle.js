@@ -5,9 +5,6 @@ export const StyledFooter = styled.footer`
   width: 100%;
   background-color: black;
   font-family: "Roboto";
-  @media (max-width: 700px) {
-    height: 15vh;
-  }
 `;
 
 export const FooterContent = styled.div`

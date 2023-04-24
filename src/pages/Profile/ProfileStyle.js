@@ -32,7 +32,7 @@ export const ProfileDiv = styled.div`
 export const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 95%;
   max-width: 800px;
   border-radius: 10px;
   height: 90%;
@@ -50,8 +50,11 @@ export const ProfileTitleDiv = styled.div`
 `;
 
 export const ProfileTitle = styled.h1`
-  font-size: 60px;
+  font-size: 50px;
   color: #51d289;
+  @media (max-width: 550px) {
+    font-size: 36px;
+  }
 `;
 
 export const ProfileContentDiv = styled.div`
@@ -83,6 +86,9 @@ export const SecondaryContent = styled.div`
   height: 70%;
   font-size: 14px;
 
+  @media (max-width: 550px) {
+    width: 90%;
+  }
   //background-color: pink;
 `;
 
@@ -166,8 +172,14 @@ export const MainInfoContent = styled.div`
   height: 25%;
   min-width: 130%;
   max-width: 135%;
-  padding-left: 50px;
+  padding-left: 55px;
   //background-color: red;
+  @media (max-width: 700px) {
+    font-size: 12px;
+  }
+  @media (max-width: 550px) {
+    padding-left: 10px;
+  }
 `;
 export const SecondaryInfoContentDiv = styled.div`
   display: ${(props) => (props.open ? "none" : "flex")};
@@ -181,6 +193,10 @@ export const SecondaryInfoContentDiv = styled.div`
   padding-right: 25px;
   box-shadow: 2px 2px 20px 1px gold;
   //background-color: blue;
+  @media (max-width: 550px) {
+    padding: 5px;
+    padding-right: 15px;
+  }
 `;
 export const SecondaryInfoContent = styled.div`
   display: flex;
@@ -195,12 +211,17 @@ export const SecondaryInfoContent = styled.div`
     font-size: 14px;
     width: 90%;
   }
+  @media (max-width: 700px) {
+    p {
+      font-size: 12px;
+    }
+  }
 `;
 
 export const TextSpan = styled.span`
   color: #51d289;
   padding-right: 5px;
-  padding-left: 5px;
+  //padding-left: 5px;
 `;
 
 export const ImageDiv = styled.div`
@@ -228,5 +249,15 @@ export const ImageContent = styled.div`
     transform: scale(1.1);
     transition: 0.4s ease-in-out;
     cursor: pointer;
+  }
+
+  @media (max-height: 800px) {
+    min-width: 120px;
+    min-height: 120px;
+  }
+  @media (max-width: 550px) {
+    margin-right: 25px;
+    min-width: 90px;
+    min-height: 90px;
   }
 `;
