@@ -164,7 +164,7 @@ export const MainInfoContent = styled.div`
   //justify-content: center;
   align-items: center;
   height: 25%;
-  width: 100%;
+  min-width: 130%;
   max-width: 135%;
   padding-left: 50px;
   //background-color: red;
@@ -172,12 +172,13 @@ export const MainInfoContent = styled.div`
 export const SecondaryInfoContentDiv = styled.div`
   display: ${(props) => (props.open ? "none" : "flex")};
   z-index: 1;
-  //justify-content: center;
+  //justify-content: space-around;
   align-items: center;
   height: 20%;
   width: 100%;
   border-radius: 5px;
   padding-left: 25px;
+  padding-right: 25px;
   box-shadow: 2px 2px 20px 1px gold;
   //background-color: blue;
 `;
@@ -188,7 +189,12 @@ export const SecondaryInfoContent = styled.div`
   height: 30%;
   width: 80%;
   padding-left: 25px;
-  // background-color: blue;
+  //background-color: blue;
+  p {
+    text-align: justify;
+    font-size: 14px;
+    width: 90%;
+  }
 `;
 
 export const TextSpan = styled.span`

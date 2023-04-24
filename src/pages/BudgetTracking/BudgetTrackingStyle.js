@@ -11,12 +11,46 @@ export const BudgetTrackingDiv = styled.div`
   background-color: black;
   background: linear-gradient(to right top, grey, grey 20%, black, black 80%);
   overflow-y: auto;
+
+  @media (max-width: 1160px) {
+    flex-direction: column;
+    height: fit-content;
+  }
 `;
 
 export const AuxDiv = styled.div`
   display: flex;
   width: ${(props) => props.width};
   height: 87vh;
+`;
+
+export const LeftContentDiv = styled.div`
+  display: flex;
+  height: 87vh;
+  width: 60%;
+  @media (max-width: 1160px) {
+    // flex-direction: column;
+    height: 94vh;
+    width: 100%;
+  }
+  @media (max-width: 701px) {
+    flex-direction: column-reverse;
+    height: fit-content;
+  } ;
+`;
+export const RightContentDiv = styled.div`
+  display: flex;
+  height: 87vh;
+  width: 40%;
+  @media (max-width: 1160px) {
+    //align-items: center;
+    //justify-content: center;
+    margin: auto;
+    //background-color: red;
+    // flex-direction: column;
+    height: 94vh;
+    width: 90%;
+  }
 `;
 
 export const ExpensesTrackingContainer = styled.div`
@@ -31,6 +65,7 @@ export const ExpensesTrackingContainer = styled.div`
     height: 100%;
     margin-top: 35px;
     width: 80%;
+    padding-left: 5px;
   }
 `;
 
@@ -63,6 +98,9 @@ export const ExpensesInfoDiv = styled.div`
   height: fit-content;
   padding-top: 10px;
   padding-bottom: 10px;
+  @media (max-width: 700px) {
+    margin-top: 45px;
+  }
 `;
 
 export const Text = styled.p`

@@ -13,6 +13,8 @@ import {
   GoalMenuDiv,
   GoalMenuTitle,
   Span,
+  LeftContentDiv,
+  RightContentDiv,
 } from "./BudgetTrackingStyle";
 import Expense from "../../components/ExpensesTracking/Expense/Expense";
 import { useDispatch, useSelector } from "react-redux";
@@ -498,7 +500,7 @@ const BudgetTracking = () => {
 
   return (
     <BudgetTrackingDiv>
-      <AuxDiv width={"60%"}>
+      <LeftContentDiv>
         <ExpensesTrackingContainer>
           <ExpensesMenu>
             <ExpensesMenuTitle>Month Expenses</ExpensesMenuTitle>
@@ -523,8 +525,8 @@ const BudgetTracking = () => {
           selectedSlice={selectedSlice}
           loading={loading === true ? "true" : "false"}
         />
-      </AuxDiv>
-      <AuxDiv width={"40%"} defaultHeight>
+      </LeftContentDiv>
+      <RightContentDiv>
         <GoalsTrackingContainer>
           <GoalMenuDiv>
             <GoalMenuTitle>Goals</GoalMenuTitle>
@@ -539,7 +541,7 @@ const BudgetTracking = () => {
             {shortGoals}
           </GoalPeriod>
         </GoalsTrackingContainer>
-      </AuxDiv>
+      </RightContentDiv>
     </BudgetTrackingDiv>
   );
 };

@@ -266,9 +266,22 @@ export const ManageIncomeDiv = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
 
-  -webkit-animation: ${SlideInTop} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-    both;
-  animation: ${SlideInTop} 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  -webkit-animation: ${(props) =>
+    props.secondAnimation === true
+      ? css`
+          ${SlideInTop} 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both
+        `
+      : css`
+          ${FadeIn} 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both
+        `};
+  animation: ${(props) =>
+    props.secondAnimation === true
+      ? css`
+          ${SlideInTop} 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both
+        `
+      : css`
+          ${FadeIn} 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both
+        `};
 `;
 export const DefaultInfoDiv = styled.div`
   display: flex;
@@ -461,8 +474,8 @@ export const AnalysisContainer = styled.div`
   height: 80%;
   width: 80%;
 `;
-export const AnalysisText = styled.p`
-  text-align: center;
+export const DefaultText = styled.p`
+  text-align: justify;
   width: 80%;
   font-size: 13px;
 `;
@@ -475,7 +488,7 @@ export const TextSpan = styled.span`
   }
 `;
 
-export const AnalysisTextDiv = styled.div`
+export const DefaultTextDiv = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;

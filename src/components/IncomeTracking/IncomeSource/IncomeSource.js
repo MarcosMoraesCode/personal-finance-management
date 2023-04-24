@@ -10,7 +10,7 @@ const IncomeSource = (props) => {
     <IncomeSourceDiv>
       <IncomeSourceLi>
         <IncomeSpan width={"40%"}>{props.sourceName}</IncomeSpan>
-        <IncomeSpan width={"40%"} justify={"flex-end"} pRight={"35px"}>
+        <IncomeSpan width={"40%"} justify={"flex-start"}>
           $ {props.sourceValue.toFixed(2)}
         </IncomeSpan>
 

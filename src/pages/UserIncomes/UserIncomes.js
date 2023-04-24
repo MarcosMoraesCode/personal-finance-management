@@ -33,8 +33,8 @@ import {
   TableTitleDiv,
   TableSubtitleBlock,
   AnalysisContainer,
-  AnalysisTextDiv,
-  AnalysisText,
+  DefaultTextDiv,
+  DefaultText,
   TextSpan,
   InitialIncomeDiv,
   Logo,
@@ -165,6 +165,7 @@ const UserIncomes = (props) => {
   const [optionTwoSelected, setOptionTwoSelected] = useState(false);
   const [optionThreeSelected, setOptionThreeSelected] = useState(false);
   const [optionFourSelected, setOptionFourSelected] = useState(false);
+  const [secondAnimation, setSecondAnimation] = useState(false);
   const [optionName, setOptionName] = useState("manage-income");
   const [submitPermission, setSubmitPermission] = useState(false);
   const [analysisSelected, setAnalysisSelected] = useState("This Year");
@@ -284,6 +285,7 @@ const UserIncomes = (props) => {
         setOptionName("manage-income");
         break;
       case 2:
+        setSecondAnimation(true);
         setOptionOneSelected(false);
         setOptionTwoSelected(true);
         setOptionThreeSelected(false);
@@ -291,6 +293,7 @@ const UserIncomes = (props) => {
         setOptionName("allocate-income");
         break;
       case 3:
+        setSecondAnimation(true);
         setOptionOneSelected(false);
         setOptionTwoSelected(false);
         setOptionThreeSelected(true);
@@ -298,6 +301,7 @@ const UserIncomes = (props) => {
         setOptionName("analysis-income");
         break;
       case 4:
+        setSecondAnimation(true);
         setOptionOneSelected(false);
         setOptionTwoSelected(false);
         setOptionThreeSelected(false);
@@ -436,6 +440,27 @@ const UserIncomes = (props) => {
     }
   };
 
+  const incomeNameCheck = (inputName) => {
+    let exists = false;
+
+    if (userIncomes !== null) {
+      let incomesArr = Object.values(userIncomes);
+
+      let index = incomesArr.findIndex(
+        (income) =>
+          income.name.toString().toUpperCase() ===
+          inputName.toString().toUpperCase()
+      );
+
+      if (index !== -1) {
+        exists = true;
+      }
+    }
+
+    return !exists;
+  };
+  // incomeNameCheck();
+
   const CheckInputValidation = (inputId, value) => {
     const isValidName = (incomeName) =>
       /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,15}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?$/.test(
@@ -449,6 +474,7 @@ const UserIncomes = (props) => {
       /^([0-9]{4})\-(0[1-9]|1[0-2])\-(0[1-9]|[1-2][0-9]|3[0-1])$/.test(
         incomeDate
       );
+
     //VALOR DO INPUT CASO NUMERO
     let number1 = value;
     //VALOR DO SALDO
@@ -484,6 +510,7 @@ const UserIncomes = (props) => {
           number3 <= goalValue - allocatedValue &&
           number3 <= userBalance === true
         : number3 <= allocatedValue;
+    const validation9 = incomeNameCheck(value);
 
     //console.log(inputId);
 
@@ -491,7 +518,7 @@ const UserIncomes = (props) => {
 
     switch (inputId) {
       case "Income Name":
-        validation1 ? (result = true) : (result = false);
+        validation1 && validation9 ? (result = true) : (result = false);
         break;
       case "Income Value":
         //TRANSFER INCOME VALIDADO
@@ -1323,7 +1350,7 @@ const UserIncomes = (props) => {
   switch (optionName) {
     case "manage-income":
       selectedContent = (
-        <ManageIncomeDiv>
+        <ManageIncomeDiv secondAnimation={secondAnimation}>
           <DefaultTitleDiv>
             <DefaultTitle>Incomes</DefaultTitle>
           </DefaultTitleDiv>
@@ -1440,8 +1467,8 @@ const UserIncomes = (props) => {
           </DefaultInfoDiv>
           <AnalysisContainer>
             {analysisChart}
-            <AnalysisTextDiv>
-              <AnalysisText>
+            <DefaultTextDiv>
+              <DefaultText>
                 In the account history, it is possible to filter by investments
                 or deposits for further details. And for more information about
                 expenses, please access the{" "}
@@ -1449,8 +1476,8 @@ const UserIncomes = (props) => {
                   expenses page
                 </TextSpan>
                 .
-              </AnalysisText>
-            </AnalysisTextDiv>
+              </DefaultText>
+            </DefaultTextDiv>
           </AnalysisContainer>
         </AnalysisIncomeDiv>
       );
@@ -1484,6 +1511,18 @@ const UserIncomes = (props) => {
             </DefaultListTitleDiv>
             <DefaultListContent>{goalsList}</DefaultListContent>
           </DefaultList>
+
+          <DefaultTextDiv>
+            <DefaultText>
+              In the account history, it is possible to filter by investments or
+              deposits for further details. And for more information about
+              expenses, please access the{" "}
+              <TextSpan onClick={() => navigate("/userexpenses")}>
+                expenses page
+              </TextSpan>
+              .
+            </DefaultText>
+          </DefaultTextDiv>
         </AllocateIncomeDiv>
       );
       break;

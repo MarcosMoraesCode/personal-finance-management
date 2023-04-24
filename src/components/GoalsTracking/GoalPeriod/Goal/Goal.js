@@ -138,7 +138,7 @@ const Goal = (props) => {
           </TextSpan>
         </InfoDiv>
 
-        <InfoDiv height={"37%"}>
+        <InfoDiv height={"37%"} paddingTop>
           <TextSpan width={"150px"} align={"justify"} color={"gold"}>
             {props.hasParam
               ? message

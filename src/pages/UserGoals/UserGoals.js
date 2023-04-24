@@ -237,12 +237,13 @@ const UserGoals = (props) => {
     const validation4 = Number(value) <= Number(userBalance);
     const validation5 = isValidDate(value);
     const validation6 = Number(value) >= Number(crudType.goalAllocated);
+    const validation7 = goalNameCheck(value);
 
     let result = false;
 
     switch (inputId) {
       case "Goal Name":
-        validation1 ? (result = true) : (result = false);
+        validation1 && validation7 ? (result = true) : (result = false);
         break;
       case "Goal Value":
         if (crudType.crudType === "edit-goal") {
@@ -363,6 +364,25 @@ const UserGoals = (props) => {
           break;
       }
     }
+  };
+  const goalNameCheck = (inputName) => {
+    let exists = false;
+
+    if (userGoals !== null) {
+      let goalsArr = Object.values(userGoals);
+
+      let index = goalsArr.findIndex(
+        (goal) =>
+          goal.name.toString().toUpperCase() ===
+          inputName.toString().toUpperCase()
+      );
+
+      if (index !== -1) {
+        exists = true;
+      }
+    }
+
+    return !exists;
   };
 
   const checkButtonValidation = (inputId, value) => {

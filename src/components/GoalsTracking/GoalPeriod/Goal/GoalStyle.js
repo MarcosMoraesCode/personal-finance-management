@@ -53,6 +53,7 @@ export const GoalDiv = styled.div`
   margin-left: 15px;
   min-width: 150px;
   border-radius: 5px;
+
   //background-color: #0c0a08;
   background-image: url(${cardBg});
   background-size: cover;
@@ -76,6 +77,9 @@ export const GoalDiv = styled.div`
       : css`
           ${SlideLeft} 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
         `};
+  @media (max-height: 640px) {
+    min-height: 140px;
+  }
 `;
 
 export const ClickedGoalDiv = styled.div`
@@ -84,6 +88,7 @@ export const ClickedGoalDiv = styled.div`
   align-items: center;
   justify-content: space-between;
   padding-top: 5px;
+  padding-bottom: 5px;
   margin: 10px;
   min-height: 80%;
   height: 80%;
@@ -101,11 +106,15 @@ export const ClickedGoalDiv = styled.div`
 
   border: 1px solid gold;
   box-shadow: 2px 2px 20px 1px gold;
+  @media (max-height: 580px) {
+    min-height: 150px;
+  }
 `;
 
 export const ButtonDiv = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   width: 100%;
   //background-color: red;
   height: 15%;
@@ -115,6 +124,7 @@ export const BackButton = styled.button`
   width: 25px;
   height: 25px;
   background-color: transparent;
+
   border: none;
   background-image: url(${back});
   background-size: cover;
@@ -134,6 +144,7 @@ export const InfoDiv = styled.div`
   //border: 1px solid white;
   color: white;
   font-size: 12px;
+  padding-top: ${(props) => (props.paddingTop ? "8px" : "0px")};
 `;
 
 export const TextSpan = styled.div`
@@ -161,8 +172,8 @@ export const GoalPercentageDiv = styled.div`
   //border: 1px solid gray;
 
   @media (max-height: 580px) {
-    display: none;
-  } ;
+    // display: none;
+  }
 `;
 
 export const PercentageTitle = styled.h1`
@@ -174,10 +185,17 @@ export const PercentageTitle = styled.h1`
   height: 50%;
   top: 26%;
   right: 25%;
-  border-radius: 50%;
+  border-radius: 100%;
   background-color: black;
   color: #51d289;
   font-size: 11px;
+  @media (max-height: 780px) {
+    width: 32%;
+    height: 60%;
+    top: 22%;
+    right: 34%;
+    font-size: 9px;
+  }
 `;
 
 export const MaskDiv = styled.div`
@@ -197,7 +215,8 @@ export const GoalInformationDiv = styled.div`
   align-items: center;
   padding-bottom: 5px;
   @media (max-height: 580px) {
-    flex-direction: column;
+    //flex-direction: column;
+
     margin: 0px;
     margin-bottom: 5px;
   } ;
@@ -213,9 +232,9 @@ export const StatusInformation = styled.p`
   padding: 2.2px;
   padding-right: 5px;
   padding-left: 5px;
-  @media (max-height: 580px) {
-    padding: 3px;
-    font-size: 11px;
+  @media (max-height: 640px) {
+    font-size: 10px;
+    //padding: 3px;
   } ;
 `;
 
@@ -234,4 +253,8 @@ export const InformationButton = styled.button`
   :hover {
     cursor: pointer;
   }
+  @media (max-height: 640px) {
+    font-size: 10px;
+    //padding: 3px;
+  } ;
 `;

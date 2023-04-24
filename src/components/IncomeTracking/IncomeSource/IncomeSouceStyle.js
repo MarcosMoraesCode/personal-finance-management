@@ -34,11 +34,12 @@ export const IncomeSourceDiv = styled.div`
 export const IncomeSpan = styled.div`
   display: flex;
   width: ${(props) => props.width};
-  text-align: end;
+  //text-align: end;
   justify-content: ${(props) => props.justify};
   color: #51d289;
   padding-right: 5px;
   font-weight: 600;
+  font-size: 11px;
   //border: 1px solid white;
   padding-right: ${(props) => props.pRight};
 `;

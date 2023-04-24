@@ -16,9 +16,9 @@ export const IncomeTrackingContainer = styled.div`
   margin: auto;
   //border: 1px solid white;
   box-shadow: 2px 2px 20px 1px white;
-  @media (max-width: 700px) {
+  @media (max-width: 701px) {
     border: none;
-    height: 100%;
+    height: 94vh;
     margin-top: 15px;
     margin-bottom: 25px;
     width: 75%;
@@ -42,7 +42,7 @@ export const IncomeTrackingSecondaryTitle = styled.div`
 
   font-size: large;
   width: fit-content;
-  width: 75%;
+  width: 85%;
   padding: 3px;
   padding-left: 10px;
   padding-right: 10px;
@@ -142,7 +142,7 @@ export const IncomeAvaiableInfo = styled.div`
 `;
 
 export const IncomeSourcersDiv = styled.div`
-  width: 75%;
+  width: 90%;
   height: 80%;
   min-height: 40px;
   padding: 5px;
@@ -150,7 +150,7 @@ export const IncomeSourcersDiv = styled.div`
   //border: 1px solid white;
   border-radius: 3px;
   margin: 10px;
-  // background-color: #1b1b1b;
+  //background-color: #1b1b1b;
   /* width */
   ::-webkit-scrollbar {
     width: 7px;
@@ -195,7 +195,7 @@ export const PercentageTitle = styled.div`
   height: 60%;
   margin: auto;
   opacity: 0.8;
-  font-size: 28px;
+  font-size: 25px;
   font-weight: 600;
   top: 20%;
   right: 20%;
@@ -203,8 +203,19 @@ export const PercentageTitle = styled.div`
   background-color: black;
   //z-index: 2;
   color: ${(props) => props.color};
-  @media (max-height: 520px) {
+  @media (max-width: 701px) {
     font-size: 19px;
+    width: 50%;
+    height: 60%;
+    top: 20%;
+    right: 25%;
+  }
+  @media (max-width: 460px) {
+    font-size: 19px;
+    width: 60%;
+    height: 60%;
+    top: 20%;
+    right: 20%;
   }
 `;
 export const AdviceDiv = styled.div`

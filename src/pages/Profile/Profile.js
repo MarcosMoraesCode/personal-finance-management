@@ -802,8 +802,10 @@ const Profile = () => {
           <SecondaryContent>
             <SecondaryInfoContentDiv open={openOption}>
               <SecondaryInfoContent>
-                You can edit your profile. To change your password or edit
-                username, address.
+                <p>
+                  You can edit your profile. To change your password or edit
+                  username, address.
+                </p>
               </SecondaryInfoContent>
               <ButtonDiv>
                 <ProfileBtn
@@ -817,8 +819,10 @@ const Profile = () => {
             </SecondaryInfoContentDiv>
             <SecondaryInfoContentDiv open={openOption}>
               <SecondaryInfoContent>
-                FinPlann is still in beta, please repport any bug you may have
-                found!
+                <p>
+                  FinPlann is still in beta, please repport any bug you may have
+                  found!
+                </p>
               </SecondaryInfoContent>
               <ButtonDiv>
                 <ProfileBtn
@@ -836,8 +840,10 @@ const Profile = () => {
             </SecondaryInfoContentDiv>
             <SecondaryInfoContentDiv open={openOption}>
               <SecondaryInfoContent>
-                If you want to reset all incomes, expenses, goals, achievements
-                and history you can use the reset button!
+                <p>
+                  If you want to reset all incomes, expenses, goals,
+                  achievements and history you can use the reset button!
+                </p>
               </SecondaryInfoContent>
               <ButtonDiv>
                 <ProfileBtn>Reset</ProfileBtn>
