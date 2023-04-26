@@ -14,7 +14,7 @@ export const BudgetTrackingDiv = styled.div`
 
   @media (max-width: 1160px) {
     flex-direction: column;
-    height: fit-content;
+    //height: fit-content;
   }
 `;
 
@@ -36,7 +36,7 @@ export const LeftContentDiv = styled.div`
   @media (max-width: 701px) {
     flex-direction: column-reverse;
     height: fit-content;
-  } ;
+  }
 `;
 export const RightContentDiv = styled.div`
   display: flex;

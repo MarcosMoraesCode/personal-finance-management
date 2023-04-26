@@ -58,6 +58,7 @@ import {
   editACategory,
   editAnExpense,
   fetchBalance,
+  updateBalance,
   fetchCategoriesData,
   fetchDynamicId,
   fetchExpensesData,
@@ -77,7 +78,7 @@ import {
 } from "../../features/charts/chartsSlice";
 import CompletePieChart from "../../components/UI/Charts/CompletePieChart/CompletePieChart";
 import AllExpensesInfo from "../../components/UI/Charts/AllExpensesInfo/AllExpensesInfo";
-import { updateBalance } from "../../features/incomes/incomesSlice";
+//import { updateBalance } from "../../features/incomes/incomesSlice";
 import {
   postNewHistory,
   fetchHistoryId,
@@ -96,7 +97,7 @@ const UserExpenses = () => {
   const dispatch = useDispatch();
 
   //Firebase
-  const db = startFirebase();
+  //const db = startFirebase();
 
   //States
   const [userExpense, setUserExpense] = useState({

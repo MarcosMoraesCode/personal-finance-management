@@ -48,7 +48,7 @@ const SideDrawer = (props) => {
         <NavItem to="/userexpenses">Expenses</NavItem>
         <NavItem to="/usergoals">Goals</NavItem>
         <NavItem to="/userprofile">Profile</NavItem>
-        <NavItem to="/logout">Logout</NavItem>
+        <NavItem to="/">Logout</NavItem>
       </NavigationDiv>
     </SideDrawerDiv>
   );

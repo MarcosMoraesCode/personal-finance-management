@@ -11,8 +11,10 @@ import {
   CrudStatusDescription,
   CrudStyleTitle,
   InputsDiv,
+  WarningMessage,
 } from "./CrudStyle";
 import InputContainer from "../../Input/Input";
+import { StyledMessage } from "../../Input/InputStyle";
 
 const Crud = (props) => {
   let crudContent = null;
@@ -605,7 +607,30 @@ const Crud = (props) => {
           </ModalButtonDiv>
         </>
       );
+    case "reset-data":
+      crudContent = (
+        <>
+          <CrudStyleTitle>
+            {props.userName}, are you sure about reset all your account data?
+          </CrudStyleTitle>
+          <WarningMessage>
+            If you continue, all your expenses, incomes, goals, achievements and
+            history will be reseted
+          </WarningMessage>
 
+          <ModalButtonDiv>
+            <ContinueBtn
+              onClick={props.resetUserData}
+              disabled={props.continueDisabled}
+              {...props}
+            >
+              CONTINUE
+            </ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+          </ModalButtonDiv>
+        </>
+      );
+      break;
     default:
       break;
   }

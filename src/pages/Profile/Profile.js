@@ -26,6 +26,7 @@ import { useDispatch } from "react-redux";
 import {
   editProfile,
   fetchUserInformation,
+  resetData,
 } from "../../features/user/userSlice";
 import { useEffect } from "react";
 
@@ -313,6 +314,23 @@ const Profile = () => {
     }
   };
 
+  const resetUserData = async () => {
+    const userObj = {
+      name: crudType.userName,
+      email: crudType.userEmail,
+      street: userInfo.street,
+      district: userInfo.district,
+      city: userInfo.city,
+    };
+
+    await dispatch(resetData(userObj)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setCrudType({ ...crudType, crudType: "", userEmail: "", userName: "" });
+        setSubmitPermission(false);
+        setShowCrud(false);
+      }
+    });
+  };
   const CheckInputValidation = (inputId, value) => {
     const isValidName = (goalName) =>
       /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,15}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?$/.test(
@@ -848,7 +866,20 @@ const Profile = () => {
                 </p>
               </SecondaryInfoContent>
               <ButtonDiv>
-                <ProfileBtn>Reset</ProfileBtn>
+                <ProfileBtn
+                  onClick={() => {
+                    setShowCrud(true);
+                    setCrudType({
+                      ...crudType,
+                      crudType: "reset-data",
+                      userName: userInfo.name,
+                      userEmail: userInfo.email,
+                    });
+                    setSubmitPermission(true);
+                  }}
+                >
+                  Reset
+                </ProfileBtn>
               </ButtonDiv>
             </SecondaryInfoContentDiv>
             <ProfileManagerDiv open={openOption}>
@@ -915,6 +946,7 @@ const Profile = () => {
           streetInputConfig={userInputs.inputStreet}
           districtInputConfig={userInputs.inputDistrict}
           cityInputConfig={userInputs.inputCity}
+          resetUserData={() => resetUserData()}
           editUsername={() => {
             confirmProfileChange();
           }}

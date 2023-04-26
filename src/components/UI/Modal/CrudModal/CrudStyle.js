@@ -32,6 +32,13 @@ export const CrudStyleTitle = styled.h1`
   font-size: 16px;
 `;
 
+export const WarningMessage = styled.p`
+  color: red;
+  padding: 10px;
+  text-align: center;
+  max-width: 80%;
+`;
+
 export const CancelBtn = styled.button`
   background-color: transparent;
   margin: 10px;

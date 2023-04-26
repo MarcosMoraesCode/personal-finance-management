@@ -16,6 +16,12 @@ export const IncomeTrackingContainer = styled.div`
   margin: auto;
   //border: 1px solid white;
   box-shadow: 2px 2px 20px 1px white;
+  @media (max-width: 1160px) {
+    flex-direction: column;
+    height: fit-content;
+    padding-bottom: 20px;
+    padding-top: 20px;
+  }
   @media (max-width: 701px) {
     border: none;
     height: 94vh;

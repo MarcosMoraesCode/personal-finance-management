@@ -30,7 +30,6 @@ const Layout = (props) => {
 
   useEffect(() => {
     getData();
-    console.log("carregou");
   }, []);
   //console.log(userAchievements);
 

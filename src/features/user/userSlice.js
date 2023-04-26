@@ -57,6 +57,33 @@ export const editProfile = createAsyncThunk(
   }
 );
 
+export const resetData = createAsyncThunk(
+  "userprofile/resetData",
+  async (action, state) => {
+    try {
+      // console.log("payload", action.categoryId);
+      await set(ref(db, `users`), {
+        [userId]: {
+          balance: 0,
+          dynamicId: 0,
+          historyId: 0,
+          userInfo: {
+            name: action.name,
+            email: action.email,
+            address: {
+              street: action.street,
+              district: action.district,
+              city: action.city,
+            },
+          },
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const userDataSlice = createSlice({
   name: "userData",
   initialState,
@@ -81,6 +108,13 @@ export const userDataSlice = createSlice({
     builder.addCase(editProfile.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);
       //console.log(action.error);
+    });
+    builder.addCase(resetData.fulfilled, (state, action) => {
+      console.log("Success", action.payload);
+    });
+    builder.addCase(resetData.rejected, (state, action) => {
+      console.log("Rejected", action.error.message);
+      console.log(action.error);
     });
   },
 });
