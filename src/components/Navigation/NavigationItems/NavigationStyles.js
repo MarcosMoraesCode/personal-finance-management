@@ -7,10 +7,12 @@ export const NavigationUl = styled.ul`
   flex-direction: row;
   align-items: center;
   background-color: black;
-  opacity: 0.85;
+  //border: 1px solid red;
+  opacity: 1;
   justify-content: space-between;
   list-style: none;
   width: 100%;
+  //z-index: 998;
   height: 6vh;
 `;
 

@@ -161,6 +161,7 @@ const InputContainer = (props) => {
           </StyledLabel>
 
           <StyledInput
+            elementType={props.elementType}
             type={props.type}
             key={props.id}
             value={props.value}
@@ -174,7 +175,10 @@ const InputContainer = (props) => {
             fontSize={props.fontSize}
             outline={props.outline}
           />
-          <StyledMessageScaled key={`message-1-${props.id}`}>
+          <StyledMessageScaled
+            key={`message-1-${props.id}`}
+            elementType={props.elementType}
+          >
             {props.invalidMessage}
           </StyledMessageScaled>
         </WrappComponent>

@@ -15,7 +15,7 @@ const Footer = () => {
   return (
     <StyledFooter>
       <FooterContentWrapper>
-        <FooterContent>
+        <FooterContent logo>
           <Logo src={logo} />
         </FooterContent>
         <FooterContent> © 2023 - Marcos Moraes </FooterContent>

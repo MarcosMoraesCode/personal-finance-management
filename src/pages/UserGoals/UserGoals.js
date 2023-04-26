@@ -59,6 +59,7 @@ import {
   StyledParagraph,
   AdvicesContent,
   SpinnerDiv,
+  ButtonContainer,
 } from "./UserGoalsStyle";
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
 import CongratulationsModal from "../../components/UI/Modal/CongratulationsModal/CongratulationsModal";
@@ -597,7 +598,7 @@ const UserGoals = (props) => {
           Create a new Short Term Goal!
         </GoalExampleTitle>
         {defaultForm}
-        <ButtonDiv center>
+        {/*<ButtonDiv center>
           <AddButton
             disabled={submitPermission ? "" : "disabled"}
             onClick={() => {
@@ -606,17 +607,30 @@ const UserGoals = (props) => {
           >
             Add Goal
           </AddButton>
-        </ButtonDiv>
-        <ButtonDiv>
-          <BackButton
-            onClick={() => {
-              setOpenShortForm(!openShortForm);
-              refreshInputs();
-              setSubmitPermission(false);
-            }}
-          >
-            Back
-          </BackButton>
+        </ButtonDiv>*/}
+        <ButtonDiv center>
+          <ButtonContainer></ButtonContainer>
+          <ButtonContainer justify={"center"}>
+            <AddButton
+              disabled={submitPermission ? "" : "disabled"}
+              onClick={() => {
+                submitGoal();
+              }}
+            >
+              Add Goal
+            </AddButton>
+          </ButtonContainer>
+          <ButtonContainer justify={"flex-end"}>
+            <BackButton
+              onClick={() => {
+                setOpenShortForm(!openShortForm);
+                refreshInputs();
+                setSubmitPermission(false);
+              }}
+            >
+              Back
+            </BackButton>
+          </ButtonContainer>
         </ButtonDiv>
       </>
     );
@@ -650,25 +664,28 @@ const UserGoals = (props) => {
         </GoalExampleTitle>
         {defaultForm}
         <ButtonDiv center>
-          <AddButton
-            disabled={submitPermission ? "" : "disabled"}
-            onClick={() => {
-              submitGoal();
-            }}
-          >
-            Add Goal
-          </AddButton>
-        </ButtonDiv>
-        <ButtonDiv>
-          <BackButton
-            onClick={() => {
-              setOpenMediumForm(!openMediumForm);
-              refreshInputs();
-              setSubmitPermission(false);
-            }}
-          >
-            Back
-          </BackButton>
+          <ButtonContainer></ButtonContainer>
+          <ButtonContainer justify={"center"}>
+            <AddButton
+              disabled={submitPermission ? "" : "disabled"}
+              onClick={() => {
+                submitGoal();
+              }}
+            >
+              Add Goal
+            </AddButton>
+          </ButtonContainer>
+          <ButtonContainer justify={"flex-end"}>
+            <BackButton
+              onClick={() => {
+                setOpenMediumForm(!openMediumForm);
+                refreshInputs();
+                setSubmitPermission(false);
+              }}
+            >
+              Back
+            </BackButton>
+          </ButtonContainer>
         </ButtonDiv>
       </>
     );
@@ -702,25 +719,28 @@ const UserGoals = (props) => {
         </GoalExampleTitle>
         {defaultForm}
         <ButtonDiv center>
-          <AddButton
-            disabled={submitPermission ? "" : "disabled"}
-            onClick={() => {
-              submitGoal();
-            }}
-          >
-            Add Goal
-          </AddButton>
-        </ButtonDiv>
-        <ButtonDiv>
-          <BackButton
-            onClick={() => {
-              setOpenLongForm(!openLongForm);
-              refreshInputs();
-              setSubmitPermission(false);
-            }}
-          >
-            Back
-          </BackButton>
+          <ButtonContainer></ButtonContainer>
+          <ButtonContainer justify={"center"}>
+            <AddButton
+              disabled={submitPermission ? "" : "disabled"}
+              onClick={() => {
+                submitGoal();
+              }}
+            >
+              Add Goal
+            </AddButton>
+          </ButtonContainer>
+          <ButtonContainer justify={"flex-end"}>
+            <BackButton
+              onClick={() => {
+                setOpenLongForm(!openLongForm);
+                refreshInputs();
+                setSubmitPermission(false);
+              }}
+            >
+              Back
+            </BackButton>
+          </ButtonContainer>
         </ButtonDiv>
       </>
     );
@@ -1169,8 +1189,6 @@ const UserGoals = (props) => {
         });
       }
     });
-
-    console.log("e por ultimo aqui");
   };
 
   return (

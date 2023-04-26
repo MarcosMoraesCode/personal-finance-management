@@ -607,6 +607,7 @@ const Crud = (props) => {
           </ModalButtonDiv>
         </>
       );
+      break;
     case "reset-data":
       crudContent = (
         <>

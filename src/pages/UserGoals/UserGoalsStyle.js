@@ -678,27 +678,9 @@ export const LongGoalExample = styled.div`
     min-height: 250px;
     max-height: 250px;
     margin: 5px;
-    -webkit-animation: ${(props) =>
-      props.open === true
-        ? css`
-            ${scaleUpMediaLongForm} 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-          `
-        : props.animations === false
-        ? "none"
-        : css`
-            ${scaleDownMediaLongForm} 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
-          `};
 
-    animation: ${(props) =>
-      props.open === true
-        ? css`
-            ${scaleUpMediaLongForm} 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-          `
-        : props.animations === false
-        ? "none"
-        : css`
-            ${scaleDownMediaLongForm} 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
-          `};
+    -webkit-animation: none;
+    animation: none;
   }
 `;
 
@@ -762,27 +744,9 @@ export const MediumGoalExample = styled.div`
     min-height: 250px;
     max-height: 250px;
     margin: 5px;
-    -webkit-animation: ${(props) =>
-      props.open === true
-        ? css`
-            ${scaleUpMediaMediumForm} 0.9s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
-          `
-        : props.animations === false
-        ? "none"
-        : css`
-            ${scaleDownMediaMediumForm} 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
-          `};
 
-    animation: ${(props) =>
-      props.open === true
-        ? css`
-            ${scaleUpMediaMediumForm} 0.9s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
-          `
-        : props.animations === false
-        ? "none"
-        : css`
-            ${scaleDownMediaMediumForm} 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
-          `};
+    -webkit-animation: none;
+    animation: none;
   }
 `;
 export const ShortGoalExample = styled.div`
@@ -844,27 +808,9 @@ export const ShortGoalExample = styled.div`
     min-height: 250px;
     max-height: 250px;
     margin: 5px;
-    -webkit-animation: ${(props) =>
-      props.open === true
-        ? css`
-            ${scaleUpMediaShortForm} 0.9s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
-          `
-        : props.animations === false
-        ? "none"
-        : css`
-            ${scaleDownMediaShortForm} 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
-          `};
 
-    animation: ${(props) =>
-      props.open === true
-        ? css`
-            ${scaleUpMediaShortForm} 0.9s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
-          `
-        : props.animations === false
-        ? "none"
-        : css`
-            ${scaleDownMediaShortForm} 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
-          `};
+    -webkit-animation: none;
+    animation: none;
   }
 `;
 
@@ -873,11 +819,12 @@ export const GoalExampleTitle = styled.h1`
   font-size: ${(props) => (props.fontSize ? props.fontSize : "20px")};
   color: #51d289;
   font-family: "Roboto";
-  height: 20%;
+  height: fit-content;
   text-shadow: 1px 1px black;
+  //background-color: red;
 
   @media (max-width: 450px) {
-    font-size: ${(props) => (props.fontSize ? "10px" : "")};
+    font-size: ${(props) => (props.fontSize ? "12px" : "")};
   }
   //border: red 1px solid;
 `;
@@ -900,9 +847,17 @@ export const GoalExampleDescription = styled.p`
 export const ButtonDiv = styled.div`
   display: flex;
   justify-content: ${(props) => (props.center ? "center" : "flex-end")};
-  padding: 10px;
+  //padding: 10px;
   padding-top: 0px;
-  // background-color: red;
+  //background-color: red;
+`;
+export const ButtonContainer = styled.div`
+  display: flex;
+  min-width: 33%;
+  max-width: 33%;
+  //padding-top: 0px;
+  justify-content: ${(props) => props.justify};
+  //border: 1px solid green;
 `;
 
 export const CreateButton = styled.button`
@@ -936,15 +891,24 @@ export const FormContainer = styled.div`
 `;
 
 export const BackButton = styled.button`
+  margin: 5px;
+  margin-top: 0px;
+  font-family: "Roboto";
+  width: fit-content;
+  height: 17px;
+
+  padding: 2px 4px 2px 4px;
+
+  font-size: 8px;
+  margin-right: 30px;
+
   border: none;
   color: white;
-  background-color: transparent;
+  background-color: black;
   //text-decoration: underline;
   font-size: 8px;
   border: 1px solid white;
-  padding: 2px;
-  padding-left: 3px;
-  padding-right: 3px;
+
   :hover {
     cursor: pointer;
   }
@@ -1310,6 +1274,7 @@ export const AdvicesContent = styled.div`
   //border: 1px solid gold;
   max-width: 90%;
   max-height: 40%;
+  margin-top: 30px;
   overflow-y: auto;
 
   ::-webkit-scrollbar {

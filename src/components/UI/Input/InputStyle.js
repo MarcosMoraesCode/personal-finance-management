@@ -23,6 +23,11 @@ export const StyledInput = styled.input`
   @media (max-height: 670px) {
     height: 20px;
   }
+  @media (max-width: 576px) {
+    height: ${(props) => (props.elementType === "scaled" ? "20px" : "")};
+    font-size: ${(props) => (props.elementType === "scaled" ? "10px" : "")};
+    width: ${(props) => (props.elementType === "scaled" ? "180px" : "")};
+  }
 `;
 export const StyledLabel = styled.label`
   display: flex;
@@ -31,6 +36,13 @@ export const StyledLabel = styled.label`
   font-size: ${(props) => (props.fontSize ? props.fontSize : "12px")};
   @media (max-height: 670px) {
     font-size: 10px;
+  }
+  @media (max-width: 576px) {
+    font-size: ${(props) => (props.elementType === "scaled" ? "10px" : "")};
+    //background-color: red;
+    min-width: ${(props) => (props.elementType === "scaled" ? "180px" : "")};
+    margin-left: ${(props) => (props.elementType === "scaled" ? "-30px" : "")};
+    //padding-left: none;
   }
 `;
 export const StyledMessage = styled.p`
@@ -55,6 +67,11 @@ export const StyledMessageScaled = styled.p`
   font-weight: 600;
   font-size: 5px;
   text-align: end;
+  @media (max-width: 576px) {
+    font-size: ${(props) => (props.elementType === "scaled" ? "9px" : "")};
+    color: red;
+    margin-right: -30px;
+  }
 `;
 
 export const StyledCheckboxLabel = styled.label`

@@ -10,8 +10,15 @@ export const StyledFooter = styled.footer`
 export const FooterContent = styled.div`
   display: flex;
   justify-content: space-around;
-  width: 20%;
+  align-items: center;
+  width: 33%;
+  height: 100%;
   min-width: 150px;
+  //border: 1px solid green;
+  @media (max-width: 470px) {
+    display: ${(props) => (props.logo ? "none" : "flex")};
+    width: 50%;
+  }
 `;
 
 export const FooterContentWrapper = styled.div`
@@ -34,9 +41,9 @@ export const FooterContentWrapper = styled.div`
     padding-left: 2%;
   }
   @media (max-width: 470px) {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    flex-direction: column;
+    //padding-top: 10px;
+    //padding-bottom: 10px;
+    // flex-direction: column;
   }
 `;
 
