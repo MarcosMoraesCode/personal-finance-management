@@ -12,6 +12,12 @@ export const IncomeDiv = styled.div`
   border: 1px solid white;
   padding-top: 3px;
   margin: 5px;
+
+  @media (max-width: 520px) {
+    height: 30%;
+    min-height: 50px;
+    flex-direction: column;
+  }
 `;
 
 export const IncomeInfoDiv = styled.div`
@@ -19,7 +25,13 @@ export const IncomeInfoDiv = styled.div`
   flex-direction: column;
   width: ${(props) => props.width};
   height: 100%;
-  // border-right: 1px solid green;
+  //background-color: blue;
+  @media (max-width: 520px) {
+    width: 100%;
+    border-bottom: 1px solid #51d289;
+  }
+
+  //border-right: 1px solid green;
 `;
 
 export const IncomeButtonsDiv = styled.div`
@@ -28,6 +40,9 @@ export const IncomeButtonsDiv = styled.div`
   align-items: center;
   width: 30%;
   height: 100%;
+  @media (max-width: 520px) {
+    width: 100%;
+  }
   //border: 1px solid white;
 `;
 
@@ -47,6 +62,12 @@ export const IncomeSubtitleBlock = styled.div`
   color: #51d289;
   font-family: "Roboto";
   font-size: 10px;
+  // border: 1px solid yellow;
+  @media (max-width: 520px) {
+    font-size: 8px;
+    justify-content: ${(props) => props.modify};
+  }
+  //background-color: red;
 `;
 export const IncomeContentDiv = styled.div`
   display: flex;
@@ -64,6 +85,11 @@ export const IncomeContentBlock = styled.div`
   width: 33%;
   height: 100%;
   font-size: 13px;
+  //border: 1px solid red;
+  @media (max-width: 520px) {
+    font-size: 10px;
+    justify-content: ${(props) => props.modify};
+  }
 `;
 
 export const EditButton = styled.button`
@@ -82,6 +108,12 @@ export const EditButton = styled.button`
     transform: scale(1.2);
     transition: 0.4s ease-in-out;
   }
+  @media (max-width: 520px) {
+    max-width: 15px;
+    min-width: 15px;
+    max-height: 15px;
+    min-height: 15px;
+  }
 `;
 export const RemoveButton = styled.button`
   border: none;
@@ -99,6 +131,12 @@ export const RemoveButton = styled.button`
     transform: scale(1.2);
     transition: 0.4s ease-in-out;
   }
+  @media (max-width: 520px) {
+    max-width: 15px;
+    min-width: 15px;
+    max-height: 15px;
+    min-height: 15px;
+  }
 `;
 export const AddButton = styled.button`
   border: none;
@@ -115,5 +153,11 @@ export const AddButton = styled.button`
     cursor: pointer;
     transform: scale(1.4);
     transition: 0.4s ease-in-out;
+  }
+  @media (max-width: 520px) {
+    max-width: 15px;
+    min-width: 15px;
+    max-height: 15px;
+    min-height: 15px;
   }
 `;

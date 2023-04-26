@@ -149,38 +149,76 @@ export const UserIncomesDiv = styled.div`
   display: flex;
   flex-direction: row;
   text-align: center;
+  align-items: center;
+  justify-content: center;
   border-bottom: 1px solid gold;
   font-family: "Roboto";
   background-color: black;
   background: linear-gradient(to right top, grey, grey 20%, black, black 80%);
   overflow-y: auto;
+  @media (max-width: 800px) {
+    flex-direction: column;
+    //height: fit-content;
+  }
 `;
 
 export const UserIncomesContainer = styled.div`
   display: flex;
   //border: 1px solid red;
-  align-items: flex-start;
-  justify-content: flex-start;
+  //align-items: center;
+  //justify-content: center;
   width: 100%;
   height: 100%;
 `;
+export const OptionsDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+  //border: 1px solid red;
 
+  @media (max-width: 800px) {
+    width: 50%;
+    flex-direction: row;
+    padding: 5px;
+    margin-bottom: 5px;
+    margin-left: ${(props) => (props.left ? "-12px" : "0px")};
+    margin-right: ${(props) => (props.right ? "-12px" : "0px")};
+    min-height: 10vh;
+  }
+`;
 export const UserOptions = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 90%;
+  height: 87vh;
   width: 25%;
+  min-width: 400px;
   //border: 1px solid white;
   margin-top: auto;
   margin-bottom: auto;
   margin-left: 35px;
+  @media (max-width: 1050px) {
+    min-width: 300px;
+  }
+  @media (max-width: 800px) {
+    width: 95%;
+    height: fit-content;
+    flex-direction: row;
+    margin-left: 0px;
+    // padding: 10px;
+  }
 `;
 
 export const UserOption = styled.div`
-  width: 80%;
-  height: 20%;
+  display: flex;
+  justify-content: flex-end;
+  min-width: 380px;
+  max-width: 380px;
+  height: 40%;
   min-height: 120px;
   border-radius: 10px;
   box-shadow: 2px 2px 20px 1px black;
@@ -196,6 +234,40 @@ export const UserOption = styled.div`
     transform: scale(1.1);
     transition: 0.4s ease-in-out;
   }
+  @media (max-width: 1050px) {
+    min-width: 280px;
+    max-width: 280px;
+  }
+  @media (max-width: 800px) {
+    min-height: 10vh;
+    min-width: 150px;
+    max-width: 150px;
+  }
+  @media (max-height: 670px) and (min-width: 801px) {
+    max-width: 80%;
+    min-width: 80%;
+    min-height: 30%;
+  }
+  @media (max-width: 700px) {
+    max-height: 50px;
+    min-height: 50px;
+    min-width: 40%;
+    max-width: 40%;
+    :hover {
+      transform: scale(1.2);
+      transition: 0.4s ease-in-out;
+    }
+  }
+  @media (max-width: 600px) {
+    max-height: 40px;
+    min-height: 40px;
+  }
+  @media (max-width: 500px) {
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding-left: 4px;
+    padding-bottom: 1.5px;
+  }
 `;
 export const OptionTitleDiv = styled.div`
   display: flex;
@@ -205,6 +277,19 @@ export const OptionTitleDiv = styled.div`
   justify-content: flex-end;
   font-size: 22px;
   padding-right: 15px;
+  @media (max-width: 800px) {
+    font-size: 16px;
+  }
+  @media (max-width: 700px) {
+    font-size: 12px;
+    padding-right: 4px;
+  }
+  @media (max-width: 600px) {
+    font-size: 9px;
+  }
+  @media (max-width: 500px) {
+    justify-content: flex-start;
+  }
 `;
 
 export const SelectedOption = styled.div`
@@ -212,10 +297,20 @@ export const SelectedOption = styled.div`
   justify-content: center;
   align-items: center;
   width: 45%;
-  height: 90%;
+  //min-width: 600px;
+  height: 84vh;
   //border: 1px solid blue;
+
   margin-top: auto;
   margin-bottom: auto;
+  @media (max-width: 1500px) {
+    width: 60%;
+  }
+  @media (max-width: 800px) {
+    width: 95%;
+    height: 76vh;
+    margin-bottom: 20px; //calc(100vh - 12vh - 80px);
+  }
 `;
 
 export const ChooseListDiv = styled.div`
@@ -224,8 +319,8 @@ export const ChooseListDiv = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
-  // background-color: red;
+  min-height: 100%;
+  //background-color: purple;
 `;
 export const ChooseListContent = styled.div`
   display: flex;
@@ -234,6 +329,11 @@ export const ChooseListContent = styled.div`
   justify-content: center;
   align-items: center;
   font-family: "Roboto";
+  width: 100%;
+  height: 100%;
+  @media (max-height: 670px) {
+    font-size: 10px;
+  }
 `;
 
 export const CheckButton = styled.div`
@@ -256,6 +356,7 @@ export const CheckButton = styled.div`
 export const ManageIncomeDiv = styled.div`
   background-color: black;
   box-shadow: 2px 2px 20px 1px gold;
+  justify-content: center;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -288,6 +389,7 @@ export const DefaultInfoDiv = styled.div`
   flex-direction: column;
   width: 100%;
   height: 20%;
+  //border: 1px solid white;
 `;
 export const ManageSpan = styled.span`
   color: ${(props) => props.color};
@@ -296,6 +398,13 @@ export const ManageSpan = styled.span`
   padding: 1px;
   padding-left: 10px;
   font-weight: 600;
+  @media (max-height: 820px) {
+    font-size: 11px;
+    //padding-bottom: 10px;
+  }
+  @media (max-height: 670px) {
+    font-size: 8px;
+  }
 `;
 export const DefaultInfoContent = styled.div`
   display: flex;
@@ -306,48 +415,72 @@ export const DefaultInfoContent = styled.div`
   padding-left: 15px;
   width: 100%;
   height: 50%;
+  min-height: fit-content;
+  //background-color: blue;
   font-size: ${(props) => props.fontSize};
 
   p {
     width: 80%;
     color: gold;
+    min-height: fit-content;
     //font-weight: 600;
     -webkit-animation: ${FocusIn} 1.8s cubic-bezier(0.55, 0.085, 0.68, 0.53)
       both;
     animation: ${FocusIn} 1.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
   }
+  @media (max-height: 914px) {
+    font-size: 13px;
+    //padding-bottom: 10px;
+  }
+  @media (max-height: 851px) {
+    font-size: 11px;
+    //padding-bottom: 10px;
+  }
+  @media (max-height: 670px) {
+    font-size: 8px;
+    padding-bottom: 5px;
+  }
 `;
 export const ManageFormDiv = styled.div`
   display: flex;
   flex-direction: column;
-  //border: 1px solid red;
+  //border: 1px solid blue;
+  justify-content: flex-end;
   width: 100%;
   height: 20%;
+  // background-color: red;
+  padding-bottom: 10px;
 `;
 export const ManageFormTitleDiv = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   width: 100%;
-  height: 25%;
+
   min-height: 35px;
-  //background-color: yellow;
+  //margin-top: 10px;
+  // background-color: yellow;
 `;
 export const ManageFormTitle = styled.h1`
   color: #51d289;
   font-family: "Roboto";
   font-weight: 600;
   padding: 5px;
+  padding-bottom: 15px;
 
   font-size: 17px;
+  @media (max-height: 670px) {
+    font-size: 14px;
+  }
 `;
 export const ManageFormContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 75%;
-  min-height: 120px;
+  height: 50%;
+  min-height: fit-content;
   width: 100%;
+  //background-color: red;
 `;
 export const DefaultList = styled.div`
   display: flex;
@@ -371,6 +504,8 @@ export const DefaultListContent = styled.div`
   overflow-y: auto;
   background-color: ${(props) => (props.background ? "black" : "transparent")};
   padding: 10px;
+  margin-bottom: 15px;
+
   /* width */
   ::-webkit-scrollbar {
     width: 7px;
@@ -401,6 +536,7 @@ export const DefaultListTitleDiv = styled.div`
   height: 20%;
   min-height: fit-content;
   //background-color: blue;
+  min-height: 50px;
 `;
 export const DefaultListTitle = styled.div`
   color: #51d289;
@@ -409,6 +545,12 @@ export const DefaultListTitle = styled.div`
   padding: 5px;
   font-size: 20px;
   // background-color: red;
+  @media (max-height: 670px) {
+    font-size: 16px;
+  }
+  @media (max-width: 530px) {
+    font-size: 16px;
+  }
 `;
 export const TableTitleDiv = styled.div`
   display: flex;
@@ -419,8 +561,8 @@ export const TableTitleDiv = styled.div`
   border-bottom: 1px solid #51d289;
   padding-bottom: 3px;
   font-weight: 600;
-
   color: #51d289;
+  min-height: fit-content;
 `;
 export const TableSubtitleBlock = styled.div`
   display: flex;
@@ -430,6 +572,9 @@ export const TableSubtitleBlock = styled.div`
   font-size: 12px;
   align-items: flex-end;
   padding-left: 5px;
+  @media (max-height: 670px) {
+    font-size: 10px;
+  }
 `;
 
 export const InitialIncomeDiv = styled.div`
@@ -489,6 +634,7 @@ export const TextSpan = styled.span`
 `;
 
 export const DefaultTextDiv = styled.div`
+  padding-top: 15px;
   display: flex;
   justify-content: center;
   width: 100%;
@@ -547,7 +693,15 @@ export const AccountFilterDiv = styled.div`
     font-family: "Roboto";
     color: #51d289;
     padding-right: 15px;
+    padding-left: 10px;
     font-size: 12px;
+  }
+  @media (max-width: 530px) {
+    p {
+      font-size: 10px;
+
+      padding: 1px;
+    }
   }
 `;
 
@@ -560,6 +714,9 @@ export const DefaultTitleDiv = styled.div`
   //background-color: pink;
   min-height: 40px;
   height: 5%;
+  @media (max-height: 670px) {
+    min-height: fit-content;
+  }
 `;
 export const DefaultTitle = styled.h1`
   color: #51d289;
@@ -567,4 +724,10 @@ export const DefaultTitle = styled.h1`
   font-weight: 600;
   padding: 5px;
   margin-top: 15px;
+  @media (max-height: 670px) {
+    font-size: 16px;
+  }
+  @media (max-width: 530px) {
+    font-size: 16px;
+  }
 `;

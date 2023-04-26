@@ -100,6 +100,7 @@ export const ExpensesInfoDiv = styled.div`
   padding-bottom: 10px;
   @media (max-width: 700px) {
     margin-top: 45px;
+    margin-bottom: 45px;
   }
 `;
 

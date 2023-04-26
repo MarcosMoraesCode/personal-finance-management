@@ -48,4 +48,10 @@ export const HistoryContentBlock = styled.div`
   font-size: 11px;
   color: ${(props) => props.color};
   font-weight: ${(props) => (props.color ? "600" : "300")};
+  @media (max-height: 670px) {
+    font-size: 8px;
+  }
+  @media (max-width: 530px) {
+    font-size: 8px;
+  }
 `;

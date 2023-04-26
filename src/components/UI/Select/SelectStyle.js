@@ -16,6 +16,13 @@ export const StyledSelect = styled.select`
   border: 1px solid black;
   margin-right: ${(props) => (props.marginR ? props.marginR : "0px")};
   margin-bottom: 2px;
+  @media (max-width: 530px) {
+    font-size: 10px;
+    width: ${(props) => (props.modify ? "60px" : "")};
+  }
+  @media (max-height: 670px) {
+    height: 20px;
+  }
 `;
 
 export const WrappComponent = styled.div`

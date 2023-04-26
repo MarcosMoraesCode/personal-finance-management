@@ -119,7 +119,7 @@ export const SimpleLabel = styled.label`
 
   @media (max-width: 932px) {
     font-size: 9px;
-  } ;
+  }
 `;
 export const SimpleBtn = styled.button`
   display: flex;
@@ -153,6 +153,19 @@ export const UserDefaultButton = styled.button`
   :hover {
     cursor: ${(props) =>
       props.disabled === "disabled" ? "not-allowed" : "pointer"};
+  }
+
+  @media (max-height: 670px) {
+    font-size: 8px;
+    height: fit-content;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  @media (max-width: 430px) {
+    font-size: 8px;
+    height: fit-content;
+    padding-top: 1px;
+    padding-bottom: 1px;
   }
 `;
 

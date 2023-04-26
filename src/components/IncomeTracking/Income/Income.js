@@ -18,16 +18,24 @@ const Income = (props) => {
     <IncomeDiv>
       <IncomeInfoDiv width={"70%"}>
         <IncomeSubtitlesDiv>
-          <IncomeSubtitleBlock>Name</IncomeSubtitleBlock>
-          <IncomeSubtitleBlock>Total deposited</IncomeSubtitleBlock>
-          <IncomeSubtitleBlock>Percentage</IncomeSubtitleBlock>
+          <IncomeSubtitleBlock modify={"center"}>Name</IncomeSubtitleBlock>
+          <IncomeSubtitleBlock modify={"center"}>
+            Total deposited
+          </IncomeSubtitleBlock>
+          <IncomeSubtitleBlock modify={"center"}>
+            Percentage
+          </IncomeSubtitleBlock>
         </IncomeSubtitlesDiv>
         <IncomeContentDiv>
-          <IncomeContentBlock>{props.name}</IncomeContentBlock>
-          <IncomeContentBlock>
+          <IncomeContentBlock modify={"center"}>
+            {props.name}
+          </IncomeContentBlock>
+          <IncomeContentBlock modify={"center"}>
             $ {Number(props.value).toFixed(2)}
           </IncomeContentBlock>
-          <IncomeContentBlock>{props.percentage}%</IncomeContentBlock>
+          <IncomeContentBlock modify={"center"}>
+            {props.percentage}%
+          </IncomeContentBlock>
         </IncomeContentDiv>
       </IncomeInfoDiv>
       <IncomeButtonsDiv>

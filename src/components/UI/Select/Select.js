@@ -38,6 +38,7 @@ const SelectContainer = (props) => {
         border={props.border}
         reduceH={props.reduce}
         marginR={props.marginR}
+        modify={props.modify}
       >
         {defaultOption}
         {optionsList}

@@ -42,6 +42,7 @@ import {
   ChooseListDiv,
   CheckButton,
   ChooseListContent,
+  OptionsDiv,
 } from "./UserIncomesStyle";
 import InputContainer from "../../components/UI/Input/Input";
 import Income from "../../components/IncomeTracking/Income/Income";
@@ -1371,12 +1372,9 @@ const UserIncomes = (props) => {
             >
               <p>
                 Here you can create or edit your incomes, and add money to an
-                existing income.
-              </p>
-              <p>
-                Every time you add or delete an expense/category, as well as add
-                or withdraw money from a goal, it will affect your account
-                balance.
+                existing income. Every time you add or delete an
+                expense/category, as well as add or withdraw money from a goal,
+                it will affect your account balance.
               </p>
             </DefaultInfoContent>
           </DefaultInfoDiv>
@@ -1514,11 +1512,9 @@ const UserIncomes = (props) => {
 
           <DefaultTextDiv>
             <DefaultText>
-              In the account history, it is possible to filter by investments or
-              deposits for further details. And for more information about
-              expenses, please access the{" "}
-              <TextSpan onClick={() => navigate("/userexpenses")}>
-                expenses page
+              To edit name, target or term of a specific goal, you can access{" "}
+              <TextSpan onClick={() => navigate("/usergoals")}>
+                goals page
               </TextSpan>
               .
             </DefaultText>
@@ -1526,7 +1522,6 @@ const UserIncomes = (props) => {
         </AllocateIncomeDiv>
       );
       break;
-
     case "acc-history":
       selectedContent = (
         <AccountHistoryDiv>
@@ -1560,6 +1555,7 @@ const UserIncomes = (props) => {
               reduce
               width={"100px"}
               noMargin
+              modify
             />
             <p>And period.</p>
             <SelectContainer
@@ -1570,6 +1566,7 @@ const UserIncomes = (props) => {
               reduce
               width={"100px"}
               noMargin
+              modify
             />
           </AccountFilterDiv>
 
@@ -1600,8 +1597,8 @@ const UserIncomes = (props) => {
 
   return (
     <UserIncomesDiv>
-      <UserIncomesContainer>
-        <UserOptions>
+      <UserOptions>
+        <OptionsDiv right>
           <UserOption
             number={option1}
             clicked={optionOneSelected}
@@ -1616,6 +1613,8 @@ const UserIncomes = (props) => {
           >
             <OptionTitleDiv>Investments</OptionTitleDiv>
           </UserOption>
+        </OptionsDiv>
+        <OptionsDiv left>
           <UserOption
             number={option3}
             clicked={optionThreeSelected}
@@ -1630,9 +1629,10 @@ const UserIncomes = (props) => {
           >
             <OptionTitleDiv> History</OptionTitleDiv>
           </UserOption>
-        </UserOptions>
-        <SelectedOption>{selectedContent}</SelectedOption>
-      </UserIncomesContainer>
+        </OptionsDiv>
+      </UserOptions>
+      <SelectedOption>{selectedContent}</SelectedOption>
+
       {showCrud ? (
         <Crud
           crudType={crudType.crudType}

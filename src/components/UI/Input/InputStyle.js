@@ -20,12 +20,18 @@ export const StyledInput = styled.input`
   :focus {
     outline-width: ${(props) => props.outline};
   }
+  @media (max-height: 670px) {
+    height: 20px;
+  }
 `;
 export const StyledLabel = styled.label`
   display: flex;
   align-self: flex-start;
   padding-left: 4px;
   font-size: ${(props) => (props.fontSize ? props.fontSize : "12px")};
+  @media (max-height: 670px) {
+    font-size: 10px;
+  }
 `;
 export const StyledMessage = styled.p`
   padding-right: 10px;
