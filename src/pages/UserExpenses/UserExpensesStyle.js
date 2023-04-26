@@ -57,6 +57,7 @@ export const AuxContainerDivOne = styled.div`
   max-width: 100%;
   //max-height: 80%;
   //background-color: blue;
+  //border: 1px solid blue;
   @media (max-width: 1300px) {
     min-height: 88vh;
     align-items: center;
@@ -67,7 +68,7 @@ export const AuxContainerDivOne = styled.div`
   @media (max-width: 900px) {
     flex-direction: column;
 
-    min-height: 100%;
+    min-height: fit-content;
     //align-items: center;
   }
 `;
@@ -77,7 +78,7 @@ export const AuxContainerDivTwo = styled.div`
   padding-left: 20px;
   @media (max-width: 1300px) {
     width: 100%;
-    height: fit-content;
+    height: 88vh;
     padding-top: 50px;
     padding-bottom: 50px;
     min-width: 320px;
@@ -95,16 +96,16 @@ export const UserExpensesContainer = styled.div`
   width: 90%;
   min-width: 320px;
   margin: auto;
-  // background-color: red;
+  //background-color: red;
   @media (max-width: 1300px) {
-    margin-top: 50px;
+    //margin-top: 50px;
     flex-direction: column;
     height: 200%;
     min-height: 200%;
     //max-height: fit-content;
   }
   @media (max-width: 930px) {
-    margin-top: 50px;
+    //margin-top: 50px;
     flex-direction: column;
     height: 180%;
     max-height: 180%;
@@ -190,10 +191,11 @@ export const SwitchListsButton = styled.button`
 export const FormDiv = styled.div`
   display: flex;
   // background-color: #1f1f1f;
-  opacity: 1;
+
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 30px;
   width: 20%;
 
   min-width: 320px;
@@ -204,10 +206,12 @@ export const FormDiv = styled.div`
   background-size: cover;
   //border: 1px solid white;
   @media (max-width: 1300px) {
-    max-height: 75vh;
+    min-height: 88vh;
+    margin-top: 30px;
     padding-top: 35px;
     padding-bottom: 35px;
     overflow-y: auto;
+
     //box-sizing: border-box;
   }
 
@@ -215,7 +219,9 @@ export const FormDiv = styled.div`
     flex-direction: row;
     min-width: 90%;
     margin: auto;
-    min-height: 40%;
+    min-height: fit-content;
+    padding-bottom: 175px;
+    justify-content: flex-end;
     padding-top: 35px;
   }
 
@@ -240,31 +246,34 @@ export const ExpensesDiv = styled.div`
   opacity: 1;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: fit-content;
   min-width: 550px;
   //max-height: 100%;
-  height: 90%;
+  height: 100%;
+  padding-top: 25px;
   margin: auto;
 
   //background-color: #1f1f1f;
+  // border: 1px solid green;
   border-radius: 20px;
   :hover {
-    //border: 1px solid gold;
     opacity: 1;
   }
-  @media (max-width: 1200px) {
+  @media (max-width: 1300px) {
+    padding-top: 40px;
   }
   @media (max-width: 900px) {
     width: 90%;
     min-width: 90%;
-    margin-top: 20px;
+    margin-top: 50px;
     min-height: 45%;
     height: 45%;
   }
   @media (max-width: 690px) {
     width: 100%;
     min-width: 90%;
+    // max-height: fit-content;
   }
   //border-radius: 50px;
 `;
@@ -292,14 +301,14 @@ export const AnalysisDiv = styled.div`
   @media (max-width: 1300px) {
     width: 100%;
     margin: auto;
-    min-height: 800px;
-    margin-top: 20px;
+    min-height: 720px;
+    //margin-top: 20px;
   }
   @media (max-width: 420px) {
     width: 100%;
     margin: auto;
-    min-height: 800px;
-    margin-top: 20px;
+    //min-height: 800px;
+    //margin-top: 20px;
     min-width: 320px;
     box-shadow: none;
     background-color: transparent;
@@ -353,6 +362,9 @@ export const NewCategoryFormDiv = styled.div`
 
 export const DefaultTitle = styled.h1`
   color: #51d289;
+  @media (max-width: 900px) {
+    font-size: 20px;
+  }
 `;
 export const DefaultAnimatedTitle = styled.h1`
   color: #51d289;
@@ -373,6 +385,9 @@ export const DefaultAnimatedTitle = styled.h1`
       : css`
           ${FadeInRight} 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both
         `};
+  @media (max-width: 900px) {
+    font-size: 20px;
+  }
 `;
 
 export const NewExpenseTitleDiv = styled.div`
@@ -395,7 +410,7 @@ export const NewExpenseDiv = styled.div`
   height: 65%;
   //border: 1px solid gold;
   @media (max-width: 900px) {
-    height: 100%;
+    min-height: 100%;
   }
 `;
 

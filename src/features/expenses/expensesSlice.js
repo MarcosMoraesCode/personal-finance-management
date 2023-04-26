@@ -55,17 +55,7 @@ export const fetchBalance = createAsyncThunk(
     }
   }
 );
-export const updateBalance = createAsyncThunk(
-  "userexpenses/updateBalance",
-  async (action, state) => {
-    try {
-      console.log("payload", action);
-      await set(ref(db, `users/${userId}/balance`), action);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-);
+
 /*export const fetchHistoryId = createAsyncThunk(
   "userexpenses/fetchHistoryId",
   async (action) => {
@@ -412,13 +402,6 @@ export const expenseDataSlice = createSlice({
     builder.addCase(fetchBalance.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);
       //console.log(action.error);
-    });
-    builder.addCase(updateBalance.fulfilled, (state, action) => {
-      console.log("passou aqui", state.balance);
-    });
-    builder.addCase(updateBalance.rejected, (state, action) => {
-      //console.log("Rejected", action.error.message);
-      // console.log(action.error);
     });
   },
 });

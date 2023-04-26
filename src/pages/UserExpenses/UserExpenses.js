@@ -58,7 +58,6 @@ import {
   editACategory,
   editAnExpense,
   fetchBalance,
-  updateBalance,
   fetchCategoriesData,
   fetchDynamicId,
   fetchExpensesData,
@@ -78,7 +77,7 @@ import {
 } from "../../features/charts/chartsSlice";
 import CompletePieChart from "../../components/UI/Charts/CompletePieChart/CompletePieChart";
 import AllExpensesInfo from "../../components/UI/Charts/AllExpensesInfo/AllExpensesInfo";
-//import { updateBalance } from "../../features/incomes/incomesSlice";
+import { updateBalance } from "../../features/incomes/incomesSlice";
 import {
   postNewHistory,
   fetchHistoryId,

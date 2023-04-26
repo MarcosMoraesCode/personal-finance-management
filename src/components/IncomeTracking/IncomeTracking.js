@@ -49,7 +49,10 @@ const IncomeTracking = (props) => {
     );
   } else {
     incomeSourcers = (
-      <AdviceDiv>When you add a month income it'll appear here.</AdviceDiv>
+      <AdviceDiv>
+        {" "}
+        <p>When you add a month income it'll appear here.</p>
+      </AdviceDiv>
     );
   }
 
@@ -95,7 +98,9 @@ const IncomeTracking = (props) => {
   } else {
     percentageDivContent = (
       <AdviceDiv>
-        Once your balance is positive, you will be able to view the graph.
+        <p>
+          Once your balance is positive, you will be able to view the graph.{" "}
+        </p>
       </AdviceDiv>
     );
   }
@@ -103,8 +108,13 @@ const IncomeTracking = (props) => {
   return (
     <IncomeTrackingContainer>
       <IncomeTrackingTitle>Balance</IncomeTrackingTitle>
-      <IncomeTrackingBalance {...props}>
-        {props.balance > 0 ? `$ ${props.balance}` : `$ ${(0).toFixed(2)}`}
+      <IncomeTrackingBalance
+        {...props}
+        color={props.balance > 0 ? "#51d289" : "red"}
+      >
+        {props.balance > 0
+          ? `$ ${props.balance}`
+          : ` - $ ${Number(props.balance * -1).toFixed(2)}`}
       </IncomeTrackingBalance>
       <IncomePercentageDiv>{percentageDivContent}</IncomePercentageDiv>
       <WrapIncomeInfos>

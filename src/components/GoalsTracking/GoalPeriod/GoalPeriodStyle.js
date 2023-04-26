@@ -10,6 +10,7 @@ export const GoalPeriodDiv = styled.div`
   margin: auto;
   color: black;
   background-color: transparent;
+  min-height: 150px;
 `;
 
 export const GoalPeriodTitle = styled.h3`

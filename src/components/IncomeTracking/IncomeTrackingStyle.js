@@ -10,7 +10,7 @@ export const IncomeTrackingContainer = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  background-color: #fafafa;
+  //background-color: #fafafa;
   width: 35%;
   border-radius: 30px;
   margin: auto;
@@ -62,7 +62,7 @@ export const IncomeTrackingSecondaryTitle = styled.div`
 `;
 
 export const IncomeTrackingBalance = styled.div`
-  color: #51d289;
+  color: ${(props) => props.color};
   font-size: 22px;
   font-weight: 600;
   border-radius: 5px;
@@ -237,8 +237,18 @@ export const AdviceDiv = styled.div`
   align-items: center;
   box-shadow: 2px 2px 20px 1px white;
   // border: 1px solid white;
+
   color: gold;
   font-weight: 600;
+
+  @media (max-width: 800px) {
+    min-height: 45px;
+    max-height: 45px;
+    padding: 5px;
+    p {
+      font-size: 11px;
+    }
+  }
 `;
 export const LoaderDiv = styled.div`
   display: flex;

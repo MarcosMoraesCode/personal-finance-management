@@ -623,6 +623,9 @@ export const DefaultText = styled.p`
   text-align: justify;
   width: 80%;
   font-size: 13px;
+  @media (max-width: 800px) {
+    font-size: 10px;
+  }
 `;
 
 export const TextSpan = styled.span`
@@ -638,6 +641,10 @@ export const DefaultTextDiv = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
+  min-height: fit-content;
+  @media (max-height: 670px) {
+    display: none;
+  }
   // background-color: red;
 `;
 

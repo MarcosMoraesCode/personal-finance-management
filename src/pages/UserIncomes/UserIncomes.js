@@ -1460,6 +1460,7 @@ const UserIncomes = (props) => {
                 //border={"no-left-border"}
                 width={"110px"}
                 noMargin
+                modify
               />
             </AccountFilterDiv>
           </DefaultInfoDiv>
