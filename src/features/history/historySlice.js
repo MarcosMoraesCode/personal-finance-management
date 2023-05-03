@@ -7,7 +7,7 @@ import startFirebase from "../../services/firebaseConfig";
 import { ref, set, get, update, remove, child, push } from "firebase/database";
 
 const db = startFirebase();
-const userId = "Marcos";
+//const userId = "tPhKzmkhBOhSF94vmxz7ye07NnZ2";
 
 const initialState = {
   userHistory: null,
@@ -16,8 +16,9 @@ const initialState = {
 
 export const fetchHistoryId = createAsyncThunk(
   "userhistory/fetchHistoryId",
-  async (action) => {
+  async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       const dbId = await get(child(ref(db), `users/${userId}/historyId`)).then(
         (snapshot) => {
           console.log("history dinamico", snapshot.val());
@@ -36,7 +37,7 @@ export const postNewHistory = createAsyncThunk(
   async (action, state) => {
     try {
       let idValue = state.getState().historyData.historyId;
-
+      let userId = state.getState().userData.userId;
       //SETTING TODAY DATE
 
       await get(child(ref(db), `users/${userId}/histories`)).then(
@@ -79,8 +80,9 @@ export const postNewHistory = createAsyncThunk(
 
 export const fetchHistoriesData = createAsyncThunk(
   "userhistories/fetchHistoriesData",
-  async (action) => {
+  async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       const dbResponse = await get(
         child(ref(db), `users/${userId}/histories`)
       ).then((snapshot) => {
@@ -122,6 +124,7 @@ export const historyDataSlice = createSlice({
     builder.addCase(postNewHistory.fulfilled, (state, action) => {
       state.historyId += 1;
       //console.log("Novo id dinamico: ", state.historyId);
+      let userId = state.getState().userData.userId;
       set(ref(db, `users/${userId}/historyId`), state.historyId);
     });
     builder.addCase(postNewHistory.rejected, (state, action) => {

@@ -7,20 +7,48 @@ import startFirebase from "../../services/firebaseConfig";
 import { ref, set, get, update, remove, child, push } from "firebase/database";
 
 const db = startFirebase();
-const userId = "Marcos";
 
 const initialState = {
+  userId: "",
   userName: "",
   email: "",
   address: "",
 };
 
+export const createUser = createAsyncThunk(
+  "userprofile/createUser",
+  async (action, state) => {
+    let idValue = state.getState().expensesData.dynamicId;
+
+    try {
+      set(ref(db, `users`), {
+        [action.userId]: {
+          balance: 0,
+          dynamicId: 0,
+          historyId: 0,
+          userInfo: {
+            address: {
+              city: "",
+              district: "",
+              street: "",
+            },
+            email: action.email,
+            name: action.name,
+          },
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const fetchUserInformation = createAsyncThunk(
   "userprofile/fetchUserInformation",
-  async (action) => {
+  async (action, state) => {
     try {
       const dbResponse = await get(
-        child(ref(db), `users/${userId}/userInfo`)
+        child(ref(db), `users/${initialState.userId}/userInfo`)
       ).then((snapshot) => {
         // console.log("categorias carregadas: ", snapshot.val());
         return snapshot.val();
@@ -42,7 +70,7 @@ export const editProfile = createAsyncThunk(
   async (action, state) => {
     try {
       // console.log("payload", action.categoryId);
-      await set(ref(db, `users/${userId}/userInfo`), {
+      await set(ref(db, `users/${initialState.userId}/userInfo`), {
         name: action.name,
         email: action.email,
         address: {
@@ -63,10 +91,10 @@ export const resetData = createAsyncThunk(
     try {
       // console.log("payload", action.categoryId);
       await set(ref(db, `users`), {
-        [userId]: {
-          balance: 0,
-          dynamicId: 0,
-          historyId: 0,
+        [initialState.userId]: {
+          balance: Number(0),
+          dynamicId: Number(0),
+          historyId: Number(0),
           userInfo: {
             name: action.name,
             email: action.email,
@@ -93,6 +121,9 @@ export const userDataSlice = createSlice({
       state.address = action.payload.address;
       state.email = action.payload.email;
     },
+    addToken: (state, action) => {
+      state.userId = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUserInformation.fulfilled, (state, action) => {
@@ -116,9 +147,16 @@ export const userDataSlice = createSlice({
       console.log("Rejected", action.error.message);
       console.log(action.error);
     });
+    builder.addCase(createUser.fulfilled, (state, action) => {
+      console.log("Success", action.payload);
+    });
+    builder.addCase(createUser.rejected, (state, action) => {
+      console.log("Rejected", action.error.message);
+      console.log(action.error);
+    });
   },
 });
 
-export const { uploadUser } = userDataSlice.actions;
+export const { uploadUser, addToken } = userDataSlice.actions;
 
 export default userDataSlice.reducer;

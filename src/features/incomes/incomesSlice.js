@@ -5,9 +5,10 @@ import {
 } from "@reduxjs/toolkit";
 import startFirebase from "../../services/firebaseConfig";
 import { ref, set, get, update, remove, child, push } from "firebase/database";
+import { userDataSlice } from "../user/userSlice";
 
 const db = startFirebase();
-const userId = "Marcos";
+//const userId = "tPhKzmkhBOhSF94vmxz7ye07NnZ2";
 
 const initialState = {
   userIncomes: null,
@@ -17,8 +18,10 @@ const initialState = {
 
 export const fetchDynamicId = createAsyncThunk(
   "userincomes/fetchDynamicId",
-  async (action) => {
+  async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
+      console.log(userId);
       const dbId = await get(child(ref(db), `users/${userId}/dynamicId`)).then(
         (snapshot) => {
           //console.log("id dinamico", snapshot.val());
@@ -34,7 +37,8 @@ export const fetchDynamicId = createAsyncThunk(
 );
 export const fetchBalance = createAsyncThunk(
   "userincomes/fetchBalance",
-  async (action) => {
+  async (action, state) => {
+    let userId = state.getState().userData.userId;
     try {
       const dbId = await get(child(ref(db), `users/${userId}/balance`)).then(
         (snapshot) => {
@@ -52,8 +56,9 @@ export const fetchBalance = createAsyncThunk(
 
 export const fetchIncomesData = createAsyncThunk(
   "userincomes/fetchIncomesData",
-  async (action) => {
+  async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       const dbResponse = await get(
         child(ref(db), `users/${userId}/incomes`)
       ).then((snapshot) => {
@@ -71,8 +76,10 @@ export const postNewIncome = createAsyncThunk(
   "userincomes/postNewIncome",
   async (action, state) => {
     try {
-      let idValue = state.getState().incomesData.dynamicId;
+      let idValue = state.getState().incomesData.dynamicId; //state.getState().incomesData.dynamicId;
+      let userId = state.getState().userData.userId;
       //SETTING TODAY DATE
+      console.log(userId, "era pra estar aqui");
 
       await get(child(ref(db), `users/${userId}/incomes`)).then((snapshot) => {
         if (snapshot.exists() === true) {
@@ -108,7 +115,8 @@ export const editAnIncome = createAsyncThunk(
   "userincomes/editAnIncome",
   async (action, state) => {
     try {
-      // console.log("payload", action.categoryId);
+      let userId = state.getState().userData.userId;
+      console.log("payloadaaaaaaaaaaaa", userId);
       await set(ref(db, `users/${userId}/incomes/${action.incomeId}`), {
         id: action.incomeId,
         name: action.newName,
@@ -125,6 +133,7 @@ export const addMoneyToAnIncome = createAsyncThunk(
   "userincomes/addMoneyToAnIncome",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       // console.log("payload", action.categoryId);
       await set(ref(db, `users/${userId}/incomes/${action.incomeId}`), {
         id: action.incomeId,
@@ -141,6 +150,7 @@ export const removeAnIncome = createAsyncThunk(
   "userincomes/removeAnIncome",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       //  console.log("payload", action);
       await remove(ref(db, `users/${userId}/incomes/${action}`));
     } catch (err) {
@@ -153,6 +163,7 @@ export const updateBalance = createAsyncThunk(
   "userincomes/updateBalance",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       console.log("payload", action);
       await set(ref(db, `users/${userId}/balance`), action);
     } catch (err) {
@@ -183,6 +194,8 @@ export const incomeDataSlice = createSlice({
     builder.addCase(postNewIncome.fulfilled, (state, action) => {
       state.dynamicId += 1;
       //console.log("Novo id dinamico: ", state.dynamicId);
+      let userId = userDataSlice.getInitialState().userId;
+
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     builder.addCase(postNewIncome.rejected, (state, action) => {
@@ -204,7 +217,7 @@ export const incomeDataSlice = createSlice({
       // console.log(action.error);
     });
     builder.addCase(fetchDynamicId.fulfilled, (state, action) => {
-      //console.log("payload", action.payload);
+      console.log("payload", action.payload);
       state.dynamicId = action.payload;
       //console.log("Novo id dinamico: ", state.dynamicId);
     });

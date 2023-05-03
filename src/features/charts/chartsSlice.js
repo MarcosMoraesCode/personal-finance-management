@@ -165,12 +165,13 @@ const initialState = {
 };
 
 const db = startFirebase();
-const userId = "Marcos";
+//const userId = "Marcos";
 
 export const fetchExpensesData = createAsyncThunk(
   "usercharts/fetchExpensesData",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       const dbResponse = await get(
         child(ref(db), `users/${userId}/expenses`)
       ).then((snapshot) => {

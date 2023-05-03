@@ -215,45 +215,50 @@ const UserIncomes = (props) => {
         if (res.payload !== null) {
           setFilteredHistory(Object.values(res.payload));
         }
-        let incomes = Object.values(res.payload).filter((item) => {
-          if (
-            item.type.includes("Deposit") ||
-            item.type.includes("Withdraw") ||
-            item.type.includes("Income")
-          ) {
-            return item;
-          }
-        });
+        if (res.payload !== undefined && res.payload !== null) {
+          let incomes = Object.values(res.payload).filter((item) => {
+            if (
+              item.type.includes("Deposit") ||
+              item.type.includes("Withdraw") ||
+              item.type.includes("Income")
+            ) {
+              return item;
+            }
+          });
 
-        let filteredIncomes = incomes.filter((income) => {
-          console.log(income.date);
-          if (
-            Number(
-              income.date[6] + income.date[7] + income.date[8] + income.date[9]
-            ) === year &&
-            String(income.date[3] + income.date[4]) === String(month)
-          ) {
-            return income;
-          }
-        });
+          let filteredIncomes = incomes.filter((income) => {
+            console.log(income.date);
+            if (
+              Number(
+                income.date[6] +
+                  income.date[7] +
+                  income.date[8] +
+                  income.date[9]
+              ) === year &&
+              String(income.date[3] + income.date[4]) === String(month)
+            ) {
+              return income;
+            }
+          });
 
-        filteredIncomes.forEach((income) => {
-          let index = uniqueIncomes.findIndex(
-            (item) => income.itemId === item.itemId
-          );
+          filteredIncomes.forEach((income) => {
+            let index = uniqueIncomes.findIndex(
+              (item) => income.itemId === item.itemId
+            );
 
-          if (index === -1) {
-            uniqueIncomes.push(income);
-          } else {
-            let oldValue = Number(uniqueIncomes[index].value);
-            let newValue = oldValue + income.value;
-            uniqueIncomes[index] = { ...income, value: newValue };
-          }
+            if (index === -1) {
+              uniqueIncomes.push(income);
+            } else {
+              let oldValue = Number(uniqueIncomes[index].value);
+              let newValue = oldValue + income.value;
+              uniqueIncomes[index] = { ...income, value: newValue };
+            }
 
-          console.log(uniqueIncomes);
-        });
+            console.log(uniqueIncomes);
+          });
 
-        setMonthIncomes(uniqueIncomes);
+          setMonthIncomes(uniqueIncomes);
+        }
       }
     });
   };
@@ -679,6 +684,7 @@ const UserIncomes = (props) => {
         }
       })
       .catch((err) => {
+        console.log(err);
         alert("deu ruim");
       });
   };
@@ -1358,11 +1364,11 @@ const UserIncomes = (props) => {
           <DefaultInfoDiv>
             <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
               Balance{" "}
-              <ManageSpan color={userBalance >= 0 ? "#51d289" : "red"}>
+              <ManageSpan color={Number(userBalance) >= 0 ? "#51d289" : "red"}>
                 {" "}
-                {userBalance >= 0
-                  ? `$ ${userBalance.toFixed(2)}`
-                  : ` - $ ${(userBalance * -1).toFixed(2)}`}
+                {Number(userBalance) >= 0
+                  ? `$ ${Number(userBalance).toFixed(2)}`
+                  : ` - $ ${(Number(userBalance) * -1).toFixed(2)}`}
               </ManageSpan>
             </DefaultInfoContent>
             <DefaultInfoContent

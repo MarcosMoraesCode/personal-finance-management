@@ -17,7 +17,9 @@ const Layout = (props) => {
     (state) => state.goalsData.userAchievements
   );
   const userBalance = useSelector((state) => state.incomesData.balance);
+  const userId = useSelector((state) => state.userData.userId);
 
+  console.log("AAAAAAAQUI", userId, "viu?");
   const dispatch = useDispatch();
 
   const getData = async () => {

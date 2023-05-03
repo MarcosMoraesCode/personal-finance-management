@@ -7,7 +7,7 @@ import startFirebase from "../../services/firebaseConfig";
 import { ref, set, get, update, remove, child, push } from "firebase/database";
 
 const db = startFirebase();
-const userId = "Marcos";
+//const userId = "Marcos";
 
 const initialState = {
   userGoals: null,
@@ -18,8 +18,9 @@ const initialState = {
 
 export const fetchDynamicId = createAsyncThunk(
   "usergoals/fetchDynamicId",
-  async (action) => {
+  async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       const dbId = await get(child(ref(db), `users/${userId}/dynamicId`)).then(
         (snapshot) => {
           //console.log("id dinamico", snapshot.val());
@@ -40,8 +41,9 @@ export const fetchDynamicId = createAsyncThunk(
 
 export const fetchBalance = createAsyncThunk(
   "usergoals/fetchBalance",
-  async (action) => {
+  async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       const dbId = await get(child(ref(db), `users/${userId}/balance`)).then(
         (snapshot) => {
           //console.log("id dinamico", snapshot.val());
@@ -58,8 +60,9 @@ export const fetchBalance = createAsyncThunk(
 
 export const fetchGoalsData = createAsyncThunk(
   "usergoals/fetchGoalsData",
-  async (action) => {
+  async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       const dbResponse = await get(
         child(ref(db), `users/${userId}/goals`)
       ).then((snapshot) => {
@@ -79,8 +82,9 @@ export const fetchGoalsData = createAsyncThunk(
 );
 export const fetchAchievementsData = createAsyncThunk(
   "usergoals/fetchAchievementsData",
-  async (action) => {
+  async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       const dbResponse = await get(
         child(ref(db), `users/${userId}/achievements`)
       ).then((snapshot) => {
@@ -104,6 +108,7 @@ export const postNewGoal = createAsyncThunk(
   async (action, state) => {
     try {
       let idValue = state.getState().goalsData.dynamicId;
+      let userId = state.getState().userData.userId;
       await get(child(ref(db), `users/${userId}/goals`)).then((snapshot) => {
         //  console.log("/expenses", snapshot.exists());
         if (snapshot.exists() === true) {
@@ -151,6 +156,7 @@ export const editAGoal = createAsyncThunk(
   "usergoals/editAGoal",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       // console.log("payload", action.categoryId);
       await set(ref(db, `users/${userId}/goals/${action.goalId}`), {
         allocated: action.goalAllocated,
@@ -171,6 +177,7 @@ export const goalTransaction = createAsyncThunk(
   "usergoals/goalTransaction",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       // console.log("payload", action.categoryId);
       await set(ref(db, `users/${userId}/goals/${action.goalId}`), {
         allocated: action.newValue,
@@ -190,6 +197,7 @@ export const removeAGoal = createAsyncThunk(
   "usergoals/removeAGoal",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       //  console.log("payload", action);
       await remove(ref(db, `users/${userId}/goals/${action}`));
     } catch (err) {
@@ -202,6 +210,7 @@ export const transferGoalToAchievement = createAsyncThunk(
   "usergoals/transferGoalToAchievement",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       await get(child(ref(db), `users/${userId}/goals/${action.id}`)).then(
         (snapshot) => {
           if (snapshot.exists() === true) {
@@ -271,6 +280,7 @@ export const updateBalance = createAsyncThunk(
   "usergoals/updateBalance",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       console.log("payload", action);
       await set(ref(db, `users/${userId}/balance`), action);
     } catch (err) {
@@ -282,6 +292,7 @@ export const updateHistoryId = createAsyncThunk(
   "usergoals/updateHistoryId",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       let idValue = state.getState().goalsData.historyId;
       // console.log("payload", action.categoryId);
       await set(ref(db, `users/${userId}/historyId`), Number(idValue + 1));
@@ -316,6 +327,7 @@ export const goalDataSlice = createSlice({
     builder.addCase(postNewGoal.fulfilled, (state, action) => {
       state.dynamicId += 1;
       //console.log("Novo id dinamico: ", state.dynamicId);
+      let userId = state.getState().userData.userId;
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     builder.addCase(postNewGoal.rejected, (state, action) => {
@@ -347,6 +359,7 @@ export const goalDataSlice = createSlice({
     });
     builder.addCase(transferGoalToAchievement.fulfilled, (state, action) => {
       state.dynamicId += 1;
+      let userId = state.getState().userData.userId;
       //console.log("Novo id dinamico: ", state.dynamicId);
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
       //console.log("payload", action.payload);

@@ -12,11 +12,27 @@ import {
   StyledTitle,
   StyledLine,
 } from "./LoginStyle";
+import { auth } from "../../services/firebaseConfig";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { addToken, createUser } from "../../features/user/userSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [submitLogin, setSubmitLogin] = useState(false);
   const [submitSingUp, setSubmitSignUp] = useState(false);
   const [screen, setScreen] = useState("");
+  const [
+    createUserWithEmailAndPassword,
+    userCreation,
+    loadingCreation,
+    errorCreating,
+  ] = useCreateUserWithEmailAndPassword(auth);
+
+  const [signInWithEmailAndPassword, user, loading, errorLogin] =
+    useSignInWithEmailAndPassword(auth);
+
   const [userEmail, setUserEmail] = useState({
     id: "email",
     value: "",
@@ -76,8 +92,21 @@ const Login = () => {
     loginPassword: true,
     singUpPassword: true,
   });
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   let loginElement;
+
+  if (errorCreating) {
+    alert(`Error: ${errorCreating.message}`);
+  }
+
+  if (errorLogin) {
+    alert(`Error: ${errorLogin.message}`);
+  }
+
+  if (user) {
+    console.log(user);
+  }
 
   const verifyFocus = (elementId, elementIsValid) => {
     if (!elementIsValid) {
@@ -171,6 +200,50 @@ const Login = () => {
           loginPassword: !hidePassword.loginPassword,
         });
     }
+  };
+  const HandleSignUp = async (e) => {
+    e.preventDefault();
+    await createUserWithEmailAndPassword(
+      newUserEmail.value,
+      newUserPassword.value
+    ).then((res) => {
+      console.log(res);
+      if (res !== undefined) {
+        const userObj = {
+          name: newUserNickname.value,
+          email: res._tokenResponse.email,
+          userId: res._tokenResponse.localId,
+        };
+
+        dispatch(createUser(userObj)).then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            dispatch(addToken(userObj.userId));
+            navigate("/userincomes");
+          }
+        });
+      }
+    });
+  };
+
+  const HandleSignIn = async (e) => {
+    e.preventDefault();
+    await signInWithEmailAndPassword(userEmail.value, userPassword.value).then(
+      (res) => {
+        console.log("testando login", res);
+
+        if (res !== undefined) {
+          let token = res._tokenResponse.localId;
+          /*const userObj = {
+            //name: ,
+            email: res._tokenResponse.email,
+            userId: res._tokenResponse.localId,
+          };*/
+          console.log(res, "deu bom");
+          dispatch(addToken(token));
+          navigate("/userincomes");
+        }
+      }
+    );
   };
 
   const screenSwitchHandler = () => {
@@ -476,7 +549,12 @@ const Login = () => {
             </InputContainer>
           </StyledForm>
           <div>
-            <Button width={230} color={"#fc2469"} isValidated={submitSingUp}>
+            <Button
+              width={230}
+              color={"#fc2469"}
+              isValidated={submitSingUp}
+              createAccount={(e) => HandleSignUp(e)}
+            >
               Signup
             </Button>
           </div>
@@ -540,7 +618,12 @@ const Login = () => {
             </InputContainer>
           </StyledForm>
           <div>
-            <Button width={230} color={"#fc2469"} isValidated={submitLogin}>
+            <Button
+              width={230}
+              color={"#fc2469"}
+              isValidated={submitLogin}
+              login={(e) => HandleSignIn(e)}
+            >
               Login
             </Button>
           </div>

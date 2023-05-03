@@ -7,7 +7,7 @@ import startFirebase from "../../services/firebaseConfig";
 import { ref, set, get, update, remove, child, push } from "firebase/database";
 
 const db = startFirebase();
-const userId = "Marcos";
+//const userId = "Marcos";
 
 const initialState = {
   userExpenses: null,
@@ -19,8 +19,9 @@ console.log(initialState.historyId);
 
 export const fetchDynamicId = createAsyncThunk(
   "userexpenses/fetchDynamicId",
-  async (action) => {
+  async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       const dbId = await get(child(ref(db), `users/${userId}/dynamicId`)).then(
         (snapshot) => {
           //console.log("id dinamico", snapshot.val());
@@ -40,8 +41,9 @@ export const fetchDynamicId = createAsyncThunk(
 );
 export const fetchBalance = createAsyncThunk(
   "userexpenses/fetchBalance",
-  async (action) => {
+  async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       const dbId = await get(child(ref(db), `users/${userId}/balance`)).then(
         (snapshot) => {
           //console.log("id dinamico", snapshot.val());
@@ -75,8 +77,9 @@ export const fetchBalance = createAsyncThunk(
 );*/
 export const fetchCategoriesData = createAsyncThunk(
   "userexpenses/fetchCategoriesData",
-  async (action) => {
+  async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       const dbResponse = await get(
         child(ref(db), `users/${userId}/categories`)
       ).then((snapshot) => {
@@ -98,6 +101,7 @@ export const fetchExpensesData = createAsyncThunk(
   "userexpenses/fetchExpensesData",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       const dbResponse = await get(
         child(ref(db), `users/${userId}/expenses`)
       ).then((snapshot) => {
@@ -118,6 +122,7 @@ export const postNewExpense = createAsyncThunk(
   "userexpenses/postNewExpense",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       let idValue = state.getState().expensesData.dynamicId;
       await get(child(ref(db), `users/${userId}/expenses`)).then((snapshot) => {
         //  console.log("/expenses", snapshot.exists());
@@ -182,6 +187,7 @@ export const postNewCategory = createAsyncThunk(
   "userexpenses/postNewCategory",
   async (action, state) => {
     let idValue = state.getState().expensesData.dynamicId;
+    let userId = state.getState().userData.userId;
 
     try {
       //const idValue = initialState.dynamicId;
@@ -235,6 +241,7 @@ export const editACategory = createAsyncThunk(
   "userexpenses/editACategory",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       // console.log("payload", action.categoryId);
       await set(ref(db, `users/${userId}/categories/${action.categoryId}`), {
         id: action.categoryId,
@@ -251,6 +258,7 @@ export const removeACategory = createAsyncThunk(
   "userexpenses/removeACategory",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       // console.log("payload", action);
       await remove(ref(db, `users/${userId}/categories/${action}`));
     } catch (err) {
@@ -263,6 +271,7 @@ export const removeAnExpense = createAsyncThunk(
   "userexpenses/removeAnExpense",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       //  console.log("payload", action);
       await remove(ref(db, `users/${userId}/expenses/${action}`));
     } catch (err) {
@@ -275,6 +284,7 @@ export const editAnExpense = createAsyncThunk(
   "userexpenses/editAnExpense",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       // console.log("payload", action.categoryId);
       await set(ref(db, `users/${userId}/expenses/${action.expenseId}`), {
         categoryId: action.categoryId,
@@ -294,6 +304,7 @@ export const updateHistoryId = createAsyncThunk(
   "userexpenses/updateHistoryId",
   async (action, state) => {
     try {
+      let userId = state.getState().userData.userId;
       console.log("Atualizando", action);
       await set(ref(db, `users/${userId}/historyId`), action);
     } catch (err) {
@@ -341,6 +352,7 @@ export const expenseDataSlice = createSlice({
       state.dynamicId += 1;
 
       //console.log("Novo id dinamico: ", state.dynamicId);
+      let userId = state.getState().userData.userId;
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     // REPETI PRA VER SE FUNCIONA
@@ -352,6 +364,7 @@ export const expenseDataSlice = createSlice({
     builder.addCase(postNewCategory.fulfilled, (state, action) => {
       state.dynamicId += 1;
       //console.log("Novo id dinamico: ", state.dynamicId);
+      let userId = state.getState().userData.userId;
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     builder.addCase(postNewCategory.rejected, (state, action) => {

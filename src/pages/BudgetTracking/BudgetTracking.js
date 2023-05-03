@@ -19,7 +19,6 @@ import {
 import Expense from "../../components/ExpensesTracking/Expense/Expense";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchBalance,
   fetchCategoriesData,
   fetchExpensesData,
 } from "../../features/expenses/expensesSlice";
@@ -30,7 +29,10 @@ import Goal from "../../components/GoalsTracking/GoalPeriod/Goal/Goal";
 import { fetchHistoriesData } from "../../features/history/historySlice";
 import { useNavigate } from "react-router-dom";
 import { InfoDiv } from "../../components/GoalsTracking/GoalPeriod/Goal/GoalStyle";
-import { fetchIncomesData } from "../../features/incomes/incomesSlice";
+import {
+  fetchIncomesData,
+  fetchBalance,
+} from "../../features/incomes/incomesSlice";
 
 const BudgetTracking = () => {
   const dispatch = useDispatch();
@@ -73,7 +75,7 @@ const BudgetTracking = () => {
     await dispatch(fetchBalance()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         //console.log(res.payload);
-        setBalance(res.payload);
+        setBalance(Number(res.payload));
       }
     });
 
