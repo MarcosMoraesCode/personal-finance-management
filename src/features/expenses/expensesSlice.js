@@ -352,7 +352,8 @@ export const expenseDataSlice = createSlice({
       state.dynamicId += 1;
 
       //console.log("Novo id dinamico: ", state.dynamicId);
-      let userId = state.getState().userData.userId;
+      let userId = localStorage.getItem("userId"); //state.getState().userData.userId;
+
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     // REPETI PRA VER SE FUNCIONA
@@ -364,7 +365,7 @@ export const expenseDataSlice = createSlice({
     builder.addCase(postNewCategory.fulfilled, (state, action) => {
       state.dynamicId += 1;
       //console.log("Novo id dinamico: ", state.dynamicId);
-      let userId = state.getState().userData.userId;
+      let userId = localStorage.getItem("userId");
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     builder.addCase(postNewCategory.rejected, (state, action) => {

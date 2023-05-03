@@ -6,6 +6,7 @@ const Toolbar = (props) => {
   return (
     <StyledToolbar>
       <NavigationItems
+        defaultToolbar={props.defaultToolbar}
         showSideDrawer={props.show}
         change={props.changeSideDrawer}
       />

@@ -21,7 +21,7 @@ export const fetchDynamicId = createAsyncThunk(
   async (action, state) => {
     try {
       let userId = state.getState().userData.userId;
-      console.log(userId);
+      console.log("quando busca, tem esse id", userId);
       const dbId = await get(child(ref(db), `users/${userId}/dynamicId`)).then(
         (snapshot) => {
           //console.log("id dinamico", snapshot.val());
@@ -78,6 +78,7 @@ export const postNewIncome = createAsyncThunk(
     try {
       let idValue = state.getState().incomesData.dynamicId; //state.getState().incomesData.dynamicId;
       let userId = state.getState().userData.userId;
+      console.log("userId", userId);
       //SETTING TODAY DATE
       console.log(userId, "era pra estar aqui");
 
@@ -194,7 +195,7 @@ export const incomeDataSlice = createSlice({
     builder.addCase(postNewIncome.fulfilled, (state, action) => {
       state.dynamicId += 1;
       //console.log("Novo id dinamico: ", state.dynamicId);
-      let userId = userDataSlice.getInitialState().userId;
+      let userId = localStorage.getItem("userId");
 
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });

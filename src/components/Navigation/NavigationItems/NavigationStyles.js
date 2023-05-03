@@ -9,7 +9,8 @@ export const NavigationUl = styled.ul`
   background-color: black;
   //border: 1px solid red;
   opacity: 1;
-  justify-content: space-between;
+  justify-content: ${(props) =>
+    props.defaultToolbar ? "space-between" : "center"}; //space-between;
   list-style: none;
   width: 100%;
   //z-index: 998;

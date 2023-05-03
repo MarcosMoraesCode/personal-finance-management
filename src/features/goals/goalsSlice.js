@@ -327,7 +327,7 @@ export const goalDataSlice = createSlice({
     builder.addCase(postNewGoal.fulfilled, (state, action) => {
       state.dynamicId += 1;
       //console.log("Novo id dinamico: ", state.dynamicId);
-      let userId = state.getState().userData.userId;
+      let userId = localStorage.getItem("userId");
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     builder.addCase(postNewGoal.rejected, (state, action) => {
@@ -359,7 +359,7 @@ export const goalDataSlice = createSlice({
     });
     builder.addCase(transferGoalToAchievement.fulfilled, (state, action) => {
       state.dynamicId += 1;
-      let userId = state.getState().userData.userId;
+      let userId = localStorage.getItem("userId");
       //console.log("Novo id dinamico: ", state.dynamicId);
       set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
       //console.log("payload", action.payload);

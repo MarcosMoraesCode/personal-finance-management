@@ -8,19 +8,29 @@ import BudgetTracking from "./pages/BudgetTracking/BudgetTracking";
 import UserExpenses from "./pages/UserExpenses/UserExpenses";
 import UserGoals from "./pages/UserGoals/UserGoals";
 import UserIncomes from "./pages/UserIncomes/UserIncomes";
+import { useSelector } from "react-redux";
 
 function App() {
+  const token = useSelector((state) => state.userData.tokenId);
+
+  let routes = <Route path="/" exact element={<Login />} />;
+
+  if (token) {
+    routes = (
+      <>
+        <Route path="/userprofile" exact element={<Profile />} />
+        <Route path="/userincomes" exact element={<UserIncomes />} />
+        <Route path="/userfinances" exact element={<BudgetTracking />} />
+        <Route path="/userexpenses" exact element={<UserExpenses />} />
+        <Route path="/usergoals" exact element={<UserGoals />} />
+      </>
+    );
+  }
+
   return (
     <BrowserRouter>
       <Layout>
-        <Routes>
-          <Route path="/" exact element={<Login />} />
-          <Route path="/userprofile" exact element={<Profile />} />
-          <Route path="/userincomes" exact element={<UserIncomes />} />
-          <Route path="/userfinances" exact element={<BudgetTracking />} />
-          <Route path="/userexpenses" exact element={<UserExpenses />} />
-          <Route path="/usergoals" exact element={<UserGoals />} />
-        </Routes>
+        <Routes>{routes}</Routes>
       </Layout>
     </BrowserRouter>
   );

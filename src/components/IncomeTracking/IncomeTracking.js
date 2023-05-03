@@ -110,9 +110,9 @@ const IncomeTracking = (props) => {
       <IncomeTrackingTitle>Balance</IncomeTrackingTitle>
       <IncomeTrackingBalance
         {...props}
-        color={props.balance > 0 ? "#51d289" : "red"}
+        color={props.balance >= 0 ? "#51d289" : "red"}
       >
-        {props.balance > 0
+        {props.balance >= 0
           ? `$ ${props.balance}`
           : ` - $ ${Number(props.balance * -1).toFixed(2)}`}
       </IncomeTrackingBalance>

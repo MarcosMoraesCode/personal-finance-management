@@ -124,7 +124,7 @@ export const historyDataSlice = createSlice({
     builder.addCase(postNewHistory.fulfilled, (state, action) => {
       state.historyId += 1;
       //console.log("Novo id dinamico: ", state.historyId);
-      let userId = state.getState().userData.userId;
+      let userId = localStorage.getItem("userId");
       set(ref(db, `users/${userId}/historyId`), state.historyId);
     });
     builder.addCase(postNewHistory.rejected, (state, action) => {

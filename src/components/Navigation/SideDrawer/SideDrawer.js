@@ -23,7 +23,7 @@ const SideDrawer = (props) => {
       <UserProfileDiv>
         <ProfileImageDiv />
         <ProfileNicknameDiv>
-          <NickNameTitle>Marcos Moraes</NickNameTitle>
+          <NickNameTitle>{props.nickname}</NickNameTitle>
         </ProfileNicknameDiv>
         <ProfileInfoDiv>
           <ProfileInfoContent>
@@ -48,7 +48,9 @@ const SideDrawer = (props) => {
         <NavItem to="/userexpenses">Expenses</NavItem>
         <NavItem to="/usergoals">Goals</NavItem>
         <NavItem to="/userprofile">Profile</NavItem>
-        <NavItem to="/">Logout</NavItem>
+        <NavItem to="/" onClick={props.logout}>
+          Logout
+        </NavItem>
       </NavigationDiv>
     </SideDrawerDiv>
   );

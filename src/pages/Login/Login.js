@@ -15,7 +15,7 @@ import {
 import { auth } from "../../services/firebaseConfig";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { addToken, createUser } from "../../features/user/userSlice";
+import { addUserInfo, createUser } from "../../features/user/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -107,6 +107,62 @@ const Login = () => {
   if (user) {
     console.log(user);
   }
+  const refreshInputs = () => {
+    setNewUserEmail({
+      id: "email",
+      value: "",
+      isValid: false,
+      invalidMessage: "",
+      isTouched: false,
+      placeholder: "Email Address",
+      type: "email",
+    });
+    setUserPassword({
+      id: "password",
+      value: "",
+      isValid: false,
+      invalidMessage: "",
+      isTouched: false,
+      placeholder: "Password",
+      type: "password",
+    });
+    setNewUserNickname({
+      id: "nickname",
+      value: "",
+      isValid: false,
+      invalidMessage: "",
+      isTouched: false,
+      placeholder: "Nickname",
+      type: "nickname",
+    });
+    setNewUserEmail({
+      id: "new-email",
+      value: "",
+      isValid: false,
+      invalidMessage: "",
+      isTouched: false,
+      placeholder: "Email Address",
+      type: "email",
+    });
+    setNewUserPassword({
+      id: "new-password",
+      value: "",
+      isValid: false,
+      invalidMessage: "",
+      isTouched: false,
+      placeholder: "Password",
+      type: "password",
+    });
+    setNewUserPasswordConfirmation({
+      id: "new-password-confirmation",
+      value: "",
+      isValid: false,
+      invalidMessage: "",
+      isTouched: false,
+      placeholder: "Confirm Password",
+      type: "password",
+    });
+  };
 
   const verifyFocus = (elementId, elementIsValid) => {
     if (!elementIsValid) {
@@ -217,8 +273,9 @@ const Login = () => {
 
         dispatch(createUser(userObj)).then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
-            dispatch(addToken(userObj.userId));
-            navigate("/userincomes");
+            alert("Conta Criada com Sucesso!");
+            refreshInputs();
+            screenSwitchHandler();
           }
         });
       }
@@ -232,14 +289,25 @@ const Login = () => {
         console.log("testando login", res);
 
         if (res !== undefined) {
-          let token = res._tokenResponse.localId;
           /*const userObj = {
             //name: ,
             email: res._tokenResponse.email,
             userId: res._tokenResponse.localId,
           };*/
-          console.log(res, "deu bom");
-          dispatch(addToken(token));
+
+          dispatch(
+            addUserInfo({
+              userId: res._tokenResponse.localId,
+              idToken: res._tokenResponse.idToken,
+            })
+          );
+          let expirationDate = new Date().getTime() + 2000000;
+
+          let tokenId = res._tokenResponse.idToken;
+          localStorage.setItem("token", tokenId);
+          localStorage.setItem("expirationDate", expirationDate);
+          localStorage.setItem("userId", res._tokenResponse.localId);
+
           navigate("/userincomes");
         }
       }

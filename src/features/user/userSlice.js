@@ -9,7 +9,9 @@ import { ref, set, get, update, remove, child, push } from "firebase/database";
 const db = startFirebase();
 
 const initialState = {
-  userId: "",
+  userId: localStorage.getItem("userId"),
+  tokenId: localStorage.getItem("token"),
+  expirationDate: localStorage.getItem("expirationDate"),
   userName: "",
   email: "",
   address: "",
@@ -21,21 +23,47 @@ export const createUser = createAsyncThunk(
     let idValue = state.getState().expensesData.dynamicId;
 
     try {
-      set(ref(db, `users`), {
-        [action.userId]: {
-          balance: 0,
-          dynamicId: 0,
-          historyId: 0,
-          userInfo: {
-            address: {
-              city: "",
-              district: "",
-              street: "",
+      await get(child(ref(db), `users`)).then((snapshot) => {
+        if (snapshot.exists() === true) {
+          let oldUsers = snapshot.val();
+
+          const updates = {};
+          updates[`users/`] = {
+            ...oldUsers,
+            [action.userId]: {
+              balance: 0,
+              dynamicId: 0,
+              historyId: 0,
+              userInfo: {
+                address: {
+                  city: "",
+                  district: "",
+                  street: "",
+                },
+                email: action.email,
+                name: action.name,
+              },
             },
-            email: action.email,
-            name: action.name,
-          },
-        },
+          };
+          update(ref(db), updates).then((res) => res);
+        } else {
+          set(ref(db, `users`), {
+            [action.userId]: {
+              balance: 0,
+              dynamicId: 0,
+              historyId: 0,
+              userInfo: {
+                address: {
+                  city: "",
+                  district: "",
+                  street: "",
+                },
+                email: action.email,
+                name: action.name,
+              },
+            },
+          });
+        }
       });
     } catch (err) {
       console.log(err);
@@ -48,7 +76,7 @@ export const fetchUserInformation = createAsyncThunk(
   async (action, state) => {
     try {
       const dbResponse = await get(
-        child(ref(db), `users/${initialState.userId}/userInfo`)
+        child(ref(db), `users/${localStorage.getItem("userId")}/userInfo`)
       ).then((snapshot) => {
         // console.log("categorias carregadas: ", snapshot.val());
         return snapshot.val();
@@ -70,7 +98,7 @@ export const editProfile = createAsyncThunk(
   async (action, state) => {
     try {
       // console.log("payload", action.categoryId);
-      await set(ref(db, `users/${initialState.userId}/userInfo`), {
+      await set(ref(db, `users/${localStorage.getItem("userId")}/userInfo`), {
         name: action.name,
         email: action.email,
         address: {
@@ -89,22 +117,47 @@ export const resetData = createAsyncThunk(
   "userprofile/resetData",
   async (action, state) => {
     try {
-      // console.log("payload", action.categoryId);
-      await set(ref(db, `users`), {
-        [initialState.userId]: {
-          balance: Number(0),
-          dynamicId: Number(0),
-          historyId: Number(0),
-          userInfo: {
-            name: action.name,
-            email: action.email,
-            address: {
-              street: action.street,
-              district: action.district,
-              city: action.city,
+      await get(child(ref(db), `users`)).then((snapshot) => {
+        if (snapshot.exists() === true) {
+          let oldUsers = snapshot.val();
+
+          const updates = {};
+          updates[`users/`] = {
+            ...oldUsers,
+            [localStorage.getItem("userId")]: {
+              balance: 0,
+              dynamicId: 0,
+              historyId: 0,
+              userInfo: {
+                address: {
+                  city: action.city,
+                  district: action.district,
+                  street: action.street,
+                },
+                email: action.email,
+                name: action.name,
+              },
             },
-          },
-        },
+          };
+          update(ref(db), updates).then((res) => res);
+        } else {
+          set(ref(db, `users`), {
+            [localStorage.getItem("userId")]: {
+              balance: 0,
+              dynamicId: 0,
+              historyId: 0,
+              userInfo: {
+                address: {
+                  city: action.city,
+                  district: action.district,
+                  street: action.street,
+                },
+                email: action.email,
+                name: action.name,
+              },
+            },
+          });
+        }
       });
     } catch (err) {
       console.log(err);
@@ -121,8 +174,17 @@ export const userDataSlice = createSlice({
       state.address = action.payload.address;
       state.email = action.payload.email;
     },
-    addToken: (state, action) => {
-      state.userId = action.payload;
+    addUserInfo: (state, action) => {
+      console.log("AQUII PAYLOAD", action.payload);
+      console.log("Olha", action.payload.userId);
+      console.log("Olha", action.payload.idToken);
+      state.userId = action.payload.userId;
+      state.tokenId = action.payload.idToken;
+    },
+    cleanUserInfo: (state, action) => {
+      state.userId = null;
+      state.tokenId = null;
+      state.expirationDate = 0;
     },
   },
   extraReducers: (builder) => {
@@ -157,6 +219,6 @@ export const userDataSlice = createSlice({
   },
 });
 
-export const { uploadUser, addToken } = userDataSlice.actions;
+export const { uploadUser, addUserInfo, cleanUserInfo } = userDataSlice.actions;
 
 export default userDataSlice.reducer;
