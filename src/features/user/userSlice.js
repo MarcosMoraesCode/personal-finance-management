@@ -175,9 +175,6 @@ export const userDataSlice = createSlice({
       state.email = action.payload.email;
     },
     addUserInfo: (state, action) => {
-      console.log("AQUII PAYLOAD", action.payload);
-      console.log("Olha", action.payload.userId);
-      console.log("Olha", action.payload.idToken);
       state.userId = action.payload.userId;
       state.tokenId = action.payload.idToken;
     },

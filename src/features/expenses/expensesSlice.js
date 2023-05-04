@@ -410,6 +410,7 @@ export const expenseDataSlice = createSlice({
     });
     builder.addCase(fetchBalance.fulfilled, (state, action) => {
       console.log("payload", action.payload);
+
       state.balance = action.payload;
       //console.log("Novo id dinamico: ", state.dynamicId);
     });

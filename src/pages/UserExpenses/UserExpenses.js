@@ -1212,6 +1212,7 @@ const UserExpenses = () => {
         if (res.meta.requestStatus === "fulfilled") {
           setLoadingOnSubmitExpense(false);
           dispatch(updateBalance(newBalance));
+
           dispatch(postNewHistory(historyObj)).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
               console.log("antes de atualizar é" + historyId);

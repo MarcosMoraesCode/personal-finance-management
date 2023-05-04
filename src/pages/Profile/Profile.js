@@ -29,6 +29,8 @@ import {
   resetData,
 } from "../../features/user/userSlice";
 import { useEffect } from "react";
+import { auth } from "../../services/firebaseConfig";
+import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
 
 const Profile = () => {
   const [showCrud, setShowCrud] = useState(false);
@@ -36,6 +38,8 @@ const Profile = () => {
   const [openOption, setOpenOptions] = useState(false);
   const [hideOldPassword, setHideOldPassword] = useState(true);
   const [hideNewPassword, setHideNewPassword] = useState(true);
+  const [sendPasswordResetEmail, sending, error] =
+    useSendPasswordResetEmail(auth);
   const [userInfo, setUserInfo] = useState({
     name: "",
     street: "",
@@ -43,7 +47,7 @@ const Profile = () => {
     city: "",
     email: "",
   });
-  const [completeAddress, setCompleteAddress] = useState("");
+  const [completeAddress, setCompleteAddress] = useState("...");
   const dispatch = useDispatch();
   const [crudType, setCrudType] = useState({
     crudType: "",
@@ -147,7 +151,13 @@ const Profile = () => {
           email: info.email,
         });
 
-        setCompleteAddress(`${streetName}, ${districtName}, ${cityName}.`);
+        let street = streetName !== "" ? `${streetName}, ` : "";
+        let district = districtName !== "" ? ` ${districtName},` : "";
+        let city = cityName !== "" ? ` ${cityName}` : "";
+
+        setCompleteAddress(`${street}` + ` ${district}` + ` ${city}`);
+
+        // if( )
       }
     });
   };
@@ -295,6 +305,7 @@ const Profile = () => {
         userObj.city = userInfo.city;
         await dispatch(editProfile(userObj)).then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
+            localStorage.setItem("username", userObj.name);
             BackdropCrudHandler();
           }
         });
@@ -390,6 +401,16 @@ const Profile = () => {
         break;
     }
     return result;
+  };
+
+  const sendEmail = async () => {
+    let email = localStorage.getItem("useremail");
+
+    const success = await sendPasswordResetEmail(email);
+    if (success) {
+      alert("Sent email");
+      BackdropCrudHandler();
+    }
   };
 
   const checkButtonValidation = (inputId, value) => {
@@ -792,6 +813,7 @@ const Profile = () => {
     setHideNewPassword(true);
     setHideOldPassword(true);
     refreshInputs();
+    setSubmitPermission(false);
   };
 
   return (
@@ -915,9 +937,10 @@ const Profile = () => {
                     ...crudType,
                     crudType: "edit-userpassword",
                   });
+                  setSubmitPermission(true);
                 }}
               >
-                Edit Password
+                Change Password
               </OptionBtn>
               <OptionBtn
                 onClick={() => {
@@ -947,6 +970,7 @@ const Profile = () => {
           districtInputConfig={userInputs.inputDistrict}
           cityInputConfig={userInputs.inputCity}
           resetUserData={() => resetUserData()}
+          changePassword={() => sendEmail()}
           editUsername={() => {
             confirmProfileChange();
           }}

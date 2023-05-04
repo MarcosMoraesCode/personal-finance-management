@@ -502,6 +502,11 @@ const Crud = (props) => {
       crudContent = (
         <>
           <CrudStyleTitle>Change Password</CrudStyleTitle>
+          <WarningMessage>
+            Do you really want to change your password? An email will be sent to
+            your email address.
+          </WarningMessage>
+          {/*
           <InputsDiv>
             <InputContainer
               elementType={"new-password"}
@@ -560,10 +565,10 @@ const Crud = (props) => {
               Confirm Password
             </InputContainer>
           </InputsDiv>
-
+              */}
           <ModalButtonDiv>
             <ContinueBtn
-              onClick={props.editUsername}
+              onClick={props.changePassword}
               disabled={props.continueDisabled}
               {...props}
             >

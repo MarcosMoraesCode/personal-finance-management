@@ -20,7 +20,7 @@ import {
 const Layout = (props) => {
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
   const [startAnimation, setStartAnimation] = useState(false);
-  const [username, setUsername] = useState("Loading..");
+
   const userAchievements = useSelector(
     (state) => state.goalsData.userAchievements
   );
@@ -51,8 +51,9 @@ const Layout = (props) => {
     await dispatch(fetchUserInformation()).then((res) => {
       if (res.meta.requestStatus === "fulfilled" && res.payload !== null) {
         let info = res.payload;
-
-        setUsername(info.name);
+        console.log("olha aqui", info);
+        localStorage.setItem("username", info.name);
+        localStorage.setItem("useremail", info.email);
       }
     });
   };
@@ -70,6 +71,9 @@ const Layout = (props) => {
       localStorage.removeItem("token");
       localStorage.removeItem("expirationDate");
       localStorage.removeItem("userId");
+      localStorage.removeItem("username");
+      localStorage.removeItem("balance");
+      localStorage.removeItem("useremail");
     }
   };
 
@@ -87,8 +91,8 @@ const Layout = (props) => {
   if (tokens.tokenId) {
     sideDrawer = (
       <SideDrawer
-        nickname={username}
-        balance={userBalance !== null ? userBalance : 0}
+        nickname={localStorage.getItem("username")}
+        balance={localStorage.getItem("balance") !== null ? userBalance : 0}
         back={sideDrawerHandler}
         open={openSideDrawer}
         animation={startAnimation}

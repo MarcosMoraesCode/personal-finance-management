@@ -42,7 +42,7 @@ export const fetchBalance = createAsyncThunk(
     try {
       const dbId = await get(child(ref(db), `users/${userId}/balance`)).then(
         (snapshot) => {
-          //console.log("id dinamico", snapshot.val());
+          console.log("balance", snapshot.val());
           return snapshot.val();
         }
       );
@@ -235,6 +235,7 @@ export const incomeDataSlice = createSlice({
     });
     builder.addCase(fetchBalance.fulfilled, (state, action) => {
       console.log("payload", action.payload);
+      localStorage.setItem("balance", action.payload);
       state.balance = action.payload;
       //console.log("Novo id dinamico: ", state.dynamicId);
     });

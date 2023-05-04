@@ -136,7 +136,7 @@ export const OptionBtn = styled.button`
   width: 130px;
   height: 40px;
   font-family: "Roboto";
-  font-size: 16px;
+  font-size: 14px;
   background-color: transparent;
   color: white;
   border: 1px solid white;
