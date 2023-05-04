@@ -20,8 +20,15 @@ const Footer = () => {
         </FooterContent>
         <FooterContent> © 2023 - Marcos Moraes </FooterContent>
         <FooterContent>
-          <SocialLinkedin src={linkedinIcon} />
-          <SocialGit src={gitIcon} />
+          <a
+            href="https://www.linkedin.com/in/marcos-moraes-iprj/"
+            target="blank"
+          >
+            <SocialLinkedin src={linkedinIcon} />
+          </a>
+          <a href="https://github.com/marcosmoraesnf" target="blank">
+            <SocialGit src={gitIcon} />
+          </a>
         </FooterContent>
       </FooterContentWrapper>
     </StyledFooter>

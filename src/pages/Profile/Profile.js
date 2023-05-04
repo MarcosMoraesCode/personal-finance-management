@@ -135,6 +135,10 @@ const Profile = () => {
     },
   });
 
+  if (error) {
+    alert(error);
+  }
+
   const getUser = async () => {
     await dispatch(fetchUserInformation()).then((res) => {
       if (res.meta.requestStatus === "fulfilled" && res.payload !== null) {
@@ -404,9 +408,9 @@ const Profile = () => {
   };
 
   const sendEmail = async () => {
-    let email = localStorage.getItem("useremail");
+    //let email = localStorage.getItem("useremail");
 
-    const success = await sendPasswordResetEmail(email);
+    const success = await sendPasswordResetEmail(userInfo.email);
     if (success) {
       alert("Sent email");
       BackdropCrudHandler();

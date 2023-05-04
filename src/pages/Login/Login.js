@@ -11,6 +11,14 @@ import {
   WrappLoginComponent,
   StyledTitle,
   StyledLine,
+  TitleDiv,
+  MainContentDiv,
+  SecondaryContent,
+  ButtonDiv,
+  StyledAlert,
+  AlertContent,
+  AlertButtonDiv,
+  CloseAlertButton,
 } from "./LoginStyle";
 import { auth } from "../../services/firebaseConfig";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
@@ -18,17 +26,36 @@ import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { addUserInfo, createUser } from "../../features/user/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { MainContent } from "../Profile/ProfileStyle";
+import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
+import { CheckBoxWrapper } from "../../components/UI/Input/InputStyle";
 
 const Login = () => {
   const [submitLogin, setSubmitLogin] = useState(false);
   const [submitSingUp, setSubmitSignUp] = useState(false);
+  const [submitEmail, setSubmitEmail] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [screen, setScreen] = useState("");
+  const [email, setEmail] = useState(false);
+  const [accountCreated, setAccountCreated] = useState(false);
   const [
     createUserWithEmailAndPassword,
     userCreation,
     loadingCreation,
     errorCreating,
   ] = useCreateUserWithEmailAndPassword(auth);
+  const [sendPasswordResetEmail, sending, errorSending] =
+    useSendPasswordResetEmail(auth);
+
+  const sendEmail = async () => {
+    const success = await sendPasswordResetEmail(userEmail.value);
+    setShowAlert(true);
+    if (success) {
+      setEmail(true);
+      refreshInputs();
+      setSubmitEmail(false);
+    }
+  };
 
   const [signInWithEmailAndPassword, user, loading, errorLogin] =
     useSignInWithEmailAndPassword(auth);
@@ -95,20 +122,95 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let loginElement;
+  let alertElement;
 
   if (errorCreating) {
-    alert(`Error: ${errorCreating.message}`);
+    alertElement = (
+      <StyledAlert>
+        {" "}
+        <AlertContent>{errorCreating.message}</AlertContent>
+        <AlertButtonDiv>
+          <CloseAlertButton
+            onClick={() => {
+              setShowAlert(false);
+              setAccountCreated(false);
+            }}
+          />
+        </AlertButtonDiv>
+      </StyledAlert>
+    );
+  }
+  if (accountCreated) {
+    alertElement = (
+      <StyledAlert color={"#51d289"}>
+        {" "}
+        <AlertContent>Your account was created!</AlertContent>
+        <AlertButtonDiv>
+          <CloseAlertButton
+            onClick={() => {
+              setShowAlert(false);
+              setAccountCreated(false);
+            }}
+          />
+        </AlertButtonDiv>
+      </StyledAlert>
+    );
+  }
+  if (errorLogin) {
+    alertElement = (
+      <StyledAlert>
+        {" "}
+        <AlertContent>{errorLogin.message}</AlertContent>
+        <AlertButtonDiv>
+          <CloseAlertButton
+            onClick={() => {
+              setShowAlert(false);
+            }}
+          />
+        </AlertButtonDiv>
+      </StyledAlert>
+    );
+    //alert();
+  }
+  if (errorSending) {
+    alertElement = (
+      <StyledAlert>
+        {" "}
+        <AlertContent>{errorSending.message}</AlertContent>
+        <AlertButtonDiv>
+          <CloseAlertButton
+            onClick={() => {
+              setShowAlert(false);
+            }}
+          />
+        </AlertButtonDiv>
+      </StyledAlert>
+    );
   }
 
-  if (errorLogin) {
-    alert(`Error: ${errorLogin.message}`);
+  if (email) {
+    alertElement = (
+      <StyledAlert color={"#51d289"}>
+        {" "}
+        <AlertContent>A recovery link was sent to your email!</AlertContent>
+        <AlertButtonDiv>
+          <CloseAlertButton
+            onClick={() => {
+              setShowAlert(false);
+              //setAccountCreated(false);
+              setEmail(false);
+            }}
+          />
+        </AlertButtonDiv>
+      </StyledAlert>
+    );
   }
 
   if (user) {
     console.log(user);
   }
   const refreshInputs = () => {
-    setNewUserEmail({
+    setUserEmail({
       id: "email",
       value: "",
       isValid: false,
@@ -168,33 +270,44 @@ const Login = () => {
     if (!elementIsValid) {
       switch (elementId) {
         case "email":
-          setUserEmail({ ...userEmail, invalidMessage: "Invalid email" });
+          setUserEmail({
+            ...userEmail,
+            invalidMessage: userEmail.value === "" ? "" : "Invalid email",
+          });
           break;
         case "new-email":
-          setNewUserEmail({ ...newUserEmail, invalidMessage: "Invalid email" });
+          setNewUserEmail({
+            ...newUserEmail,
+            invalidMessage: newUserEmail.value === "" ? "" : "Invalid email",
+          });
           break;
         case "password":
           setUserPassword({
             ...userPassword,
-            invalidMessage: "Invalid password",
+            invalidMessage: userPassword.value === "" ? "" : "Invalid password",
           });
           break;
         case "new-password":
           setNewUserPassword({
             ...newUserPassword,
-            invalidMessage: "Invalid password",
+            invalidMessage:
+              newUserPassword.value === "" ? "" : "Invalid password",
           });
           break;
         case "new-password-confirmation":
           setNewUserPasswordConfirmation({
             ...newUserPasswordConfirmation,
-            invalidMessage: "Password doesn't match",
+            invalidMessage:
+              newUserPasswordConfirmation.value === ""
+                ? ""
+                : "Password doesn't match",
           });
           break;
         case "nickname":
           setNewUserNickname({
             ...newUserNickname,
-            invalidMessage: "Invalid nickname",
+            invalidMessage:
+              newUserNickname.value === "" ? "" : "Invalid nickname",
           });
 
           break;
@@ -259,7 +372,7 @@ const Login = () => {
   };
   const HandleSignUp = async (e) => {
     e.preventDefault();
-    await createUserWithEmailAndPassword(
+    const success = await createUserWithEmailAndPassword(
       newUserEmail.value,
       newUserPassword.value
     ).then((res) => {
@@ -272,46 +385,52 @@ const Login = () => {
         };
 
         dispatch(createUser(userObj)).then((res) => {
+          console.log("aqui", res);
           if (res.meta.requestStatus === "fulfilled") {
-            alert("Conta Criada com Sucesso!");
+            setAccountCreated(true);
             refreshInputs();
             screenSwitchHandler();
           }
         });
       }
     });
+    if (!success) {
+      setShowAlert(true);
+    }
   };
 
   const HandleSignIn = async (e) => {
     e.preventDefault();
-    await signInWithEmailAndPassword(userEmail.value, userPassword.value).then(
-      (res) => {
-        console.log("testando login", res);
-
-        if (res !== undefined) {
-          /*const userObj = {
+    const success = await signInWithEmailAndPassword(
+      userEmail.value,
+      userPassword.value
+    ).then((res) => {
+      if (res !== undefined) {
+        /*const userObj = {
             //name: ,
             email: res._tokenResponse.email,
             userId: res._tokenResponse.localId,
           };*/
 
-          dispatch(
-            addUserInfo({
-              userId: res._tokenResponse.localId,
-              idToken: res._tokenResponse.idToken,
-            })
-          );
-          let expirationDate = new Date().getTime() + 2000000;
+        dispatch(
+          addUserInfo({
+            userId: res._tokenResponse.localId,
+            idToken: res._tokenResponse.idToken,
+          })
+        );
+        let expirationDate = new Date().getTime() + 2000000;
 
-          let tokenId = res._tokenResponse.idToken;
-          localStorage.setItem("token", tokenId);
-          localStorage.setItem("expirationDate", expirationDate);
-          localStorage.setItem("userId", res._tokenResponse.localId);
+        let tokenId = res._tokenResponse.idToken;
+        localStorage.setItem("token", tokenId);
+        localStorage.setItem("expirationDate", expirationDate);
+        localStorage.setItem("userId", res._tokenResponse.localId);
 
-          navigate("/userincomes");
-        }
+        navigate("/userincomes");
       }
-    );
+    });
+    if (!success) {
+      setShowAlert(true);
+    }
   };
 
   const screenSwitchHandler = () => {
@@ -325,10 +444,10 @@ const Login = () => {
     const isEmail = (email) =>
       /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{3,4}$/i.test(email);
 
-    const isStrongPassword = (password) =>
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/.test(
+    const isStrongPassword = (password) => /^.{6,}$/.test(password);
+    /* /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/.test(
         password
-      );
+      );*/
     const validNickname = (nickname) =>
       /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{5,}$/.test(nickname);
 
@@ -407,6 +526,10 @@ const Login = () => {
       setSubmitSignUp(true);
     } else {
       setSubmitSignUp(false);
+    }
+
+    if (screen === "forgotPassword") {
+      validation1 ? setSubmitEmail(true) : setSubmitEmail(false);
     }
   };
 
@@ -538,103 +661,100 @@ const Login = () => {
     case "singUp":
       loginElement = (
         <>
-          <div>
+          <TitleDiv>
             <StyledTitle>SignUp</StyledTitle>
-          </div>
-          <StyledForm>
-            <InputContainer
-              elementType={newUserNickname.type}
-              changed={(event) => {
-                inputChangedHandler(event, newUserNickname.id);
-              }}
-              placeholder={newUserNickname.placeholder}
-              invalidMessage={
-                newUserNickname.isValid ? "" : newUserNickname.invalidMessage
-              }
-              value={newUserNickname.value}
-              blur={() =>
-                verifyFocus(newUserNickname.id, newUserNickname.isValid)
-              }
-              height={"29px"}
-            >
-              User
-            </InputContainer>
-            <InputContainer
-              elementType={newUserEmail.type}
-              changed={(event) => inputChangedHandler(event, newUserEmail.id)}
-              placeholder={newUserEmail.placeholder}
-              invalidMessage={
-                newUserEmail.isValid ? "" : newUserEmail.invalidMessage
-              }
-              value={newUserEmail.value}
-              blur={() => verifyFocus(newUserEmail.id, newUserEmail.isValid)}
-              height={"29px"}
-            >
-              Email
-            </InputContainer>
-            <InputContainer
-              elementType={newUserPassword.id}
-              type={hidePassword.singUpPassword === true ? "password" : "text"}
-              changed={(event) =>
-                inputChangedHandler(event, newUserPassword.id)
-              }
-              placeholder={newUserPassword.placeholder}
-              invalidMessage={
-                newUserPassword.isValid ? "" : newUserPassword.invalidMessage
-              }
-              value={newUserPassword.value}
-              blur={() =>
-                verifyFocus(newUserPassword.id, newUserPassword.isValid)
-              }
-              switchHide={switchHidePasswordHandler}
-              hideImg={hidePassword.singUpPassword}
-              border={"no-right-border"}
-              height={"29px"}
-            >
-              Password
-            </InputContainer>
-            <InputContainer
-              type="password"
-              changed={(event) =>
-                inputChangedHandler(event, newUserPasswordConfirmation.id)
-              }
-              placeholder={newUserPasswordConfirmation.placeholder}
-              invalidMessage={
-                newUserPasswordConfirmation.isValid
-                  ? ""
-                  : newUserPasswordConfirmation.invalidMessage
-              }
-              value={newUserPasswordConfirmation.value}
-              blur={() =>
-                verifyFocus(
-                  newUserPasswordConfirmation.id,
+          </TitleDiv>
+          <MainContentDiv>
+            <StyledForm>
+              <InputContainer
+                elementType={newUserNickname.type}
+                changed={(event) => {
+                  inputChangedHandler(event, newUserNickname.id);
+                }}
+                placeholder={newUserNickname.placeholder}
+                invalidMessage={
+                  newUserNickname.isValid ? "" : newUserNickname.invalidMessage
+                }
+                value={newUserNickname.value}
+                blur={() =>
+                  verifyFocus(newUserNickname.id, newUserNickname.isValid)
+                }
+                height={"29px"}
+              >
+                User
+              </InputContainer>
+              <InputContainer
+                elementType={newUserEmail.type}
+                changed={(event) => inputChangedHandler(event, newUserEmail.id)}
+                placeholder={newUserEmail.placeholder}
+                invalidMessage={
+                  newUserEmail.isValid ? "" : newUserEmail.invalidMessage
+                }
+                value={newUserEmail.value}
+                blur={() => verifyFocus(newUserEmail.id, newUserEmail.isValid)}
+                height={"29px"}
+              >
+                Email
+              </InputContainer>
+              <InputContainer
+                elementType={newUserPassword.id}
+                type={
+                  hidePassword.singUpPassword === true ? "password" : "text"
+                }
+                changed={(event) =>
+                  inputChangedHandler(event, newUserPassword.id)
+                }
+                placeholder={newUserPassword.placeholder}
+                invalidMessage={
+                  newUserPassword.isValid ? "" : newUserPassword.invalidMessage
+                }
+                value={newUserPassword.value}
+                blur={() =>
+                  verifyFocus(newUserPassword.id, newUserPassword.isValid)
+                }
+                switchHide={switchHidePasswordHandler}
+                hideImg={hidePassword.singUpPassword}
+                border={"no-right-border"}
+                height={"29px"}
+              >
+                Password
+              </InputContainer>
+              <InputContainer
+                type="password"
+                changed={(event) =>
+                  inputChangedHandler(event, newUserPasswordConfirmation.id)
+                }
+                placeholder={newUserPasswordConfirmation.placeholder}
+                invalidMessage={
                   newUserPasswordConfirmation.isValid
-                )
-              }
-              height={"29px"}
-            >
-              Confirm Password
-            </InputContainer>
-          </StyledForm>
-          <div>
-            <Button
-              width={230}
-              color={"#fc2469"}
-              isValidated={submitSingUp}
-              createAccount={(e) => HandleSignUp(e)}
-            >
-              Signup
-            </Button>
-          </div>
-          <div>
-            <StyledLine>Or singup with</StyledLine>
-          </div>
-          <div>
-            <Button width={60} color={"#484848"}></Button>
-            <Button width={60} color={"#484848"}></Button>
-            <Button width={60} color={"#484848"}></Button>
-          </div>
-          <div>
+                    ? ""
+                    : newUserPasswordConfirmation.invalidMessage
+                }
+                value={newUserPasswordConfirmation.value}
+                blur={() =>
+                  verifyFocus(
+                    newUserPasswordConfirmation.id,
+                    newUserPasswordConfirmation.isValid
+                  )
+                }
+                height={"29px"}
+              >
+                Confirm Password
+              </InputContainer>
+            </StyledForm>
+            <ButtonDiv>
+              <Button
+                width={230}
+                color={"#fc2469"}
+                isValidated={submitSingUp}
+                action={(e) => HandleSignUp(e)}
+              >
+                Signup
+              </Button>
+            </ButtonDiv>
+          </MainContentDiv>
+
+          <SecondaryContent>
             <StyledMessage paddingTop={20}>
               Already have an account?{"          "}
               <StyledSpan
@@ -645,65 +765,57 @@ const Login = () => {
                 Login
               </StyledSpan>
             </StyledMessage>
-          </div>
+          </SecondaryContent>
         </>
       );
       break;
-    default:
+    case "forgotPassword":
       loginElement = (
         <>
-          <div>
-            <StyledTitle>Login</StyledTitle>
-          </div>
-          <StyledForm>
-            <InputContainer
-              elementType={userEmail.id}
-              changed={(event) => inputChangedHandler(event, userEmail.id)}
-              placeholder={userEmail.placeholder}
-              invalidMessage={userEmail.isValid ? "" : userEmail.invalidMessage}
-              value={userEmail.value}
-              blur={() => verifyFocus(userEmail.id, userEmail.isValid)}
-              height={"29px"}
-            >
-              Email
-            </InputContainer>
-            <InputContainer
-              type={hidePassword.loginPassword === true ? "password" : "text"}
-              elementType={userPassword.id}
-              changed={(event) => inputChangedHandler(event, userPassword.id)}
-              placeholder={userPassword.placeholder}
-              invalidMessage={
-                userPassword.isValid ? "" : userPassword.invalidMessage
-              }
-              value={userPassword.value}
-              blur={() => verifyFocus(userPassword.id, userPassword.isValid)}
-              switchHide={switchHidePasswordHandler}
-              hideImg={hidePassword.loginPassword}
-              border={"no-right-border"}
-              height={"29px"}
-            >
-              Password
-            </InputContainer>
-          </StyledForm>
-          <div>
-            <Button
-              width={230}
-              color={"#fc2469"}
-              isValidated={submitLogin}
-              login={(e) => HandleSignIn(e)}
-            >
-              Login
-            </Button>
-          </div>
-          <div>
-            <StyledLine>Or login with</StyledLine>
-          </div>
-          <div>
-            <Button width={60} color={"#484848"}></Button>
-            <Button width={60} color={"#484848"}></Button>
-            <Button width={60} color={"#484848"}></Button>
-          </div>
-          <div>
+          <TitleDiv>
+            <StyledTitle>Recovery</StyledTitle>
+          </TitleDiv>
+          <MainContentDiv>
+            <StyledForm>
+              <InputContainer
+                elementType={userEmail.id}
+                changed={(event) => inputChangedHandler(event, userEmail.id)}
+                placeholder={userEmail.placeholder}
+                invalidMessage={
+                  userEmail.isValid ? "" : userEmail.invalidMessage
+                }
+                value={userEmail.value}
+                blur={() => verifyFocus(userEmail.id, userEmail.isValid)}
+                height={"29px"}
+              >
+                Email
+              </InputContainer>
+            </StyledForm>
+            <ButtonDiv>
+              <Button
+                width={230}
+                color={"#fc2469"}
+                isValidated={submitEmail}
+                action={() => sendEmail(userEmail.value)}
+              >
+                Send Email
+              </Button>
+            </ButtonDiv>
+            <CheckBoxWrapper>
+              <StyledMessage
+                key={`message-3-`}
+                color={"white"}
+                fontWeight={100}
+                noPadding
+                cursor={"pointer"}
+                underline={true}
+                onClick={() => setScreen("")}
+              >
+                Go back
+              </StyledMessage>
+            </CheckBoxWrapper>
+          </MainContentDiv>
+          <SecondaryContent>
             <StyledMessage paddingTop={20}>
               Don't have an account?{"          "}
               <StyledSpan
@@ -714,7 +826,73 @@ const Login = () => {
                 SignUp
               </StyledSpan>
             </StyledMessage>
-          </div>
+          </SecondaryContent>
+        </>
+      );
+      break;
+    default:
+      loginElement = (
+        <>
+          <TitleDiv>
+            <StyledTitle>Login</StyledTitle>
+          </TitleDiv>
+          <MainContentDiv>
+            <StyledForm>
+              <InputContainer
+                elementType={userEmail.id}
+                changed={(event) => inputChangedHandler(event, userEmail.id)}
+                placeholder={userEmail.placeholder}
+                invalidMessage={
+                  userEmail.isValid ? "" : userEmail.invalidMessage
+                }
+                value={userEmail.value}
+                blur={() => verifyFocus(userEmail.id, userEmail.isValid)}
+                height={"29px"}
+              >
+                Email
+              </InputContainer>
+              <InputContainer
+                type={hidePassword.loginPassword === true ? "password" : "text"}
+                elementType={userPassword.id}
+                changed={(event) => inputChangedHandler(event, userPassword.id)}
+                placeholder={userPassword.placeholder}
+                invalidMessage={
+                  userPassword.isValid ? "" : userPassword.invalidMessage
+                }
+                value={userPassword.value}
+                blur={() => verifyFocus(userPassword.id, userPassword.isValid)}
+                switchHide={switchHidePasswordHandler}
+                hideImg={hidePassword.loginPassword}
+                border={"no-right-border"}
+                height={"29px"}
+                navigate={() => setScreen("forgotPassword")}
+              >
+                Password
+              </InputContainer>
+            </StyledForm>
+            <ButtonDiv>
+              <Button
+                width={230}
+                color={"#fc2469"}
+                isValidated={submitLogin}
+                action={(e) => HandleSignIn(e)}
+              >
+                Login
+              </Button>
+            </ButtonDiv>
+          </MainContentDiv>
+          <SecondaryContent>
+            <StyledMessage paddingTop={20}>
+              Don't have an account?{"          "}
+              <StyledSpan
+                color={"#fc2469"}
+                fontWeight={900}
+                onClick={screenSwitchHandler}
+              >
+                SignUp
+              </StyledSpan>
+            </StyledMessage>
+          </SecondaryContent>
         </>
       );
       break;
@@ -723,6 +901,7 @@ const Login = () => {
   return (
     <LoginDiv>
       <WrappLoginComponent>{loginElement}</WrappLoginComponent>
+      {showAlert ? alertElement : null}
     </LoginDiv>
   );
 };

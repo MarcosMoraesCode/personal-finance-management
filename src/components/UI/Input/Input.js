@@ -67,22 +67,13 @@ const InputContainer = (props) => {
             {props.invalidMessage}
           </StyledMessage>
           <CheckBoxWrapper>
-            <StyledCheckBoxInput id="checkbox" type="checkbox" />
-            <StyledCheckboxLabel htmlFor="checkbox" />
-            <StyledMessage
-              key={`message-1-${props.id}`}
-              margin={1}
-              paddingLeft={4}
-              fontWeight={100}
-            >
-              Remember me
-            </StyledMessage>
             <StyledMessage
               key={`message-2-${props.id}`}
               color={"white"}
-              margin={1}
+              //margin={1}
               fontWeight={100}
-              paddingLeft={25}
+              //paddingLeft={25}
+              noPadding
               onClick={props.navigate}
               cursor={"pointer"}
               underline={true}

@@ -34,6 +34,9 @@ export const StyledButton = styled.button`
         ? "0.2s"
         : "none"};
   }
+  @media (max-height: 670px) {
+    height: 22px;
+  }
 `;
 
 export const HideButton = styled.button`
@@ -54,5 +57,9 @@ export const HideButton = styled.button`
 
   :hover {
     cursor: pointer;
+  }
+  @media (max-height: 670px) {
+    height: 20px;
+    margin-top: 5px;
   }
 `;

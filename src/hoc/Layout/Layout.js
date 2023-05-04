@@ -92,7 +92,11 @@ const Layout = (props) => {
     sideDrawer = (
       <SideDrawer
         nickname={localStorage.getItem("username")}
-        balance={localStorage.getItem("balance") !== null ? userBalance : 0}
+        balance={
+          Number(localStorage.getItem("balance")) //!== null
+          // ? Number(localStorage.getItem("balance"))
+          // : 0
+        }
         back={sideDrawerHandler}
         open={openSideDrawer}
         animation={startAnimation}

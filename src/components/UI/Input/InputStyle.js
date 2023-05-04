@@ -114,9 +114,12 @@ export const StyledCheckBoxInput = styled.input`
 `;
 
 export const CheckBoxWrapper = styled.div`
+  display: flex;
+  justify-content: center;
   margin-top: 5px;
   position: relative;
   display: flex;
+  //background-color: red;
 `;
 
 export const WrappComponent = styled.div`

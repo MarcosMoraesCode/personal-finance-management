@@ -15,7 +15,7 @@ export const StyledForm = styled.form`
 
 export const StyledMessage = styled.p`
   text-align: end;
-  padding-right: 10px;
+  padding-right: ${(props) => (props.noPadding ? "0px" : "10px")};
   margin: ${(props) => `${props.margin}px`};
   padding-left: ${(props) => `${props.paddingLeft}px`};
   padding-top: ${(props) => `${props.paddingTop}px`};
