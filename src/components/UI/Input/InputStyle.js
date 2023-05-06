@@ -23,7 +23,7 @@ export const StyledInput = styled.input`
   @media (max-height: 670px) {
     height: 20px;
   }
-  @media (max-width: 576px) {
+  @media (max-width: 600px) {
     height: ${(props) => (props.elementType === "scaled" ? "20px" : "")};
     font-size: ${(props) => (props.elementType === "scaled" ? "10px" : "")};
     width: ${(props) => (props.elementType === "scaled" ? "180px" : "")};

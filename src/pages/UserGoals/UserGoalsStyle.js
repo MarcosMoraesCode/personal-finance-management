@@ -11,6 +11,7 @@ import longTerm from "../../images/longTermBg.jpg";
 const scaleUpRight = keyframes`
  0% {
     background-image: url(${formBg});
+    background-position: center ;
     background-color: black ;
     -webkit-transform: scale(1);
             transform: scale(1);
@@ -19,9 +20,10 @@ const scaleUpRight = keyframes`
   }
   100% {
     //min-width: 50%;
-    max-height: 50%;
+    //max-height: 50%;
     z-index: 100;
     background-image: url(${formBg});
+    background-position: center ;
     background-color: black ;
     
     -webkit-transform: scale(1.5);
@@ -39,7 +41,7 @@ const scaleUpRight = keyframes`
 const scaleDownRight = keyframes`
 
 0% {
-  max-height: 50%;
+  //max-height: 50%;
   //min-width: 50%;
     z-index: 100;
     -webkit-transform: scale(1.5);
@@ -66,25 +68,29 @@ const scaleUpCenter = keyframes`
     -webkit-transform: scale(1);
             transform: scale(1);
             background-image: url(${formBg});
+            background-position: center ;
     background-color: black ;
   }
   100% {
-    min-width: 50%;
+   // min-width: 50%;
+  // max-height: 50%;
     z-index: 100;
     background-image: url(${formBg});
     background-color: black ;
+    background-position: center ;
    
-    -webkit-transform: scale(2);
-            transform: scale(2);
+    -webkit-transform: scale(1.5);
+            transform: scale(1.5);
   }
 `;
 
 const scaleDownCenter = keyframes`
     0% {
-      min-width: 50%;
+      //min-width: 50%;
+     // max-height: 50%;
     z-index: 100;
-    -webkit-transform: scale(2);
-            transform: scale(2);
+    -webkit-transform: scale(1.5);
+            transform: scale(1.5);
 
   }
   100% {
@@ -101,18 +107,21 @@ const scaleUpLeft = keyframes`
     -webkit-transform-origin: 0% 50%;
             transform-origin: 0% 50%;
             background-image: url(${formBg});
+            background-position: center ;
     background-color: black ;
   }
   100% {
-   min-width: 50%;
-   max-width:50%;
+   //min-width: 50%;
+   //max-width:50%;
+   //max-height: 50%;
    background-image: url(${formBg});
+   background-position: center ;
     background-color: black ;
    
      //   width: 1000px;
     z-index: 100;
-    -webkit-transform: scale(2);
-            transform: scale(2);
+    -webkit-transform: scale(1.5);
+            transform: scale(1.5);
     -webkit-transform-origin: 0% 50%;
             transform-origin: 0% 50%;
    
@@ -123,10 +132,11 @@ const scaleUpLeft = keyframes`
 
 const scaleDownLeft = keyframes`
 0% {
-  min-width: 50%;
+ // min-width: 50%;
+ //max-height: 50%;
     z-index: 100;
-    -webkit-transform: scale(2);
-            transform: scale(2);
+    -webkit-transform: scale(1.5);
+            transform: scale(1.5);
     -webkit-transform-origin: 0% 50%;
             transform-origin: 0% 50%;
   }

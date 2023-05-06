@@ -36,6 +36,7 @@ export const LeftContentDiv = styled.div`
   @media (max-width: 701px) {
     flex-direction: column-reverse;
     height: fit-content;
+    // background-color: red;
   }
 `;
 export const RightContentDiv = styled.div`
@@ -62,7 +63,8 @@ export const ExpensesTrackingContainer = styled.div`
   margin: auto;
   min-width: 320px;
   @media (max-width: 700px) {
-    height: 100%;
+    min-height: 30vh;
+    max-height: 84vh;
     margin-top: 35px;
     width: 80%;
     padding-left: 5px;
@@ -90,6 +92,9 @@ export const ExpensesListDiv = styled.div`
   width: 100%;
   //background-color: pink;
   height: 100%;
+  @media (max-width: 701px) {
+    min-height: 200px;
+  }
 `;
 
 export const ExpensesInfoDiv = styled.div`

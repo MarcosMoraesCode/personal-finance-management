@@ -24,7 +24,7 @@ export const IncomeTrackingContainer = styled.div`
   }
   @media (max-width: 701px) {
     border: none;
-    height: 94vh;
+    min-height: 84vh;
     margin-top: 15px;
     margin-bottom: 25px;
     width: 75%;

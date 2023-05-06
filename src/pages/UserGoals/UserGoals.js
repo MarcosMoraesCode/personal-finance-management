@@ -464,11 +464,11 @@ const UserGoals = (props) => {
     <>
       <FormContainer>
         <InputContainer
-          elementType={"scaled"}
+          //elementType={"scaled"}
           outline={"0px"}
-          width={"118px"}
-          height={"15px"}
-          fontSize={"7px"}
+          width={"150px"}
+          height={"19px"}
+          fontSize={"10px"}
           noMargin
           placeholder={userInputs.inputName.placeholder}
           changed={(event) =>
@@ -487,11 +487,11 @@ const UserGoals = (props) => {
           Goal Name
         </InputContainer>
         <InputContainer
-          elementType={"scaled"}
+          //elementType={"scaled"}
           outline={"0px"}
-          width={"118px"}
-          height={"15px"}
-          fontSize={"7px"}
+          width={"150px"}
+          height={"19px"}
+          fontSize={"10px"}
           noMargin
           placeholder={userInputs.inputValue.placeholder}
           changed={(event) =>
@@ -511,11 +511,11 @@ const UserGoals = (props) => {
         </InputContainer>
 
         <InputContainer
-          elementType={"scaled"}
+          //elementType={"scaled"}
           outline={"0px"}
-          width={"118px"}
-          height={"15px"}
-          fontSize={"7px"}
+          width={"150px"}
+          height={"19px"}
+          fontSize={"10px"}
           noMargin
           placeholder={userInputs.inputPercentage.placeholder}
           changed={(event) =>
@@ -537,12 +537,12 @@ const UserGoals = (props) => {
           Initial contribution
         </InputContainer>
         <InputContainer
-          elementType={"scaled"}
+          //elementType={"scaled"}
           noMargin
           outline={"0px"}
-          width={"118px"}
-          height={"15px"}
-          fontSize={"7px"}
+          width={"150px"}
+          height={"19px"}
+          fontSize={"10px"}
           type={"date"}
           changed={(event) =>
             InputChangeHandler(event, userInputs.inputDate.id)
