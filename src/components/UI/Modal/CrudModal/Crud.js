@@ -423,9 +423,7 @@ const Crud = (props) => {
     case "edit-useraddress":
       crudContent = (
         <>
-          <CrudStyleTitle>
-            Current Address: "{props.userAddress} "
-          </CrudStyleTitle>
+          <CrudStyleTitle>Change Address</CrudStyleTitle>
           <InputsDiv>
             <InputContainer
               placeholder={props.streetInputConfig.placeholder}

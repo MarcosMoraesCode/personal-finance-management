@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import {
+  AlertButtonDiv,
+  AlertContent,
   ButtonDiv,
+  CloseAlertButton,
   ImageContent,
   ImageDiv,
   MainContent,
@@ -18,9 +21,10 @@ import {
   SecondaryContent,
   SecondaryInfoContent,
   SecondaryInfoContentDiv,
+  StyledAlert,
   TextSpan,
 } from "./ProfileStyle";
-import { SpanText } from "../UserGoals/UserGoalsStyle";
+
 import Crud from "../../components/UI/Modal/CrudModal/Crud";
 import { useDispatch } from "react-redux";
 import {
@@ -38,6 +42,8 @@ const Profile = () => {
   const [openOption, setOpenOptions] = useState(false);
   const [hideOldPassword, setHideOldPassword] = useState(true);
   const [hideNewPassword, setHideNewPassword] = useState(true);
+  const [showAlert, setShowAlert] = useState(false);
+  const [email, setEmail] = useState(false);
   const [sendPasswordResetEmail, sending, error] =
     useSendPasswordResetEmail(auth);
   const [userInfo, setUserInfo] = useState({
@@ -134,10 +140,6 @@ const Profile = () => {
       invalidMessage: "",
     },
   });
-
-  if (error) {
-    alert(error);
-  }
 
   const getUser = async () => {
     await dispatch(fetchUserInformation()).then((res) => {
@@ -411,9 +413,11 @@ const Profile = () => {
     //let email = localStorage.getItem("useremail");
 
     const success = await sendPasswordResetEmail(userInfo.email);
+    setShowAlert(true);
+    BackdropCrudHandler();
+    setSubmitPermission(false);
     if (success) {
-      alert("Sent email");
-      BackdropCrudHandler();
+      setEmail(true);
     }
   };
 
@@ -820,11 +824,46 @@ const Profile = () => {
     setSubmitPermission(false);
   };
 
+  let alertElement;
+
+  if (error) {
+    alertElement = (
+      <StyledAlert>
+        {" "}
+        <AlertContent>{error.message}</AlertContent>
+        <AlertButtonDiv>
+          <CloseAlertButton
+            onClick={() => {
+              setShowAlert(false);
+            }}
+          />
+        </AlertButtonDiv>
+      </StyledAlert>
+    );
+  }
+  if (email) {
+    alertElement = (
+      <StyledAlert color={"#51d289"}>
+        {" "}
+        <AlertContent>A recovery link was sent to your email!</AlertContent>
+        <AlertButtonDiv>
+          <CloseAlertButton
+            onClick={() => {
+              setShowAlert(false);
+              //setAccountCreated(false);
+              setEmail(false);
+            }}
+          />
+        </AlertButtonDiv>
+      </StyledAlert>
+    );
+  }
+
   return (
     <ProfileDiv>
       <ProfileContainer>
         <ProfileTitleDiv>
-          <ProfileTitle>Profile</ProfileTitle>
+          <ProfileTitle>Perfil</ProfileTitle>
         </ProfileTitleDiv>
         <ProfileContentDiv>
           <MainContent>
@@ -1113,6 +1152,7 @@ const Profile = () => {
           }*/
         />
       ) : null}
+      {showAlert ? alertElement : null}
     </ProfileDiv>
   );
 };

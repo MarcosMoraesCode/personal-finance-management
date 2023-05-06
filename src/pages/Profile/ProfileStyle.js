@@ -1,5 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import fullImg from "../../images/test.png";
+import closeIcon from "../../images/closeIcon.svg";
 import pig from "../../images/formPig.png";
 
 const ScaleIn = keyframes`
@@ -40,6 +41,18 @@ export const ProfileContainer = styled.div`
   background-color: black;
   box-shadow: 2px 2px 20px 1px white;
 `;
+export const CloseAlertButton = styled.button`
+  width: 11px;
+  height: 11px;
+  border: none;
+  border-radius: 3px;
+  background-color: transparent;
+  background-image: url(${closeIcon});
+  background-size: cover;
+  :hover {
+    cursor: pointer;
+  }
+`;
 
 export const ProfileTitleDiv = styled.div`
   display: flex;
@@ -55,6 +68,41 @@ export const ProfileTitle = styled.h1`
   @media (max-width: 550px) {
     font-size: 36px;
   }
+`;
+export const AlertContent = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 100%;
+  //background-color: red;
+`;
+export const AlertButtonDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 5px;
+  width: 10%;
+  min-height: 40px;
+  // background-color: white;
+`;
+
+export const StyledAlert = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6vh;
+  position: absolute;
+  border-radius: 5px;
+  right: 0;
+  width: 280px;
+  padding-top: 3px;
+  padding-left: 4px;
+  padding-bottom: 3px;
+  min-height: 45px;
+  max-height: fit-content;
+  background-color: ${(props) => (props.color ? props.color : " #d9074a")};
+  font-size: 13px;
 `;
 
 export const ProfileContentDiv = styled.div`

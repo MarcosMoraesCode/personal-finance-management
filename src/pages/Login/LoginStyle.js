@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import fullImg from "../../images/test.png";
+
 import img from "../../images/sign-in.jpg";
 import closeIcon from "../../images/closeIcon.svg";
 import logoBig from "../../images/finplannLogoBig.svg";

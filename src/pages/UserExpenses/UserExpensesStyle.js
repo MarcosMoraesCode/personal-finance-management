@@ -1,6 +1,6 @@
 import styled, { keyframes, css } from "styled-components";
 import formPig from "../../images/formPig.png";
-import pig from "../../images/pig.png";
+
 import check from "../../images/checkIcon.svg";
 import styledBg from "../../images/analysisBg.svg";
 

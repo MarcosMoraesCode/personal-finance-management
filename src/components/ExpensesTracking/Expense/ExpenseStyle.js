@@ -48,8 +48,11 @@ export const EditButton = styled.button`
   background-size: contain;
   background-color: transparent;
   border: none;
+  transition: 0.4s ease-in-out;
   :hover {
     cursor: pointer;
+    transform: scale(1.5);
+    transition: 0.4s ease-in-out;
   }
 `;
 export const RemoveButton = styled.button`
@@ -59,8 +62,11 @@ export const RemoveButton = styled.button`
   background-image: url(${removeIcon});
   background-size: contain;
   border: none;
+  transition: 0.4s ease-in-out;
   :hover {
     cursor: pointer;
+    transform: scale(1.5);
+    transition: 0.4s ease-in-out;
   }
 `;
 

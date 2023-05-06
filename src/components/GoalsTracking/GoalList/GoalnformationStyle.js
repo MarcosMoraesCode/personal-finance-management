@@ -56,7 +56,7 @@ export const GoalContainer = styled.div`
   border: 1px solid white;
   margin-top: 10px;
   border-radius: 5px;
-  //background-color: red;
+  background-color: black;
   @media (max-width: 1030px) {
     flex-direction: column;
   }
@@ -106,7 +106,7 @@ export const GoalContentBlock = styled.div`
   height: fit-content;
   @media (max-width: 430px) {
     font-size: 8px;
-  } ;
+  }
 `;
 
 export const SecondaryContainer = styled.div`
@@ -175,7 +175,7 @@ export const ButtonsDiv = styled.div`
   justify-content: space-around;
   max-width: 35%;
   width: 35%;
-  // border: 1px solid red;
+  //border: 1px solid red;
 `;
 
 export const EditButton = styled.button`

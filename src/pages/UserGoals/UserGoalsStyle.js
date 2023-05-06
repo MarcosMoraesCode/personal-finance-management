@@ -1,11 +1,12 @@
 import styled, { css, keyframes } from "styled-components";
-import createIcon from "../../images/createIcon.png";
-import pig from "../../images/pig.png";
-import babyPig from "../../images/formPig.png";
+import createIcon from "../../images/createIcon.svg";
+
+//import babyPig from "../../images/formPig.png";
 import expandIcon from "../../images/expandIcon.png";
 import formBg from "../../images/formBg.svg";
 import shortTerm from "../../images/shortTermBg.svg";
 import mediumTerm from "../../images/mediumTermBg.svg";
+import longTerm from "../../images/longTermBg.jpg";
 
 const scaleUpRight = keyframes`
  0% {
@@ -17,14 +18,14 @@ const scaleUpRight = keyframes`
             transform-origin: 100% 50%;
   }
   100% {
-    min-width: 50%;
-    //min-height: 500px ;
+    //min-width: 50%;
+    max-height: 50%;
     z-index: 100;
     background-image: url(${formBg});
     background-color: black ;
     
-    -webkit-transform: scale(2);
-            transform: scale(2);
+    -webkit-transform: scale(1.5);
+            transform: scale(1.5);
             
     -webkit-transform-origin: 100% 50%;
             transform-origin: 100% 50%;
@@ -38,10 +39,11 @@ const scaleUpRight = keyframes`
 const scaleDownRight = keyframes`
 
 0% {
-  min-width: 50%;
+  max-height: 50%;
+  //min-width: 50%;
     z-index: 100;
-    -webkit-transform: scale(2);
-            transform: scale(2);
+    -webkit-transform: scale(1.5);
+            transform: scale(1.5);
             
     -webkit-transform-origin: 100% 50%;
             transform-origin: 100% 50%;
@@ -451,6 +453,9 @@ export const GoalsExpandedDiv = styled.div`
     padding-left: 0px;
     padding-right: 0px;
   }
+  @media (max-width: 500px) {
+    font-size: 12px;
+  }
 `;
 
 export const GoalsDiv = styled.div`
@@ -463,8 +468,11 @@ export const GoalsDiv = styled.div`
   max-width: ${(props) => (props.open === true ? "" : "200px")};
   min-height: ${(props) => (props.open === true ? "" : "50px")};
   max-height: ${(props) => (props.open === true ? "" : "50px")};
-
-  border: none;
+  background-image: url(${formBg});
+  background-size: cover;
+  background-repeat: no-repeat;
+  //border: 1px solid white;
+  box-shadow: 0px 2px 10px 2px white;
 
   -webkit-animation: ${(props) =>
     props.open === true
@@ -492,6 +500,16 @@ export const GoalsDiv = styled.div`
   :hover {
     transition: 0.4s ease-in-out;
     box-shadow: 2px 2px 20px 2px white;
+  }
+
+  @media (max-width: 800px) {
+    margin-bottom: 15px;
+    background-position: center;
+  }
+  @media (max-width: 400px) {
+    //font-size: 1px;
+    min-width: ${(props) => (props.open === true ? "155px" : "200px")};
+    max-width: ${(props) => (props.open === true ? "155px" : "200px")};
   }
 `;
 
@@ -613,7 +631,7 @@ export const UserGoalsContainer = styled.div`
     min-width: 100%;
     max-width: 100%;
   }
-  @media (max-width: 576px) {
+  @media (max-width: 600px) {
     flex-direction: column;
     min-height: fit-content;
     max-height: fit-content;
@@ -623,7 +641,7 @@ export const UserGoalsContainer = styled.div`
 export const LongGoalExample = styled.div`
   display: flex;
   flex-direction: column;
-  background-image: url(${pig});
+  background-image: url(${longTerm});
   background-size: cover;
   justify-content: space-between;
   border-radius: 10px;
@@ -633,7 +651,7 @@ export const LongGoalExample = styled.div`
   min-height: 280px;
   font-family: "Roboto";
   box-shadow: 2px 2px 20px 1px white;
-  transition: 0.2s ease-in-out;
+
   -webkit-animation: ${(props) =>
     props.open === true
       ? css`
@@ -655,11 +673,6 @@ export const LongGoalExample = styled.div`
       : css`
           ${scaleDownRight} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
-  :hover {
-    cursor: pointer;
-    transform: scale(1.05);
-    transition: 0.2s ease-in-out;
-  }
 
   @media (max-width: 1200px) {
     min-width: 200px;
@@ -673,7 +686,7 @@ export const LongGoalExample = styled.div`
     margin-right: 10px;
     margin-left: 10px;
   }
-  @media (max-width: 576px) {
+  @media (max-width: 600px) {
     min-width: 300px;
     min-height: 250px;
     max-height: 250px;
@@ -721,12 +734,7 @@ export const MediumGoalExample = styled.div`
       : css`
           ${scaleDownCenter} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
-  transition: 0.2s ease-in-out;
-  :hover {
-    cursor: pointer;
-    transform: scale(1.05);
-    transition: 0.2s ease-in-out;
-  }
+
   @media (max-width: 1200px) {
     min-width: 200px;
     margin-right: 10px;
@@ -763,7 +771,7 @@ export const ShortGoalExample = styled.div`
   background-size: cover;
   font-family: "Roboto";
   box-shadow: 2px 2px 20px 1px white;
-  transition: 0.2s ease-in-out;
+
   -webkit-animation: ${(props) =>
     props.open === true
       ? css`
@@ -786,11 +794,6 @@ export const ShortGoalExample = styled.div`
           ${scaleDownLeft} 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
         `};
 
-  :hover {
-    cursor: pointer;
-    transform: scale(1.05);
-    transition: 0.2s ease-in-out;
-  }
   @media (max-width: 1200px) {
     min-width: 200px;
     margin-right: 10px;
@@ -803,7 +806,7 @@ export const ShortGoalExample = styled.div`
     margin-right: 10px;
     margin-left: 10px;
   }
-  @media (max-width: 576px) {
+  @media (max-width: 600px) {
     min-width: 300px;
     min-height: 250px;
     max-height: 250px;
@@ -846,7 +849,9 @@ export const GoalExampleDescription = styled.p`
 
 export const ButtonDiv = styled.div`
   display: flex;
+  width: 100%;
   justify-content: ${(props) => (props.center ? "center" : "flex-end")};
+  //align-items: center;
   //padding: 10px;
   padding-top: 0px;
   //background-color: red;
@@ -862,10 +867,12 @@ export const ButtonContainer = styled.div`
 
 export const CreateButton = styled.button`
   display: flex;
+  margin-right: 5px;
+  margin-bottom: 5px;
 
   background-color: transparent;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border: none;
   color: white;
   background-image: url(${createIcon});
@@ -892,7 +899,7 @@ export const FormContainer = styled.div`
 
 export const BackButton = styled.button`
   margin: 5px;
-  margin-top: 0px;
+  //margin-top: 0px;
   font-family: "Roboto";
   width: fit-content;
   height: 17px;
@@ -900,7 +907,7 @@ export const BackButton = styled.button`
   padding: 2px 4px 2px 4px;
 
   font-size: 8px;
-  margin-right: 30px;
+  //margin-right: 30px;
 
   border: none;
   color: white;
@@ -950,16 +957,16 @@ export const GoalsInfoContainer = styled.div`
   //border: 1px solid pink;
   //background-color: red;
   @media (max-width: 1500px) {
-    max-width: 90%;
-    min-width: 90%;
+    max-width: 100%;
+    min-width: 100%;
   }
-  @media (max-width: 800px) {
+  @media (max-width: 600px) {
     flex-direction: column-reverse;
     align-items: center;
     min-width: 100%;
     max-width: 100%;
   }
-  @media (max-width: 800px) {
+  @media (max-width: 600px) {
     padding: 20px;
     min-height: fit-content;
     max-height: fit-content;
@@ -972,8 +979,9 @@ export const AchievementDiv = styled.div`
   align-items: center;
   border: 1px solid gold;
   border-radius: 10px;
-
+  min-height: 50px;
   height: 35%;
+
   min-width: 200px;
   max-width: 200px;
   padding: 10px;
@@ -1093,13 +1101,14 @@ export const AllocatedMoneyDiv = styled.div`
   min-height: 50px;
   max-height: 50px;
   //border: none;
+  box-shadow: 0px 2px 10px 2px #51d289;
   //box-shadow: 2px 2px 20px 2px white;
   transition: 0.4s ease-in-out;
   :hover {
     //cursor: pointer;
 
     transition: 0.4s ease-in-out;
-    box-shadow: 0px 2px 10px 2px #51d289;
+    box-shadow: 2px 2px 20px 2px #51d289;
   }
 `;
 export const AllocatedMoneyTitle = styled.h1`

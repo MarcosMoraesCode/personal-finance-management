@@ -1227,6 +1227,7 @@ const UserIncomes = (props) => {
           term={goal.term}
           value={goal.value}
           transactionAction={goal.transactionAction}
+          finishTask={() => navigate("/usergoals")}
         />
       );
     });

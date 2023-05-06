@@ -848,7 +848,7 @@ const UserGoals = (props) => {
       if (userInputs.inputPercentage.value !== "0.00") {
         dispatch(postNewHistory(historyObj)).then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
-            console.log("antes de atualizar é" + historyId);
+            //console.log("antes de atualizar é" + historyId);
             upload = true;
           }
           dispatch(updateHistoryId(newId)).then((res) => {
@@ -1064,7 +1064,7 @@ const UserGoals = (props) => {
       <GoalsExpandedDiv open={openList} animations={startListAnimations}>
         <GoalListTitle>Goals List</GoalListTitle>
         <GoalListContainer>{goalsList}</GoalListContainer>
-        <ButtonDiv>
+        <ButtonDiv center>
           <BackButton
             onClick={() => {
               setOpenList(false);
@@ -1197,8 +1197,8 @@ const UserGoals = (props) => {
         <GoalsInfoContainer>
           <AllocatedMoneyDiv listIsOpen={openList}>
             <AllocatedMoneyTitle>
-              <SpanMoneyTitle> Allocated income</SpanMoneyTitle> ${" "}
-              {totalAllocated}
+              <SpanMoneyTitle> Allocated Income</SpanMoneyTitle> ${" "}
+              {totalAllocated.toFixed(2)}
             </AllocatedMoneyTitle>
             <EditButton onClick={() => navigate("/userfinances")} />
           </AllocatedMoneyDiv>
