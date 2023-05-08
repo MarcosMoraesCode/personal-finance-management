@@ -113,6 +113,7 @@ const Layout = (props) => {
           //show={openSideDrawer}
           defaultToolbar={tokens.tokenId ? true : false}
           changeSideDrawer={sideDrawerHandler}
+          logout={() => logout()}
         ></Toolbar>
         {sideDrawer}
         <MainContent>{props.children}</MainContent>

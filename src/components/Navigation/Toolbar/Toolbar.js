@@ -9,6 +9,7 @@ const Toolbar = (props) => {
         defaultToolbar={props.defaultToolbar}
         showSideDrawer={props.show}
         change={props.changeSideDrawer}
+        logout={props.logout}
       />
     </StyledToolbar>
   );

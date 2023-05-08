@@ -15,6 +15,7 @@ const initialState = {
   userName: "",
   email: "",
   address: "",
+  reportId: 0,
 };
 
 export const createUser = createAsyncThunk(
@@ -165,6 +166,61 @@ export const resetData = createAsyncThunk(
   }
 );
 
+export const fetchReportId = createAsyncThunk(
+  "userprofile/fetchReportId",
+  async (action, state) => {
+    try {
+      console.log("passou aqui");
+      const dbId = await get(child(ref(db), `reportId`)).then((snapshot) => {
+        console.log("id report", snapshot.val());
+        return snapshot.val();
+      });
+      return dbId;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+);
+
+export const postNewReport = createAsyncThunk(
+  "userprofile/postNewReport",
+  async (action, state) => {
+    try {
+      let idValue = state.getState().userData.reportId;
+
+      await get(child(ref(db), `reports`)).then((snapshot) => {
+        if (snapshot.exists() === true) {
+          let oldReports = snapshot.val();
+
+          const updates = {};
+          updates[`reports`] = {
+            ...oldReports,
+            [`report-${idValue}`]: {
+              content: action.content,
+              username: action.username,
+              email: action.email,
+              date: new Date(),
+            },
+          };
+          update(ref(db), updates).then((res) => res);
+        } else {
+          set(ref(db, `reports`), {
+            [`report-${idValue}`]: {
+              content: action.content,
+              username: action.username,
+              email: action.email,
+              date: new Date(),
+            },
+          });
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const userDataSlice = createSlice({
   name: "userData",
   initialState,
@@ -212,6 +268,25 @@ export const userDataSlice = createSlice({
     builder.addCase(createUser.rejected, (state, action) => {
       console.log("Rejected", action.error.message);
       console.log(action.error);
+    });
+    builder.addCase(postNewReport.fulfilled, (state, action) => {
+      state.reportId += 1;
+      //console.log("Novo id dinamico: ", state.reportId);
+
+      set(ref(db, `reportId`), state.reportId);
+    });
+    builder.addCase(postNewReport.rejected, (state, action) => {
+      //console.log("Rejected", action.error.message);
+      // console.log(action.error);
+    });
+    builder.addCase(fetchReportId.fulfilled, (state, action) => {
+      console.log("payload aqui", action.payload);
+      state.reportId = action.payload;
+      //console.log("Novo id dinamico: ", state.dynamicId);
+    });
+    builder.addCase(fetchReportId.rejected, (state, action) => {
+      //console.log("Rejected", action.error.message);
+      //console.log(action.error);
     });
   },
 });

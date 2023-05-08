@@ -5,6 +5,9 @@ export const StyledLabel = styled.label`
   align-self: flex-start;
   padding-left: 4px;
   font-size: 12px;
+  @media (max-height: 670px) {
+    font-size: 10px;
+  }
 `;
 
 export const StyledSelect = styled.select`

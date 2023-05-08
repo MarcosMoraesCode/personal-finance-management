@@ -5,7 +5,7 @@ const NavigationItem = (props) => {
   return (
     <WrappNavLink>
       <li>
-        <StyledLink to={props.link}>{props.children}</StyledLink>
+        <StyledLink onClick={props.action}>{props.children}</StyledLink>
       </li>
     </WrappNavLink>
   );

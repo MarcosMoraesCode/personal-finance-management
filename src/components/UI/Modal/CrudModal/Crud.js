@@ -577,30 +577,30 @@ const Crud = (props) => {
         </>
       );
       break;
-    case "repport":
+    case "report":
       crudContent = (
         <>
-          <CrudStyleTitle>Send a Repport</CrudStyleTitle>
+          <CrudStyleTitle>Send a Report</CrudStyleTitle>
           <InputsDiv>
             <InputContainer
-              placeholder={props.repportInputConfig.placeholder}
+              placeholder={props.reportInputConfig.placeholder}
               elementType={"textarea"}
               invalidMessage={
-                props.repportInputConfig.isValid
+                props.reportInputConfig.isValid
                   ? ""
-                  : props.repportInputConfig.invalidMessage
+                  : props.reportInputConfig.invalidMessage
               }
-              value={props.repportInputConfig.value}
-              blur={props.repportBlur}
-              changed={props.repportChanged}
+              value={props.reportInputConfig.value}
+              blur={props.reportBlur}
+              changed={props.reportChanged}
             >
-              Repport Area
+              Report Area
             </InputContainer>
           </InputsDiv>
 
           <ModalButtonDiv>
             <ContinueBtn
-              onClick={props.editIncome}
+              onClick={props.reportBug}
               disabled={props.continueDisabled}
               {...props}
             >

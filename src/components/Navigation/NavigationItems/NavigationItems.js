@@ -14,7 +14,7 @@ const NavigationItems = (props) => {
       <>
         <DrawerToggle change={props.change}></DrawerToggle>
         <Logo src={logo} />
-        <NavigationItem link="/logout">LOGOUT</NavigationItem>
+        <NavigationItem action={props.logout}>LOGOUT</NavigationItem>
       </>
     );
   }

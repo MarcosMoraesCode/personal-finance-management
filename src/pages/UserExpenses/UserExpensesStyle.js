@@ -159,14 +159,14 @@ export const UserDefaultButton = styled.button`
   @media (max-height: 670px) {
     font-size: 8px;
     height: fit-content;
-    padding-top: 1px;
-    padding-bottom: 1px;
+    padding-top: 3px;
+    padding-bottom: 3px;
   }
   @media (max-width: 430px) {
     font-size: 8px;
     height: fit-content;
-    padding-top: 1px;
-    padding-bottom: 1px;
+    padding-top: 3px;
+    padding-bottom: 3px;
   }
 `;
 

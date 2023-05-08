@@ -29,7 +29,9 @@ import Crud from "../../components/UI/Modal/CrudModal/Crud";
 import { useDispatch } from "react-redux";
 import {
   editProfile,
+  fetchReportId,
   fetchUserInformation,
+  postNewReport,
   resetData,
 } from "../../features/user/userSlice";
 import { useEffect } from "react";
@@ -44,6 +46,8 @@ const Profile = () => {
   const [hideNewPassword, setHideNewPassword] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
   const [email, setEmail] = useState(false);
+  const [reportSent, setReportSent] = useState(false);
+  const [reportNotSent, setReportNotSent] = useState(false);
   const [sendPasswordResetEmail, sending, error] =
     useSendPasswordResetEmail(auth);
   const [userInfo, setUserInfo] = useState({
@@ -63,7 +67,7 @@ const Profile = () => {
     userNewPasswordConfirmation: "",
     userOldPassword: "",
     userAddress: "",
-    repport: "",
+    report: "",
   });
   const [userInputs, setUserInputs] = useState({
     id: "user",
@@ -131,15 +135,19 @@ const Profile = () => {
       placeholder: "Confirm Password",
       invalidMessage: "",
     },
-    inputRepport: {
+    inputReport: {
       value: "",
       isValid: false,
       isTouched: false,
-      id: "Repport",
+      id: "Report",
       placeholder: "Must have at least 50 characters.",
       invalidMessage: "",
     },
   });
+
+  const getReportId = async () => {
+    await dispatch(fetchReportId()).then((res) => console.log(res));
+  };
 
   const getUser = async () => {
     await dispatch(fetchUserInformation()).then((res) => {
@@ -166,11 +174,15 @@ const Profile = () => {
         // if( )
       }
     });
+
+    //await fetchReportId().then((res) => console.log("oi", res));
   };
+  //a
 
   useEffect(() => {
     getUser();
-  });
+    getReportId();
+  }, []);
 
   const switchHideNewPassword = () => {
     setHideNewPassword(!hideNewPassword);
@@ -277,11 +289,11 @@ const Profile = () => {
         });
         checkButtonValidation(inputId, event.currentTarget.value);
         break;
-      case "Repport":
+      case "Report":
         setUserInputs({
           ...userInputs,
-          inputRepport: {
-            ...userInputs.inputRepport,
+          inputReport: {
+            ...userInputs.inputReport,
             value: event.currentTarget.value,
             isTouched: true,
             isValid: CheckInputValidation(inputId, event.currentTarget.value),
@@ -367,6 +379,7 @@ const Profile = () => {
     const validation7 = value !== userInfo.street;
     const validation8 = value !== userInfo.district;
     const validation9 = value !== userInfo.city;
+    const validation10 = value.length >= 50;
 
     //const validation3 = Number(value) <= Number(userInputs.inputValue.value);
     //const validation4 = Number(value) <= Number(userBalance);
@@ -400,8 +413,9 @@ const Profile = () => {
       /*case "State":
         validation1 && validation10 ? (result = true) : (result = false);
         break;*/
-      case "Repport":
-        validation1 ? (result = true) : (result = false);
+      case "Report":
+        console.log("passa aq", console.log(validation10));
+        validation10 ? (result = true) : (result = false);
         break;
       default:
         break;
@@ -421,6 +435,34 @@ const Profile = () => {
     }
   };
 
+  const reportBug = async () => {
+    const reportObj = {
+      content: userInputs.inputReport.value,
+      username: userInfo.name,
+      email: userInfo.email,
+    };
+
+    await dispatch(postNewReport(reportObj))
+      .then((res) => {
+        console.log(res);
+        if (res.meta.requestStatus === "fulfilled") {
+          setSubmitPermission(false);
+          setShowCrud(false);
+          setShowAlert(true);
+          setReportSent(true);
+          getUser();
+        } else {
+          setShowAlert(true);
+          setSubmitPermission(false);
+          setShowCrud(false);
+          setReportNotSent(true);
+        }
+      })
+      .catch((err) => console.log(err));
+
+    console.log(userInputs.inputReport.value, userInfo.name, userInfo.email);
+  };
+
   const checkButtonValidation = (inputId, value) => {
     let validation1 = userInputs.inputName.isValid === true;
     let validation2 = userInputs.inputOldPassword.isValid === true;
@@ -430,7 +472,7 @@ const Profile = () => {
     let validation6 = userInputs.inputDistrict.isValid === true;
     let validation7 = userInputs.inputCity.isValid === true;
     //let validation8 = userInputs.inputState.isValid === true;
-    let validation9 = userInputs.inputRepport.isValid === true;
+    let validation9 = userInputs.inputReport.isValid === true;
 
     switch (inputId) {
       case "User Name":
@@ -454,10 +496,8 @@ const Profile = () => {
       case "City":
         validation7 = CheckInputValidation(inputId, value);
         break;
-      /*case "State":
-        validation8 = CheckInputValidation(inputId, value);
-        break;*/
-      case "Repport":
+      case "Report":
+        console.log("aqui tbm");
         validation9 = CheckInputValidation(inputId, value);
         break;
       default:
@@ -478,6 +518,10 @@ const Profile = () => {
         break;
       case "edit-userpassword":
         validation1 === true
+          ? setSubmitPermission(true)
+          : setSubmitPermission(false);
+      case "report":
+        validation9 === true
           ? setSubmitPermission(true)
           : setSubmitPermission(false);
         break;
@@ -610,13 +654,13 @@ const Profile = () => {
             },
           });
           break;
-        case "Repport":
+        case "Report":
           setUserInputs({
             ...userInputs,
-            inputRepport: {
-              ...userInputs.inputRepport,
+            inputReport: {
+              ...userInputs.inputReport,
               invalidMessage:
-                userInputs.inputRepport.value === "" ? "" : "Invalid Message!",
+                userInputs.inputReport.value === "" ? "" : "Invalid Message!",
             },
           });
           break;
@@ -679,11 +723,11 @@ const Profile = () => {
             },
           });
           break;
-        case "Repport":
+        case "Report":
           setUserInputs({
             ...userInputs,
-            inputRepport: {
-              ...userInputs.inputRepport,
+            inputReport: {
+              ...userInputs.inputReport,
               invalidMessage: "",
             },
           });
@@ -796,11 +840,11 @@ const Profile = () => {
         placeholder: "Confirm Password",
         invalidMessage: "",
       },
-      inputRepport: {
+      inputReport: {
         value: "",
         isValid: false,
         isTouched: false,
-        id: "Repport",
+        id: "Report",
         placeholder: "Must have at least 50 characters.",
         invalidMessage: "",
       },
@@ -816,7 +860,7 @@ const Profile = () => {
       userNewPasswordConfirmation: "",
       userOldPassword: "",
       userAddress: "",
-      repport: "",
+      report: "",
     });
     setHideNewPassword(true);
     setHideOldPassword(true);
@@ -852,6 +896,42 @@ const Profile = () => {
               setShowAlert(false);
               //setAccountCreated(false);
               setEmail(false);
+            }}
+          />
+        </AlertButtonDiv>
+      </StyledAlert>
+    );
+  }
+  if (reportSent) {
+    alertElement = (
+      <StyledAlert color={"#51d289"}>
+        {" "}
+        <AlertContent>Thanks! You report was send!</AlertContent>
+        <AlertButtonDiv>
+          <CloseAlertButton
+            onClick={() => {
+              setShowAlert(false);
+              //setAccountCreated(false);
+              setReportSent(false);
+            }}
+          />
+        </AlertButtonDiv>
+      </StyledAlert>
+    );
+  }
+  if (reportNotSent) {
+    alertElement = (
+      <StyledAlert>
+        {" "}
+        <AlertContent>
+          Ops! There's something wrong! Refresh the page and try again!
+        </AlertContent>
+        <AlertButtonDiv>
+          <CloseAlertButton
+            onClick={() => {
+              setShowAlert(false);
+              //setAccountCreated(false);
+              setReportNotSent(false);
             }}
           />
         </AlertButtonDiv>
@@ -905,7 +985,7 @@ const Profile = () => {
             <SecondaryInfoContentDiv open={openOption}>
               <SecondaryInfoContent>
                 <p>
-                  FinPlann is still in beta, please repport any bug you may have
+                  FinPlann is still in beta, please report any bug you may have
                   found!
                 </p>
               </SecondaryInfoContent>
@@ -915,11 +995,11 @@ const Profile = () => {
                     setShowCrud(true);
                     setCrudType({
                       ...crudType,
-                      crudType: "repport",
+                      crudType: "report",
                     });
                   }}
                 >
-                  Repport
+                  Report
                 </ProfileBtn>
               </ButtonDiv>
             </SecondaryInfoContentDiv>
@@ -1013,6 +1093,7 @@ const Profile = () => {
           districtInputConfig={userInputs.inputDistrict}
           cityInputConfig={userInputs.inputCity}
           resetUserData={() => resetUserData()}
+          reportBug={() => reportBug()}
           changePassword={() => sendEmail()}
           editUsername={() => {
             confirmProfileChange();
@@ -1021,7 +1102,7 @@ const Profile = () => {
             confirmProfileChange();
           }}
           //stateInputConfig={userInputs.inputState}
-          repportInputConfig={userInputs.inputRepport}
+          reportInputConfig={userInputs.inputReport}
           newPasswordConfirmationInputConfig={
             userInputs.inputNewPasswordConfirmation
           }
@@ -1061,13 +1142,13 @@ const Profile = () => {
           stateBlur={() =>
             verifyFocus(userInputs.inputState.id, userInputs.inputState.isValid)
           }*/
-          repportChanged={(event) =>
-            InputChangeHandler(event, userInputs.inputRepport.id)
+          reportChanged={(event) =>
+            InputChangeHandler(event, userInputs.inputReport.id)
           }
-          repportBlur={() =>
+          reportBlur={() =>
             verifyFocus(
-              userInputs.inputRepport.id,
-              userInputs.inputRepport.isValid
+              userInputs.inputReport.id,
+              userInputs.inputReport.isValid
             )
           }
           userAddressChanged={(event) =>
