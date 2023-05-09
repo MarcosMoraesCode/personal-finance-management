@@ -20,6 +20,7 @@ import {
 const Layout = (props) => {
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
   const [startAnimation, setStartAnimation] = useState(false);
+  const [nickname, setNickname] = useState("");
 
   const userAchievements = useSelector(
     (state) => state.goalsData.userAchievements
@@ -53,6 +54,7 @@ const Layout = (props) => {
         let info = res.payload;
         //console.log("olha aqui", info);
         localStorage.setItem("username", info.name);
+        setNickname(info.name);
         localStorage.setItem("useremail", info.email);
       }
     });
@@ -91,7 +93,7 @@ const Layout = (props) => {
   if (tokens.tokenId) {
     sideDrawer = (
       <SideDrawer
-        nickname={localStorage.getItem("username")}
+        nickname={nickname !== "" ? nickname : localStorage.getItem("username")}
         balance={
           Number(localStorage.getItem("balance")) //!== null
           // ? Number(localStorage.getItem("balance"))
