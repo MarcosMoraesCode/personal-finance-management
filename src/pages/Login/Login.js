@@ -23,7 +23,11 @@ import {
 import { auth } from "../../services/firebaseConfig";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { addUserInfo, createUser } from "../../features/user/userSlice";
+import {
+  addUserInfo,
+  createUser,
+  fetchUserInformation,
+} from "../../features/user/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { MainContent } from "../Profile/ProfileStyle";
@@ -396,6 +400,17 @@ const Login = () => {
     }
   };
 
+  const getUser = async () => {
+    await dispatch(fetchUserInformation()).then((res) => {
+      if (res.meta.requestStatus === "fulfilled" && res.payload !== null) {
+        let info = res.payload;
+        //console.log("olha aqui", info);
+        localStorage.setItem("username", info.name);
+        localStorage.setItem("useremail", info.email);
+      }
+    });
+  };
+
   const HandleSignIn = async (e) => {
     e.preventDefault();
     const success = await signInWithEmailAndPassword(
@@ -424,6 +439,7 @@ const Login = () => {
 
         navigate("/userincomes");
       }
+      getUser();
     });
     if (!success) {
       setShowAlert(true);
