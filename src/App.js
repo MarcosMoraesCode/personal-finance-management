@@ -9,6 +9,7 @@ import UserExpenses from "./pages/UserExpenses/UserExpenses";
 import UserGoals from "./pages/UserGoals/UserGoals";
 import UserIncomes from "./pages/UserIncomes/UserIncomes";
 import { useSelector } from "react-redux";
+import NotFound from "./pages/NotFound/NotFound";
 
 function App() {
   const token = useSelector((state) => state.userData.tokenId);
@@ -23,6 +24,7 @@ function App() {
         <Route path="/userfinances" exact element={<BudgetTracking />} />
         <Route path="/userexpenses" exact element={<UserExpenses />} />
         <Route path="/usergoals" exact element={<UserGoals />} />
+        <Route path="*" element={<NotFound />} />
       </>
     );
   }
