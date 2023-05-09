@@ -943,7 +943,7 @@ const Profile = () => {
     <ProfileDiv>
       <ProfileContainer>
         <ProfileTitleDiv>
-          <ProfileTitle>Perfil</ProfileTitle>
+          <ProfileTitle>Profile</ProfileTitle>
         </ProfileTitleDiv>
         <ProfileContentDiv>
           <MainContent>

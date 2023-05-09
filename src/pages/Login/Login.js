@@ -446,7 +446,9 @@ const Login = () => {
         password
       );*/
     const validNickname = (nickname) =>
-      /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{5,}$/.test(nickname);
+      /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,15}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?$/.test(
+        nickname
+      );
 
     const validation1 = isEmail(elementValue);
     const validation2 = isStrongPassword(elementValue);
