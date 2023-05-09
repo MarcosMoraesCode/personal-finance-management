@@ -1215,12 +1215,12 @@ const UserExpenses = () => {
 
           dispatch(postNewHistory(historyObj)).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
-              console.log("antes de atualizar é" + historyId);
+             // console.log("antes de atualizar é" + historyId);
               upload = true;
             }
             dispatch(updateHistoryId(newId)).then((res) => {
               if (res.meta.requestStatus === "fulfilled" && upload) {
-                console.log("passou aqui");
+               // console.log("passou aqui");
                 setHistoryId(newId);
                 getExpenses();
               }
@@ -1350,7 +1350,7 @@ const UserExpenses = () => {
     await dispatch(fetchHistoryId()).then((res) => {
       if (res.payload !== null) {
         setHistoryId(res.payload);
-        console.log("do state", res.payload);
+       // console.log("do state", res.payload);
       }
     });
 
@@ -1669,12 +1669,12 @@ const UserExpenses = () => {
       });
       dispatch(postNewHistory(historyObj)).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          console.log("antes de atualizar é" + historyId);
+         // console.log("antes de atualizar é" + historyId);
           upload = true;
         }
         dispatch(updateHistoryId(newId)).then((res) => {
           if (res.meta.requestStatus === "fulfilled" && upload) {
-            console.log("passou aqui");
+            //console.log("passou aqui");
             setHistoryId(newId);
             getExpenses();
           }
@@ -1756,12 +1756,12 @@ const UserExpenses = () => {
         dispatch(updateBalance(newBalance));
         dispatch(postNewHistory(historyObj)).then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
-            console.log("antes de atualizar é" + historyId);
+            //console.log("antes de atualizar é" + historyId);
             upload = true;
           }
           dispatch(updateHistoryId(newId)).then((res) => {
             if (res.meta.requestStatus === "fulfilled" && upload) {
-              console.log("passou aqui");
+              //console.log("passou aqui");
               setHistoryId(newId);
               getExpenses();
             }
@@ -2024,12 +2024,12 @@ const UserExpenses = () => {
 
         dispatch(postNewHistory(historyObj)).then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
-            console.log("antes de atualizar é" + historyId);
+            //console.log("antes de atualizar é" + historyId);
             upload = true;
           }
           dispatch(updateHistoryId(newId)).then((res) => {
             if (res.meta.requestStatus === "fulfilled" && upload) {
-              console.log("passou aqui");
+              //console.log("passou aqui");
               setHistoryId(newId);
               getExpenses();
             }
@@ -2298,7 +2298,7 @@ const UserExpenses = () => {
       let categoryIndex = allCategories.findIndex(
         (category) => category.id === expense.categoryId
       );
-      console.log("ERRO", expense);
+      //console.log("ERRO", expense);
       let day = expense.expenseDate[8] + expense.expenseDate[9];
       let month = expense.expenseDate[5] + expense.expenseDate[6];
       let year = expense.expenseDate.toString().slice(0, 4);

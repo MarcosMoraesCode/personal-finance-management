@@ -5,7 +5,7 @@ import { changeSlice } from "../../../features/charts/chartsSlice";
 
 const DonutChart = (props) => {
   const dispatch = useDispatch();
-  console.log(props);
+
   const data = [
     ["Balance", "Percentage"],
     ["Month Investment", props.allocated],

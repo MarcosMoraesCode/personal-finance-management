@@ -11,6 +11,7 @@ export const FooterContent = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  //background-color: blue;
   width: 33%;
   height: 100%;
   min-width: 150px;
@@ -31,6 +32,7 @@ export const FooterContentWrapper = styled.div`
   font-size: 15px;
   padding-right: 10%;
   padding-left: 5%;
+  //border: 1px solid white;
 
   @media (max-width: 1100px) {
     padding-left: 10%;
@@ -53,8 +55,12 @@ export const Logo = styled.img`
 `;
 
 export const SocialGit = styled.img`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 45px;
   margin-right: 25px;
+  //background-color: red;
   :hover {
     cursor: pointer;
   }
@@ -65,6 +71,9 @@ export const SocialGit = styled.img`
 `;
 
 export const SocialLinkedin = styled.img`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 45px;
   margin-left: 25px;
   :hover {

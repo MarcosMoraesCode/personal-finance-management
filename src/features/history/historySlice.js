@@ -21,7 +21,7 @@ export const fetchHistoryId = createAsyncThunk(
       let userId = state.getState().userData.userId;
       const dbId = await get(child(ref(db), `users/${userId}/historyId`)).then(
         (snapshot) => {
-          console.log("history dinamico", snapshot.val());
+          //console.log("history dinamico", snapshot.val());
           return snapshot.val();
         }
       );

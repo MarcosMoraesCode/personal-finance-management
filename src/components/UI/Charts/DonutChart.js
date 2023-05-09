@@ -2,7 +2,6 @@ import React from "react";
 import { Chart } from "react-google-charts";
 
 const DonutChart = (props) => {
-  console.log(props, "aqui");
   const data = [
     ["Balance", "Percentage"],
     ["", props.allocated > props.total ? props.total : props.allocated],

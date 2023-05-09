@@ -2,11 +2,11 @@ import styled, { css, keyframes } from "styled-components";
 import createIcon from "../../images/createIcon.svg";
 
 //import babyPig from "../../images/formPig.png";
-import expandIcon from "../../images/expandIcon.png";
+import expandIcon from "../../images/expandIcon.svg";
 import formBg from "../../images/formBg.svg";
 import shortTerm from "../../images/shortTermBg.svg";
 import mediumTerm from "../../images/mediumTermBg.svg";
-import longTerm from "../../images/longTermBg.jpg";
+import longTerm from "../../images/longTermBg.svg";
 
 const scaleUpRight = keyframes`
  0% {

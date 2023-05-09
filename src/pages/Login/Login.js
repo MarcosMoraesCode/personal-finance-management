@@ -206,9 +206,6 @@ const Login = () => {
     );
   }
 
-  if (user) {
-    console.log(user);
-  }
   const refreshInputs = () => {
     setUserEmail({
       id: "email",
@@ -355,7 +352,7 @@ const Login = () => {
     }
   };
   const switchHidePasswordHandler = () => {
-    console.log(hidePassword);
+    //console.log(hidePassword);
     switch (screen) {
       case "singUp":
         setHidePassword({
@@ -376,7 +373,7 @@ const Login = () => {
       newUserEmail.value,
       newUserPassword.value
     ).then((res) => {
-      console.log(res);
+      //console.log(res);
       if (res !== undefined) {
         const userObj = {
           name: newUserNickname.value,
@@ -385,7 +382,7 @@ const Login = () => {
         };
 
         dispatch(createUser(userObj)).then((res) => {
-          console.log("aqui", res);
+          //console.log("aqui", res);
           if (res.meta.requestStatus === "fulfilled") {
             setAccountCreated(true);
             refreshInputs();
@@ -461,7 +458,7 @@ const Login = () => {
     switch (elementId) {
       case "email":
         validation1 ? (result = true) : (result = false);
-        console.log("email", validation1);
+        //console.log("email", validation1);
         break;
       case "new-email":
         validation1 ? (result = true) : (result = false);
@@ -747,7 +744,7 @@ const Login = () => {
                 width={230}
                 color={"#fc2469"}
                 isValidated={submitSingUp}
-                action={(e) => HandleSignUp(e)}
+                click={(e) => HandleSignUp(e)}
               >
                 Signup
               </Button>
@@ -796,7 +793,7 @@ const Login = () => {
                 width={230}
                 color={"#fc2469"}
                 isValidated={submitEmail}
-                action={() => sendEmail(userEmail.value)}
+                click={sendEmail()}
               >
                 Send Email
               </Button>
@@ -875,7 +872,7 @@ const Login = () => {
                 width={230}
                 color={"#fc2469"}
                 isValidated={submitLogin}
-                action={(e) => HandleSignIn(e)}
+                click={(e) => HandleSignIn(e)}
               >
                 Login
               </Button>

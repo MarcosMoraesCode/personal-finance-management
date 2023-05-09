@@ -41,11 +41,10 @@ const Expense = (props) => {
           <div></div>
         </>
       );
-      console.log("AQUI", subTopic);
+
       let day = subTopic.date[8] + subTopic.date[9];
       let month = subTopic.date[5] + subTopic.date[6];
       let year = subTopic.date.toString().slice(0, 4);
-      console.log("ANO", year);
 
       let extraContent = (
         <ExtraContentWrapper

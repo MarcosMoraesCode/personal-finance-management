@@ -21,7 +21,7 @@ export const fetchDynamicId = createAsyncThunk(
   async (action, state) => {
     try {
       let userId = state.getState().userData.userId;
-      console.log("quando busca, tem esse id", userId);
+      //console.log("quando busca, tem esse id", userId);
       const dbId = await get(child(ref(db), `users/${userId}/dynamicId`)).then(
         (snapshot) => {
           //console.log("id dinamico", snapshot.val());
@@ -42,7 +42,7 @@ export const fetchBalance = createAsyncThunk(
     try {
       const dbId = await get(child(ref(db), `users/${userId}/balance`)).then(
         (snapshot) => {
-          console.log("balance", snapshot.val());
+          // console.log("balance", snapshot.val());
           return snapshot.val();
         }
       );
@@ -78,9 +78,9 @@ export const postNewIncome = createAsyncThunk(
     try {
       let idValue = state.getState().incomesData.dynamicId; //state.getState().incomesData.dynamicId;
       let userId = state.getState().userData.userId;
-      console.log("userId", userId);
+      //console.log("userId", userId);
       //SETTING TODAY DATE
-      console.log(userId, "era pra estar aqui");
+      //console.log(userId, "era pra estar aqui");
 
       await get(child(ref(db), `users/${userId}/incomes`)).then((snapshot) => {
         if (snapshot.exists() === true) {
@@ -117,7 +117,7 @@ export const editAnIncome = createAsyncThunk(
   async (action, state) => {
     try {
       let userId = state.getState().userData.userId;
-      console.log("payloadaaaaaaaaaaaa", userId);
+      //console.log("payloadaaaaaaaaaaaa", userId);
       await set(ref(db, `users/${userId}/incomes/${action.incomeId}`), {
         id: action.incomeId,
         name: action.newName,
@@ -165,7 +165,7 @@ export const updateBalance = createAsyncThunk(
   async (action, state) => {
     try {
       let userId = state.getState().userData.userId;
-      console.log("payload", action);
+      //console.log("payload", action);
       await set(ref(db, `users/${userId}/balance`), action);
     } catch (err) {
       console.log(err);
@@ -218,7 +218,7 @@ export const incomeDataSlice = createSlice({
       // console.log(action.error);
     });
     builder.addCase(fetchDynamicId.fulfilled, (state, action) => {
-      console.log("payload", action.payload);
+      //console.log("payload", action.payload);
       state.dynamicId = action.payload;
       //console.log("Novo id dinamico: ", state.dynamicId);
     });
@@ -227,14 +227,14 @@ export const incomeDataSlice = createSlice({
       //console.log(action.error);
     });
     builder.addCase(addMoneyToAnIncome.fulfilled, (state, action) => {
-      console.log("passou aqui", state.balance);
+      // console.log("passou aqui", state.balance);
     });
     builder.addCase(addMoneyToAnIncome.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);
       // console.log(action.error);
     });
     builder.addCase(fetchBalance.fulfilled, (state, action) => {
-      console.log("payload", action.payload);
+      //console.log("payload", action.payload);
       localStorage.setItem("balance", action.payload);
       state.balance = action.payload;
       //console.log("Novo id dinamico: ", state.dynamicId);
@@ -244,7 +244,7 @@ export const incomeDataSlice = createSlice({
       //console.log(action.error);
     });
     builder.addCase(updateBalance.fulfilled, (state, action) => {
-      console.log("passou aqui", state.balance);
+      //console.log("passou aqui", state.balance);
     });
     builder.addCase(updateBalance.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);

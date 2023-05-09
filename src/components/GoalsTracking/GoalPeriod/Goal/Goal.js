@@ -17,7 +17,6 @@ import {
 import DonutChart from "../../../UI/Charts/DonutChart";
 
 const Goal = (props) => {
-  console.log(props);
   let days = 0;
   let months = 0;
   let years = 0;
@@ -25,9 +24,6 @@ const Goal = (props) => {
   let situation = "";
 
   if (props.hasParam) {
-    console.log("passou aqui");
-    console.log(props.remainingTime);
-
     if (props.remainingTime > 365) {
       situation = "year";
     } else if (props.remainingTime < 30) {

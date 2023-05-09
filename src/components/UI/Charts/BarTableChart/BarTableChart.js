@@ -17,29 +17,25 @@ const BarTableChart = (props) => {
 
   let finalData = [];
 
-  //console.log("renderizou");
   let tableContent = null;
 
   function compareNumbers(a, b) {
     return a.value - b.value;
   }
-  //console.log("deu aq", props.expenses);
+
   if (props.expenses !== null) {
     let auxArr = props.expenses.map((item) => {
       return { name: item.name, value: item.value };
     });
     let organizedArr = [];
-    //console.log("inicialmente", auxArr);
 
     auxArr.join();
     auxArr.sort();
     auxArr.sort(compareNumbers);
-    // console.log("ordenado", auxArr);
 
     organizedArr = auxArr.reverse();
-    // console.log("expense invertido", organizedArr);
+
     let maxValue = organizedArr[0].value;
-    // console.log(maxValue);
 
     tableContent = organizedArr.map((item, index) => {
       return (

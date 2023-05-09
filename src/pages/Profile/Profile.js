@@ -146,7 +146,7 @@ const Profile = () => {
   });
 
   const getReportId = async () => {
-    await dispatch(fetchReportId()).then((res) => console.log(res));
+    dispatch(fetchReportId());
   };
 
   const getUser = async () => {
@@ -414,7 +414,7 @@ const Profile = () => {
         validation1 && validation10 ? (result = true) : (result = false);
         break;*/
       case "Report":
-        console.log("passa aq", console.log(validation10));
+        // console.log("passa aq", console.log(validation10));
         validation10 ? (result = true) : (result = false);
         break;
       default:
@@ -444,7 +444,7 @@ const Profile = () => {
 
     await dispatch(postNewReport(reportObj))
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         if (res.meta.requestStatus === "fulfilled") {
           setSubmitPermission(false);
           setShowCrud(false);
@@ -460,7 +460,7 @@ const Profile = () => {
       })
       .catch((err) => console.log(err));
 
-    console.log(userInputs.inputReport.value, userInfo.name, userInfo.email);
+    //console.log(userInputs.inputReport.value, userInfo.name, userInfo.email);
   };
 
   const checkButtonValidation = (inputId, value) => {
@@ -497,7 +497,7 @@ const Profile = () => {
         validation7 = CheckInputValidation(inputId, value);
         break;
       case "Report":
-        console.log("aqui tbm");
+        //console.log("aqui tbm");
         validation9 = CheckInputValidation(inputId, value);
         break;
       default:

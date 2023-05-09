@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import pig from "../../images/pig.jpeg";
+import pig from "../../images/pig.svg";
 
 export const IncomeTrackingContainer = styled.div`
   height: 90%;

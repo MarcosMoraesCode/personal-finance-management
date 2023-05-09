@@ -22,18 +22,13 @@ export const StyledChart = styled(Chart)`
 `;
 
 const LineChart = (props) => {
-  console.log("oi", props.annualExpenses);
-
   let newData = props.annualExpenses.map((item) => {
-    //console.log("a", item);
     return [
       item.month,
       item.spendLimit === -1 ? 0 : item.spendLimit,
       item.totalSpent,
     ];
   });
-
-  // console.log("olha", newData);
 
   const data = [["Month", "Expected", "Spent"]];
 

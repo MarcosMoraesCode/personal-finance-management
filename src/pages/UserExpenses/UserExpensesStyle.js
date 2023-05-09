@@ -1,5 +1,5 @@
 import styled, { keyframes, css } from "styled-components";
-import formPig from "../../images/formPig.png";
+import formPig from "../../images/formPig.svg";
 
 import check from "../../images/checkIcon.svg";
 import styledBg from "../../images/analysisBg.svg";
@@ -204,7 +204,7 @@ export const FormDiv = styled.div`
   box-shadow: 2px 2px 20px 1px black;
   background-image: url(${formPig});
   background-size: cover;
-  //border: 1px solid white;
+  border: 0.005rem solid black;
   @media (max-width: 1300px) {
     min-height: 88vh;
     margin-top: 30px;

@@ -1,6 +1,6 @@
 import styled, { keyframes, css } from "styled-components";
-import pig from "../../../images/formPig.png";
-import back from "../../../images/backArrow.png";
+import pig from "../../../images/formPig.svg";
+import back from "../../../images/backArrow.svg";
 import { NavLink } from "react-router-dom";
 
 const SlideToRight = keyframes`

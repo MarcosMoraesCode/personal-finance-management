@@ -22,9 +22,6 @@ export const StyledChart = styled(Chart)`
 `;
 
 const IncomesLineChart = (props) => {
-  console.log("oi", props.expenses);
-  console.log("ola", props.history);
-
   let thisYearData = [
     {
       name: "Jan",
@@ -218,16 +215,13 @@ const IncomesLineChart = (props) => {
   });
 
   lastYearExpenses.forEach((expense) => {
-    console.log(expense.value, "teste");
     let month = expense.date[5] + expense.date[6];
     let oldTotal = Number(lastYearData[Number(month) - 1].totalExpenses);
 
     let newTotal = Number(oldTotal) + Number(expense.value);
-    console.log(typeof newTotal);
+
     lastYearData[Number(month) - 1].totalExpenses = Number(newTotal);
   });
-
-  console.log("aqui", thisYearData);
 
   if (props.history !== null) {
     let history = Object.values(props.history);
@@ -313,7 +307,6 @@ const IncomesLineChart = (props) => {
   const data = [["Month", "Deposited", "Spent", "Invested"]];
 
   let finalData = data.concat(newData);
-  console.log(finalData);
 
   const options = {
     backgroundColor: "transparent",

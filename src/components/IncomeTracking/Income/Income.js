@@ -13,7 +13,6 @@ import {
 } from "./IncomeStyle";
 
 const Income = (props) => {
-  //console.log(props);
   let content = (
     <IncomeDiv>
       <IncomeInfoDiv width={"70%"}>

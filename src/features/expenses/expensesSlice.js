@@ -15,7 +15,6 @@ const initialState = {
   dynamicId: 0,
   historyId: 0,
 };
-console.log(initialState.historyId);
 
 export const fetchDynamicId = createAsyncThunk(
   "userexpenses/fetchDynamicId",
@@ -305,7 +304,7 @@ export const updateHistoryId = createAsyncThunk(
   async (action, state) => {
     try {
       let userId = state.getState().userData.userId;
-      console.log("Atualizando", action);
+      //console.log("Atualizando", action);
       await set(ref(db, `users/${userId}/historyId`), action);
     } catch (err) {
       console.log(err);
@@ -383,12 +382,12 @@ export const expenseDataSlice = createSlice({
     });
     builder.addCase(editACategory.fulfilled, (state, action) => {
       //state.dynamicId += 1;
-      console.log("Deu certo");
+      // console.log("Deu certo");
       //set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     builder.addCase(editACategory.rejected, (state, action) => {
       // console.log("Rejected", action.error.message);
-      console.log(action.error);
+      //console.log(action.error);
     });
     builder.addCase(removeACategory.fulfilled, (state, action) => {
       //state.dynamicId += 1;
@@ -397,19 +396,19 @@ export const expenseDataSlice = createSlice({
     });
     builder.addCase(removeACategory.rejected, (state, action) => {
       // console.log("Rejected", action.error.message);
-      console.log(action.error);
+      //console.log(action.error);
     });
     builder.addCase(removeAnExpense.fulfilled, (state, action) => {
       //state.dynamicId += 1;
-      console.log("Deu certo");
+      //console.log("Deu certo");
       //set(ref(db, `users/${userId}/dynamicId`), state.dynamicId);
     });
     builder.addCase(removeAnExpense.rejected, (state, action) => {
       // console.log("Rejected", action.error.message);
-      console.log(action.error);
+      //console.log(action.error);
     });
     builder.addCase(fetchBalance.fulfilled, (state, action) => {
-      console.log("payload", action.payload);
+      //console.log("payload", action.payload);
 
       state.balance = action.payload;
       //console.log("Novo id dinamico: ", state.dynamicId);

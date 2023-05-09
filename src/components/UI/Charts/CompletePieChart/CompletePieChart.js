@@ -49,12 +49,12 @@ const CompletePieChart = (props) => {
   const data = [["Name", "Category", "Value", "Spend Limit"]];
   let biggerValue = 0;
 
-  console.log(props.allExpenses);
+  
 
   let newData = null;
   if (props.allExpenses !== null) {
     newData = props.allExpenses.map((expense) => {
-      // console.log("ex", expense);
+      
       let categoryIndex = props.allCategories.findIndex(
         (category) => category.id === expense.categoryId
       );
@@ -95,8 +95,8 @@ const CompletePieChart = (props) => {
       callback({ chartWrapper }) {
         const chart = chartWrapper.getChart();
         const selection = chart.getSelection();
-        console.log(chartWrapper.getState());
-        console.log(selection);
+       
+       
       },
     },
   ];

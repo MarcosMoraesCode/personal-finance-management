@@ -19,12 +19,12 @@ const CalendarChart = (props) => {
   const thisYearExpenses = [];
   const lastYearExpenses = [];
   let subtitle = "";
-  console.log(props.allExpenses, "aqui");
+
   //LEMBRAR QUE OS MESES VÃO DE 0 A 11
   /* A LÓGICA FUNCIONA MAS O GOOGLE CHART NÃO SUPORTA
   const checkLastSixMonths = () => {
     let validExpensesKey = [];
-    console.log("dentro", actualMonth);
+    
     switch (actualMonth) {
       case 0:
         validExpensesKey.push({ month: 0, year: actualYear });
@@ -45,7 +45,7 @@ const CalendarChart = (props) => {
 
         break;
       case 2:
-        console.log("passou aqui dentro");
+        
         validExpensesKey.push({ month: 2, year: actualYear });
         validExpensesKey.push({ month: 1, year: actualYear });
         validExpensesKey.push({ month: 0, year: actualYear });
@@ -143,13 +143,12 @@ const CalendarChart = (props) => {
 
   const expensesFilter = checkLastSixMonths();
 
-  console.log("filtro", expensesFilter);
+  
   */
   const newData = [];
 
   if (props.allExpenses !== null) {
     props.allExpenses.forEach((expense) => {
-      //console.log("ex", expense);
       //convertendo a data
       let stringDate = [...expense.expenseDate];
       let year = stringDate.slice(0, 4).join("");
@@ -261,7 +260,6 @@ const CalendarChart = (props) => {
           let day = fullDate.getDate();
 
           dispatch(changeClickedDate({ year: year, month: month, day: day }));
-          // console.log(new Date(selection[0].date + 86400000));
         } else {
           dispatch(changeClickedDate({ year: 0, month: 0, day: 0 }));
         }

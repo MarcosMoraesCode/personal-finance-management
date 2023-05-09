@@ -51,7 +51,7 @@ const Layout = (props) => {
     await dispatch(fetchUserInformation()).then((res) => {
       if (res.meta.requestStatus === "fulfilled" && res.payload !== null) {
         let info = res.payload;
-        console.log("olha aqui", info);
+        //console.log("olha aqui", info);
         localStorage.setItem("username", info.name);
         localStorage.setItem("useremail", info.email);
       }
@@ -64,7 +64,7 @@ const Layout = (props) => {
     const success = await signOut();
 
     if (success) {
-      console.log("Logout succeed!");
+      //console.log("Logout succeed!");
 
       dispatch(cleanUserInfo());
       navigate("/");

@@ -462,15 +462,12 @@ export const chartsSlice = createSlice({
         let month = stringDate.slice(5, 7).join("");
         let day = stringDate.slice(8, 10).join("");
         let expenseDate = new Date(year, month - 1, day);
-        // console.log(expenseDate.getMonth());
-        // console.log(arr);
 
         let index = arr[expenseDate.getMonth()].categoryList.findIndex(
           (category) => category === expense.categoryId
         );
 
         if (Number(index) === -1) {
-          //console.log("passou aq");
           arr[expenseDate.getMonth()].categoryList.push(expense.categoryId);
           let oldSpendLimit =
             arr[expenseDate.getMonth()].spendLimit === -1
@@ -485,10 +482,7 @@ export const chartsSlice = createSlice({
           arr[expenseDate.getMonth()].spendLimit = newSpendLimit;
         }
 
-        //console.log(index);
-
         let oldValue = arr[expenseDate.getMonth()].value;
-        // console.log("old value", oldValue);
 
         let newValue = oldValue + Number(expense.expenseValue);
 
@@ -509,15 +503,12 @@ export const chartsSlice = createSlice({
         let month = stringDate.slice(5, 7).join("");
         let day = stringDate.slice(8, 10).join("");
         let expenseDate = new Date(year, month - 1, day);
-        // console.log(expenseDate.getMonth());
-        // console.log(lastYearArr);
 
         let index = lastYearArr[expenseDate.getMonth()].categoryList.findIndex(
           (category) => category === expense.categoryId
         );
 
         if (Number(index) === -1) {
-          //console.log("passou aq");
           lastYearArr[expenseDate.getMonth()].categoryList.push(
             expense.categoryId
           );
@@ -534,10 +525,7 @@ export const chartsSlice = createSlice({
           lastYearArr[expenseDate.getMonth()].spendLimit = newSpendLimit;
         }
 
-        //console.log(index);
-
         let oldValue = lastYearArr[expenseDate.getMonth()].value;
-        // console.log("old value", oldValue);
 
         let newValue = oldValue + Number(expense.expenseValue);
 
@@ -578,13 +566,8 @@ export const chartsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchExpensesData.fulfilled, (state, action) => {
-      //console.log("Success", action.payload);
-    });
-    builder.addCase(fetchExpensesData.rejected, (state, action) => {
-      // console.log("Rejected", action.error.message);
-      //console.log(action.error);
-    });
+    builder.addCase(fetchExpensesData.fulfilled, (state, action) => {});
+    builder.addCase(fetchExpensesData.rejected, (state, action) => {});
   },
 });
 

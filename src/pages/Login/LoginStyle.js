@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import img from "../../images/sign-in.jpg";
+//import img from "../../images/sign-in.jpg";
 import closeIcon from "../../images/closeIcon.svg";
 import logoBig from "../../images/finplannLogoBig.svg";
 
@@ -13,12 +13,6 @@ export const LoginDiv = styled.div`
   background-size: cover;
   font-family: "Roboto";
   //opacity: 0.9;
-  @media (max-width: 1000px) {
-    //background-image: url(${img});
-  }
-  @media (max-width: 700px) {
-    // height: 85vh;
-  }
 `;
 
 export const TitleDiv = styled.div`
@@ -39,7 +33,11 @@ export const StyledTitle = styled.h1`
   @media (max-height: 700px) {
     padding-bottom: 10px;
   }
-  @media (max-height: 600px) {
+  @media (max-height: 470px) {
+    //display: none;
+    font-size: 30px;
+  }
+  @media (max-height: 400px) {
     display: none;
   }
 `;

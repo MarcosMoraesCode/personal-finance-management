@@ -1,7 +1,7 @@
 import styled, { keyframes } from "styled-components";
-import fullImg from "../../images/test.png";
+
 import closeIcon from "../../images/closeIcon.svg";
-import pig from "../../images/formPig.png";
+import pig from "../../images/formPig.svg";
 
 const ScaleIn = keyframes`
 
@@ -17,7 +17,6 @@ const ScaleIn = keyframes`
   }`;
 
 export const ProfileDiv = styled.div`
-  //background-image: url(${fullImg});
   display: flex;
   height: 94vh;
   background-position: center;

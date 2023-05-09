@@ -170,9 +170,9 @@ export const fetchReportId = createAsyncThunk(
   "userprofile/fetchReportId",
   async (action, state) => {
     try {
-      console.log("passou aqui");
+      //console.log("passou aqui");
       const dbId = await get(child(ref(db), `reportId`)).then((snapshot) => {
-        console.log("id report", snapshot.val());
+        //console.log("id report", snapshot.val());
         return snapshot.val();
       });
       return dbId;
@@ -256,18 +256,18 @@ export const userDataSlice = createSlice({
       //console.log(action.error);
     });
     builder.addCase(resetData.fulfilled, (state, action) => {
-      console.log("Success", action.payload);
+      //console.log("Success", action.payload);
     });
     builder.addCase(resetData.rejected, (state, action) => {
-      console.log("Rejected", action.error.message);
-      console.log(action.error);
+      //console.log("Rejected", action.error.message);
+      //console.log(action.error);
     });
     builder.addCase(createUser.fulfilled, (state, action) => {
-      console.log("Success", action.payload);
+      //console.log("Success", action.payload);
     });
     builder.addCase(createUser.rejected, (state, action) => {
-      console.log("Rejected", action.error.message);
-      console.log(action.error);
+      //console.log("Rejected", action.error.message);
+      //console.log(action.error);
     });
     builder.addCase(postNewReport.fulfilled, (state, action) => {
       state.reportId += 1;
@@ -280,7 +280,7 @@ export const userDataSlice = createSlice({
       // console.log(action.error);
     });
     builder.addCase(fetchReportId.fulfilled, (state, action) => {
-      console.log("payload aqui", action.payload);
+      //console.log("payload aqui", action.payload);
       state.reportId = action.payload;
       //console.log("Novo id dinamico: ", state.dynamicId);
     });

@@ -11,8 +11,6 @@ import {
 } from "../BarTableChart/BarTableChartStyle";
 
 const AllExpensesInfo = (props) => {
-  //console.log(allCategories);
-
   let filteredCategories = null;
   if (props.allCategories !== null) {
     filteredCategories = props.allCategories.map((category) => {
@@ -32,7 +30,7 @@ const AllExpensesInfo = (props) => {
       let filteredIndex = filteredCategories.findIndex(
         (category) => category.categoryId === expense.categoryId
       );
-      console.log(expense.expenseValue);
+
       let oldTotal = filteredCategories[filteredIndex].totalSpent;
 
       filteredCategories[filteredIndex].totalSpent =
@@ -56,7 +54,7 @@ const AllExpensesInfo = (props) => {
 
   let defaultFontSize = "10px";
   let defaultTableHeight = "fit-content";
-  console.log(filteredCategories, "cá");
+
   let tableContent = null;
   if (filteredCategories !== null) {
     filteredCategories.forEach((item, index) => {
@@ -65,7 +63,6 @@ const AllExpensesInfo = (props) => {
         filteredCategories[index].numberOfExpenses;
     });
     tableContent = filteredCategories.map((item, index) => {
-      console.log(item);
       return (
         <tr key={`tr-${index}`}>
           <TableData
@@ -111,8 +108,6 @@ const AllExpensesInfo = (props) => {
       );
     });
   }
-
-  console.log(filteredCategories);
 
   let table = (
     <TableWrapper maxHeigth={"100px"}>

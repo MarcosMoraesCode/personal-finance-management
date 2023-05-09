@@ -218,7 +218,7 @@ export const transferGoalToAchievement = createAsyncThunk(
               (snapshot) => {
                 if (snapshot.exists() === true) {
                   let oldAchievements = snapshot.val();
-                  console.log("old", oldAchievements);
+                  //console.log("old", oldAchievements);
 
                   const updates = {};
                   updates[`users/${userId}/achievements`] = {
@@ -281,7 +281,7 @@ export const updateBalance = createAsyncThunk(
   async (action, state) => {
     try {
       let userId = state.getState().userData.userId;
-      console.log("payload", action);
+      //console.log("payload", action);
       await set(ref(db, `users/${userId}/balance`), action);
     } catch (err) {
       console.log(err);
@@ -349,7 +349,7 @@ export const goalDataSlice = createSlice({
       // console.log(action.error);
     });
     builder.addCase(fetchDynamicId.fulfilled, (state, action) => {
-      console.log("payload", action.payload);
+      // console.log("payload", action.payload);
       state.dynamicId = action.payload;
       //console.log("Novo id dinamico: ", state.dynamicId);
     });
@@ -387,7 +387,7 @@ export const goalDataSlice = createSlice({
       //console.log(action.error);
     });
     builder.addCase(fetchBalance.fulfilled, (state, action) => {
-      console.log("payload", action.payload);
+      // console.log("payload", action.payload);
       state.balance = action.payload;
       //console.log("Novo id dinamico: ", state.dynamicId);
     });
@@ -396,7 +396,7 @@ export const goalDataSlice = createSlice({
       //console.log(action.error);
     });
     builder.addCase(updateBalance.fulfilled, (state, action) => {
-      console.log("passou aqui", state.balance);
+      //console.log("passou aqui", state.balance);
     });
     builder.addCase(updateBalance.rejected, (state, action) => {
       //console.log("Rejected", action.error.message);

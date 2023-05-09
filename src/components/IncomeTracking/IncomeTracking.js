@@ -23,7 +23,6 @@ import {
 import { BarLoader } from "react-spinners";
 
 const IncomeTracking = (props) => {
-  //console.log(props);
   let incomeSourcers = null;
 
   if (props.loading === "true") {

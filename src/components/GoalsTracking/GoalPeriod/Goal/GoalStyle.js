@@ -1,6 +1,6 @@
 import styled, { keyframes, css } from "styled-components";
 import cardBg from "../../../../images/cardBg.svg";
-import back from "../../../../images/backArrow.png";
+import back from "../../../../images/backArrow.svg";
 
 const SlideLeft = keyframes`
 0% {
@@ -219,7 +219,7 @@ export const GoalInformationDiv = styled.div`
 
     margin: 0px;
     margin-bottom: 5px;
-  } ;
+  }
 `;
 
 export const StatusInformation = styled.p`
@@ -235,7 +235,7 @@ export const StatusInformation = styled.p`
   @media (max-height: 640px) {
     font-size: 10px;
     //padding: 3px;
-  } ;
+  }
 `;
 
 export const InformationButton = styled.button`
@@ -256,5 +256,5 @@ export const InformationButton = styled.button`
   @media (max-height: 640px) {
     font-size: 10px;
     //padding: 3px;
-  } ;
+  }
 `;

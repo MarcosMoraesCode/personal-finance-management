@@ -252,7 +252,7 @@ const BudgetTracking = () => {
             uniqueMonthIncomes[index].value = newValue;
           }
         });
-        console.log("AQUI", uniqueMonthIncomes);
+        //console.log("AQUI", uniqueMonthIncomes);
 
         let totalDeposited = 0;
         uniqueMonthIncomes.forEach((income) => {
@@ -266,7 +266,7 @@ const BudgetTracking = () => {
         let incomesList = [];
         uniqueMonthIncomes.forEach((income) => {
           if (income.value > 0 && allIncomes.length > 0) {
-            console.log("TA PASSANDO AQUI");
+            //console.log("TA PASSANDO AQUI");
             let incomeIndex = allIncomes.findIndex(
               (item) => item.id === income.itemId
             );
@@ -295,9 +295,9 @@ const BudgetTracking = () => {
   const goalInformations = (goalId) => {
     //selecting goal
     let goal = allGoals.filter((goal) => goal.id === goalId);
-    console.log(goal);
+    //console.log(goal);
     let btnIndex = infoBtn.findIndex((info) => info.id === goalId);
-    console.log(infoBtn);
+    //console.log(infoBtn);
 
     let newArr = [...infoBtn];
     newArr[btnIndex] = { id: goalId, open: true, changeAnimation: true };
@@ -371,8 +371,8 @@ const BudgetTracking = () => {
       });
 
       let averageTime = allIntervals / intervals.length;
-      console.log("tempo médio", averageTime);
-      console.log("valor médio", averageContribution);
+      //console.log("tempo médio", averageTime);
+      //console.log("valor médio", averageContribution);
 
       let remainingValue = goal[0].value - goal[0].allocated;
 
@@ -421,7 +421,7 @@ const BudgetTracking = () => {
 
   let expensesListContent = null;
   if (expensesList !== null) {
-    console.log(expensesList);
+    //console.log(expensesList);
     expensesListContent = (
       <Expense expenseDataList={expensesList} details={"Less"} homePage />
     );

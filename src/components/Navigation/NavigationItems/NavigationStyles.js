@@ -30,6 +30,11 @@ export const StyledLink = styled(NavLink)`
   border: 1px solid black;
   text-decoration: none;
   font-weight: bolder;
+  font-size: 15px;
+
+  @media (max-width: 600px) {
+    font-size: 12px;
+  }
 
   :hover {
     color: white;

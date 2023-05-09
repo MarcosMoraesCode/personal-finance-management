@@ -6,7 +6,7 @@ const Button = (props) => {
     <StyledButton
       disabled={props.isValidated === undefined ? false : !props.isValidated}
       {...props}
-      onClick={props.action}
+      onClick={props.click}
     >
       {props.children}
     </StyledButton>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import hideImg from "../../../images/hideIcon.png";
-import showImg from "../../../images/showIcon.png";
+import hideImg from "../../../images/hideIcon.svg";
+import showImg from "../../../images/showIcon.svg";
 
 export const StyledButton = styled.button`
   position: relative;

@@ -252,17 +252,11 @@ const UserGoals = (props) => {
         } else {
           validation2 ? (result = true) : (result = false);
         }
-        console.log(
-          "O valor é  ",
-          value,
-          "e o alocado é ",
-          Number(crudType.goalAllocated),
-          validation6
-        );
+       
 
         break;
       case "Goal Percentage":
-        console.log(value, userInputs.inputValue.value);
+        //console.log(value, userInputs.inputValue.value);
         validation2 && validation3 && validation4
           ? (result = true)
           : (result = false); //VALIDATION 4 TOO
@@ -803,7 +797,7 @@ const UserGoals = (props) => {
     });
   };
   const removeGoalHandler = (goalName, goalId, goalAllocated) => {
-    console.log("clicou");
+    //console.log("clicou");
     setCrudType({
       ...crudType,
       crudType: "remove-goal",
@@ -853,7 +847,7 @@ const UserGoals = (props) => {
           }
           dispatch(updateHistoryId(newId)).then((res) => {
             if (res.meta.requestStatus === "fulfilled" && upload) {
-              console.log("passou aqui");
+              //console.log("passou aqui");
               setHistoryId(newId);
               getGoals();
             }
@@ -926,8 +920,8 @@ const UserGoals = (props) => {
       });
       let totalAchievements =
         shortTerm.achievs + mediumTerm.achievs + longTerm.achievs;
-      console.log(userAchievements);
-      console.log(totalAchievements);
+     // console.log(userAchievements);
+      //console.log(totalAchievements);
 
       let firstText =
         shortTerm.achievs === 0 ? null : shortTerm.achievs > 1 ? (
@@ -1084,7 +1078,7 @@ const UserGoals = (props) => {
     await dispatch(fetchHistoryId()).then((res) => {
       if (res.payload !== null) {
         setHistoryId(res.payload);
-        console.log("do state", res.payload);
+        //console.log("do state", res.payload);
       }
     });
 
@@ -1095,11 +1089,11 @@ const UserGoals = (props) => {
           let goals = Object.values(res.payload);
           let totalValue = 0;
           goals.forEach((goal) => {
-            console.log("aqui", goal);
+           // console.log("aqui", goal);
             let oldValue = totalValue;
             let newValue = oldValue + Number(goal.allocated);
             totalValue = newValue;
-            console.log(totalValue);
+            //console.log(totalValue);
           });
 
           setTotalAllocated(totalValue.toFixed(2));
@@ -1137,12 +1131,12 @@ const UserGoals = (props) => {
           if (userInputs.inputPercentage.value !== "0.00") {
             dispatch(postNewHistory(historyObj)).then((res) => {
               if (res.meta.requestStatus === "fulfilled") {
-                console.log("antes de atualizar é" + historyId);
+                //console.log("antes de atualizar é" + historyId);
                 upload = true;
               }
               dispatch(updateHistoryId(newId)).then((res) => {
                 if (res.meta.requestStatus === "fulfilled" && upload) {
-                  console.log("passou aqui");
+                  //console.log("passou aqui");
                   setHistoryId(newId);
                   getGoals();
                 }
@@ -1198,9 +1192,9 @@ const UserGoals = (props) => {
           <AllocatedMoneyDiv listIsOpen={openList}>
             <AllocatedMoneyTitle>
               <SpanMoneyTitle> Allocated Income</SpanMoneyTitle> ${" "}
-              {totalAllocated.toFixed(2)}
+              {totalAllocated}
             </AllocatedMoneyTitle>
-            <EditButton onClick={() => navigate("/userfinances")} />
+            <EditButton onClick={() => navigate("/userincomes")} />
           </AllocatedMoneyDiv>
           <GoalsDiv open={openList} animations={startListAnimations}>
             {GoalListContent}

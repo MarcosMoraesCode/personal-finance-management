@@ -128,7 +128,7 @@ const UserIncomes = (props) => {
     ? (day = date.getDate())
     : (day = `0${date.getDate()}`);
 
-  console.log(month, day);
+  //console.log(month, day);
 
   const [crudType, setCrudType] = useState({
     crudType: "",
@@ -199,7 +199,7 @@ const UserIncomes = (props) => {
   const getIncomes = async () => {
     await dispatch(fetchIncomesData()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        console.log("chegou", res.payload);
+        //console.log("chegou", res.payload);
 
         dispatch(addIncomes(res.payload));
       }
@@ -209,7 +209,7 @@ const UserIncomes = (props) => {
   const getHistory = async () => {
     await dispatch(fetchHistoriesData()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        console.log("chegou tbm", res.payload);
+        //console.log("chegou tbm", res.payload);
 
         dispatch(addHistories(res.payload));
         if (res.payload !== null) {
@@ -227,7 +227,7 @@ const UserIncomes = (props) => {
           });
 
           let filteredIncomes = incomes.filter((income) => {
-            console.log(income.date);
+            // console.log(income.date);
             if (
               Number(
                 income.date[6] +
@@ -254,7 +254,7 @@ const UserIncomes = (props) => {
               uniqueIncomes[index] = { ...income, value: newValue };
             }
 
-            console.log(uniqueIncomes);
+            //console.log(uniqueIncomes);
           });
 
           setMonthIncomes(uniqueIncomes);
@@ -278,7 +278,7 @@ const UserIncomes = (props) => {
     getExpenses();
   }, []);
 
-  console.log(userExpenses);
+  //console.log(userExpenses);
   //console.log(userHistory);
 
   const selectionHandler = (option) => {
@@ -550,16 +550,6 @@ const UserIncomes = (props) => {
         }
         if (crudType.crudType === "transfer-goal") {
           validation5 && validation8 ? (result = true) : (result = false);
-          console.log(`O valor do input é valido? ${validation5}. ${value} = Deposit? ${
-            value === "Deposit"
-          }.
-          Se sim, ${number3} <= ${goalValue} ?  ${
-            number3 <= goalValue
-          } && ${number3} <= ${goalValue - allocatedValue} ? ${
-            number3 <= goalValue - allocatedValue
-          }
-          Se não ${number3} <= ${allocatedValue} ?  ${number3 <= allocatedValue}
-          `);
         }
         break;
       default:
@@ -647,10 +637,6 @@ const UserIncomes = (props) => {
       case "Checked Transaction":
         validation3 = CheckInputValidation(inputId, value);
         if (crudType.crudType === "transfer-income") {
-          console
-            .log
-            //  `O input VALUE é valido? ${validation2} e o Check é válido ${validation3}`
-            ();
           validation3 //&& validation2
             ? setSubmitPermission(true)
             : setSubmitPermission(false);
@@ -685,7 +671,7 @@ const UserIncomes = (props) => {
       })
       .catch((err) => {
         console.log(err);
-        alert("deu ruim");
+        //alert("deu ruim");
       });
   };
 
@@ -915,7 +901,7 @@ const UserIncomes = (props) => {
   };
 
   const filterHistory = (event) => {
-    console.log(event.currentTarget.value);
+    //console.log(event.currentTarget.value);
     let selectedTime = selectedPeriod;
     let selectedType = selectedFilter;
     if (
@@ -934,9 +920,9 @@ const UserIncomes = (props) => {
     let filteredHistory;
     let adjustedHistory;
     let finalHistory;
-    console.log(selectedPeriod);
-    console.log("selected Time", selectedTime);
-    console.log("selected Type", selectedType);
+    //console.log(selectedPeriod);
+    //console.log("selected Time", selectedTime);
+    // console.log("selected Type", selectedType);
 
     switch (selectedTime) {
       case "All Time":
@@ -974,7 +960,7 @@ const UserIncomes = (props) => {
             return history;
           }
         });
-        console.log("passa aqui", adjustedHistory);
+        //console.log("passa aqui", adjustedHistory);
 
         filteredHistory = adjustedHistory.filter(
           (history) =>
@@ -986,7 +972,7 @@ const UserIncomes = (props) => {
             ) === year
         );
 
-        console.log("filtrado", filteredHistory);
+        //console.log("filtrado", filteredHistory);
         if (selectedType.includes("Deleted")) {
           finalHistory = filteredHistory.filter((history) =>
             history.type.includes("Deleted")
@@ -1021,7 +1007,7 @@ const UserIncomes = (props) => {
             return history;
           }
         });
-        console.log("passa aqui", adjustedHistory);
+        //console.log("passa aqui", adjustedHistory);
 
         filteredHistory = adjustedHistory.filter(
           (history) =>
@@ -1034,7 +1020,7 @@ const UserIncomes = (props) => {
             String(history.date[3] + history.date[4]) === String(month)
         );
 
-        console.log("filtrado", filteredHistory);
+        //console.log("filtrado", filteredHistory);
         if (selectedType.includes("Deleted")) {
           finalHistory = filteredHistory.filter((history) =>
             history.type.includes("Deleted")
@@ -1060,7 +1046,7 @@ const UserIncomes = (props) => {
   const filterPeriod = (event) => {
     let historyList =
       filteredHistory !== null ? filteredHistory : Object.values(userHistory);
-    console.log(historyList);
+    //console.log(historyList);
 
     let adjustedHistory = historyList.map((history) => {
       if (history.date.includes("-")) {
@@ -1076,7 +1062,7 @@ const UserIncomes = (props) => {
         return history;
       }
     });
-    console.log(adjustedHistory);
+    //console.log(adjustedHistory);
     let finalHistory;
 
     switch (event.currentTarget.value) {
@@ -1150,7 +1136,7 @@ const UserIncomes = (props) => {
         let month = history.date[3] + history.date[4];
 
         let time = new Date(`${month}/${day}/${year}`).getTime();
-        console.log("e aq?", time);
+        //console.log("e aq?", time);
         newObj = { ...history, time: time };
       }
 
@@ -1279,15 +1265,15 @@ const UserIncomes = (props) => {
 
   if (monthIncomes !== null) {
     let incomesArr = Object.values(userIncomes);
-    console.log(incomesArr);
-    console.log(monthIncomes);
+    //console.log(incomesArr);
+    //console.log(monthIncomes);
 
     let adjustedIncomes = [];
     monthIncomes.map((income) => {
       if (income.value > 0) {
         let index = incomesArr.findIndex((item) => income.itemId === item.id);
 
-        console.log("aq", index);
+        //console.log("aq", index);
         adjustedIncomes.push({
           name: incomesArr[index].name,
           value: income.value,
