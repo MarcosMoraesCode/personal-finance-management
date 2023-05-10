@@ -68,17 +68,18 @@ const InputContainer = (props) => {
           </StyledMessage>
           <CheckBoxWrapper>
             <StyledMessage
+              {...props}
               key={`message-2-${props.id}`}
               color={"white"}
               //margin={1}
               fontWeight={100}
               //paddingLeft={25}
               noPadding
-              onClick={props.navigate}
+              onClick={props.goTo}
               cursor={"pointer"}
               underline={true}
             >
-              Forgot Password?
+              Esqueceu a senha?
             </StyledMessage>
           </CheckBoxWrapper>
         </WrappComponent>

@@ -70,7 +70,7 @@ const Login = () => {
     isValid: false,
     invalidMessage: "",
     isTouched: false,
-    placeholder: "Email Address",
+    placeholder: "Email",
     type: "email",
   });
   const [userPassword, setUserPassword] = useState({
@@ -79,7 +79,7 @@ const Login = () => {
     isValid: false,
     invalidMessage: "",
     isTouched: false,
-    placeholder: "Password",
+    placeholder: "Senha",
     type: "password",
   });
   const [newUserNickname, setNewUserNickname] = useState({
@@ -88,7 +88,7 @@ const Login = () => {
     isValid: false,
     invalidMessage: "",
     isTouched: false,
-    placeholder: "Nickname",
+    placeholder: "Nome do Usuário",
     type: "nickname",
   });
   const [newUserEmail, setNewUserEmail] = useState({
@@ -97,7 +97,7 @@ const Login = () => {
     isValid: false,
     invalidMessage: "",
     isTouched: false,
-    placeholder: "Email Address",
+    placeholder: "Email",
     type: "email",
   });
   const [newUserPassword, setNewUserPassword] = useState({
@@ -106,7 +106,7 @@ const Login = () => {
     isValid: false,
     invalidMessage: "",
     isTouched: false,
-    placeholder: "Password",
+    placeholder: "Senha",
     type: "password",
   });
   const [newUserPasswordConfirmation, setNewUserPasswordConfirmation] =
@@ -116,7 +116,7 @@ const Login = () => {
       isValid: false,
       invalidMessage: "",
       isTouched: false,
-      placeholder: "Confirm Password",
+      placeholder: "Repetir Senha",
       type: "password",
     });
   const [hidePassword, setHidePassword] = useState({
@@ -217,7 +217,7 @@ const Login = () => {
       isValid: false,
       invalidMessage: "",
       isTouched: false,
-      placeholder: "Email Address",
+      placeholder: "Email",
       type: "email",
     });
     setUserPassword({
@@ -226,7 +226,7 @@ const Login = () => {
       isValid: false,
       invalidMessage: "",
       isTouched: false,
-      placeholder: "Password",
+      placeholder: "Senha",
       type: "password",
     });
     setNewUserNickname({
@@ -235,7 +235,7 @@ const Login = () => {
       isValid: false,
       invalidMessage: "",
       isTouched: false,
-      placeholder: "Nickname",
+      placeholder: "Nome do usuário",
       type: "nickname",
     });
     setNewUserEmail({
@@ -244,7 +244,7 @@ const Login = () => {
       isValid: false,
       invalidMessage: "",
       isTouched: false,
-      placeholder: "Email Address",
+      placeholder: "Email",
       type: "email",
     });
     setNewUserPassword({
@@ -253,7 +253,7 @@ const Login = () => {
       isValid: false,
       invalidMessage: "",
       isTouched: false,
-      placeholder: "Password",
+      placeholder: "Senha",
       type: "password",
     });
     setNewUserPasswordConfirmation({
@@ -262,7 +262,7 @@ const Login = () => {
       isValid: false,
       invalidMessage: "",
       isTouched: false,
-      placeholder: "Confirm Password",
+      placeholder: "Repetir Senha",
       type: "password",
     });
   };
@@ -548,6 +548,10 @@ const Login = () => {
     }
   };
 
+  const changePassword = () => {
+    setScreen("forgotPassword");
+  };
+
   const inputChangedHandler = (event, inputElement) => {
     switch (screen) {
       case "singUp":
@@ -696,7 +700,7 @@ const Login = () => {
                 }
                 height={"29px"}
               >
-                User
+                Usuário
               </InputContainer>
               <InputContainer
                 elementType={newUserEmail.type}
@@ -732,7 +736,7 @@ const Login = () => {
                 border={"no-right-border"}
                 height={"29px"}
               >
-                Password
+                Senha
               </InputContainer>
               <InputContainer
                 type="password"
@@ -754,7 +758,7 @@ const Login = () => {
                 }
                 height={"29px"}
               >
-                Confirm Password
+                Confirmar Senha
               </InputContainer>
             </StyledForm>
             <ButtonDiv>
@@ -771,7 +775,7 @@ const Login = () => {
 
           <SecondaryContent>
             <StyledMessage paddingTop={20}>
-              Already have an account?{"          "}
+              Já possui uma conta?{"          "}
               <StyledSpan
                 color={"#fc2469"}
                 fontWeight={900}
@@ -788,7 +792,7 @@ const Login = () => {
       loginElement = (
         <>
           <TitleDiv>
-            <StyledTitle>Recovery</StyledTitle>
+            <StyledTitle>Recuperar</StyledTitle>
           </TitleDiv>
           <MainContentDiv>
             <StyledForm>
@@ -811,9 +815,9 @@ const Login = () => {
                 width={230}
                 color={"#fc2469"}
                 isValidated={submitEmail}
-                click={sendEmail()}
+                click={() => sendEmail()}
               >
-                Send Email
+                Enviar Email
               </Button>
             </ButtonDiv>
             <CheckBoxWrapper>
@@ -826,13 +830,13 @@ const Login = () => {
                 underline={true}
                 onClick={() => setScreen("")}
               >
-                Go back
+                Voltar
               </StyledMessage>
             </CheckBoxWrapper>
           </MainContentDiv>
           <SecondaryContent>
             <StyledMessage paddingTop={20}>
-              Don't have an account?{"          "}
+              Não possui uma conta?{"          "}
               <StyledSpan
                 color={"#fc2469"}
                 fontWeight={900}
@@ -868,7 +872,7 @@ const Login = () => {
               </InputContainer>
               <InputContainer
                 type={hidePassword.loginPassword === true ? "password" : "text"}
-                elementType={userPassword.id}
+                elementType={"password"}
                 changed={(event) => inputChangedHandler(event, userPassword.id)}
                 placeholder={userPassword.placeholder}
                 invalidMessage={
@@ -880,9 +884,9 @@ const Login = () => {
                 hideImg={hidePassword.loginPassword}
                 border={"no-right-border"}
                 height={"29px"}
-                navigate={() => setScreen("forgotPassword")}
+                goTo={() => changePassword()}
               >
-                Password
+                Senha
               </InputContainer>
             </StyledForm>
             <ButtonDiv>
@@ -898,7 +902,7 @@ const Login = () => {
           </MainContentDiv>
           <SecondaryContent>
             <StyledMessage paddingTop={20}>
-              Don't have an account?{"          "}
+              Não possui uma conta?{"          "}
               <StyledSpan
                 color={"#fc2469"}
                 fontWeight={900}
