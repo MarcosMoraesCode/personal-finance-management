@@ -19,6 +19,7 @@ function App() {
   if (token) {
     routes = (
       <>
+        <Route path="/" exact element={<BudgetTracking />} />
         <Route path="/userprofile" exact element={<Profile />} />
         <Route path="/userincomes" exact element={<UserIncomes />} />
         <Route path="/userfinances" exact element={<BudgetTracking />} />
