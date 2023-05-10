@@ -298,9 +298,9 @@ const IncomesLineChart = (props) => {
   });
 
   let newData =
-    props.selection === "This Year"
+    props.selection === "Este Ano"
       ? newDataCurrentYear
-      : props.selection === "Last Year"
+      : props.selection === "Ano Passado"
       ? newDataLastYear
       : null;
 

@@ -17,9 +17,9 @@ const Category = (props) => {
     <CategoryContainer>
       <CategoryInfosDiv>
         <CategorySubtitlesDiv>
-          <SubtitleBlock width={"60%"}>Name</SubtitleBlock>
+          <SubtitleBlock width={"60%"}>Nome</SubtitleBlock>
           <SubtitleBlock width={"40%"} paddingLeft={"25px"}>
-            Category's expenses
+            Nº de despesas
           </SubtitleBlock>
         </CategorySubtitlesDiv>
         <CategoryContentDiv>
@@ -29,15 +29,15 @@ const Category = (props) => {
           </ContentBlock>
         </CategoryContentDiv>
         <CategorySubtitlesDiv>
-          <SubtitleBlock width={"60%"}>Real Month Spend</SubtitleBlock>
+          <SubtitleBlock width={"60%"}>Gasto Mensal Real</SubtitleBlock>
           <SubtitleBlock width={"40%"} paddingLeft={"25px"}>
-            Monthly Spend Limit
+            Gasto Mensal Esperado
           </SubtitleBlock>
         </CategorySubtitlesDiv>
         <CategoryContentDiv>
           <ContentBlock width={"60%"}> $ {props.realSpend}</ContentBlock>
           <ContentBlock width={"40%"} paddingLeft={"25px"}>
-            $ {props.spendLimit}
+            R$ {props.spendLimit}
           </ContentBlock>
         </CategoryContentDiv>
       </CategoryInfosDiv>

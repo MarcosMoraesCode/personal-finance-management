@@ -26,41 +26,56 @@ const GoalInformation = (props) => {
     100
   ).toFixed(2);
 
+  let portugueseTerm = "";
+  switch (props.term) {
+    case "Short":
+      portugueseTerm = "Curto Prazo";
+      break;
+    case "Medium":
+      portugueseTerm = "Médio Prazo";
+      break;
+    case "Long":
+      portugueseTerm = "Longo Prazo";
+      break;
+    default:
+      break;
+  }
+
   return (
     <GoalContainer {...props}>
       <InfoContainer>
         <GoalSubtitleDiv>
           <GoalSubtitleBlock {...props} width={"33%"}>
-            Goal
+            Nome
           </GoalSubtitleBlock>
           <GoalSubtitleBlock {...props} width={"33%"}>
-            Term
+            Tipo
           </GoalSubtitleBlock>
           <GoalSubtitleBlock {...props} width={"33%"}>
-            Percentage
+            Porcentagem
           </GoalSubtitleBlock>
         </GoalSubtitleDiv>
         <GoalContentInfo>
           <GoalContentBlock width={"33%"}>{props.name}</GoalContentBlock>
-          <GoalContentBlock width={"33%"}>{props.term}</GoalContentBlock>
+          <GoalContentBlock width={"33%"}>{portugueseTerm}</GoalContentBlock>
           <GoalContentBlock width={"33%"}>{percentage} %</GoalContentBlock>
         </GoalContentInfo>
         <GoalSubtitleDiv>
           <GoalSubtitleBlock {...props} width={"33%"}>
-            Allocated
+            Alocado
           </GoalSubtitleBlock>
           <GoalSubtitleBlock {...props} width={"33%"}>
-            Target
+            Meta
           </GoalSubtitleBlock>
           <GoalSubtitleBlock {...props} width={"33%"}>
-            Limit Date
+            Prazo
           </GoalSubtitleBlock>
         </GoalSubtitleDiv>
         <GoalContentInfo>
           <GoalContentBlock width={"33%"}>
-            $ {Number(props.allocated).toFixed(2)}
+            R$ {Number(props.allocated).toFixed(2)}
           </GoalContentBlock>
-          <GoalContentBlock width={"33%"}>$ {props.value}</GoalContentBlock>
+          <GoalContentBlock width={"33%"}>R$ {props.value}</GoalContentBlock>
           <GoalContentBlock width={"33%"}>{props.date}</GoalContentBlock>
         </GoalContentInfo>
       </InfoContainer>

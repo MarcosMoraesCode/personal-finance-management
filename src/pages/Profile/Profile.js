@@ -943,20 +943,20 @@ const Profile = () => {
     <ProfileDiv>
       <ProfileContainer>
         <ProfileTitleDiv>
-          <ProfileTitle>Profile</ProfileTitle>
+          <ProfileTitle>Perfil</ProfileTitle>
         </ProfileTitleDiv>
         <ProfileContentDiv>
           <MainContent>
             <MainInfoDiv>
               <MainInfoContent>
-                <TextSpan>Username: </TextSpan> {userInfo.name}
+                <TextSpan>Usuário: </TextSpan> {userInfo.name}
               </MainInfoContent>
               <MainInfoContent>
                 <TextSpan>Email: </TextSpan> {userInfo.email}
               </MainInfoContent>
               <MainInfoContent>
                 <p>
-                  <TextSpan>Address:</TextSpan> {completeAddress}
+                  <TextSpan>Endereço:</TextSpan> {completeAddress}
                 </p>
               </MainInfoContent>
             </MainInfoDiv>
@@ -968,8 +968,8 @@ const Profile = () => {
             <SecondaryInfoContentDiv open={openOption}>
               <SecondaryInfoContent>
                 <p>
-                  You can edit your profile. To change your password or edit
-                  username, address.
+                  Você pode editar seu perfil, trocar sua senha, nome de usuário
+                  ou endereço.
                 </p>
               </SecondaryInfoContent>
               <ButtonDiv>
@@ -978,15 +978,15 @@ const Profile = () => {
                     setOpenOptions(true);
                   }}
                 >
-                  Edit Profile
+                  Editar Perfil
                 </ProfileBtn>
               </ButtonDiv>
             </SecondaryInfoContentDiv>
             <SecondaryInfoContentDiv open={openOption}>
               <SecondaryInfoContent>
                 <p>
-                  FinPlann is still in beta, please report any bug you may have
-                  found!
+                  FinPlann está em beta, por favor report qualquer bug que
+                  encontrar!
                 </p>
               </SecondaryInfoContent>
               <ButtonDiv>
@@ -999,15 +999,15 @@ const Profile = () => {
                     });
                   }}
                 >
-                  Report
+                  Reportar
                 </ProfileBtn>
               </ButtonDiv>
             </SecondaryInfoContentDiv>
             <SecondaryInfoContentDiv open={openOption}>
               <SecondaryInfoContent>
                 <p>
-                  If you want to reset all incomes, expenses, goals,
-                  achievements and history you can use the reset button!
+                  Se você deseja resetar todas as suas rendas, despesas, metas e
+                  conquistas você pode utilizar o botão de reset!
                 </p>
               </SecondaryInfoContent>
               <ButtonDiv>
@@ -1023,12 +1023,12 @@ const Profile = () => {
                     setSubmitPermission(true);
                   }}
                 >
-                  Reset
+                  Resetar
                 </ProfileBtn>
               </ButtonDiv>
             </SecondaryInfoContentDiv>
             <ProfileManagerDiv open={openOption}>
-              <ManagerTitleDiv>Edit Profile</ManagerTitleDiv>
+              <ManagerTitleDiv>Editar Perfil</ManagerTitleDiv>
               <OptionBtn
                 onClick={() => {
                   setShowCrud(true);
@@ -1039,7 +1039,7 @@ const Profile = () => {
                   });
                 }}
               >
-                Edit Username
+                Editar Usuário
               </OptionBtn>
               <OptionBtn
                 onClick={() => {
@@ -1051,7 +1051,7 @@ const Profile = () => {
                   });
                 }}
               >
-                Edit Address
+                Editar Endereço
               </OptionBtn>
               <OptionBtn
                 onClick={() => {
@@ -1063,14 +1063,14 @@ const Profile = () => {
                   setSubmitPermission(true);
                 }}
               >
-                Change Password
+                Trocar Senha
               </OptionBtn>
               <OptionBtn
                 onClick={() => {
                   setOpenOptions(false);
                 }}
               >
-                Go Back
+                Voltar
               </OptionBtn>
             </ProfileManagerDiv>
           </SecondaryContent>

@@ -12,7 +12,7 @@ export const WrapExpenseLi = styled.div`
   width: 100%;
   height: fit-content;
   max-height: ${(props) =>
-    props.details === "Less" ? "400px" : "10%"}; //50 ou 150
+    props.details === "Menos" ? "400px" : "10%"}; //50 ou 150
   min-height: 45px;
   margin-top: 15px;
   padding: 2px;
@@ -165,7 +165,7 @@ export const SubtitleBlock = styled.div`
 `;
 export const ExpenseExtraContent = styled.div`
   display: ${(props) =>
-    props.details === "Less"
+    props.details === "Menos"
       ? "flex"
       : "none"}; //APPEARS CONDITIONALY WITH PROPS props.isNeeded
   flex-direction: column;

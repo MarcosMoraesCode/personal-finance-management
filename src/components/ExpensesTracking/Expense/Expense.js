@@ -54,7 +54,7 @@ const Expense = (props) => {
           {" "}
           <ExtraContentBlock width={"55%"}>
             <ExtraText> {subTopic.name}</ExtraText>
-            <ExtraText>{`$ ${Number(subTopic.value).toFixed(2)}`}</ExtraText>
+            <ExtraText>{`R$ ${Number(subTopic.value).toFixed(2)}`}</ExtraText>
           </ExtraContentBlock>
           <ExtraContentBlock width={"35%"}>
             <ExtraText>{subTopic.percentage}%</ExtraText>
@@ -75,7 +75,7 @@ const Expense = (props) => {
             {" "}
             <ExtraContentBlock width={"48%"}>
               <ExtraText> {subTopic.name}</ExtraText>
-              <ExtraText>{`$ ${Number(subTopic.value).toFixed(2)}`}</ExtraText>
+              <ExtraText>{`R$ ${Number(subTopic.value).toFixed(2)}`}</ExtraText>
             </ExtraContentBlock>
             <ExtraContentBlock width={"25%"}>
               <ExtraText>
@@ -97,13 +97,13 @@ const Expense = (props) => {
     <ExpenseExtraContent {...props}>
       <ExpenseSubtitlesDiv {...props}>
         <SubtitleBlock width={"55%"} color={"#51d289"}>
-          <p>Expense</p>
+          <p>Despesa</p>
           <div />
-          <p>Value</p>
+          <p>Valor</p>
         </SubtitleBlock>
         <SubtitleBlock width={"35%"} color={"#51d289"}>
-          <p>Percentage</p>
-          <p>Date</p>
+          <p>Porcentagem</p>
+          <p>Data</p>
         </SubtitleBlock>
       </ExpenseSubtitlesDiv>
       <ExpenseListDiv {...props}>{extraContentList}</ExpenseListDiv>
@@ -118,13 +118,13 @@ const Expense = (props) => {
             <ExpenseDefaultContent>
               <ExpenseSubtitlesDiv>
                 <SubtitleBlock width={"48%"}>
-                  <p>Category</p>
+                  <p>Categoria</p>
                   <div />
-                  <p>Value</p>
+                  <p>Valor</p>
                 </SubtitleBlock>
                 <SubtitleBlock width={"25%"}>
-                  <p>Real Percentage</p>
-                  <p>Expected</p>
+                  <p>Porcentagem Real</p>
+                  <p>Previsto</p>
                 </SubtitleBlock>
                 <SubtitleBlock width={"15%"}>
                   <div />
@@ -133,7 +133,10 @@ const Expense = (props) => {
               <ExpenseTextDiv>
                 <DefaultContentBlock width={"48%"}>
                   <p>{props.expenseTopic}</p>
-                  <p> {props.showValues ? `$ ${props.expenseTotal}` : `--`} </p>
+                  <p>
+                    {" "}
+                    {props.showValues ? `R$ ${props.expenseTotal}` : `--`}{" "}
+                  </p>
                 </DefaultContentBlock>
                 <DefaultContentBlock width={"25%"}>
                   <SpecialP
@@ -156,13 +159,13 @@ const Expense = (props) => {
             <ExpenseExtraContent {...props}>
               <ExpenseSubtitlesDiv>
                 <SubtitleBlock width={"48%"} color={"gold"}>
-                  <p>Expense</p>
+                  <p>Despesa</p>
                   <div />
-                  <p>Value</p>
+                  <p>Valor</p>
                 </SubtitleBlock>
                 <SubtitleBlock width={"25%"} color={"gold"}>
-                  <p>Percentage</p>
-                  <p>Date</p>
+                  <p>Porcentagem</p>
+                  <p>Data</p>
                 </SubtitleBlock>
                 <SubtitleBlock width={"15%"}>
                   <div />

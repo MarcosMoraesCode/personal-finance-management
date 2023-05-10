@@ -22,17 +22,17 @@ const Crud = (props) => {
     case "remove-category":
       crudContent = (
         <>
-          <CrudStyleTitle>Remove "{props.categoryName}"</CrudStyleTitle>
+          <CrudStyleTitle>Remover "{props.categoryName}"</CrudStyleTitle>
           <CrudStatusDescription>
-            Do you really want to remove {props.categoryName} category?
+            Você realmente deseja remover esta categoria? "{props.categoryName}"
             <br></br>
             <br></br>
-            All expenses from '{props.categoryName}' category will be removed
-            too!
+            Todas as despesas da categoria '{props.categoryName}' serão
+            removidas também!
           </CrudStatusDescription>
           <ModalButtonDiv>
-            <ContinueBtn onClick={props.removeCategory}>CONTINUE</ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <ContinueBtn onClick={props.removeCategory}>CONTINUAR</ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );
@@ -40,13 +40,13 @@ const Crud = (props) => {
     case "remove-expense":
       crudContent = (
         <>
-          <CrudStyleTitle>Remove {props.expenseName}</CrudStyleTitle>
+          <CrudStyleTitle>Remover {props.expenseName}</CrudStyleTitle>
           <CrudStatusDescription>
-            Do you really want to remove '{props.expenseName}' expense?
+            Você realmente deseja remover esta despesa? "{props.expenseName}"
           </CrudStatusDescription>
           <ModalButtonDiv>
-            <ContinueBtn onClick={props.removeExpense}>CONTINUE</ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <ContinueBtn onClick={props.removeExpense}>CONTINUAR</ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );
@@ -54,7 +54,7 @@ const Crud = (props) => {
     case "edit-category":
       crudContent = (
         <>
-          <CrudStyleTitle>Edit "{props.categoryName}"</CrudStyleTitle>
+          <CrudStyleTitle>Editar "{props.categoryName}"</CrudStyleTitle>
 
           <InputsDiv>
             <InputContainer
@@ -69,7 +69,7 @@ const Crud = (props) => {
               blur={props.categoryNameBlur}
               changed={props.categoryNameChanged}
             >
-              Category Name
+              Nome da Categoria
             </InputContainer>
             <InputContainer
               placeholder={props.categorySpendInputConfig.placeholder}
@@ -83,7 +83,7 @@ const Crud = (props) => {
               blur={props.categorySpendBlur}
               changed={props.categorySpendChanged}
             >
-              Spend Limit
+              Limite de Gasto Mensal
             </InputContainer>
           </InputsDiv>
 
@@ -93,9 +93,9 @@ const Crud = (props) => {
               {...props}
               onClick={props.editCategory}
             >
-              CONTINUE
+              CONTINUAR
             </ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );
@@ -103,7 +103,7 @@ const Crud = (props) => {
     case "edit-expense":
       crudContent = (
         <>
-          <CrudStyleTitle>Edit "{props.expenseName}"</CrudStyleTitle>
+          <CrudStyleTitle>Editar "{props.expenseName}"</CrudStyleTitle>
           <InputsDiv>
             <InputContainer
               placeholder={props.expenseNameInputConfig.placeholder}
@@ -117,7 +117,7 @@ const Crud = (props) => {
               blur={props.expenseNameBlur}
               changed={props.expenseNameChanged}
             >
-              Expense Name
+              Nome da Despesa
             </InputContainer>
             <InputContainer
               placeholder={props.expenseValueInputConfig.placeholder}
@@ -131,7 +131,7 @@ const Crud = (props) => {
               blur={props.expenseValueBlur}
               changed={props.expenseValueChanged}
             >
-              Expense Value
+              Valor da Despesa
             </InputContainer>
             <InputContainer
               type={"date"}
@@ -146,7 +146,7 @@ const Crud = (props) => {
               blur={props.expenseDateBlur}
               changed={props.expenseDateChanged}
             >
-              Date
+              Data
             </InputContainer>
           </InputsDiv>
           <ModalButtonDiv>
@@ -155,9 +155,9 @@ const Crud = (props) => {
               disabled={props.continueDisabled}
               {...props}
             >
-              CONTINUE
+              CONTINUAR
             </ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );
@@ -165,13 +165,13 @@ const Crud = (props) => {
     case "remove-goal":
       crudContent = (
         <>
-          <CrudStyleTitle>Remove "{props.goalName}"</CrudStyleTitle>
+          <CrudStyleTitle>Remover "{props.goalName}"</CrudStyleTitle>
           <CrudStatusDescription>
-            Do you really want to remove {props.goalName} goal?
+            Você realmente deseja remover esta meta? "{props.goalName}"
           </CrudStatusDescription>
           <ModalButtonDiv>
-            <ContinueBtn onClick={props.removeGoal}>CONTINUE</ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <ContinueBtn onClick={props.removeGoal}>CONTINUAR</ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );
@@ -179,7 +179,7 @@ const Crud = (props) => {
     case "edit-goal":
       crudContent = (
         <>
-          <CrudStyleTitle>Edit "{props.goalName} goal"</CrudStyleTitle>
+          <CrudStyleTitle>Editar "{props.goalName}"</CrudStyleTitle>
           <InputsDiv>
             <InputContainer
               placeholder={props.goalNameInputConfig.placeholder}
@@ -193,7 +193,7 @@ const Crud = (props) => {
               blur={props.goalNameBlur}
               changed={props.goalNameChanged}
             >
-              Goal Name
+              Nome da Meta
             </InputContainer>
             <InputContainer
               placeholder={props.goalValueInputConfig.placeholder}
@@ -207,7 +207,7 @@ const Crud = (props) => {
               blur={props.goalValueBlur}
               changed={props.goalValueChanged}
             >
-              Ammount to achieve
+              Valor da Meta
             </InputContainer>
             <InputContainer
               type={"date"}
@@ -222,7 +222,7 @@ const Crud = (props) => {
               blur={props.goalDateBlur}
               changed={props.goalDateChanged}
             >
-              Date
+              Data
             </InputContainer>
           </InputsDiv>
 
@@ -232,9 +232,9 @@ const Crud = (props) => {
               disabled={props.continueDisabled}
               {...props}
             >
-              CONTINUE
+              CONTINUAR
             </ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );
@@ -242,7 +242,7 @@ const Crud = (props) => {
     case "edit-income":
       crudContent = (
         <>
-          <CrudStyleTitle>Edit "{props.incomeName} income"</CrudStyleTitle>
+          <CrudStyleTitle>Editar "{props.incomeName}"</CrudStyleTitle>
           <InputsDiv>
             <InputContainer
               placeholder={props.incomeNameInputConfig.placeholder}
@@ -256,7 +256,7 @@ const Crud = (props) => {
               blur={props.incomeNameBlur}
               changed={props.incomeNameChanged}
             >
-              Income Name
+              Nome da Renda
             </InputContainer>
           </InputsDiv>
 
@@ -266,9 +266,9 @@ const Crud = (props) => {
               disabled={props.continueDisabled}
               {...props}
             >
-              CONTINUE
+              CONTINUAR
             </ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );
@@ -276,14 +276,14 @@ const Crud = (props) => {
     case "remove-income":
       crudContent = (
         <>
-          <CrudStyleTitle>Remove "{props.incomeName}"</CrudStyleTitle>
+          <CrudStyleTitle>Remover "{props.incomeName}"</CrudStyleTitle>
           <CrudStatusDescription>
-            Do you really want to remove {props.incomeName} income? All the
-            money invested from this income source will be removed.
+            Você realmente deseja remover a renda "{props.incomeName}"? Todo o
+            dinheiro depositado neste recurso será removido.
           </CrudStatusDescription>
           <ModalButtonDiv>
-            <ContinueBtn onClick={props.removeIncome}>CONTINUE</ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <ContinueBtn onClick={props.removeIncome}>CONTINUAR</ContinueBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );
@@ -292,11 +292,11 @@ const Crud = (props) => {
       crudContent = (
         <>
           <CrudStyleTitle>
-            New transaction for "{props.incomeName} income"
+            Nova transação para "{props.incomeName}"
           </CrudStyleTitle>
           <CrudStatusDescription>
-            The current balance of this income source is
-            {` $ ` + props.incomeValue.toFixed(2)}.
+            O saldo atual desta fonte de renda é
+            {` R$ ` + props.incomeValue.toFixed(2)}.
           </CrudStatusDescription>
           <InputsDiv>
             <InputContainer
@@ -311,7 +311,7 @@ const Crud = (props) => {
               blur={props.incomeValueBlur}
               changed={props.incomeValueChanged}
             >
-              Income Value
+              Valor da Renda
             </InputContainer>
 
             <InputContainer
@@ -330,9 +330,9 @@ const Crud = (props) => {
               disabled={props.continueDisabled}
               {...props}
             >
-              CONTINUE
+              CONTINUAR
             </ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );
@@ -341,12 +341,12 @@ const Crud = (props) => {
       crudContent = (
         <>
           <CrudStyleTitle>
-            New transaction for "{props.goalName}" goal
+            Nova transação para "{props.goalName}"
           </CrudStyleTitle>
           <CrudStatusDescription>
-            Value to achieve {` the ` + props.goalName + ` goal `}is
-            {` $ ` + props.goalValue}, and the amount allocated so far is{" "}
-            {` $ ` + props.goalAllocated}.
+            O valor para atingir {` the ` + props.goalName + ` goal `} é
+            {` R$ ` + props.goalValue}, e o total alocado até agora é{" "}
+            {` R$ ` + props.goalAllocated}.
           </CrudStatusDescription>
 
           <InputsDiv>
@@ -362,7 +362,7 @@ const Crud = (props) => {
               blur={props.goalValueBlur}
               changed={props.goalValueChanged}
             >
-              Income Value
+              Valor da Renda
             </InputContainer>
             <InputContainer
               width={"200px"}
@@ -379,9 +379,9 @@ const Crud = (props) => {
               disabled={props.continueDisabled}
               {...props}
             >
-              CONTINUE
+              CONTINUAR
             </ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );
@@ -389,7 +389,7 @@ const Crud = (props) => {
     case "edit-username":
       crudContent = (
         <>
-          <CrudStyleTitle>Current Name: "{props.userName} "</CrudStyleTitle>
+          <CrudStyleTitle>Nome Atual: "{props.userName} "</CrudStyleTitle>
           <InputsDiv>
             <InputContainer
               placeholder={props.userNameInputConfig.placeholder}
@@ -403,7 +403,7 @@ const Crud = (props) => {
               blur={props.userNameBlur}
               changed={props.userNameChanged}
             >
-              New Username
+              Nome do Usuário
             </InputContainer>
           </InputsDiv>
 
@@ -413,9 +413,9 @@ const Crud = (props) => {
               disabled={props.continueDisabled}
               {...props}
             >
-              CONTINUE
+              CONTINUAR
             </ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );
@@ -423,7 +423,7 @@ const Crud = (props) => {
     case "edit-useraddress":
       crudContent = (
         <>
-          <CrudStyleTitle>Change Address</CrudStyleTitle>
+          <CrudStyleTitle>Mudar Endereço</CrudStyleTitle>
           <InputsDiv>
             <InputContainer
               placeholder={props.streetInputConfig.placeholder}
@@ -437,7 +437,7 @@ const Crud = (props) => {
               blur={props.streetBlur}
               changed={props.streetChanged}
             >
-              Street and Number
+              Rua e número
             </InputContainer>
             <InputContainer
               placeholder={props.districtInputConfig.placeholder}
@@ -451,7 +451,7 @@ const Crud = (props) => {
               blur={props.districtBlur}
               changed={props.districtChanged}
             >
-              Distric
+              Bairro
             </InputContainer>
             <InputContainer
               placeholder={props.cityInputConfig.placeholder}
@@ -465,7 +465,7 @@ const Crud = (props) => {
               blur={props.cityBlur}
               changed={props.cityChanged}
             >
-              City
+              Cidade
             </InputContainer>
             {/*<InputContainer
               placeholder={props.stateInputConfig.placeholder}
@@ -489,9 +489,9 @@ const Crud = (props) => {
               disabled={props.continueDisabled}
               {...props}
             >
-              CONTINUE
+              CONTINUAR
             </ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );
@@ -499,10 +499,10 @@ const Crud = (props) => {
     case "edit-userpassword":
       crudContent = (
         <>
-          <CrudStyleTitle>Change Password</CrudStyleTitle>
+          <CrudStyleTitle>Mudar Senha</CrudStyleTitle>
           <WarningMessage>
-            Do you really want to change your password? An email will be sent to
-            your email address.
+            Você realmente deseja mudar sua senha? Uma requisição será enviada
+            para seu endereço de email.
           </WarningMessage>
           {/*
           <InputsDiv>
@@ -570,9 +570,9 @@ const Crud = (props) => {
               disabled={props.continueDisabled}
               {...props}
             >
-              CONTINUE
+              CONTINUAR
             </ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );
@@ -580,7 +580,7 @@ const Crud = (props) => {
     case "report":
       crudContent = (
         <>
-          <CrudStyleTitle>Send a Report</CrudStyleTitle>
+          <CrudStyleTitle>Reportar</CrudStyleTitle>
           <InputsDiv>
             <InputContainer
               placeholder={props.reportInputConfig.placeholder}
@@ -594,7 +594,7 @@ const Crud = (props) => {
               blur={props.reportBlur}
               changed={props.reportChanged}
             >
-              Report Area
+              Reportar um bug
             </InputContainer>
           </InputsDiv>
 
@@ -604,9 +604,9 @@ const Crud = (props) => {
               disabled={props.continueDisabled}
               {...props}
             >
-              CONTINUE
+              CONTINUAR
             </ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );
@@ -615,11 +615,11 @@ const Crud = (props) => {
       crudContent = (
         <>
           <CrudStyleTitle>
-            {props.userName}, are you sure about reset all your account data?
+            {props.userName}, você tem certeza que deseja resetar sua conta?
           </CrudStyleTitle>
           <WarningMessage>
-            If you continue, all your expenses, incomes, goals, achievements and
-            history will be reseted
+            Se continuar, todas as suas despesas, rendas, histórico, metas e
+            conquistas serão resetados!
           </WarningMessage>
 
           <ModalButtonDiv>
@@ -628,9 +628,9 @@ const Crud = (props) => {
               disabled={props.continueDisabled}
               {...props}
             >
-              CONTINUE
+              CONTINUAR
             </ContinueBtn>
-            <CancelBtn onClick={props.cancelAction}>CANCEL</CancelBtn>
+            <CancelBtn onClick={props.cancelAction}>CANCELAR</CancelBtn>
           </ModalButtonDiv>
         </>
       );

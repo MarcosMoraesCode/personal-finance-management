@@ -33,15 +33,15 @@ const Goal = (props) => {
     }
     switch (situation) {
       case "day":
-        message = `Remaining time estimate due to your frequency contribution is ${Math.trunc(
+        message = `Tempo estimado devido sua frequência de depósitos é  ${Math.trunc(
           props.remainingTime
-        )} days.`;
+        )} dias.`;
 
         break;
       case "month":
         months = Math.trunc(props.remainingTime / 30);
         days = Math.trunc(props.remainingTime - months * 30);
-        message = `Remaining time estimate due to your frequency contribution is ${months} months and ${days} days.`;
+        message = `Tempo estimado devido sua frequência de depósitos é  ${months} meses e ${days} dias.`;
 
         break;
       case "year":
@@ -53,7 +53,7 @@ const Goal = (props) => {
             ? Math.trunc(daysLeft)
             : Math.trunc(daysLeft - months * 30);
 
-        message = `Remaining time estimate due to your frequency contribution is ${years} years, ${months} months and ${days} days.`;
+        message = `Tempo estimado devido sua frequência de depósitos é  ${years} anos, ${months} meses e ${days} dias.`;
 
         break;
       default:
@@ -84,7 +84,7 @@ const Goal = (props) => {
         {/*props.allocatedPercentage*/}
       </GoalPercentageDiv>
       <GoalInformationDiv>
-        <StatusInformation>$ {props.goalValue}</StatusInformation>
+        <StatusInformation>R$ {props.goalValue}</StatusInformation>
         <InformationButton onClick={props.showInfo}>Info</InformationButton>
       </GoalInformationDiv>
     </GoalDiv>
@@ -95,7 +95,7 @@ const Goal = (props) => {
       <ClickedGoalDiv>
         <InfoDiv height={"12%"}>
           <TextSpan width={"60px"} align={"start"}>
-            Term
+            Prazo
           </TextSpan>
           <TextSpan
             width={"90px"}
@@ -109,28 +109,28 @@ const Goal = (props) => {
 
         <InfoDiv height={"12%"}>
           <TextSpan width={"60px"} align={"start"}>
-            Target
+            Meta
           </TextSpan>
           <TextSpan width={"90px"} align={"end"} color={"#51d289"} weight={600}>
-            $ {Number(props.goalValue).toFixed(2)}
+            R$ {Number(props.goalValue).toFixed(2)}
           </TextSpan>
         </InfoDiv>
 
         <InfoDiv height={"12%"}>
           <TextSpan width={"60px"} align={"start"}>
-            Allocated
+            Alocado
           </TextSpan>
           <TextSpan width={"90px"} align={"end"} color={"#51d289"} weight={600}>
-            $ {Number(props.allocated).toFixed(2)}
+            R$ {Number(props.allocated).toFixed(2)}
           </TextSpan>
         </InfoDiv>
 
         <InfoDiv height={"12%"}>
           <TextSpan width={"60px"} align={"start"}>
-            Avg.
+            Média
           </TextSpan>
           <TextSpan width={"90px"} align={"end"} color={"#51d289"} weight={600}>
-            $ {Number(props.avgContribution).toFixed(2)}
+            R$ {Number(props.avgContribution).toFixed(2)}
           </TextSpan>
         </InfoDiv>
 
@@ -138,7 +138,7 @@ const Goal = (props) => {
           <TextSpan width={"150px"} align={"justify"} color={"gold"}>
             {props.hasParam
               ? message
-              : `You need to make deposits on at least two different days to get an estimate.`}
+              : `Você precisa depositar em dias diferentes para ter uma estimimativa.`}
           </TextSpan>
         </InfoDiv>
 

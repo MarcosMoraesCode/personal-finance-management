@@ -95,7 +95,7 @@ const UserIncomes = (props) => {
       isValid: false,
       isTouched: false,
       id: "Income Name",
-      placeholder: "Income Name",
+      placeholder: "Nome da Renda",
       invalidMessage: "",
     },
     inputValue: {
@@ -147,21 +147,21 @@ const UserIncomes = (props) => {
   });
 
   const historyOptions = [
-    { name: "All" },
-    { name: "Deposit" },
-    { name: "Investment" },
-    { name: "Withdraw" },
-    { name: "Payment" },
-    { name: "Deleted" },
+    { name: "Tudo" },
+    { name: "Depósito" },
+    { name: "Investimento" },
+    { name: "Saque" },
+    { name: "Pagamento" },
+    { name: "Excluído" },
   ];
 
   const periodOptions = [
-    { name: "All Time" },
-    { name: "This Year" },
-    { name: "This Month" },
+    { name: "Completo" },
+    { name: "Este Ano" },
+    { name: "Este Mês" },
   ];
 
-  const analysisOptions = [{ name: "This Year" }, { name: "Last Year" }];
+  const analysisOptions = [{ name: "Este Ano" }, { name: "Ano Passado" }];
   const [optionOneSelected, setOptionOneSelected] = useState(true);
   const [optionTwoSelected, setOptionTwoSelected] = useState(false);
   const [optionThreeSelected, setOptionThreeSelected] = useState(false);
@@ -169,10 +169,10 @@ const UserIncomes = (props) => {
   const [secondAnimation, setSecondAnimation] = useState(false);
   const [optionName, setOptionName] = useState("manage-income");
   const [submitPermission, setSubmitPermission] = useState(false);
-  const [analysisSelected, setAnalysisSelected] = useState("This Year");
+  const [analysisSelected, setAnalysisSelected] = useState("Este Ano");
   const [showMonthIncomesOnly, setShowMonthIncomesOnly] = useState(false);
-  const [selectedPeriod, setSelectedPeriod] = useState("All Time");
-  const [selectedFilter, setSelectedFilter] = useState("All");
+  const [selectedPeriod, setSelectedPeriod] = useState("Completo");
+  const [selectedFilter, setSelectedFilter] = useState("Tudo");
   const [showCrud, setShowCrud] = useState(false);
   const [filteredHistory, setFilteredHistory] = useState(null);
   const [monthIncomes, setMonthIncomes] = useState(null);
@@ -572,7 +572,7 @@ const UserIncomes = (props) => {
         isValid: false,
         isTouched: false,
         id: "Income Name",
-        placeholder: "Income Name",
+        placeholder: "Nome da Renda",
         invalidMessage: "",
       },
       inputValue: {
@@ -770,7 +770,7 @@ const UserIncomes = (props) => {
     incomeOldValue
   ) => {
     let modifiedValue =
-      userInputs.inputRadio.value === "Withdraw"
+      userInputs.inputRadio.value === "Sacar"
         ? (Number(newValue) * -1).toFixed(2)
         : Number(newValue).toFixed(2);
 
@@ -848,7 +848,7 @@ const UserIncomes = (props) => {
     goalTerm
   ) => {
     let modifiedValue =
-      userInputs.inputRadio.value === "Withdraw"
+      userInputs.inputRadio.value === "Sacar"
         ? (Number(newValue) * -1).toFixed(2)
         : Number(newValue).toFixed(2);
 
@@ -904,15 +904,38 @@ const UserIncomes = (props) => {
     //console.log(event.currentTarget.value);
     let selectedTime = selectedPeriod;
     let selectedType = selectedFilter;
+    console.log(event.currentTarget.value);
     if (
-      event.currentTarget.value.includes("Time") ||
-      event.currentTarget.value.includes("This")
+      event.currentTarget.value.includes("Completo") ||
+      event.currentTarget.value.includes("Este")
     ) {
       selectedTime = event.currentTarget.value;
       setSelectedPeriod(event.currentTarget.value);
     } else {
-      selectedType = event.currentTarget.value;
-      setSelectedFilter(event.currentTarget.value);
+      //SOMENTE NECESSÁRIO PARA COLOCAR EM PORTUGUES
+      switch (event.currentTarget.value) {
+        case "Depósito":
+          selectedType = "Deposit";
+          setSelectedFilter(event.currentTarget.value);
+          break;
+        case "Pagamento":
+          selectedType = "Payment";
+          setSelectedFilter(event.currentTarget.value);
+          break;
+        case "Investimento":
+          selectedType = "Investment";
+          setSelectedFilter(event.currentTarget.value);
+          break;
+        case "Saque":
+          selectedType = "Withdraw";
+          setSelectedFilter(event.currentTarget.value);
+          break;
+
+        default:
+          selectedType = event.currentTarget.value;
+          setSelectedFilter(event.currentTarget.value);
+          break;
+      }
     }
 
     let allHistory = Object.values(userHistory);
@@ -925,27 +948,27 @@ const UserIncomes = (props) => {
     // console.log("selected Type", selectedType);
 
     switch (selectedTime) {
-      case "All Time":
-        if (selectedType.includes("Deleted")) {
+      case "Completo":
+        if (selectedType.includes("Excluído")) {
           finalHistory = allHistory.filter((history) =>
             history.type.includes("Deleted")
           );
 
           setFilteredHistory(finalHistory);
         } else if (
-          selectedType !== "All" &&
-          !selectedType.includes("Deleted")
+          selectedType !== "Tudo" &&
+          !selectedType.includes("Excluído")
         ) {
           finalHistory = allHistory.filter(
             (history) => history.type === selectedType
           );
-
+          //console.log(allHistory);
           setFilteredHistory(finalHistory);
         } else {
           setFilteredHistory(allHistory);
         }
         break;
-      case "This Year":
+      case "Este Ano":
         adjustedHistory = allHistory.map((history) => {
           if (history.date.includes("-")) {
             let historyYear = history.date.slice(0, 4);
@@ -973,15 +996,15 @@ const UserIncomes = (props) => {
         );
 
         //console.log("filtrado", filteredHistory);
-        if (selectedType.includes("Deleted")) {
+        if (selectedType.includes("Excluído")) {
           finalHistory = filteredHistory.filter((history) =>
             history.type.includes("Deleted")
           );
 
           setFilteredHistory(finalHistory);
         } else if (
-          selectedType !== "All" &&
-          !selectedType.includes("Deleted")
+          selectedType !== "Tudo" &&
+          !selectedType.includes("Excluído")
         ) {
           finalHistory = filteredHistory.filter(
             (history) => history.type === selectedType
@@ -992,7 +1015,7 @@ const UserIncomes = (props) => {
           setFilteredHistory(filteredHistory);
         }
         break;
-      case "This Month":
+      case "Este Mês":
         adjustedHistory = allHistory.map((history) => {
           if (history.date.includes("-")) {
             let historyYear = history.date.slice(0, 4);
@@ -1021,15 +1044,15 @@ const UserIncomes = (props) => {
         );
 
         //console.log("filtrado", filteredHistory);
-        if (selectedType.includes("Deleted")) {
+        if (selectedType.includes("Excluído")) {
           finalHistory = filteredHistory.filter((history) =>
             history.type.includes("Deleted")
           );
 
           setFilteredHistory(finalHistory);
         } else if (
-          selectedType !== "All" &&
-          !selectedType.includes("Deleted")
+          selectedType !== "Tudo" &&
+          !selectedType.includes("Excluído")
         ) {
           finalHistory = filteredHistory.filter(
             (history) => history.type === selectedType
@@ -1041,63 +1064,6 @@ const UserIncomes = (props) => {
         }
         break;
     }
-  };
-
-  const filterPeriod = (event) => {
-    let historyList =
-      filteredHistory !== null ? filteredHistory : Object.values(userHistory);
-    //console.log(historyList);
-
-    let adjustedHistory = historyList.map((history) => {
-      if (history.date.includes("-")) {
-        let historyYear = history.date.slice(0, 4);
-        let historyMonth = history.date[5] + history.date[6];
-        let historyDay = history.date[8] + history.date[9];
-
-        return {
-          ...history,
-          date: `${historyDay}/${historyMonth}/${historyYear}`,
-        };
-      } else {
-        return history;
-      }
-    });
-    //console.log(adjustedHistory);
-    let finalHistory;
-
-    switch (event.currentTarget.value) {
-      case "This Month":
-        finalHistory = adjustedHistory.filter(
-          (history) =>
-            Number(
-              history.date[6] +
-                history.date[7] +
-                history.date[8] +
-                history.date[9]
-            ) === year &&
-            String(history.date[3] + history.date[4]) === String(month)
-        );
-        setFilteredHistory(finalHistory);
-        break;
-      case "This Year":
-        finalHistory = adjustedHistory.filter(
-          (history) =>
-            Number(
-              history.date[6] +
-                history.date[7] +
-                history.date[8] +
-                history.date[9]
-            ) === year
-        );
-        setFilteredHistory(finalHistory);
-        break;
-      case "All time":
-        setFilteredHistory(adjustedHistory);
-        break;
-      default:
-        break;
-    }
-    console.log(finalHistory);
   };
 
   const filterAnalysis = (event) => {
@@ -1171,7 +1137,7 @@ const UserIncomes = (props) => {
     </InitialIncomeDiv>
   );
 
-  let goalsList = "Create your goal and come back!";
+  let goalsList = "Crie sua meta e volte aqui!";
 
   if (userGoals !== null) {
     let goalsArr = Object.values(userGoals);
@@ -1219,8 +1185,8 @@ const UserIncomes = (props) => {
     });
   }
 
-  let incomesList = "When you add your first income, it'll appear right here.";
-  let monthIncomesList = "You didn't deposit this month yet.";
+  let incomesList = "Quando você registrar sua primeira renda, aparecerá aqui.";
+  let monthIncomesList = "Você ainda não fez nenhum depósito este mês.";
 
   //console.log(userIncomes, "aqui");
   if (userIncomes !== null) {
@@ -1264,8 +1230,12 @@ const UserIncomes = (props) => {
   }
 
   if (monthIncomes !== null) {
-    let incomesArr = Object.values(userIncomes);
-    //console.log(incomesArr);
+    console.log("passou aqui", userIncomes);
+    let incomesArr = [];
+    if (userIncomes !== null) {
+      incomesArr = Object.values(userIncomes);
+    }
+
     //console.log(monthIncomes);
 
     let adjustedIncomes = [];
@@ -1321,7 +1291,7 @@ const UserIncomes = (props) => {
   let analysisChart = null;
 
   switch (analysisSelected) {
-    case "This Year":
+    case "Este Ano":
       analysisChart = (
         <IncomesLineChart
           expenses={userExpenses}
@@ -1330,7 +1300,7 @@ const UserIncomes = (props) => {
         ></IncomesLineChart>
       );
       break;
-    case "Last Year":
+    case "Ano Passado":
       analysisChart = (
         <IncomesLineChart
           expenses={userExpenses}
@@ -1346,16 +1316,16 @@ const UserIncomes = (props) => {
       selectedContent = (
         <ManageIncomeDiv secondAnimation={secondAnimation}>
           <DefaultTitleDiv>
-            <DefaultTitle>Incomes</DefaultTitle>
+            <DefaultTitle>Rendas</DefaultTitle>
           </DefaultTitleDiv>
           <DefaultInfoDiv>
             <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
-              Balance{" "}
+              Saldo{" "}
               <ManageSpan color={Number(userBalance) >= 0 ? "#51d289" : "red"}>
                 {" "}
                 {Number(userBalance) >= 0
-                  ? `$ ${Number(userBalance).toFixed(2)}`
-                  : ` - $ ${(Number(userBalance) * -1).toFixed(2)}`}
+                  ? `R$ ${Number(userBalance).toFixed(2)}`
+                  : ` - R$ ${(Number(userBalance) * -1).toFixed(2)}`}
               </ManageSpan>
             </DefaultInfoContent>
             <DefaultInfoContent
@@ -1364,16 +1334,21 @@ const UserIncomes = (props) => {
               fontSize={"15px"}
             >
               <p>
-                Here you can create or edit your incomes, and add money to an
-                existing income. Every time you add or delete an
+                Aqui você pode criar ou editar suas fontes de renda, e depositar
+                ou sacar dinheiro de uma renda existente. Toda vez que você
+                adicionar ou excluir uma despesa/categoria, assim como depositar
+                ou sacar dinheiro de uma de suas metas, o seu saldo será
+                afetado.
+                {/*Here you can create or edit your incomes, and add
+                money to an existing income. Every time you add or delete an
                 expense/category, as well as add or withdraw money from a goal,
-                it will affect your account balance.
+                it will affect your account balance.*/}
               </p>
             </DefaultInfoContent>
           </DefaultInfoDiv>
           <ManageFormDiv>
             <ManageFormTitleDiv>
-              <ManageFormTitle>Add a new Income</ManageFormTitle>
+              <ManageFormTitle>Adicionar nova Renda</ManageFormTitle>
             </ManageFormTitleDiv>
             <ManageFormContainer>
               <InputContainer
@@ -1394,24 +1369,24 @@ const UserIncomes = (props) => {
                 }
                 value={userInputs.inputName.value}
               >
-                Income Name
+                Nome da Renda
               </InputContainer>{" "}
               <UserDefaultButton
                 height={"25px"}
                 disabled={submitPermission ? "" : "disabled"}
                 onClick={() => submitIncome()}
               >
-                Add Income
+                Adicionar
               </UserDefaultButton>
             </ManageFormContainer>
           </ManageFormDiv>
           <DefaultList>
             <DefaultListTitleDiv>
-              <DefaultListTitle>Incomes List</DefaultListTitle>
+              <DefaultListTitle>Suas rendas</DefaultListTitle>
               <DefaultInfoContent justify={"center"}>
                 <ChooseListDiv>
                   <ChooseListContent>
-                    Show month deposits only{" "}
+                    Mostrar apenas depósitos do mês{" "}
                     <CheckButton
                       clicked={showMonthIncomesOnly}
                       onClick={() =>
@@ -1433,20 +1408,20 @@ const UserIncomes = (props) => {
       selectedContent = (
         <AnalysisIncomeDiv>
           <DefaultTitleDiv>
-            <DefaultTitle>Analysis</DefaultTitle>
+            <DefaultTitle>Análises</DefaultTitle>
           </DefaultTitleDiv>
           <DefaultInfoDiv>
             <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
-              Balance{" "}
+              Saldo{" "}
               <ManageSpan color={userBalance >= 0 ? "#51d289" : "red"}>
                 {" "}
                 {userBalance >= 0
-                  ? `$ ${userBalance.toFixed(2)}`
-                  : ` - $ ${(userBalance * -1).toFixed(2)}`}
+                  ? `R$ ${userBalance.toFixed(2)}`
+                  : ` - R$ ${(userBalance * -1).toFixed(2)}`}
               </ManageSpan>
             </DefaultInfoContent>
             <AccountFilterDiv>
-              <p>Here you can view all transactions over this and last year.</p>
+              <p>Aqui você acessa todas as transações deste e do último ano.</p>
               <SelectContainer
                 options={analysisOptions}
                 changed={(event) => filterAnalysis(event)}
@@ -1461,11 +1436,11 @@ const UserIncomes = (props) => {
             {analysisChart}
             <DefaultTextDiv>
               <DefaultText>
-                In the account history, it is possible to filter by investments
-                or deposits for further details. And for more information about
-                expenses, please access the{" "}
+                Na aba de histórico é possível filtrar por investimentos ou
+                depósitos para mais detalhes. E para mais informações sobre as
+                despesas, acesse{" "}
                 <TextSpan onClick={() => navigate("/userexpenses")}>
-                  expenses page
+                  página de despesas
                 </TextSpan>
                 .
               </DefaultText>
@@ -1478,37 +1453,38 @@ const UserIncomes = (props) => {
       selectedContent = (
         <AllocateIncomeDiv>
           <DefaultTitleDiv>
-            <DefaultTitle>Investments</DefaultTitle>
+            <DefaultTitle>Investimentos</DefaultTitle>
           </DefaultTitleDiv>
           <DefaultInfoDiv>
             <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
-              Balance{" "}
+              Saldo{" "}
               <ManageSpan color={userBalance >= 0 ? "#51d289" : "red"}>
                 {" "}
                 {userBalance >= 0
-                  ? `$ ${userBalance.toFixed(2)}`
-                  : ` - $ ${(userBalance * -1).toFixed(2)}`}
+                  ? `R$ ${userBalance.toFixed(2)}`
+                  : ` - R$ ${(userBalance * -1).toFixed(2)}`}
               </ManageSpan>
             </DefaultInfoContent>
             <DefaultInfoContent justify={"center"} fontSize={"15px"}>
               <p>
-                Here you can make a deposit or withdrawal of money from a
-                specific goal.
+                Aqui você pode realizar depósitos ou sacar dinheiro de uma meta
+                específica.
               </p>
             </DefaultInfoContent>
           </DefaultInfoDiv>
           <DefaultList>
             <DefaultListTitleDiv>
-              <DefaultListTitle>Goals List</DefaultListTitle>
+              <DefaultListTitle>Suas Metas</DefaultListTitle>
             </DefaultListTitleDiv>
             <DefaultListContent>{goalsList}</DefaultListContent>
           </DefaultList>
 
           <DefaultTextDiv>
             <DefaultText>
-              To edit name, target or term of a specific goal, you can access{" "}
+              Para editar o nome, valor ou prazo de uma meta específica, acesse
+              a{" "}
               <TextSpan onClick={() => navigate("/usergoals")}>
-                goals page
+                página de metas
               </TextSpan>
               .
             </DefaultText>
@@ -1520,27 +1496,27 @@ const UserIncomes = (props) => {
       selectedContent = (
         <AccountHistoryDiv>
           <DefaultTitleDiv>
-            <DefaultTitle>Account History</DefaultTitle>
+            <DefaultTitle>Histórico</DefaultTitle>
           </DefaultTitleDiv>
           <DefaultInfoDiv>
             <DefaultInfoContent justify={"flex-end"} fontSize={"14px"}>
-              Balance{" "}
+              Saldo{" "}
               <ManageSpan color={userBalance >= 0 ? "#51d289" : "red"}>
                 {" "}
                 {userBalance >= 0
-                  ? `$ ${userBalance.toFixed(2)}`
-                  : ` - $ ${(userBalance * -1).toFixed(2)}`}
+                  ? `R$ ${userBalance.toFixed(2)}`
+                  : ` - R$ ${(userBalance * -1).toFixed(2)}`}
               </ManageSpan>
             </DefaultInfoContent>
             <DefaultInfoContent justify={"center"} fontSize={"15px"}>
               <p>
-                Here you can view the complete history of deposits and expenses
-                in your account.
+                Aqui você pode acessar o histórico completo de depósitos,
+                despesas e investimentos da sua conta.
               </p>
             </DefaultInfoContent>
           </DefaultInfoDiv>
           <AccountFilterDiv>
-            <p>View the complete history or filter by a type.</p>
+            <p>Veja o histórico completo ou selecione </p>
             <SelectContainer
               options={historyOptions}
               changed={(event) => filterHistory(event)}
@@ -1551,7 +1527,7 @@ const UserIncomes = (props) => {
               noMargin
               modify
             />
-            <p>And period.</p>
+            <p>E período.</p>
             <SelectContainer
               options={periodOptions}
               changed={(event) => filterHistory(event)}
@@ -1566,19 +1542,19 @@ const UserIncomes = (props) => {
 
           <DefaultList>
             <DefaultListTitleDiv>
-              <DefaultListTitle>History List</DefaultListTitle>
+              <DefaultListTitle>Lista de Histórico</DefaultListTitle>
 
               <TableTitleDiv>
                 <TableSubtitleBlock justify={"flex-start"}>
-                  Type
+                  Tipo
                 </TableSubtitleBlock>
                 <TableSubtitleBlock justify={"flex-start"}>
-                  Name
+                  Nome
                 </TableSubtitleBlock>
                 <TableSubtitleBlock justify={"flex-end"}>
-                  Value
+                  Valor
                 </TableSubtitleBlock>
-                <TableSubtitleBlock justify={"center"}>Date</TableSubtitleBlock>
+                <TableSubtitleBlock justify={"center"}>Data</TableSubtitleBlock>
               </TableTitleDiv>
             </DefaultListTitleDiv>
 
@@ -1598,14 +1574,14 @@ const UserIncomes = (props) => {
             clicked={optionOneSelected}
             onClick={() => selectionHandler(1)}
           >
-            <OptionTitleDiv>Incomes</OptionTitleDiv>
+            <OptionTitleDiv>Rendas</OptionTitleDiv>
           </UserOption>
           <UserOption
             number={option2}
             clicked={optionTwoSelected}
             onClick={() => selectionHandler(2)}
           >
-            <OptionTitleDiv>Investments</OptionTitleDiv>
+            <OptionTitleDiv>Investimentos</OptionTitleDiv>
           </UserOption>
         </OptionsDiv>
         <OptionsDiv left>
@@ -1614,14 +1590,14 @@ const UserIncomes = (props) => {
             clicked={optionThreeSelected}
             onClick={() => selectionHandler(3)}
           >
-            <OptionTitleDiv> Analysis</OptionTitleDiv>
+            <OptionTitleDiv> Análises</OptionTitleDiv>
           </UserOption>
           <UserOption
             number={option4}
             clicked={optionFourSelected}
             onClick={() => selectionHandler(4)}
           >
-            <OptionTitleDiv> History</OptionTitleDiv>
+            <OptionTitleDiv> Histórico</OptionTitleDiv>
           </UserOption>
         </OptionsDiv>
       </UserOptions>

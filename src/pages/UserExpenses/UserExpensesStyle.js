@@ -369,7 +369,7 @@ export const DefaultTitle = styled.h1`
 export const DefaultAnimatedTitle = styled.h1`
   color: #51d289;
   -webkit-animation: ${(props) =>
-    props.children === "Month Expenses"
+    props.children === "Despesas Mensais"
       ? css`
           ${FadeInLeft} 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both
         `
@@ -378,7 +378,7 @@ export const DefaultAnimatedTitle = styled.h1`
         `};
 
   animation: ${(props) =>
-    props.children === "Month Expenses"
+    props.children === "Despesas Mensais"
       ? css`
           ${FadeInLeft} 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both
         `
@@ -605,8 +605,7 @@ export const SpendingInfoTitle = styled.h3`
   padding: 5px;
   color: ${(props) => (props.color >= 0 ? "#51d289" : "red")};
   font-weight: ${(props) => (props.color >= 0 ? "500" : "600")};
-  font-size: 15px;
-  //background-color: rebeccapurple;
+  font-size: 11px;
 `;
 
 export const SpendingInfoSpan = styled.span`

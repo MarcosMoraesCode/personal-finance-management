@@ -16,17 +16,17 @@ const CongratulationsModal = (props) => {
       <Backdrop {...props} />
       <AuxDiv>
         <CongratulationsContainer>
-          <CongratulationsTitle>CONGRATULATIONS</CongratulationsTitle>
+          <CongratulationsTitle>Parabéns!</CongratulationsTitle>
           <CongratulationsDescription>
-            You achieve it!
+            Você conseguiu!
             <br></br>
             <br></br>
-            Now you can get your <Span>{props.goalName}</Span>!<br></br>
+            Agora você pode ter <Span>{props.goalName}</Span>!<br></br>
             <br></br>
-            Keep on going, you deserve nothing but the best!
+            Continue sempre assim, você merece o melhor!
           </CongratulationsDescription>
           <ButtonDiv>
-            <ThanksButton onClick={props.backAction}>Thanks!</ThanksButton>
+            <ThanksButton onClick={props.backAction}>Obrigado!</ThanksButton>
           </ButtonDiv>
         </CongratulationsContainer>
       </AuxDiv>

@@ -49,12 +49,9 @@ const CompletePieChart = (props) => {
   const data = [["Name", "Category", "Value", "Spend Limit"]];
   let biggerValue = 0;
 
-  
-
   let newData = null;
   if (props.allExpenses !== null) {
     newData = props.allExpenses.map((expense) => {
-      
       let categoryIndex = props.allCategories.findIndex(
         (category) => category.id === expense.categoryId
       );
@@ -95,8 +92,6 @@ const CompletePieChart = (props) => {
       callback({ chartWrapper }) {
         const chart = chartWrapper.getChart();
         const selection = chart.getSelection();
-       
-       
       },
     },
   ];
@@ -146,7 +141,7 @@ const CompletePieChart = (props) => {
               filterColumnIndex: 1,
               ui: {
                 labelStacking: "vertical", // | "vertical"
-                label: "Filter By Category",
+                label: "Filtrar por Categoria",
                 allowTyping: false,
                 allowMultiple: false,
                 defaultLabel: "Categories",
@@ -159,7 +154,7 @@ const CompletePieChart = (props) => {
             options: {
               ui: {
                 labelStacking: "vertical",
-                label: "Filter By Value",
+                label: "Filter por Valor",
               },
               filterColumnIndex: 2,
               minValue: 0,

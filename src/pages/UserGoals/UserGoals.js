@@ -80,7 +80,7 @@ const UserGoals = (props) => {
       isValid: false,
       isTouched: false,
       id: "Goal Name",
-      placeholder: "Goal Name",
+      placeholder: "Nome da meta",
       invalidMessage: "",
     },
     inputValue: {
@@ -221,7 +221,7 @@ const UserGoals = (props) => {
 
   const CheckInputValidation = (inputId, value) => {
     const isValidName = (goalName) =>
-      /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,15}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?$/.test(
+      /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,15}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?$/.test(
         goalName
       );
 
@@ -252,7 +252,6 @@ const UserGoals = (props) => {
         } else {
           validation2 ? (result = true) : (result = false);
         }
-       
 
         break;
       case "Goal Percentage":
@@ -478,7 +477,7 @@ const UserGoals = (props) => {
           }
           value={userInputs.inputName.value}
         >
-          Goal Name
+          Nome da Meta
         </InputContainer>
         <InputContainer
           //elementType={"scaled"}
@@ -501,7 +500,7 @@ const UserGoals = (props) => {
           }
           value={userInputs.inputValue.value}
         >
-          Ammount to achieve
+          Valor da Meta
         </InputContainer>
 
         <InputContainer
@@ -528,7 +527,7 @@ const UserGoals = (props) => {
           }
           value={userInputs.inputPercentage.value}
         >
-          Initial contribution
+          Contribuição Inicial
         </InputContainer>
         <InputContainer
           //elementType={"scaled"}
@@ -551,7 +550,7 @@ const UserGoals = (props) => {
           }
           value={userInputs.inputDate.value}
         >
-          Date to achieve your goal
+          Prazo para atingir
         </InputContainer>
       </FormContainer>
     </>
@@ -567,10 +566,10 @@ const UserGoals = (props) => {
 
   let shortTermContent = (
     <>
-      <GoalExampleTitle>Short Term Goal</GoalExampleTitle>
+      <GoalExampleTitle>Meta de Curto Prazo</GoalExampleTitle>
       <GoalExampleContent>
         <GoalExampleDescription>
-          Typically take less than one year to achieve.
+          Geralmente é atingida em menos de um ano.
         </GoalExampleDescription>
         <ButtonDiv>
           <CreateButton
@@ -589,7 +588,7 @@ const UserGoals = (props) => {
     shortTermContent = (
       <>
         <GoalExampleTitle fontSize={"15px"} open={openShortForm}>
-          Create a new Short Term Goal!
+          Crie sua Meta de Curto Prazo!
         </GoalExampleTitle>
         {defaultForm}
         {/*<ButtonDiv center>
@@ -611,7 +610,7 @@ const UserGoals = (props) => {
                 submitGoal();
               }}
             >
-              Add Goal
+              Adicionar
             </AddButton>
           </ButtonContainer>
           <ButtonContainer justify={"flex-end"}>
@@ -622,7 +621,7 @@ const UserGoals = (props) => {
                 setSubmitPermission(false);
               }}
             >
-              Back
+              Voltar
             </BackButton>
           </ButtonContainer>
         </ButtonDiv>
@@ -632,10 +631,10 @@ const UserGoals = (props) => {
 
   let mediumTermContent = (
     <>
-      <GoalExampleTitle>Medium Term Goal</GoalExampleTitle>
+      <GoalExampleTitle>Meta de Médio Prazo</GoalExampleTitle>
       <GoalExampleContent>
         <GoalExampleDescription>
-          Typically take between one and five years to achieve.
+          Geralmente leva de um a cinco anos para atingir.
         </GoalExampleDescription>
         <ButtonDiv>
           <CreateButton
@@ -654,7 +653,7 @@ const UserGoals = (props) => {
     mediumTermContent = (
       <>
         <GoalExampleTitle fontSize={"15px"}>
-          Create a new Medium Term Goal!
+          Crie sua Meta de Médio Prazo!
         </GoalExampleTitle>
         {defaultForm}
         <ButtonDiv center>
@@ -666,7 +665,7 @@ const UserGoals = (props) => {
                 submitGoal();
               }}
             >
-              Add Goal
+              Adicionar
             </AddButton>
           </ButtonContainer>
           <ButtonContainer justify={"flex-end"}>
@@ -677,7 +676,7 @@ const UserGoals = (props) => {
                 setSubmitPermission(false);
               }}
             >
-              Back
+              Voltar
             </BackButton>
           </ButtonContainer>
         </ButtonDiv>
@@ -687,10 +686,10 @@ const UserGoals = (props) => {
 
   let longTermContent = (
     <>
-      <GoalExampleTitle>Long Term Goal</GoalExampleTitle>
+      <GoalExampleTitle>Meta de Longo Prazo</GoalExampleTitle>
       <GoalExampleContent>
         <GoalExampleDescription>
-          Typically take more than five years to achieve.
+          Geralmente leva mais de cinco anos para atingir.
         </GoalExampleDescription>
         <ButtonDiv>
           <CreateButton
@@ -709,7 +708,7 @@ const UserGoals = (props) => {
     longTermContent = (
       <>
         <GoalExampleTitle fontSize={"15px"}>
-          Create a new Long Term Goal!
+          Crie sua Meta de Longo Prazo!
         </GoalExampleTitle>
         {defaultForm}
         <ButtonDiv center>
@@ -721,7 +720,7 @@ const UserGoals = (props) => {
                 submitGoal();
               }}
             >
-              Add Goal
+              Adicionar
             </AddButton>
           </ButtonContainer>
           <ButtonContainer justify={"flex-end"}>
@@ -732,7 +731,7 @@ const UserGoals = (props) => {
                 setSubmitPermission(false);
               }}
             >
-              Back
+              Voltar
             </BackButton>
           </ButtonContainer>
         </ButtonDiv>
@@ -871,18 +870,18 @@ const UserGoals = (props) => {
     });
   };
 
-  let achievementContent = <AchievementTitle>Achievements</AchievementTitle>;
+  let achievementContent = <AchievementTitle>Conquistas</AchievementTitle>;
 
   if (openAchiev) {
     userGoals !== null
       ? (achievementContent = (
           <AchievementWarning>
-            You didn't achieve a goal yet, don't give up!
+            Você ainda não atingiu nenhuma meta, não desista!
           </AchievementWarning>
         ))
       : (achievementContent = (
           <AchievementWarning>
-            You must start creating your first goal!
+            Você deve iniciar criando sua primeira meta!
           </AchievementWarning>
         ));
 
@@ -920,48 +919,48 @@ const UserGoals = (props) => {
       });
       let totalAchievements =
         shortTerm.achievs + mediumTerm.achievs + longTerm.achievs;
-     // console.log(userAchievements);
+      // console.log(userAchievements);
       //console.log(totalAchievements);
 
       let firstText =
         shortTerm.achievs === 0 ? null : shortTerm.achievs > 1 ? (
           <FirstTextContent>
-            You already achieve <SpanText>{shortTerm.achievs}</SpanText> short
-            term goals and allocated a total of{" "}
-            <SpanText>$ {shortTerm.totalAllocated}</SpanText>
+            Você já atingiu <SpanText>{shortTerm.achievs}</SpanText> metas de
+            curto prazo e investiu um total de{" "}
+            <SpanText>R$ {shortTerm.totalAllocated}</SpanText>
           </FirstTextContent>
         ) : (
           <FirstTextContent>
             {" "}
-            You achieve your first short term goal and invested a total of
-            <SpanText> $ {shortTerm.totalAllocated}</SpanText>{" "}
+            Você atingiu sua primeira meta de curto prazo e investiu um total de
+            <SpanText> R$ {shortTerm.totalAllocated}</SpanText>{" "}
           </FirstTextContent>
         );
       let secondText =
         mediumTerm.achievs === 0 ? null : mediumTerm.achievs > 1 ? (
           <SecondTextContent>
-            You already achieve <SpanText>{mediumTerm.achievs}</SpanText> medium
-            term goals and allocated a total of{" "}
+            Você já atingiu <SpanText>{mediumTerm.achievs}</SpanText> metas de
+            médio prazo e investiu um total de{" "}
             <SpanText>$ {mediumTerm.totalAllocated}</SpanText>
           </SecondTextContent>
         ) : (
           <SecondTextContent>
             {" "}
-            You achieve your first medium term goal and invested a total of
+            Você atingiu sua primeira meta de médio prazo e investiu um total de
             <SpanText> $ {mediumTerm.totalAllocated} </SpanText>{" "}
           </SecondTextContent>
         );
       let thirdText =
         longTerm.achievs === 0 ? null : longTerm.achievs > 1 ? (
           <ThirdTextContent>
-            You already achieve <SpanText>{longTerm.achievs}</SpanText> long
-            term goals and allocated a total of{" "}
+            Você já atingiu <SpanText>{longTerm.achievs}</SpanText> metas de
+            longo prazo e investiu um total de{" "}
             <SpanText>$ {longTerm.totalAllocated}</SpanText>
           </ThirdTextContent>
         ) : (
           <ThirdTextContent>
             {" "}
-            You achieve your first long term goal and invested a total of
+            Você atingiu sua primeira meta de longo prazo e investiu um total de
             <SpanText> $ {longTerm.totalAllocated}</SpanText>{" "}
           </ThirdTextContent>
         );
@@ -970,8 +969,8 @@ const UserGoals = (props) => {
         <AchievementsExpandedDiv>
           <ExpandedTitle>
             {totalAchievements > 1
-              ? `You already achieve ${totalAchievements} goals!`
-              : `You already achieve your first goal!`}
+              ? `Você já atingiu ${totalAchievements} metas!`
+              : `Você já atingiu sua primeira meta!`}
           </ExpandedTitle>
           {firstText}
           {secondText}
@@ -983,7 +982,7 @@ const UserGoals = (props) => {
 
   let GoalListContent = (
     <>
-      <GoalListTitle>Goals List</GoalListTitle>
+      <GoalListTitle>Metas</GoalListTitle>
       <ExpandButton
         onClick={() => {
           setOpenList(true);
@@ -994,7 +993,7 @@ const UserGoals = (props) => {
   );
 
   if (openList) {
-    let goalsList = "Create your goal and come back!";
+    let goalsList = "Crie sua meta e volte aqui!";
 
     if (userGoals !== null) {
       let goalsArr = Object.values(userGoals);
@@ -1056,7 +1055,7 @@ const UserGoals = (props) => {
 
     GoalListContent = (
       <GoalsExpandedDiv open={openList} animations={startListAnimations}>
-        <GoalListTitle>Goals List</GoalListTitle>
+        <GoalListTitle>Metas</GoalListTitle>
         <GoalListContainer>{goalsList}</GoalListContainer>
         <ButtonDiv center>
           <BackButton
@@ -1065,7 +1064,7 @@ const UserGoals = (props) => {
               setStartAchievAnimation(false);
             }}
           >
-            Go Back
+            Voltar
           </BackButton>
         </ButtonDiv>
       </GoalsExpandedDiv>
@@ -1089,7 +1088,7 @@ const UserGoals = (props) => {
           let goals = Object.values(res.payload);
           let totalValue = 0;
           goals.forEach((goal) => {
-           // console.log("aqui", goal);
+            // console.log("aqui", goal);
             let oldValue = totalValue;
             let newValue = oldValue + Number(goal.allocated);
             totalValue = newValue;
@@ -1191,8 +1190,7 @@ const UserGoals = (props) => {
         <GoalsInfoContainer>
           <AllocatedMoneyDiv listIsOpen={openList}>
             <AllocatedMoneyTitle>
-              <SpanMoneyTitle> Allocated Income</SpanMoneyTitle> ${" "}
-              {totalAllocated}
+              <SpanMoneyTitle>Renda alocada</SpanMoneyTitle> R$ {totalAllocated}
             </AllocatedMoneyTitle>
             <EditButton onClick={() => navigate("/userincomes")} />
           </AllocatedMoneyDiv>
@@ -1230,31 +1228,32 @@ const UserGoals = (props) => {
         </UserGoalsContainer>
         <AdvicesContainer>
           <AdvicesContent>
-            <AdvicesTitle>Some Advices</AdvicesTitle>
+            <AdvicesTitle>Algumas dicas</AdvicesTitle>
             <StyledParagraph>
-              Setting goals is crucial for achieving financial success. By
-              having a clear plan of action, you can make meaningful progress
-              towards your financial goals. It's important to identify your
-              short, medium, and long-term financial goals such as building an
-              emergency fund, saving for a down payment, investing for
-              retirement, or paying off debt.
+              Definir metas é crucial para alcançar o sucesso financeiro. Ao ter
+              um plano de ação claro, você pode fazer progresso significativo em
+              direção aos seus objetivos financeiros. É importante identificar
+              suas metas financeiras de curto, médio e longo prazo, como
+              construir uma reserva de emergência, economizar para entrada de um
+              imóvel, investir para aposentadoria ou pagar dívidas.
             </StyledParagraph>
             <StyledParagraph>
-              Once you've identified your goals, make sure they are SMART:
-              specific, measurable, achievable, relevant, and time-bound. This
-              means setting clear targets, tracking your progress, and making
-              sure that your goals are realistic given your current financial
-              situation. To stay motivated, break your goals down into smaller,
-              more manageable tasks, and celebrate your progress along the way.
+              Depois de identificar suas metas, certifique-se de que elas sejam
+              SMART: específicas, mensuráveis, alcançáveis, relevantes e com
+              prazo determinado. Isso significa estabelecer alvos claros,
+              acompanhar seu progresso e garantir que suas metas sejam
+              realistas, considerando sua situação financeira atual. Para manter
+              a motivação, divida suas metas em tarefas menores e mais
+              gerenciáveis e celebre seu progresso ao longo do caminho.
             </StyledParagraph>
             <StyledParagraph>
-              To achieve your financial goals, you need discipline and focus.
-              Avoid getting sidetracked by distractions or temptations along the
-              way. Say "no" to certain purchases or activities to stay focused
-              on your goals. Take control of your finances and achieve the
-              financial freedom and security you deserve. With a little effort
-              and planning, you can create a roadmap to achieve your financial
-              goals and live the life you want.
+              Para alcançar suas metas financeiras, você precisa de disciplina e
+              foco. Evite distrações ou tentações ao longo do caminho. Diga
+              "não" a certas compras ou atividades para manter o foco em suas
+              metas. Assuma o controle de suas finanças e alcance a liberdade e
+              segurança financeira que você merece. Com um pouco de esforço e
+              planejamento, você pode criar um roteiro para alcançar suas metas
+              financeiras e viver a vida que deseja.
             </StyledParagraph>
           </AdvicesContent>
         </AdvicesContainer>

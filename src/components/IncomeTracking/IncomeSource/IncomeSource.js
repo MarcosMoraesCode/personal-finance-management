@@ -11,7 +11,7 @@ const IncomeSource = (props) => {
       <IncomeSourceLi>
         <IncomeSpan width={"40%"}>{props.sourceName}</IncomeSpan>
         <IncomeSpan width={"40%"} justify={"flex-start"}>
-          $ {props.sourceValue.toFixed(2)}
+          R$ {props.sourceValue.toFixed(2)}
         </IncomeSpan>
 
         <IncomeSpan width={"20%"} justify={"flex-end"}>

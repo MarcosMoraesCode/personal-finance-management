@@ -19,10 +19,10 @@ const Income = (props) => {
         <IncomeSubtitlesDiv>
           <IncomeSubtitleBlock modify={"center"}>Name</IncomeSubtitleBlock>
           <IncomeSubtitleBlock modify={"center"}>
-            Total deposited
+            Total depositado
           </IncomeSubtitleBlock>
           <IncomeSubtitleBlock modify={"center"}>
-            Percentage
+            Porcentagem
           </IncomeSubtitleBlock>
         </IncomeSubtitlesDiv>
         <IncomeContentDiv>
@@ -30,7 +30,7 @@ const Income = (props) => {
             {props.name}
           </IncomeContentBlock>
           <IncomeContentBlock modify={"center"}>
-            $ {Number(props.value).toFixed(2)}
+            R$ {Number(props.value).toFixed(2)}
           </IncomeContentBlock>
           <IncomeContentBlock modify={"center"}>
             {props.percentage}%
@@ -52,16 +52,16 @@ const Income = (props) => {
           <IncomeSubtitlesDiv>
             <IncomeSubtitleBlock paddingL>Name</IncomeSubtitleBlock>
             <IncomeSubtitleBlock justify={"center"}>
-              Month Deposit
+              Depositado no Mês
             </IncomeSubtitleBlock>
             <IncomeSubtitleBlock justify={"flex-end"} paddingR>
-              Percentage
+              Porcentagem
             </IncomeSubtitleBlock>
           </IncomeSubtitlesDiv>
           <IncomeContentDiv>
             <IncomeContentBlock paddingL>{props.name}</IncomeContentBlock>
             <IncomeContentBlock justify={"center"}>
-              $ {Number(props.value).toFixed(2)}
+              R$ {Number(props.value).toFixed(2)}
             </IncomeContentBlock>
             <IncomeContentBlock justify={"flex-end"} paddingR>
               {props.percentage}%

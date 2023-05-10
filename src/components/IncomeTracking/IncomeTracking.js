@@ -50,23 +50,24 @@ const IncomeTracking = (props) => {
     incomeSourcers = (
       <AdviceDiv>
         {" "}
-        <p>When you add a month income it'll appear here.</p>
+        <p>Quando adicionar uma renda este mês, aparecerá aqui!</p>
       </AdviceDiv>
     );
   }
 
   let percentageDivContent = (
     <AdviceDiv>
-      Once your balance is positive, you will be able to view the graph.
+      Quando seu saldo for positivo, você habilitará um gráfico.
     </AdviceDiv>
   );
+  console.log("total", props.total);
   if (props.loading === "true") {
     percentageDivContent = (
       <LoaderDiv>
         <BarLoader color={"#51d289"} />
       </LoaderDiv>
     );
-  } else if (props.total > 0) {
+  } else if (props.balance > 0) {
     percentageDivContent = (
       <>
         <PercentageTitle
@@ -97,35 +98,33 @@ const IncomeTracking = (props) => {
   } else {
     percentageDivContent = (
       <AdviceDiv>
-        <p>
-          Once your balance is positive, you will be able to view the graph.{" "}
-        </p>
+        <p>Quando seu saldo for positivo, você habilitará um gráfico. </p>
       </AdviceDiv>
     );
   }
 
   return (
     <IncomeTrackingContainer>
-      <IncomeTrackingTitle>Balance</IncomeTrackingTitle>
+      <IncomeTrackingTitle>Saldo</IncomeTrackingTitle>
       <IncomeTrackingBalance
         {...props}
         color={props.balance >= 0 ? "#51d289" : "red"}
       >
         {props.balance >= 0
-          ? `$ ${props.balance}`
-          : ` - $ ${Number(props.balance * -1).toFixed(2)}`}
+          ? `R$ ${props.balance}`
+          : ` - R$ ${Number(props.balance * -1).toFixed(2)}`}
       </IncomeTrackingBalance>
       <IncomePercentageDiv>{percentageDivContent}</IncomePercentageDiv>
       <WrapIncomeInfos>
         <IncomeAvaiableInfo {...props}>
-          <IncomeTrackingInfoTitle>Month Investment</IncomeTrackingInfoTitle>
+          <IncomeTrackingInfoTitle>Investimento do Mês</IncomeTrackingInfoTitle>
           <IncomeTrackingInfoValue color={"white"}>
             $ {Number(props.investmentsValue).toFixed(2)}
           </IncomeTrackingInfoValue>
         </IncomeAvaiableInfo>{" "}
         <IncomeExpensesInfo {...props}>
           {" "}
-          <IncomeTrackingInfoTitle>Month Expenses</IncomeTrackingInfoTitle>
+          <IncomeTrackingInfoTitle>Despesa do Mês</IncomeTrackingInfoTitle>
           <IncomeTrackingInfoValue color={"red"}>
             $ {Number(props.expensesValue).toFixed(2)}
           </IncomeTrackingInfoValue>
@@ -133,7 +132,7 @@ const IncomeTracking = (props) => {
       </WrapIncomeInfos>
       <WrapIncomeList>
         <IncomeTrackingSecondaryTitle>
-          Month Incomes
+          Rendas do Mês
         </IncomeTrackingSecondaryTitle>
         <IncomeSourcersDiv>
           <ul>{incomeSourcers}</ul>
@@ -141,8 +140,8 @@ const IncomeTracking = (props) => {
       </WrapIncomeList>
 
       <WrapIncomeButtons>
-        <IncomeButton onClick={props.incomesPage}>My Incomes</IncomeButton>
-        <IncomeButton onClick={props.expensesPage}>My Expenses</IncomeButton>
+        <IncomeButton onClick={props.incomesPage}>Ver Rendas</IncomeButton>
+        <IncomeButton onClick={props.expensesPage}>Ver Despesas</IncomeButton>
       </WrapIncomeButtons>
     </IncomeTrackingContainer>
   );

@@ -223,14 +223,14 @@ const InputContainer = (props) => {
                 <input
                   style={{ marginRight: "5px" }}
                   type="radio"
-                  value="Deposit"
-                  checked={props.currentValue === "Withdraw" ? false : true}
+                  value="Depositar"
+                  checked={props.currentValue === "Sacar" ? false : true}
                   onChange={props.changed}
                   onBlur={
                     props.blur //? (message = null) : (message = props.invalidMessage)
                   }
                 ></input>
-                <label>Deposit</label>
+                <label>Depositar</label>
               </AuxDiv>
               <AuxDiv>
                 <input
@@ -239,32 +239,32 @@ const InputContainer = (props) => {
                   }
                   style={{ marginRight: "5px" }}
                   type="radio"
-                  value="Withdraw"
-                  checked={props.currentValue === "Withdraw"}
+                  value="Sacar"
+                  checked={props.currentValue === "Sacar"}
                   onChange={props.changed}
                 ></input>
-                <label>Withdraw</label>
+                <label>Sacar</label>
               </AuxDiv>
             </FirstDiv>
             <div>
               <StyledWarning
                 color={
                   props.transactionType === "income"
-                    ? props.currentValue === "Withdraw"
+                    ? props.currentValue === "Sacar"
                       ? "red"
                       : "#51d289"
-                    : props.currentValue === "Withdraw"
+                    : props.currentValue === "Sacar"
                     ? "#51d289"
                     : "red"
                 }
               >
                 {props.transactionType === "income"
-                  ? props.currentValue === "Withdraw"
-                    ? "The current value will be removed from your balance"
-                    : "The current value will be add to your balance"
-                  : props.currentValue === "Withdraw"
-                  ? "The current value will be add to your balance"
-                  : "The current value will be removed from your balance"}
+                  ? props.currentValue === "Sacar"
+                    ? "O valor atual será removido do seu saldo."
+                    : "O valor atual será adicionado ao seu saldo."
+                  : props.currentValue === "Sacar"
+                  ? "O valor atual será adicionado ao seu saldo."
+                  : "O valor atual será removido do seu saldo."}
               </StyledWarning>
             </div>
           </SpecialWrappComponent>

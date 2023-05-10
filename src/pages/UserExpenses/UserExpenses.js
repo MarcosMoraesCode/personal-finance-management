@@ -106,7 +106,7 @@ const UserExpenses = () => {
       isValid: false,
       isTouched: false,
       id: "Expense Name",
-      placeholder: "Expense Name",
+      placeholder: "Nome da despesa",
       invalidMessage: "",
     },
     inputValue: {
@@ -129,7 +129,7 @@ const UserExpenses = () => {
       isValid: false,
       isTouched: false,
       id: "New Expense Category",
-      placeholder: "New Expense Category",
+      placeholder: "Nome da nova categoria",
       invalidMessage: "",
     },
     inputDate: {
@@ -177,7 +177,7 @@ const UserExpenses = () => {
       isValid: false,
       isTouched: false,
       invalidMessage: "",
-      placeholder: "New Category Name",
+      placeholder: "Nome da categoria",
     },
     inputSpend: {
       id: "Edit Spending Limit",
@@ -196,7 +196,7 @@ const UserExpenses = () => {
       isValid: false,
       isTouched: false,
       invalidMessage: "",
-      placeholder: "New Expense Name",
+      placeholder: "Nome da despesa",
     },
     inputNewValue: {
       id: "Edit Expense Value",
@@ -239,7 +239,7 @@ const UserExpenses = () => {
   const [showMonthExpenses, setShowMonthExpenses] = useState(true);
   const [showEditCategories, setShowEditCategories] = useState(false);
   const [filterValue, setFilterValue] = useState("");
-  const [filterType, setFilterType] = useState("sort by name");
+  const [filterType, setFilterType] = useState("Filtrar nome");
   const [loading, setLoading] = useState(false);
   const [historyId, setHistoryId] = useState(0);
   const [loadingOnSubmitExpense, setLoadingOnSubmitExpense] = useState(false);
@@ -260,13 +260,13 @@ const UserExpenses = () => {
   const [editCategorySubmit, setEditCategorySubmit] = useState(false);
   const [editExpenseSubmit, setEditExpenseSubmit] = useState(false);
   const [categoryOptions, setCategoryOptions] = useState([
-    { id: "new-category", name: "New Category" },
+    { id: "new-category", name: "Nova Categoria" },
   ]);
   //const [totalSpendLimit, setTotalSpendLimit] = useState(undefined);
   const [totalSpent, setTotalSpent] = useState(0);
   const [currentAnalysisOption, setCurrentAnalysisOption] = useState({
     rerender: false,
-    id: "This Month",
+    id: "Este Mês",
   });
   //Support Arrays and Values
   const actualDate = new Date();
@@ -286,10 +286,10 @@ const UserExpenses = () => {
   const expenseItems = [];
   const buttons = [];
   const analysisOptions = [
-    { id: "this-month", name: "This Month" },
-    { id: "this-year", name: "This Year" },
-    { id: "last-year", name: "Last Year" },
-    { id: "all-time", name: "All Time" },
+    { id: "this-month", name: "Este Mês" },
+    { id: "this-year", name: "Este Ano" },
+    { id: "last-year", name: "Ano Passado" },
+    { id: "all-time", name: "Todo Período" },
   ];
 
   //Selectors
@@ -411,7 +411,7 @@ const UserExpenses = () => {
 
   const checkInputValidation = (expenseId, value, categoryId) => {
     const isValidName = (expenseName) =>
-      /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,15}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?$/.test(
+      /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,15}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?$/.test(
         expenseName
       );
 
@@ -425,7 +425,7 @@ const UserExpenses = () => {
     //console.log(value);
     const validation1 = isValidName(value);
     const validation2 = isValidValue(value);
-    const validation3 = value !== "" && value !== "New Category";
+    const validation3 = value !== "" && value !== "Nova Categoria";
     const validation4 = categoryAlreadyExists(value, categoryId);
     const validation5 = isValidDate(value);
 
@@ -951,7 +951,7 @@ const UserExpenses = () => {
     //console.log(sliceValues);
     if (!showEditCategories) {
       switch (filterType) {
-        case "sort by name":
+        case "Filtrar nome":
           if (fullList !== null) {
             filteredList = fullList.filter((expense) => {
               if (expense?.props.expenseTopic.includes(filterValue)) {
@@ -962,7 +962,7 @@ const UserExpenses = () => {
           }
 
           break;
-        case "sort by value":
+        case "Filtrar valor":
           if (fullList !== null) {
             filteredList = fullList.filter((expense) => {
               if (Number(expense?.props.expenseTotal) >= Number(filterValue)) {
@@ -979,7 +979,7 @@ const UserExpenses = () => {
       return filteredList;
     } else {
       switch (filterType) {
-        case "sort by name":
+        case "Filtrar nome":
           if (categoryList !== null) {
             filteredList = categoryList.filter((item) => {
               if (item?.props.categoryName.includes(filterValue)) {
@@ -990,7 +990,7 @@ const UserExpenses = () => {
           }
 
           break;
-        case "sort by value":
+        case "Filtrar valor":
           if (categoryList !== null) {
             filteredList = categoryList.filter((item) => {
               if (Number(item.props.spendLimit) >= Number(filterValue)) {
@@ -1184,7 +1184,7 @@ const UserExpenses = () => {
     };
 
     //APENAS TESTE DE REQUEST
-    if (userExpense.inputCategory.value === "New Category") {
+    if (userExpense.inputCategory.value === "Nova Categoria") {
       await dispatch(postNewCategory(userExpense))
         .then((res) => {
           dispatch(addBalance(newBalance));
@@ -1215,12 +1215,12 @@ const UserExpenses = () => {
 
           dispatch(postNewHistory(historyObj)).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
-             // console.log("antes de atualizar é" + historyId);
+              // console.log("antes de atualizar é" + historyId);
               upload = true;
             }
             dispatch(updateHistoryId(newId)).then((res) => {
               if (res.meta.requestStatus === "fulfilled" && upload) {
-               // console.log("passou aqui");
+                // console.log("passou aqui");
                 setHistoryId(newId);
                 getExpenses();
               }
@@ -1290,7 +1290,7 @@ const UserExpenses = () => {
 
   if (
     userExpense.inputCategory.isTouched &&
-    userExpense.inputCategory.value === "New Category"
+    userExpense.inputCategory.value === "Nova Categoria"
   ) {
     newCategory = (
       <>
@@ -1313,7 +1313,7 @@ const UserExpenses = () => {
           value={userExpense.inputNewCategory.value}
           width={"200px"}
         >
-          New Category Name
+          Nome da Categoria
         </InputContainer>
         <InputContainer
           placeholder={userExpense.inputSpend.placeholder}
@@ -1335,7 +1335,7 @@ const UserExpenses = () => {
           value={userExpense.inputSpend.value}
           width={"200px"}
         >
-          Category Spending Limit
+          Limite de Gasto Mensal
         </InputContainer>
       </>
     );
@@ -1350,7 +1350,7 @@ const UserExpenses = () => {
     await dispatch(fetchHistoryId()).then((res) => {
       if (res.payload !== null) {
         setHistoryId(res.payload);
-       // console.log("do state", res.payload);
+        // console.log("do state", res.payload);
       }
     });
 
@@ -1360,6 +1360,7 @@ const UserExpenses = () => {
         //console.log("AQUI", res);
         if (res !== null) {
           let fetchedCategories = Object.values(res);
+          console.log("aqui", fetchedCategories);
 
           let categoryArray = [];
           let SpendLimitArray = [];
@@ -1669,7 +1670,7 @@ const UserExpenses = () => {
       });
       dispatch(postNewHistory(historyObj)).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-         // console.log("antes de atualizar é" + historyId);
+          // console.log("antes de atualizar é" + historyId);
           upload = true;
         }
         dispatch(updateHistoryId(newId)).then((res) => {
@@ -1841,8 +1842,8 @@ const UserExpenses = () => {
             details={
               infoBtnList !== null
                 ? infoBtnList.buttons[currentBtnIndex].isOpen === true
-                  ? "Less"
-                  : "More"
+                  ? "Menos"
+                  : "Mais"
                 : null
             }
           />
@@ -2092,7 +2093,7 @@ const UserExpenses = () => {
           value={userExpense.inputName.value}
           width={"200px"}
         >
-          Expense Name
+          Nome da Despesa
         </InputContainer>
         <InputContainer
           placeholder={userExpense.inputValue.placeholder}
@@ -2113,7 +2114,7 @@ const UserExpenses = () => {
           value={userExpense.inputValue.value}
           width={"200px"}
         >
-          Expense Value
+          Valor da Despesa
         </InputContainer>
         <SelectContainer
           label={"Categories"}
@@ -2141,7 +2142,7 @@ const UserExpenses = () => {
           value={userExpense.inputDate.value}
           width={"200px"}
         >
-          Date
+          Data
         </InputContainer>
         <UserDefaultButton
           disabled={expenseSubmitPermission ? "" : "disabled"}
@@ -2149,7 +2150,7 @@ const UserExpenses = () => {
             submitExpense(event, userExpense.inputNewCategory.value)
           }
         >
-          Add Expense
+          Adicionar
         </UserDefaultButton>
       </form>
     </NewExpenseFormDiv>
@@ -2263,7 +2264,7 @@ const UserExpenses = () => {
             }
           />
         ) : (
-          "Double click a slice to see more details."
+          "Clique duplo em uma fatia para mais detalhes."
         )}
       </AnalysisTableDiv>
     </>
@@ -2307,17 +2308,17 @@ const UserExpenses = () => {
         <CalendarInformationDiv key={`selected-expense-${index}`}>
           <div>
             {" "}
-            <CalendarInfoSpan>Expense:</CalendarInfoSpan> {expense.expenseName}
+            <CalendarInfoSpan>Despesa:</CalendarInfoSpan> {expense.expenseName}
           </div>
           <div>
-            <CalendarInfoSpan>Value:</CalendarInfoSpan> {expense.expenseValue}
+            <CalendarInfoSpan>Valor:</CalendarInfoSpan> {expense.expenseValue}
           </div>
           <div>
-            <CalendarInfoSpan>Category:</CalendarInfoSpan>{" "}
+            <CalendarInfoSpan>Categoria:</CalendarInfoSpan>{" "}
             {allCategories[categoryIndex].name}
           </div>
           <div>
-            <CalendarInfoSpan>Date:</CalendarInfoSpan>{" "}
+            <CalendarInfoSpan>Data:</CalendarInfoSpan>{" "}
             {`${day}/${month}/${year}`}
           </div>
         </CalendarInformationDiv>
@@ -2327,7 +2328,7 @@ const UserExpenses = () => {
 
   if (currentAnalysisOption.rerender) {
     switch (currentAnalysisOption.id) {
-      case "This Month":
+      case "Este Mês":
         analisysContent = (
           <>
             <PieChart
@@ -2343,13 +2344,13 @@ const UserExpenses = () => {
                   }
                 />
               ) : (
-                "Double click a slice to see more details."
+                "Clique em uma fatia para mais detalhes."
               )}
             </AnalysisTableDiv>
           </>
         );
         break;
-      case "This Year":
+      case "Este Ano":
         // console.log(currentAnalysisOption);
         analisysContent = (
           <TestDiv>
@@ -2366,7 +2367,7 @@ const UserExpenses = () => {
           </TestDiv>
         );
         break;
-      case "Last Year":
+      case "Ano Passado":
         analisysContent = (
           <TestDiv>
             <LineChart annualExpenses={sliceValues.lastYearSpendingHistory} />
@@ -2382,7 +2383,7 @@ const UserExpenses = () => {
           </TestDiv>
         );
         break;
-      case "All Time":
+      case "Todo Período":
         analisysContent = (
           <>
             <CompletePieChart
@@ -2434,7 +2435,7 @@ const UserExpenses = () => {
             </NewCategoryDiv>*/}
             <NewExpenseDiv>
               <NewExpenseTitleDiv>
-                <DefaultTitle>New Expense</DefaultTitle>
+                <DefaultTitle>Nova Despesa</DefaultTitle>
               </NewExpenseTitleDiv>
               {expenseForm}
             </NewExpenseDiv>
@@ -2443,13 +2444,13 @@ const UserExpenses = () => {
             <ListTitleDiv>
               <DefaultAnimatedTitle checkAnimation={showEditCategories}>
                 {showEditCategories
-                  ? "Categories List"
+                  ? "Categorias"
                   : showMonthExpenses
-                  ? "Month Expenses"
-                  : "All Expenses"}
+                  ? "Despesas Mensais"
+                  : "Todas as Despesas"}
               </DefaultAnimatedTitle>
               <SwitchListsButton onClick={changeCategoryDivHandler}>
-                {showEditCategories ? "Expenses List" : "Edit Category"}
+                {showEditCategories ? "Ver Despesas" : "Ver Categorias"}
               </SwitchListsButton>
             </ListTitleDiv>
             <UserExpensesListContainer>
@@ -2459,17 +2460,17 @@ const UserExpenses = () => {
                     onClick={() => showMonthExpensesHandler()}
                     show={showMonthExpenses}
                   />
-                  <SimpleLabel> Show only month expenses</SimpleLabel>
+                  <SimpleLabel> Apenas despesas mensais</SimpleLabel>
                 </JoinInputsDiv>
 
                 <JoinInputsDiv>
                   <InputContainer
                     placeholder={
-                      filterType === "Sort by name"
-                        ? "Search by name"
+                      filterType === "Filtrar nome"
+                        ? "Filtrar por nome"
                         : showEditCategories
-                        ? "Spend Limit"
-                        : "Minimum amount"
+                        ? "Gasto Mensal"
+                        : "Filtrar por valor"
                     }
                     noMargin
                     changed={(event) => FilterInputChangeHandler(event)}
@@ -2479,8 +2480,8 @@ const UserExpenses = () => {
                   ></InputContainer>{" "}
                   <SelectContainer
                     options={[
-                      { name: "sort by name" },
-                      { name: "sort by value" },
+                      { name: "Filtrar nome" },
+                      { name: "Filtrar valor" },
                     ]}
                     changed={(event) => FilterChangeHandler(event)}
                     border={"no-left-border"}
@@ -2497,7 +2498,7 @@ const UserExpenses = () => {
           <AnalysisDiv>
             <ExpenseAnalysisDiv>
               <AnalysisTitleDiv>
-                <DefaultTitle>Analysis</DefaultTitle>
+                <DefaultTitle>Análise</DefaultTitle>
               </AnalysisTitleDiv>
               <AnalysisContainer>
                 <AnalysisInfoDiv>
@@ -2511,13 +2512,13 @@ const UserExpenses = () => {
                         }
                       >
                         <SpendingInfoSpan>
-                          budger lasting for this month
+                          economia restante para o mês
                         </SpendingInfoSpan>{" "}
                         {totalSpendLimit === undefined
                           ? ""
                           : spendInfo >= 0
-                          ? " $ "
-                          : " - $ "}
+                          ? " R$ "
+                          : " - R$ "}
                         {spendInfo > 0
                           ? (spendInfo * 1).toFixed(2)
                           : Number(spendInfo) == 0

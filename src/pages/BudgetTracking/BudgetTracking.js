@@ -505,17 +505,17 @@ const BudgetTracking = () => {
       <LeftContentDiv>
         <ExpensesTrackingContainer>
           <ExpensesMenu>
-            <ExpensesMenuTitle>Month Expenses</ExpensesMenuTitle>
+            <ExpensesMenuTitle>Despesas Mensais</ExpensesMenuTitle>
           </ExpensesMenu>
           <ExpensesListDiv>{expensesListContent}</ExpensesListDiv>
           <ExpensesInfoDiv>
             <Text>
-              If you want further informations about your month expenses click
-              on <Span>My Expenses</Span> button.
+              Para mais detalhes sobre suas despesas mensais, clique em {""}
+              <Span>Ver Despesas</Span> .
             </Text>
           </ExpensesInfoDiv>
         </ExpensesTrackingContainer>
-
+        {console.log(balance, totalExpensesValue, investmentValue)}
         <IncomeTracking
           expensesValue={totalExpensesValue}
           investmentsValue={investmentValue}
@@ -531,15 +531,18 @@ const BudgetTracking = () => {
       <RightContentDiv>
         <GoalsTrackingContainer>
           <GoalMenuDiv>
-            <GoalMenuTitle>Goals</GoalMenuTitle>
+            <GoalMenuTitle>Metas</GoalMenuTitle>
           </GoalMenuDiv>
-          <GoalPeriod color={"red"} goalPeriodTitle={"Long-term goals"}>
+          <GoalPeriod color={"red"} goalPeriodTitle={"Metas de Longo Prazo"}>
             {longGoals}
           </GoalPeriod>
-          <GoalPeriod color={"orange"} goalPeriodTitle={"Medium-term goals"}>
+          <GoalPeriod color={"orange"} goalPeriodTitle={"Metas de Médio Prazo"}>
             {mediumGoals}
           </GoalPeriod>
-          <GoalPeriod color={"#51d289"} goalPeriodTitle={"Short-term goals"}>
+          <GoalPeriod
+            color={"#51d289"}
+            goalPeriodTitle={"Metas de Curto Prazo"}
+          >
             {shortGoals}
           </GoalPeriod>
         </GoalsTrackingContainer>

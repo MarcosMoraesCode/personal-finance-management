@@ -141,12 +141,12 @@ export const postNewExpense = createAsyncThunk(
               value: action.inputValue.value,
               categoryId:
                 action.inputCategory.value !== "" &&
-                action.inputCategory.value !== "New Category"
+                action.inputCategory.value !== "Nova Categoria"
                   ? action.inputCategory.categoryId
                   : `category-${idValue - 1}`,
               categoryName:
                 action.inputCategory.value !== "" &&
-                action.inputCategory.value !== "New Category"
+                action.inputCategory.value !== "Nova Categoria"
                   ? action.inputCategory.value
                   : action.inputNewCategory.value,
               date: action.inputDate.value,
@@ -163,12 +163,12 @@ export const postNewExpense = createAsyncThunk(
               value: action.inputValue.value,
               categoryId:
                 action.inputCategory.value !== "" &&
-                action.inputCategory.value !== "New Category"
+                action.inputCategory.value !== "Nova Categoria"
                   ? action.inputCategory.categoryId
                   : `category-${idValue - 1}`,
               categoryName:
                 action.inputCategory.value !== "" &&
-                action.inputCategory.value !== "New Category"
+                action.inputCategory.value !== "Nova Categoria"
                   ? action.inputCategory.value
                   : action.inputNewCategory.value,
               date: action.inputDate.value,

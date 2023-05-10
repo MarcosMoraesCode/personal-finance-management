@@ -165,8 +165,8 @@ const CalendarChart = (props) => {
       ); */
 
       switch (props.year) {
-        case "This Year":
-          subtitle = "Current year expenses";
+        case "Este Ano":
+          subtitle = "Despesas deste ano";
           if (expenseDate.getFullYear() === actualDate.getFullYear()) {
             thisYearExpenses.push(expense);
 
@@ -189,8 +189,8 @@ const CalendarChart = (props) => {
           }
 
           break;
-        case "Last Year":
-          subtitle = "Last year expenses";
+        case "Ano Passado":
+          subtitle = "Despesas do ano passado";
           if (expenseDate.getFullYear() === actualDate.getFullYear() - 1) {
             //convertendo o numero
             let initialValue = [...expense.expenseValue];

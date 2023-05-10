@@ -48,7 +48,7 @@ const BarTableChart = (props) => {
                   width={`${(item.value / maxValue) * 100}%`}
                 ></BarDivContent>
               </BarDivContainer>
-              $ {item.value}
+              R$ {item.value}
             </DataContentDiv>
           </TableData>
         </tr>
@@ -61,8 +61,8 @@ const BarTableChart = (props) => {
       <BarTable>
         <tbody>
           <tr>
-            <TableHeader width={"30%"}>Expense</TableHeader>
-            <TableHeader width={"70%"}>Spent Value</TableHeader>
+            <TableHeader width={"30%"}>Despesa</TableHeader>
+            <TableHeader width={"70%"}>Valor Gasto</TableHeader>
           </tr>
           {tableContent}
         </tbody>

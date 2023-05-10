@@ -85,7 +85,7 @@ const AllExpensesInfo = (props) => {
             height={defaultTableHeight}
             alignEnd
           >
-            $ {item.value.toFixed(2)}
+            R$ {item.value.toFixed(2)}
           </TableData>
           <TableData
             fontSize={defaultFontSize}
@@ -93,7 +93,7 @@ const AllExpensesInfo = (props) => {
             height={defaultTableHeight}
             alignEnd
           >
-            $ {item.average.toFixed(2)}
+            R$ {item.average.toFixed(2)}
           </TableData>
           <TableData
             minWidth={"20%"}
@@ -102,7 +102,7 @@ const AllExpensesInfo = (props) => {
             height={defaultTableHeight}
             alignEnd
           >
-            $ {item.totalSpent.toFixed(2)}
+            R$ {item.totalSpent.toFixed(2)}
           </TableData>
         </tr>
       );
@@ -115,19 +115,19 @@ const AllExpensesInfo = (props) => {
         <tbody>
           <tr>
             <TableHeader fontSize={defaultFontSize} width={"20%"}>
-              Category
+              Categoria
             </TableHeader>
             <TableHeader fontSize={defaultFontSize} width={"20%"}>
-              Most Expensive
+              Maior Gasto
             </TableHeader>
             <TableHeader fontSize={defaultFontSize} width={"20%"} alignEnd>
-              Value
+              Valor
             </TableHeader>
             <TableHeader fontSize={defaultFontSize} width={"20%"} alignEnd>
-              Average
+              Média
             </TableHeader>
             <TableHeader fontSize={defaultFontSize} width={"20%"} alignEnd>
-              Total Spent
+              Total Gasto
             </TableHeader>
           </tr>
           {tableContent}
