@@ -1230,7 +1230,6 @@ const UserIncomes = (props) => {
   }
 
   if (monthIncomes !== null) {
-    console.log("passou aqui", userIncomes);
     let incomesArr = [];
     if (userIncomes !== null) {
       incomesArr = Object.values(userIncomes);

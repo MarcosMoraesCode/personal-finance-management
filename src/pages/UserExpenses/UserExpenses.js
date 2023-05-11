@@ -1360,7 +1360,7 @@ const UserExpenses = () => {
         //console.log("AQUI", res);
         if (res !== null) {
           let fetchedCategories = Object.values(res);
-          console.log("aqui", fetchedCategories);
+          //console.log("aqui", fetchedCategories);
 
           let categoryArray = [];
           let SpendLimitArray = [];

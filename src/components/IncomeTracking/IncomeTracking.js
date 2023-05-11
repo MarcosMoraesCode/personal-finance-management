@@ -60,7 +60,7 @@ const IncomeTracking = (props) => {
       Quando seu saldo for positivo, você habilitará um gráfico.
     </AdviceDiv>
   );
-  console.log("total", props.total);
+
   if (props.loading === "true") {
     percentageDivContent = (
       <LoaderDiv>

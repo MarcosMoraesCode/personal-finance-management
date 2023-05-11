@@ -274,10 +274,10 @@ const scaleUpMediaAchiev = keyframes`
             transform-origin: 50% 0%;
   }
   100% {
-    max-width: 45%;
-    min-width: 45%;
-    min-height: 120px;
-    max-height: 120px;
+    max-width: 50%;
+    min-width: 50%;
+    min-height: 130px;
+    max-height: 130px;
     -webkit-transform: scale(2);
             transform: scale(2);
     -webkit-transform-origin: 50% 0%;
@@ -288,6 +288,10 @@ const scaleUpMediaAchiev = keyframes`
 
 const scaleDownMediaAchiev = keyframes`
  0% {
+  max-width: 50%;
+    min-width: 50%;
+    min-height: 130px;
+    max-height: 130px;
     -webkit-transform: scale(2);
             transform: scale(2);
     -webkit-transform-origin: 50% 0%;
@@ -516,10 +520,14 @@ export const GoalsDiv = styled.div`
     margin-bottom: 15px;
     background-position: center;
   }
+  @media (max-width: 600px) {
+    min-width: 300px;
+    max-width: 300px;
+  }
   @media (max-width: 400px) {
     //font-size: 1px;
-    min-width: ${(props) => (props.open === true ? "155px" : "200px")};
-    max-width: ${(props) => (props.open === true ? "155px" : "200px")};
+    //min-width: ${(props) => (props.open === true ? "155px" : "200px")};
+    //max-width: ${(props) => (props.open === true ? "155px" : "200px")};
   }
 `;
 
@@ -836,6 +844,10 @@ export const GoalExampleTitle = styled.h1`
   text-shadow: 1px 1px black;
   //background-color: red;
 
+  @media (max-width: 670px) {
+    font-size: 15px;
+  }
+
   @media (max-width: 450px) {
     font-size: ${(props) => (props.fontSize ? "12px" : "")};
   }
@@ -1031,7 +1043,14 @@ export const AchievementDiv = styled.div`
     padding-left: 0px;
     padding-right: 0px;
   }
-  @media (max-width: 800px) {
+  @media (max-width: 670px) {
+    max-width: 150px;
+    min-width: 150px;
+  }
+  @media (max-width: 600px) {
+    max-width: 300px;
+    min-width: 300px;
+
     align-items: flex-start;
     margin-bottom: 15px;
     -webkit-animation: ${(props) =>
@@ -1114,6 +1133,14 @@ export const AllocatedMoneyDiv = styled.div`
   box-shadow: 0px 2px 10px 2px #51d289;
   //box-shadow: 2px 2px 20px 2px white;
   transition: 0.4s ease-in-out;
+  @media (max-width: 670px) {
+    max-width: 150px;
+    min-width: 150px;
+  }
+  @media (max-width: 600px) {
+    max-width: 300px;
+    min-width: 300px;
+  }
   :hover {
     //cursor: pointer;
 

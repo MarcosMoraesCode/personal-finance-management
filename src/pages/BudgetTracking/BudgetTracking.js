@@ -421,9 +421,8 @@ const BudgetTracking = () => {
 
   let expensesListContent = null;
   if (expensesList !== null) {
-    //console.log(expensesList);
     expensesListContent = (
-      <Expense expenseDataList={expensesList} details={"Less"} homePage />
+      <Expense expenseDataList={expensesList} details={"Menos"} homePage />
     );
   }
   let longGoals = null;
@@ -515,7 +514,7 @@ const BudgetTracking = () => {
             </Text>
           </ExpensesInfoDiv>
         </ExpensesTrackingContainer>
-        {console.log(balance, totalExpensesValue, investmentValue)}
+
         <IncomeTracking
           expensesValue={totalExpensesValue}
           investmentsValue={investmentValue}

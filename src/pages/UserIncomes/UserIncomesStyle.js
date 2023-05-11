@@ -290,6 +290,9 @@ export const OptionTitleDiv = styled.div`
   @media (max-width: 500px) {
     justify-content: flex-start;
   }
+  @media (max-width: 380px) {
+    font-size: 7px;
+  }
 `;
 
 export const SelectedOption = styled.div`
@@ -423,6 +426,7 @@ export const DefaultInfoContent = styled.div`
     width: 80%;
     color: gold;
     min-height: fit-content;
+    text-align: justify;
     //font-weight: 600;
     -webkit-animation: ${FocusIn} 1.8s cubic-bezier(0.55, 0.085, 0.68, 0.53)
       both;
@@ -437,7 +441,6 @@ export const DefaultInfoContent = styled.div`
     //padding-bottom: 10px;
   }
   @media (max-height: 670px) {
-    font-size: 8px;
     padding-bottom: 5px;
   }
 `;
