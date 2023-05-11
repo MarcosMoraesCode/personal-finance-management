@@ -784,7 +784,10 @@ const UserIncomes = (props) => {
       name: incomeName,
       value: Number(modifiedValue),
       date: crudType.historyDate,
-      type: userInputs.inputRadio.value,
+      type:
+        userInputs.inputRadio.value === "Sacar"
+          ? "Withdraw"
+          : userInputs.inputRadio.value,
       itemId: crudType.incomeId,
     };
 
@@ -939,34 +942,53 @@ const UserIncomes = (props) => {
     }
 
     let allHistory = Object.values(userHistory);
-    // console.log(allHistory);
+
     let filteredHistory;
     let adjustedHistory;
     let finalHistory;
     //console.log(selectedPeriod);
     //console.log("selected Time", selectedTime);
     // console.log("selected Type", selectedType);
-
+    console.log(selectedType, "aqui");
     switch (selectedTime) {
       case "Completo":
-        if (selectedType.includes("Excluído")) {
-          finalHistory = allHistory.filter((history) =>
-            history.type.includes("Deleted")
-          );
-
-          setFilteredHistory(finalHistory);
-        } else if (
-          selectedType !== "Tudo" &&
-          !selectedType.includes("Excluído")
-        ) {
-          finalHistory = allHistory.filter(
-            (history) => history.type === selectedType
-          );
-          //console.log(allHistory);
-          setFilteredHistory(finalHistory);
-        } else {
-          setFilteredHistory(allHistory);
+        switch (selectedType) {
+          case "Excluído":
+            finalHistory = allHistory.filter((history) =>
+              history.type.includes("Deleted")
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          case "Deposit":
+            finalHistory = allHistory.filter(
+              (history) => history.type === "Deposit"
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          case "Payment":
+            finalHistory = allHistory.filter(
+              (history) => history.type === "Payment"
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          case "Investment":
+            finalHistory = allHistory.filter(
+              (history) => history.type === "Investment"
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          case "Withdraw":
+            finalHistory = allHistory.filter(
+              (history) => history.type === "Withdraw"
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          default:
+            setFilteredHistory(allHistory);
+            break;
         }
+        break;
+
         break;
       case "Este Ano":
         adjustedHistory = allHistory.map((history) => {
@@ -995,25 +1017,44 @@ const UserIncomes = (props) => {
             ) === year
         );
 
-        //console.log("filtrado", filteredHistory);
-        if (selectedType.includes("Excluído")) {
-          finalHistory = filteredHistory.filter((history) =>
-            history.type.includes("Deleted")
-          );
+        console.log("tipo", selectedType, "data", selectedTime);
 
-          setFilteredHistory(finalHistory);
-        } else if (
-          selectedType !== "Tudo" &&
-          !selectedType.includes("Excluído")
-        ) {
-          finalHistory = filteredHistory.filter(
-            (history) => history.type === selectedType
-          );
-
-          setFilteredHistory(finalHistory);
-        } else {
-          setFilteredHistory(filteredHistory);
+        switch (selectedType) {
+          case "Excluído":
+            finalHistory = filteredHistory.filter((history) =>
+              history.type.includes("Deleted")
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          case "Deposit":
+            finalHistory = filteredHistory.filter(
+              (history) => history.type === "Deposit"
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          case "Payment":
+            finalHistory = filteredHistory.filter(
+              (history) => history.type === "Payment"
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          case "Investment":
+            finalHistory = filteredHistory.filter(
+              (history) => history.type === "Investment"
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          case "Withdraw":
+            finalHistory = filteredHistory.filter(
+              (history) => history.type === "Withdraw"
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          default:
+            setFilteredHistory(filteredHistory);
+            break;
         }
+
         break;
       case "Este Mês":
         adjustedHistory = allHistory.map((history) => {
@@ -1042,9 +1083,44 @@ const UserIncomes = (props) => {
             ) === year &&
             String(history.date[3] + history.date[4]) === String(month)
         );
+        switch (selectedType) {
+          case "Excluído":
+            finalHistory = filteredHistory.filter((history) =>
+              history.type.includes("Deleted")
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          case "Deposit":
+            finalHistory = filteredHistory.filter(
+              (history) => history.type === "Deposit"
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          case "Payment":
+            finalHistory = filteredHistory.filter(
+              (history) => history.type === "Payment"
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          case "Investment":
+            finalHistory = filteredHistory.filter(
+              (history) => history.type === "Investment"
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          case "Withdraw":
+            finalHistory = filteredHistory.filter(
+              (history) => history.type === "Withdraw"
+            );
+            setFilteredHistory(finalHistory);
+            break;
+          default:
+            setFilteredHistory(filteredHistory);
+            break;
+        }
 
         //console.log("filtrado", filteredHistory);
-        if (selectedType.includes("Excluído")) {
+        /*if (selectedType.includes("Excluído")) {
           finalHistory = filteredHistory.filter((history) =>
             history.type.includes("Deleted")
           );
@@ -1061,7 +1137,7 @@ const UserIncomes = (props) => {
           setFilteredHistory(finalHistory);
         } else {
           setFilteredHistory(filteredHistory);
-        }
+        }*/
         break;
     }
   };

@@ -294,8 +294,8 @@ export const updateHistoryId = createAsyncThunk(
     try {
       let userId = state.getState().userData.userId;
       let idValue = state.getState().goalsData.historyId;
-      // console.log("payload", action.categoryId);
-      await set(ref(db, `users/${userId}/historyId`), Number(idValue + 1));
+      //console.log("payload", idValue);
+      await set(ref(db, `users/${userId}/historyId`), action);
     } catch (err) {
       console.log(err);
     }
