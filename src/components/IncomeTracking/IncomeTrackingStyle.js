@@ -209,8 +209,11 @@ export const PercentageTitle = styled.div`
   background-color: black;
   //z-index: 2;
   color: ${(props) => props.color};
-  @media (max-width: 701px) {
+  @media (max-width: 1260px) {
     font-size: 19px;
+  }
+  @media (max-width: 701px) {
+    font-size: 17px;
     width: 50%;
     height: 60%;
     top: 20%;

@@ -469,7 +469,7 @@ const UserIncomes = (props) => {
 
   const CheckInputValidation = (inputId, value) => {
     const isValidName = (incomeName) =>
-      /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,15}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?$/.test(
+      /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,15}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{1,15})?$/.test(
         incomeName
       );
 
@@ -907,7 +907,7 @@ const UserIncomes = (props) => {
     //console.log(event.currentTarget.value);
     let selectedTime = selectedPeriod;
     let selectedType = selectedFilter;
-    console.log(event.currentTarget.value);
+    //console.log(event.currentTarget.value);
     if (
       event.currentTarget.value.includes("Completo") ||
       event.currentTarget.value.includes("Este")
@@ -949,7 +949,7 @@ const UserIncomes = (props) => {
     //console.log(selectedPeriod);
     //console.log("selected Time", selectedTime);
     // console.log("selected Type", selectedType);
-    console.log(selectedType, "aqui");
+
     switch (selectedTime) {
       case "Completo":
         switch (selectedType) {
@@ -1017,7 +1017,7 @@ const UserIncomes = (props) => {
             ) === year
         );
 
-        console.log("tipo", selectedType, "data", selectedTime);
+        //console.log("tipo", selectedType, "data", selectedTime);
 
         switch (selectedType) {
           case "Excluído":
