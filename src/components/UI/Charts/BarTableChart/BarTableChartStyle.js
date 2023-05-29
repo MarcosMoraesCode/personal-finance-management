@@ -4,6 +4,7 @@ export const TableWrapper = styled.div`
   max-height: ${(props) => props.maxHeigth};
   overflow-y: auto;
   width: 95%;
+  //background-color: red;
 
   /* width */
   ::-webkit-scrollbar {
@@ -26,6 +27,10 @@ export const TableWrapper = styled.div`
   ::-webkit-scrollbar-thumb:hover {
     background: black;
   }
+
+  @media (max-height: 770px) {
+    max-height: 100px;
+  }
 `;
 
 export const BarTable = styled.table`
@@ -45,6 +50,9 @@ export const TableHeader = styled.th`
   padding-bottom: 5px;
   border-bottom: 1px solid gold;
   font-size: ${(props) => props.fontSize};
+  @media (max-height: 770px) {
+    // font-size: 16px;
+  }
 `;
 
 export const TableData = styled.td`
@@ -78,6 +86,6 @@ export const DataContentDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-right: 25px;
+  //padding-right: 25px;
   //background-color: red;
 `;

@@ -587,7 +587,8 @@ export const AnalysisInfoDiv = styled.div`
 
 export const AnalysisTableDiv = styled.div`
   width: 100%;
-  //background-color: blue;
+
+  // background-color: blue;
 `;
 export const SpendingInfoDiv = styled.div`
   display: flex;

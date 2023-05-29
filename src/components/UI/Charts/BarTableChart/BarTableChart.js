@@ -57,7 +57,7 @@ const BarTableChart = (props) => {
   }
 
   let table = (
-    <TableWrapper maxHeigth={"300px"}>
+    <TableWrapper maxHeigth={"180px"}>
       <BarTable>
         <tbody>
           <tr>
